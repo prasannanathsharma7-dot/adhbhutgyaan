@@ -1,16 +1,25 @@
 import { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import servicesData from '../data/services.json';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Booking() {
     const [searchParams] = useSearchParams();
     const preServiceId = searchParams.get('service');
     const prePkgName = searchParams.get('package');
+    const { t, lang } = useLanguage();
 
     const [step, setStep] = useState(1);
     const [selectedService, setSelectedService] = useState(null);
     const [selectedPkg, setSelectedPkg] = useState(null);
-    const [form, setForm] = useState({ name: '', phone: '', date: '', address: '', notes: '' });
+    const [form, setForm] = useState({ name: '', phone: '', date: '', address: '', notes: '', mode: '' });
+
+    const modeOptions = [
+        { v: 'online', icon: '🌐', label: t('ऑनलाइन', 'Online') },
+        { v: 'offline', icon: '🏠', label: t('ऑफलाइन (आपके स्थान पर)', 'Offline (at your location)') },
+        { v: 'location', icon: '📍', label: t('किसी भी अन्य स्थान पर', 'At any other location') },
+        { v: 'temple', icon: '🛕', label: t('मंदिर में', 'At a Temple') },
+    ];
 
     // Pre-select from URL
     useEffect(() => {
@@ -30,33 +39,44 @@ export default function Booking() {
     const goToStep = (n) => { setStep(n); window.scrollTo({ top: 200, behavior: 'smooth' }); };
 
     const handleSubmit = () => {
-        if (!form.name.trim()) { alert('कृपया अपना नाम लिखें'); return; }
-        if (!form.phone.trim() || form.phone.length < 10) { alert('कृपया सही मोबाइल नंबर लिखें'); return; }
+        if (!form.name.trim()) { alert(t('कृपया अपना नाम लिखें', 'Please enter your name')); return; }
+        if (!form.phone.trim() || form.phone.length < 10) { alert(t('कृपया सही मोबाइल नंबर लिखें', 'Please enter a valid phone number')); return; }
+        if (!form.mode) { alert(t('कृपया पूजा का माध्यम चुनें', 'Please select how you want the pooja performed')); return; }
         goToStep(4);
     };
 
-    const whatsAppMsg = selectedService && selectedPkg ? `🙏 *नमस्कार! नई पूजा बुकिंग*
+    const dateNotSet = t('पंडित जी से तय होगी', 'To be decided with the Pandit');
+    const modeLabel = modeOptions.find(m => m.v === form.mode)?.label || '';
 
-*सेवा:* ${selectedService.name} (${selectedService.nameEn})
-*पैकेज:* ${selectedPkg.name} (${selectedPkg.nameEn})
-*जाप/पाठ:* ${selectedPkg.paathCount}
-// *दक्षिणा:* ₹${selectedPkg.price.toLocaleString('en-IN')}/-
+    const whatsAppMsg = selectedService && selectedPkg ? `🙏 *${t('नमस्कार! नई पूजा पूछताछ', 'Hello! New Pooja Enquiry')}*
 
-*नाम:* ${form.name}
-*फ़ोन:* ${form.phone}
-*तिथि:* ${form.date || 'पंडित जी से तय होगी'}
-${form.address ? `*पता:* ${form.address}` : ''}
-${form.notes ? `*विशेष:* ${form.notes}` : ''}
+*${t('सेवा', 'Service')}:* ${selectedService.name} (${selectedService.nameEn})
+*${t('पैकेज', 'Package')}:* ${selectedPkg.name} (${selectedPkg.nameEn})
+*${t('जाप/पाठ', 'Jaap/Paath')}:* ${selectedPkg.paathCount}
+*${t('माध्यम', 'Mode')}:* ${modeLabel}
 
-कृपया बुकिंग कन्फर्म करें। 🙏` : '';
+*${t('नाम', 'Name')}:* ${form.name}
+*${t('फ़ोन', 'Phone')}:* ${form.phone}
+*${t('तिथि', 'Date')}:* ${form.date || dateNotSet}
+${form.address ? `*${t('पता', 'Address')}:* ${form.address}` : ''}
+${form.notes ? `*${t('विशेष', 'Notes')}:* ${form.notes}` : ''}
+
+${t('कृपया मूल्य व उपलब्धता की जानकारी दें।', 'Please share pricing and availability.')} 🙏` : '';
+
+    const steps = [
+        t('पूजा चुनें', 'Select Pooja'),
+        t('पैकेज चुनें', 'Select Package'),
+        t('विवरण भरें', 'Your Details'),
+        t('पुष्टि करें', 'Confirm'),
+    ];
 
     return (
         <div>
             <header className="page-header">
                 <div className="container">
-                    <div className="breadcrumb"><Link to="/">Home</Link><span>›</span><span>पूजा बुक करें</span></div>
-                    <h1>पूजा बुक करें</h1>
-                    <p className="subtitle">Book Your Pooja in 4 Simple Steps</p>
+                    <div className="breadcrumb"><Link to="/">{t('होम', 'Home')}</Link><span>›</span><span>{t('पूजा बुक करें', 'Book Pooja')}</span></div>
+                    <h1>{t('पूजा बुक करें', 'Book Your Pooja')}</h1>
+                    <p className="subtitle">{t('4 सरल चरणों में पूछताछ करें', 'Enquire in 4 Simple Steps')}</p>
                 </div>
             </header>
 
@@ -64,7 +84,7 @@ ${form.notes ? `*विशेष:* ${form.notes}` : ''}
                 <div className="container" style={{ maxWidth: 900, margin: '0 auto' }}>
                     {/* Steps */}
                     <div className="wizard-steps">
-                        {['पूजा चुनें', 'पैकेज चुनें', 'विवरण भरें', 'पुष्टि करें'].map((label, i) => (
+                        {steps.map((label, i) => (
                             <div key={i} className={`wizard-step ${step === i + 1 ? 'active' : ''} ${step > i + 1 ? 'completed' : ''}`}>
                                 <div className="wizard-step-number">{i + 1}</div>
                                 <span className="wizard-step-label">{label}</span>
@@ -75,8 +95,7 @@ ${form.notes ? `*विशेष:* ${form.notes}` : ''}
                     {/* Step 1 */}
                     {step === 1 && (
                         <div className="wizard-panel">
-                            <h3 style={{ textAlign: 'center', marginBottom: '0.5rem' }}>पूजा सेवा चुनें</h3>
-                            <p style={{ textAlign: 'center', color: 'var(--text-muted)', marginBottom: '2rem' }}>Select a Pooja Service</p>
+                            <h3 style={{ textAlign: 'center', marginBottom: '0.5rem' }}>{t('पूजा सेवा चुनें', 'Select a Pooja Service')}</h3>
                             <div className="service-select-grid">
                                 {servicesData.map(svc => (
                                     <div key={svc.id}
@@ -86,15 +105,15 @@ ${form.notes ? `*विशेष:* ${form.notes}` : ''}
                                     >
                                         <img src={`/images/${svc.image}`} alt={svc.nameEn} style={{ width: '100%', height: '140px', objectFit: 'cover', display: 'block' }} />
                                         <div style={{ padding: '1.25rem' }}>
-                                            <h4 style={{ fontFamily: 'var(--font-hindi)', marginBottom: '0.25rem' }}>{svc.name}</h4>
-                                            <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{svc.nameEn}</p>
+                                            <h4 style={{ fontFamily: 'var(--font-hindi)', marginBottom: '0.25rem' }}>{lang === 'hi' ? svc.name : svc.nameEn}</h4>
+                                            {lang === 'hi' && <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{svc.nameEn}</p>}
                                         </div>
                                     </div>
                                 ))}
                             </div>
                             <div style={{ textAlign: 'center', marginTop: '2rem' }}>
                                 <button className="btn btn-primary btn-lg" disabled={!selectedService} onClick={() => goToStep(2)}>
-                                    आगे बढ़ें → Next
+                                    {t('आगे बढ़ें →', 'Next →')}
                                 </button>
                             </div>
                         </div>
@@ -103,26 +122,25 @@ ${form.notes ? `*विशेष:* ${form.notes}` : ''}
                     {/* Step 2 */}
                     {step === 2 && selectedService && (
                         <div className="wizard-panel">
-                            <h3 style={{ textAlign: 'center', marginBottom: '0.5rem' }}>पैकेज चुनें</h3>
-                            <p style={{ textAlign: 'center', color: 'var(--text-muted)', marginBottom: '2rem' }}>Select Your Package for {selectedService.nameEn}</p>
+                            <h3 style={{ textAlign: 'center', marginBottom: '0.5rem' }}>{t('पैकेज चुनें', 'Select Your Package')}</h3>
+                            <p style={{ textAlign: 'center', color: 'var(--text-muted)', marginBottom: '2rem' }}>{lang === 'hi' ? selectedService.name : selectedService.nameEn}</p>
                             <div className="package-cards">
                                 {selectedService.packages.map(pkg => (
                                     <div key={pkg.nameEn}
                                         className={`package-card ${pkg.popular ? 'popular' : ''} ${selectedPkg?.nameEn === pkg.nameEn ? 'selected' : ''}`}
                                         onClick={() => setSelectedPkg(pkg)}
                                     >
-                                        {pkg.popular && <div className="package-popular-badge">⭐ लोकप्रिय</div>}
-                                        <div className="package-name">{pkg.name}</div>
-                                        <div className="package-name-en">{pkg.nameEn}</div>
-                                        {/* <div className="package-price">₹{pkg.price.toLocaleString('en-IN')} <span>/-</span></div> */}
+                                        {pkg.popular && <div className="package-popular-badge">⭐ {t('लोकप्रिय', 'Popular')}</div>}
+                                        <div className="package-name">{lang === 'hi' ? pkg.name : pkg.nameEn}</div>
+                                        {lang === 'hi' && <div className="package-name-en">{pkg.nameEn}</div>}
                                         <div className="package-count">{pkg.paathCount}</div>
-                                        <div className="package-includes">शामिल: {pkg.includes}</div>
+                                        <div className="package-includes">{t('शामिल', 'Includes')}: {pkg.includes}</div>
                                     </div>
                                 ))}
                             </div>
                             <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginTop: '2rem', flexWrap: 'wrap' }}>
-                                <button className="btn btn-outline-dark btn-lg" onClick={() => goToStep(1)}>← वापस</button>
-                                <button className="btn btn-primary btn-lg" disabled={!selectedPkg} onClick={() => goToStep(3)}>आगे बढ़ें →</button>
+                                <button className="btn btn-outline-dark btn-lg" onClick={() => goToStep(1)}>{t('← वापस', '← Back')}</button>
+                                <button className="btn btn-primary btn-lg" disabled={!selectedPkg} onClick={() => goToStep(3)}>{t('आगे बढ़ें →', 'Next →')}</button>
                             </div>
                         </div>
                     )}
@@ -130,33 +148,54 @@ ${form.notes ? `*विशेष:* ${form.notes}` : ''}
                     {/* Step 3 */}
                     {step === 3 && (
                         <div className="wizard-panel">
-                            <h3 style={{ textAlign: 'center', marginBottom: '0.5rem' }}>अपना विवरण भरें</h3>
-                            <p style={{ textAlign: 'center', color: 'var(--text-muted)', marginBottom: '2rem' }}>Enter Your Details</p>
+                            <h3 style={{ textAlign: 'center', marginBottom: '0.5rem' }}>{t('अपना विवरण भरें', 'Enter Your Details')}</h3>
                             <div style={{ maxWidth: 600, margin: '0 auto' }}>
                                 <div className="form-group">
-                                    <label className="form-label">पूरा नाम (Full Name) *</label>
-                                    <input className="form-input" placeholder="अपना नाम लिखें" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} />
+                                    <label className="form-label">{t('पूजा किस माध्यम से करवानी है', 'How would you like the pooja performed')} *</label>
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem', marginTop: '0.4rem' }}>
+                                        {modeOptions.map(m => (
+                                            <button
+                                                key={m.v}
+                                                type="button"
+                                                onClick={() => setForm({ ...form, mode: m.v })}
+                                                style={{
+                                                    display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
+                                                    padding: '0.55rem 1rem', borderRadius: 'var(--radius-xl)',
+                                                    border: form.mode === m.v ? '2px solid var(--gold-500)' : '1px solid var(--border-light)',
+                                                    background: form.mode === m.v ? 'var(--gold-50)' : 'white',
+                                                    color: form.mode === m.v ? 'var(--gold-700)' : 'var(--text-secondary)',
+                                                    fontWeight: 600, fontSize: '0.85rem', cursor: 'pointer',
+                                                }}
+                                            >
+                                                <span>{m.icon}</span>{m.label}
+                                            </button>
+                                        ))}
+                                    </div>
                                 </div>
                                 <div className="form-group">
-                                    <label className="form-label">मोबाइल नंबर (Phone) *</label>
+                                    <label className="form-label">{t('पूरा नाम', 'Full Name')} *</label>
+                                    <input className="form-input" placeholder={t('अपना नाम लिखें', 'Enter your name')} value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} />
+                                </div>
+                                <div className="form-group">
+                                    <label className="form-label">{t('मोबाइल नंबर', 'Phone Number')} *</label>
                                     <input className="form-input" type="tel" placeholder="+91 92781 48269" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} />
                                 </div>
                                 <div className="form-group">
-                                    <label className="form-label">पसंदीदा तिथि (Preferred Date)</label>
+                                    <label className="form-label">{t('पसंदीदा तिथि', 'Preferred Date')}</label>
                                     <input className="form-input" type="date" value={form.date} onChange={e => setForm({ ...form, date: e.target.value })} />
                                 </div>
                                 <div className="form-group">
-                                    <label className="form-label">पता / शहर (City / Address)</label>
-                                    <input className="form-input" placeholder="शहर या पता लिखें" value={form.address} onChange={e => setForm({ ...form, address: e.target.value })} />
+                                    <label className="form-label">{t('पता / शहर / मंदिर का नाम', 'City / Address / Temple Name')}</label>
+                                    <input className="form-input" placeholder={t('शहर, पता या मंदिर का नाम लिखें', 'Enter city, address, or temple name')} value={form.address} onChange={e => setForm({ ...form, address: e.target.value })} />
                                 </div>
                                 <div className="form-group">
-                                    <label className="form-label">विशेष निर्देश (Special Instructions)</label>
-                                    <textarea className="form-textarea" placeholder="कोई विशेष अनुरोध या संकल्प विवरण..." value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} />
+                                    <label className="form-label">{t('विशेष निर्देश', 'Special Instructions')}</label>
+                                    <textarea className="form-textarea" placeholder={t('कोई विशेष अनुरोध या संकल्प विवरण...', 'Any special request or sankalp details...')} value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} />
                                 </div>
                             </div>
                             <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginTop: '1.5rem', flexWrap: 'wrap' }}>
-                                <button className="btn btn-outline-dark btn-lg" onClick={() => goToStep(2)}>← वापस</button>
-                                <button className="btn btn-primary btn-lg" onClick={handleSubmit}>समीक्षा करें →</button>
+                                <button className="btn btn-outline-dark btn-lg" onClick={() => goToStep(2)}>{t('← वापस', '← Back')}</button>
+                                <button className="btn btn-primary btn-lg" onClick={handleSubmit}>{t('समीक्षा करें →', 'Review →')}</button>
                             </div>
                         </div>
                     )}
@@ -164,44 +203,43 @@ ${form.notes ? `*विशेष:* ${form.notes}` : ''}
                     {/* Step 4 */}
                     {step === 4 && selectedService && selectedPkg && (
                         <div className="wizard-panel">
-                            <h3 style={{ textAlign: 'center', marginBottom: '0.5rem' }}>बुकिंग समीक्षा</h3>
-                            <p style={{ textAlign: 'center', color: 'var(--text-muted)', marginBottom: '2rem' }}>Review Your Booking</p>
+                            <h3 style={{ textAlign: 'center', marginBottom: '0.5rem' }}>{t('पूछताछ समीक्षा', 'Review Your Enquiry')}</h3>
                             <div style={{ maxWidth: 600, margin: '0 auto', background: 'white', borderRadius: 'var(--radius-lg)', padding: 'clamp(1.25rem,4vw,2rem)', border: '2px solid var(--border-gold)', boxShadow: 'var(--shadow-gold)' }}>
                                 <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
                                     <img src={`/images/${selectedService.image}`} alt={selectedService.nameEn} style={{ width: '120px', height: '120px', borderRadius: '50%', objectFit: 'cover', border: '3px solid var(--gold-400)', margin: '0 auto 1rem auto', display: 'block' }} />
-                                    <h3 style={{ fontFamily: 'var(--font-hindi)', marginTop: '0.5rem' }}>{selectedService.name}</h3>
-                                    <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>{selectedService.nameEn}</p>
+                                    <h3 style={{ fontFamily: 'var(--font-hindi)', marginTop: '0.5rem' }}>{lang === 'hi' ? selectedService.name : selectedService.nameEn}</h3>
+                                    {lang === 'hi' && <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>{selectedService.nameEn}</p>}
                                 </div>
                                 <div style={{ borderTop: '1px solid var(--border-light)', paddingTop: '1.25rem' }}>
                                     {[
-                                        ['पैकेज', `${selectedPkg.name} (${selectedPkg.nameEn})`],
-                                        ['जाप/पाठ', selectedPkg.paathCount],
-                                        ['शामिल', selectedPkg.includes],
+                                        [t('पैकेज', 'Package'), `${selectedPkg.name} (${selectedPkg.nameEn})`],
+                                        [t('जाप/पाठ', 'Jaap/Paath'), selectedPkg.paathCount],
+                                        [t('शामिल', 'Includes'), selectedPkg.includes],
+                                        [t('माध्यम', 'Mode'), modeLabel],
                                     ].map(([k, v]) => (
-                                        <div key={k} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.75rem', fontSize: '0.95rem' }}>
-                                            <strong>{k}:</strong><span>{v}</span>
+                                        <div key={k} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.75rem', fontSize: '0.95rem', gap: '1rem' }}>
+                                            <strong>{k}:</strong><span style={{ textAlign: 'right' }}>{v}</span>
                                         </div>
                                     ))}
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', fontSize: '0.95rem' }}>
-                                        <strong>दक्षिणा:</strong>
-                                        {/* <span style={{ color: 'var(--gold-700)', fontWeight: 700, fontSize: '1.2rem' }}>₹{selectedPkg.price.toLocaleString('en-IN')}/-</span> */}
+                                    <div style={{ background: 'var(--gold-50)', border: '1px dashed var(--border-gold)', borderRadius: 'var(--radius-md)', padding: '0.6rem 0.9rem', marginBottom: '1rem', fontSize: '0.85rem', color: 'var(--gold-700)', fontWeight: 600, textAlign: 'center' }}>
+                                        💬 {t('मूल्य हेतु पूछताछ करें', 'Enquire Now for Pricing')}
                                     </div>
                                     <div style={{ borderTop: '1px solid var(--border-light)', paddingTop: '1rem', marginTop: '0.5rem' }}>
-                                        {[['नाम', form.name], ['फ़ोन', form.phone], ['तिथि', form.date || 'पंडित जी से तय होगी'], ...(form.address ? [['पता', form.address]] : []), ...(form.notes ? [['विशेष', form.notes]] : [])].map(([k, v]) => (
-                                            <div key={k} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', fontSize: '0.9rem' }}>
-                                                <strong>{k}:</strong><span>{v}</span>
+                                        {[[t('नाम', 'Name'), form.name], [t('फ़ोन', 'Phone'), form.phone], [t('तिथि', 'Date'), form.date || dateNotSet], ...(form.address ? [[t('पता', 'Address'), form.address]] : []), ...(form.notes ? [[t('विशेष', 'Notes'), form.notes]] : [])].map(([k, v]) => (
+                                            <div key={k} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', fontSize: '0.9rem', gap: '1rem' }}>
+                                                <strong>{k}:</strong><span style={{ textAlign: 'right' }}>{v}</span>
                                             </div>
                                         ))}
                                     </div>
                                 </div>
                             </div>
                             <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginTop: '2rem', flexWrap: 'wrap' }}>
-                                <button className="btn btn-outline-dark btn-lg" onClick={() => goToStep(3)}>← वापस</button>
-                                <a href={`https://wa.me/919278148269?text=${encodeURIComponent(whatsAppMsg)}`} target="_blank" rel="noreferrer" className="btn btn-whatsapp btn-lg">💬 WhatsApp पर कन्फर्म</a>
-                                <a href="tel:+919278148269" className="btn btn-primary btn-lg">📞 कॉल करें</a>
+                                <button className="btn btn-outline-dark btn-lg" onClick={() => goToStep(3)}>{t('← वापस', '← Back')}</button>
+                                <a href={`https://wa.me/919278148269?text=${encodeURIComponent(whatsAppMsg)}`} target="_blank" rel="noreferrer" className="btn btn-whatsapp btn-lg">💬 {t('WhatsApp पर पूछताछ करें', 'Enquire on WhatsApp')}</a>
+                                <a href="tel:+919278148269" className="btn btn-primary btn-lg">📞 {t('कॉल करें', 'Call Us')}</a>
                             </div>
                             <p style={{ textAlign: 'center', marginTop: '1.25rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-                                WhatsApp पर बुकिंग विवरण भेजा जाएगा। पंडित जी आपसे संपर्क करेंगे।
+                                {t('WhatsApp पर पूछताछ विवरण भेजा जाएगा। पंडित जी आपसे मूल्य व उपलब्धता के साथ संपर्क करेंगे।', 'Your enquiry details will be sent via WhatsApp. The Pandit will contact you with pricing and availability.')}
                             </p>
                         </div>
                     )}

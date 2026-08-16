@@ -1,6 +1,7 @@
 import { useParams, Link, Navigate } from 'react-router-dom';
 import blogData from '../data/blog.json';
 import { useEffect, useRef } from 'react';
+import { useLanguage } from '../context/LanguageContext';
 
 function useInView() {
     const ref = useRef(null);
@@ -33,6 +34,7 @@ export default function BlogPost() {
     const { slug } = useParams();
     const pageRef = useInView();
     const post = blogData.find(p => p.id === slug);
+    const { t, lang } = useLanguage();
 
     if (!post) return <Navigate to="/blog" replace />;
 
@@ -48,13 +50,12 @@ export default function BlogPost() {
                 </div>
                 <div className="page-hero-overlay" />
                 <div className="page-hero-content">
-                    <span className="blog-post-category-badge">{post.category}</span>
-                    <h1>{post.title}</h1>
-                    <p className="blog-post-title-en">{post.titleEn}</p>
+                    <span className="blog-post-category-badge">{lang === 'hi' ? post.category : post.categoryEn}</span>
+                    <h1>{lang === 'hi' ? post.title : post.titleEn}</h1>
+                    {lang === 'hi' && <p className="blog-post-title-en">{post.titleEn}</p>}
                     <div className="blog-post-meta">
-                        <span>📅 {new Date(post.date).toLocaleDateString('hi-IN', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
-                        <span>⏱️ {post.readTime} पढ़ने का समय</span>
-                        <span>📂 {post.categoryEn}</span>
+                        <span>📅 {new Date(post.date).toLocaleDateString(lang === 'hi' ? 'hi-IN' : 'en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+                        <span>⏱️ {post.readTime} {t('पढ़ने का समय', 'read')}</span>
                     </div>
                 </div>
             </section>
@@ -63,6 +64,11 @@ export default function BlogPost() {
             <section className="section" id="blog-post-content">
                 <div className="container">
                     <article className="blog-article">
+                        {lang === 'en' && (
+                            <p style={{ background: 'var(--gold-50)', borderLeft: '4px solid var(--gold-500)', padding: '0.85rem 1.25rem', borderRadius: 'var(--radius-md)', fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>
+                                This article includes both Hindi and English text as originally written.
+                            </p>
+                        )}
                         {post.content.map((block, i) => {
                             if (block.type === 'heading') {
                                 return <h2 key={i} className="blog-article-heading">{block.text}</h2>;
@@ -86,16 +92,16 @@ export default function BlogPost() {
                         <div className="blog-article-cta">
                             <div className="blog-article-cta-content">
                                 <img src="/images/logo.png" alt="" className="blog-article-cta-logo" />
-                                <h3>पूजा बुक करें — काशी पूजा सेवा</h3>
-                                <p>काशी के अनुभवी पंडितों द्वारा शास्त्रोक्त विधि से सम्पूर्ण पूजन कार्य। अभी WhatsApp पर संपर्क करें!</p>
+                                <h3>{t('पूजा बुक करें — काशी पूजा सेवा', 'Book a Pooja — Kashi Pooja Seva')}</h3>
+                                <p>{t('काशी के अनुभवी पंडितों द्वारा शास्त्रोक्त विधि से सम्पूर्ण पूजन कार्य। अभी WhatsApp पर संपर्क करें!', 'Complete pooja rituals performed authentically by experienced Pandits of Kashi. Contact us on WhatsApp now!')}</p>
                                 <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', justifyContent: 'center' }}>
                                     {post.serviceId && (
                                         <Link to={`/booking?service=${post.serviceId}`} className="btn btn-primary">
-                                            <img src="/images/logo.png" alt="" className="inline-logo" /> यह पूजा बुक करें
+                                            <img src="/images/logo.png" alt="" className="inline-logo" /> {t('यह पूजा बुक करें', 'Book This Pooja')}
                                         </Link>
                                     )}
-                                    <a href="https://wa.me/919278148269?text=नमस्कार! मैं ब्लॉग पढ़कर आया हूँ।" target="_blank" rel="noreferrer" className="btn btn-whatsapp">
-                                        💬 WhatsApp करें
+                                    <a href={`https://wa.me/919278148269?text=${encodeURIComponent(t('नमस्कार! मैं ब्लॉग पढ़कर आया हूँ।', 'Hello! I read your blog article.'))}`} target="_blank" rel="noreferrer" className="btn btn-whatsapp">
+                                        💬 {t('WhatsApp करें', 'WhatsApp Us')}
                                     </a>
                                 </div>
                             </div>
@@ -104,14 +110,14 @@ export default function BlogPost() {
 
                     {/* Related Articles */}
                     <div className="blog-related">
-                        <h3 className="blog-related-heading">और पढ़ें</h3>
+                        <h3 className="blog-related-heading">{t('और पढ़ें', 'Read More')}</h3>
                         <div className="blog-related-grid">
                             {relatedPosts.map(rp => (
                                 <Link to={`/blog/${rp.id}`} className="blog-related-card" key={rp.id}>
                                     <img src={`/images/${rp.image}`} alt={rp.titleEn} loading="lazy" />
                                     <div className="blog-related-card-body">
-                                        <span className="blog-related-card-category">{rp.category}</span>
-                                        <h4>{rp.title}</h4>
+                                        <span className="blog-related-card-category">{lang === 'hi' ? rp.category : rp.categoryEn}</span>
+                                        <h4>{lang === 'hi' ? rp.title : rp.titleEn}</h4>
                                     </div>
                                 </Link>
                             ))}

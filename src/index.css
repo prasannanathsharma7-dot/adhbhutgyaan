@@ -363,6 +363,51 @@ h3 {
     width: 100%;
 }
 
+.lang-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: rgba(255, 248, 240, 0.08);
+    border: 1px solid rgba(212, 168, 67, 0.35);
+    border-radius: var(--radius-xl);
+    padding: 0.35rem 0.7rem;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    transition: all var(--dur-normal) var(--ease-out);
+}
+
+.lang-toggle:hover {
+    border-color: var(--gold-400);
+}
+
+.lang-toggle span {
+    padding: 0.1rem 0.2rem;
+    color: rgba(255, 248, 240, 0.5);
+    transition: color var(--dur-normal) var(--ease-out);
+}
+
+.lang-toggle span.active {
+    color: var(--gold-300);
+}
+
+.lang-toggle .lang-sep {
+    color: rgba(255, 248, 240, 0.25);
+}
+
+.navbar.solid .lang-toggle,
+.navbar.scrolled .lang-toggle {
+    border-color: rgba(212, 168, 67, 0.35);
+}
+
+@media (max-width: 900px) {
+    .lang-toggle {
+        margin: 0.5rem 0;
+        align-self: flex-start;
+    }
+}
+
 .nav-cta {
     background: linear-gradient(135deg, var(--gold-400), var(--gold-600)) !important;
     color: var(--navy-950) !important;

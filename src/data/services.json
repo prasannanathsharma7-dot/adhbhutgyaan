@@ -26,16 +26,16 @@
         "name": "501 अनुष्ठान पाठ",
         "nameEn": "501 Paath Anushthan",
         "paathCount": "501 पाठ (7 ब्राह्मण)",
-        "includes": "₹60 प्रति पाठ। हवन का खर्च अलग से होगा।",
-        
+        "includes": "हवन का खर्च अलग से होगा।",
+        "price": 30060,
         "popular": false
       },
       {
         "name": "1008 महापाठ",
         "nameEn": "1008 Maha Paath",
         "paathCount": "1008 पाठ (7 ब्राह्मण)",
-        "includes": "₹60 प्रति पाठ। हवन का खर्च अलग से होगा।",
-       
+        "includes": "हवन का खर्च अलग से होगा।",
+        "price": 60480,
         "popular": true
       }
     ]
@@ -67,24 +67,24 @@
         "name": "108 पाठ",
         "nameEn": "108 Paath",
         "paathCount": "108 पाठ (5 ब्राह्मण)",
-        "includes": "₹30 प्रति पाठ।",
-       
+        "includes": "शास्त्रोक्त विधि से सम्पन्न। मूल्य हेतु पूछताछ करें।",
+        "price": 3240,
         "popular": true
       },
       {
         "name": "501 पाठ",
         "nameEn": "501 Paath",
         "paathCount": "501 पाठ (5 ब्राह्मण)",
-        "includes": "₹30 प्रति पाठ।",
-        
+        "includes": "शास्त्रोक्त विधि से सम्पन्न। मूल्य हेतु पूछताछ करें।",
+        "price": 15030,
         "popular": false
       },
       {
         "name": "1008 महापाठ",
         "nameEn": "1008 Maha Paath",
         "paathCount": "1008 पाठ (5 ब्राह्मण)",
-        "includes": "₹30 प्रति पाठ।",
-     
+        "includes": "शास्त्रोक्त विधि से सम्पन्न। मूल्य हेतु पूछताछ करें।",
+        "price": 30240,
         "popular": false
       }
     ]
@@ -117,7 +117,7 @@
         "nameEn": "Tripindi Shradh (3 Brahmins)",
         "paathCount": "सम्पूर्ण पूजन विधि",
         "includes": "3 ब्राह्मण भोजन व्यवस्था एवं दक्षिणा सहित।",
-      
+        "price": 11000,
         "popular": true
       },
       {
@@ -125,7 +125,7 @@
         "nameEn": "Tripindi Shradh (5 Brahmins)",
         "paathCount": "सम्पूर्ण विस्तृत पूजन विधि",
         "includes": "5 ब्राह्मण भोजन व्यवस्था एवं दक्षिणा सहित।",
-     
+        "price": 15000,
         "popular": false
       }
     ]
@@ -158,7 +158,7 @@
         "nameEn": "Kalsarp Shanti (Single Person)",
         "paathCount": "सम्पूर्ण वैदिक विधि",
         "includes": "2 ब्राह्मण द्वारा पूजन एवं अनुष्ठान।",
-    
+        "price": 5100,
         "popular": true
       }
     ]
@@ -191,7 +191,7 @@
         "nameEn": "Rudrashtadhyayi Abhishek",
         "paathCount": "1 सम्पूर्ण अभिषेक",
         "includes": "रूद्राष्टाध्यायी के सम्पूर्ण पाठ के साथ दुग्धाभिषेक।",
-       
+        "price": 2100,
         "popular": true
       },
       {
@@ -199,7 +199,7 @@
         "nameEn": "Ekadash Rudrabhishek",
         "paathCount": "11 पाठ",
         "includes": "11 ब्राह्मणों द्वारा एक साथ महा रुद्राभिषेक।",
-      
+        "price": 21000,
         "popular": false
       }
     ]
@@ -231,16 +231,16 @@
         "name": "501 पाठ",
         "nameEn": "501 Paath",
         "paathCount": "501 पाठ",
-        "includes": "₹20 प्रति पाठ के अनुसार।",
-  
+        "includes": "शास्त्रोक्त विधि से सम्पन्न। मूल्य हेतु पूछताछ करें।",
+        "price": 10020,
         "popular": true
       },
       {
         "name": "1008 महापाठ",
         "nameEn": "1008 Maha Paath",
         "paathCount": "1008 पाठ",
-        "includes": "₹20 प्रति पाठ के अनुसार।",
-      
+        "includes": "शास्त्रोक्त विधि से सम्पन्न। मूल्य हेतु पूछताछ करें।",
+        "price": 20160,
         "popular": false
       }
     ]
@@ -272,24 +272,24 @@
         "name": "251 पाठ",
         "nameEn": "251 Paath",
         "paathCount": "251 पाठ",
-        "includes": "₹25 प्रति पाठ।",
-       
+        "includes": "शास्त्रोक्त विधि से सम्पन्न। मूल्य हेतु पूछताछ करें।",
+        "price": 6275,
         "popular": false
       },
       {
         "name": "501 पाठ",
         "nameEn": "501 Paath",
         "paathCount": "501 पाठ",
-        "includes": "₹25 प्रति पाठ।",
-      
+        "includes": "शास्त्रोक्त विधि से सम्पन्न। मूल्य हेतु पूछताछ करें।",
+        "price": 12525,
         "popular": true
       },
       {
         "name": "1008 महापाठ",
         "nameEn": "1008 Maha Paath",
         "paathCount": "1008 पाठ",
-        "includes": "₹25 प्रति पाठ।",
-        
+        "includes": "शास्त्रोक्त विधि से सम्पन्न। मूल्य हेतु पूछताछ करें।",
+        "price": 25200,
         "popular": false
       }
     ]
@@ -321,24 +321,24 @@
         "name": "251 पाठ",
         "nameEn": "251 Paath",
         "paathCount": "251 पाठ",
-        "includes": "₹30 प्रति पाठ।",
-        
+        "includes": "शास्त्रोक्त विधि से सम्पन्न। मूल्य हेतु पूछताछ करें।",
+        "price": 7530,
         "popular": true
       },
       {
         "name": "501 पाठ",
         "nameEn": "501 Paath",
         "paathCount": "501 पाठ",
-        "includes": "₹30 प्रति पाठ।",
-       
+        "includes": "शास्त्रोक्त विधि से सम्पन्न। मूल्य हेतु पूछताछ करें।",
+        "price": 15030,
         "popular": false
       },
       {
         "name": "1008 महापाठ",
         "nameEn": "1008 Maha Paath",
         "paathCount": "1008 पाठ",
-        "includes": "₹30 प्रति पाठ।",
-        
+        "includes": "शास्त्रोक्त विधि से सम्पन्न। मूल्य हेतु पूछताछ करें।",
+        "price": 30240,
         "popular": false
       }
     ]
@@ -370,16 +370,16 @@
         "name": "501 पाठ",
         "nameEn": "501 Paath",
         "paathCount": "501 पाठ",
-        "includes": "₹25 प्रति पाठ।",
-        
+        "includes": "शास्त्रोक्त विधि से सम्पन्न। मूल्य हेतु पूछताछ करें।",
+        "price": 12525,
         "popular": true
       },
       {
         "name": "1008 महापाठ",
         "nameEn": "1008 Maha Paath",
         "paathCount": "1008 पाठ",
-        "includes": "₹25 प्रति पाठ।",
-        
+        "includes": "शास्त्रोक्त विधि से सम्पन्न। मूल्य हेतु पूछताछ करें।",
+        "price": 25200,
         "popular": false
       }
     ]
@@ -412,7 +412,7 @@
         "nameEn": "Kumbh Vivah Anushthan",
         "paathCount": "सम्पूर्ण वैदिक विधि",
         "includes": "5 ब्राह्मणों द्वारा विधि-विधान से सम्पन्न।",
-     
+        "price": 11000,
         "popular": true
       }
     ]

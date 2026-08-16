@@ -29,8 +29,8 @@ function App() {
                     <Route path="/blog" element={<Blog />} />
                     <Route path="/blog/:slug" element={<BlogPost />} />
                     <Route path="/kashi-history" element={<KashiHistory />} />
-<Route path="/why-pooja" element={<WhyPooja />} />
-<Route path="/family-tree" element={<FamilyTree />} />
+                    <Route path="/why-pooja" element={<WhyPooja />} />
+                    <Route path="/family-tree" element={<FamilyTree />} />
                 </Routes>
             </main>
             <Footer />

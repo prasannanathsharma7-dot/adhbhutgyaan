@@ -1,6 +1,9 @@
 import { Link } from 'react-router-dom';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Footer() {
+    const { t } = useLanguage();
+
     return (
         <footer className="footer" id="footer">
             <div className="container">
@@ -14,7 +17,10 @@ export default function Footer() {
                             </div>
                         </div>
                         <p className="footer-desc">
-                            बनारस (काशी) के अनुभवी एवं विद्वान पंडितों द्वारा शास्त्रोक्त विधि से सभी प्रकार की पूजा सेवाएं। ऑनलाइन बुकिंग उपलब्ध।
+                            {t(
+                                'बनारस (काशी) के अनुभवी एवं विद्वान पंडितों द्वारा शास्त्रोक्त विधि से सभी प्रकार की पूजा सेवाएं। ऑनलाइन बुकिंग उपलब्ध।',
+                                'Authentic pooja services performed by experienced, learned Pandits of Banaras (Kashi). Online booking available.'
+                            )}
                         </p>
                         <div className="footer-social">
                             <a href="#" className="social-link facebook" aria-label="Facebook">
@@ -33,30 +39,30 @@ export default function Footer() {
                     </div>
 
                     <div>
-                        <h4 className="footer-heading">Quick Links</h4>
+                        <h4 className="footer-heading">{t('त्वरित लिंक', 'Quick Links')}</h4>
                         <div className="footer-links">
-                            <Link to="/">🏠 Home</Link>
-                            <Link to="/services"><img src="/images/logo.png" alt="" className="inline-logo" /> सेवाएं</Link>
-                            <Link to="/booking">📅 Book Pooja</Link>
-                            <Link to="/about">👤 About</Link>
-                            <Link to="/blog">📝 Blog</Link>
-                            <Link to="/contact">📞 Contact</Link>
+                            <Link to="/">🏠 {t('होम', 'Home')}</Link>
+                            <Link to="/services"><img src="/images/logo.png" alt="" className="inline-logo" /> {t('सेवाएं', 'Services')}</Link>
+                            <Link to="/booking">📅 {t('पूजा बुक करें', 'Book Pooja')}</Link>
+                            <Link to="/about">👤 {t('हमारे बारे में', 'About')}</Link>
+                            <Link to="/blog">📝 {t('ब्लॉग', 'Blog')}</Link>
+                            <Link to="/contact">📞 {t('संपर्क करें', 'Contact')}</Link>
                         </div>
                     </div>
 
                     <div>
-                        <h4 className="footer-heading">पूजा सेवाएं</h4>
+                        <h4 className="footer-heading">{t('पूजा सेवाएं', 'Pooja Services')}</h4>
                         <div className="footer-links">
-                            <Link to="/services#rudrabhishek">रुद्राभिषेक</Link>
-                            <Link to="/services#shree-suktam">श्री सूक्तम्</Link>
-                            <Link to="/services#mahavidya-paath">दस महाविद्या पाठ</Link>
-                            <Link to="/services#kalsarp-dosh">कालसर्प दोष</Link>
-                            <Link to="/services#tripindi-shradh">त्रिपिंडी श्राद्ध</Link>
+                            <Link to="/services#rudrabhishek">{t('रुद्राभिषेक', 'Rudrabhishek')}</Link>
+                            <Link to="/services#shree-suktam">{t('श्री सूक्तम्', 'Shree Suktam')}</Link>
+                            <Link to="/services#mahavidya-paath">{t('दस महाविद्या पाठ', 'Dus Mahavidya Paath')}</Link>
+                            <Link to="/services#kalsarp-dosh">{t('कालसर्प दोष', 'Kalsarp Dosh')}</Link>
+                            <Link to="/services#tripindi-shradh">{t('त्रिपिंडी श्राद्ध', 'Tripindi Shradh')}</Link>
                         </div>
                     </div>
 
                     <div>
-                        <h4 className="footer-heading">संपर्क करें</h4>
+                        <h4 className="footer-heading">{t('संपर्क करें', 'Contact Us')}</h4>
                         <div className="footer-contact-item">
                             <span className="footer-contact-icon">📍</span>
                             <span>J11, Pt Umang Nath Sharma, 19, Nati Imli Rd<br/>Ishwargangi, Bunker Colony, Varanasi, UP 221002</span>
@@ -77,8 +83,8 @@ export default function Footer() {
                 </div>
 
                 <div className="footer-bottom">
-                    <span>© 2026 काशी पूजा सेवा | Kashi Pooja Seva. All rights reserved.</span>
-                    <span>Made in Banaras <img src="/images/logo.png" alt="Banaras" className="inline-logo-sm" /></span>
+                    <span>© 2026 {t('काशी पूजा सेवा', 'Kashi Pooja Seva')} | Kashi Pooja Seva. {t('सर्वाधिकार सुरक्षित।', 'All rights reserved.')}</span>
+                    <span>{t('बनारस में निर्मित', 'Made in Banaras')} <img src="/images/logo.png" alt="Banaras" className="inline-logo-sm" /></span>
                 </div>
             </div>
         </footer>

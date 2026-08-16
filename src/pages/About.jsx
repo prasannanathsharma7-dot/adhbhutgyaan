@@ -1,167 +1,158 @@
 import { Link } from 'react-router-dom';
+import { useLanguage } from '../context/LanguageContext';
+
+const generations = [
+    {
+        gen: 'I',
+        name: 'महामहोपाध्याय पं. अयोध्या नाथ शर्मा',
+        nameEn: 'Mahamahopadhyaya Pt. Ayodhya Nath Sharma',
+        era: '19वीं शताब्दी — The Genesis',
+        eraEn: '19th Century — The Genesis',
+        img: '/images/heritage/signboard-1.jpg',
+        body: 'काशी में संस्कृत विद्वता और ज्योतिषीय प्रामाणिकता के एक युगपुरुष। बनारस हिंदू विश्वविद्यालय (BHU) की भूमि पूजन कराने का पावन दायित्व इन्हीं को सौंपा गया था। ब्रिटिश शासन द्वारा परखे जाने पर भी इनकी भविष्यवाणियाँ सटीक सिद्ध हुईं, जिससे प्रशासन ने इनकी पाठशाला को औपचारिक मान्यता दी और वाराणसी के एक प्रमुख मार्ग का नाम ही "महामहोपाध्याय पं. अयोध्या नाथ शर्मा मार्ग" रख दिया — जो आज भी विद्यमान है।',
+        bodyEn: 'A titan of Sanskrit scholarship and astrological precision in sacred Varanasi. He was entrusted with performing the Bhoomi Pujan for Banaras Hindu University (BHU). When British officials tested his craft with skepticism, his accurate predictions transmuted colonial derision into institutional reverence — the administration formally recognized his Pathshala and named an arterial road after him: "Mahamahopadhyaya Pt. Ayodhya Nath Sharma Marg", a landmark that stands today.',
+    },
+    {
+        gen: 'II',
+        name: 'पं. शम्भु नाथ शर्मा',
+        nameEn: 'Pandit Shambhu Nath Sharma',
+        era: '20वीं शताब्दी — वैश्विक राजदूत',
+        eraEn: '20th Century — The Global Ambassador',
+        img: '/images/heritage/shambhu-nath-portrait.jpg',
+        body: 'सन् 1962 में बिहार और राँची के राजगुरु के रूप में औपचारिक मान्यता प्राप्त। प्रधानमंत्री इंदिरा गांधी और भारत के भूतपूर्व उपराष्ट्रपति श्री बी.डी. जत्ती जैसी विभूतियों को आध्यात्मिक व ज्योतिषीय मार्गदर्शन दिया। सन् 1971 में 50 से अधिक देशों के गणमान्य अतिथि व साधक इनसे मिलने स्वयं भारत आए। फ्रांस के महावाणिज्यदूत श्री Jacques Guepratte सहित यूरोप और उत्तर अमेरिका के अनेक नागरिकों ने इन्हें "प्रबुद्ध आत्मा" कहकर सम्मानित किया। कामदा काली मंदिर की स्थापना व निर्धन संस्कृत विद्यार्थियों को छात्रवृत्ति प्रदान करना इनकी परोपकारिता का प्रमाण है।',
+        bodyEn: 'Formally appointed Raj Guru of Bihar and Ranchi in 1962. Trusted confidant providing spiritual and astrological guidance to Prime Minister Indira Gandhi and former Vice President of India, Mr. B.D. Jatti. In 1971, dignitaries and seekers from 50 nations personally traveled to India to seek his presence, with diplomats including the Consul General of France, Mr. Jacques Guepratte, hailing him an "Enlightened Soul." His philanthropy included founding the Kamda Kali Mandir and funding scholarships for underprivileged Sanskrit students.',
+    },
+    {
+        gen: 'III',
+        name: 'डॉ. उमंग नाथ शर्मा',
+        nameEn: 'Dr. Umang Nath Sharma',
+        era: 'वर्तमान — आधुनिक मनीषी',
+        eraEn: 'Present Day — The Modern Luminary',
+        img: '/images/heritage/umang-with-ayodhya-portrait.jpg',
+        body: 'पारिवारिक परम्परा और आधुनिक शैक्षणिक कठोरता के बीच की खाई को सफलतापूर्वक पाटा है। यूनिवर्सिटी ऑफ मैरीलैंड, अमेरिका द्वारा "डॉक्टर ऑफ एस्ट्रोलॉजी" की प्रतिष्ठित उपाधि से सम्मानित। सन् 2019 में जापान के Hulu TV द्वारा इनके जीवन और ज्योतिषीय पद्धति की वैज्ञानिक प्रामाणिकता पर एक विस्तृत वृत्तचित्र (डॉक्यूमेंट्री) बनाई गई।',
+        bodyEn: 'Has meticulously bridged the chasm between ancestral tradition and modern academic rigor. Conferred the prestigious degree of Doctor of Astrology by the University of Maryland, USA. In 2019, Japan\'s Hulu TV produced a documentary on Dr. Umang Nath Sharma\'s life and methodology.',
+    },
+];
+
+const heritageSummary = [
+    { icon: '📜', label: 'द्विशताब्दी विरासत', labelEn: 'Bicentennial Pedigree', desc: '200 वर्षों से अधिक की अखंड वैदिक परम्परा', descEn: 'An unbroken Vedic tradition spanning over 200 years' },
+    { icon: '🏛️', label: 'संस्थागत मान्यता', labelEn: 'Institutional Recognition', desc: 'BHU की स्थापना से लेकर अमेरिकी डॉक्टरेट तक', descEn: 'From the founding of BHU to an American doctorate' },
+    { icon: '🤝', label: 'राजनयिक प्रभाव', labelEn: 'Diplomatic & Political Influence', desc: 'भारतीय प्रधानमंत्रियों व अंतरराष्ट्रीय राजनयिकों का विश्वास', descEn: 'Trusted by Indian Prime Ministers and international diplomats' },
+    { icon: '🌏', label: 'वैश्विक मीडिया उपस्थिति', labelEn: 'Global Media Presence', desc: 'जापानी मीडिया द्वारा प्रामाणिक विशेषज्ञ के रूप में दस्तावेज़ीकृत', descEn: 'Documented by Japanese media as an authoritative expert' },
+];
+
+const testimonials = [
+    { quoteHi: 'अत्यंत सटीक और सहायक परामर्श मिला।', quoteEn: 'Found the reading quite accurate and helpful.', name: 'M. Morow', place: '1983' },
+    { quoteHi: 'पंडितजी ने कुछ बहुत ही रोचक बातें बताईं जिन्हें सुनकर आश्चर्य हुआ।', quoteEn: 'Surprised to hear some very interesting things.', name: 'Irmgard Fleischer', place: 'Königstein, West Germany · Feb 1982' },
+    { quoteHi: 'प्रो. एस.एन. शर्मा के ज्योतिषीय ज्ञान और सलाह से हमें बहुत लाभ हुआ।', quoteEn: "We enjoyed and benefitted from Prof. S.N. Sharma's readings and his wisdom in astrological prediction.", name: 'Group Testimonial', place: 'March 1982' },
+    { quoteHi: 'भ्रमण अत्यंत ज्ञानवर्धक और मूल्यवान रहा।', quoteEn: 'Found the visit very enlightening and valuable.', name: 'Linda Mercurio', place: 'San Francisco, California, USA · Oct 1982' },
+    { quoteHi: 'हस्तरेखा पाठ पूर्णतः सत्य और सटीक निकला। मैं अत्यंत आभारी हूँ।', quoteEn: 'The palmistry reading and statements regarding my life and business were absolutely true and accurate. I am most grateful.', name: 'House of Spectacles Limited', place: "St. John's, Newfoundland, Canada · Feb 1981" },
+    { quoteHi: 'मुझे लगता है आप सब कुछ जानते हैं, फिर भी सब कुछ नहीं बताते — मैं आप पर भरोसा करती हूँ।', quoteEn: 'I feel you know everything but you are careful not to tell me everything. I trust you.', name: 'Isabel Y. Rhyne', place: 'Flint, Michigan, USA · Sep 1981' },
+    { quoteHi: 'मेरे भूतकाल के बारे में जानना बेहद रोचक रहा; भविष्य की जानकारी से भी मैं संतुष्ट हूँ।', quoteEn: 'It was quite interesting to hear about my past and I was very satisfied about my future reading.', name: 'Joshua Soffer', place: 'Kibutz Gan Shmuel, Israel · 1981' },
+    { quoteHi: 'आपकी सलाह के लिए हार्दिक धन्यवाद।', quoteEn: 'Thank you very much for the good advice you gave us.', name: 'Edith Paither', place: 'Paris, France · Jan 1980' },
+    { quoteHi: 'आज रात हमसे मिलकर पंडितजी बहुत ही सहृदय रहे; हम इसे कभी नहीं भूलेंगे।', quoteEn: "Mr. Shambhunath Sharma was so good to meet us tonight; we'll not forget it.", name: 'Jacques Guepratte', place: 'Consul General of France, Varanasi · Jan 1980' },
+    { quoteHi: 'आपकी बुद्धिमत्ता और दयालुता के लिए मैं अत्यंत आभारी और विनम्र महसूस करता हूँ।', quoteEn: 'Embarrassed by your wisdom and kindness — thankful for your words. You knew the important happenings of my life.', name: 'Aupie Dullingder', place: 'Munich, West Germany · Apr 1980' },
+    { quoteHi: 'ज्योतिष पर आपके रोचक स्पष्टीकरण हेतु धन्यवाद; यह विज्ञान के रूप में इसके महत्व को समझने में सहायक होगा।', quoteEn: 'Thank you for your very interesting explanation on astrology as a science.', name: 'Télévision Belge', place: 'Brussels, Belgium · May 1980' },
+    { quoteHi: 'भविष्य के प्रति आशा जगी और भूतकाल स्पष्ट हुआ।', quoteEn: 'Gave me hope for the future and could see the past.', name: 'Sonia Appelman', place: 'Utrecht, Holland · Sep 1981' },
+];
+
+const gallery = [
+    { src: '/images/heritage/shambhu-with-jatti.jpg', capHi: 'पं. शम्भु नाथ शर्मा भारत के भूतपूर्व उपराष्ट्रपति श्री बी.डी. जत्ती के साथ', capEn: 'Pt. Shambhu Nath Sharma with former Vice President of India, B.D. Jatti' },
+    { src: '/images/heritage/pooja-session-1.jpg', capHi: 'परामर्श सत्र', capEn: 'Consultation Session' },
+    { src: '/images/heritage/pooja-session-2.jpg', capHi: 'अंतरराष्ट्रीय भक्त सत्र', capEn: 'International Devotee Session' },
+    { src: '/images/heritage/signboard-1.jpg', capHi: 'पं. अयोध्या नाथ शर्मा मार्ग — वाराणसी', capEn: 'Named Road, Varanasi' },
+    { src: '/images/heritage/signboard-2.jpg', capHi: 'ऐतिहासिक मार्ग चिन्ह', capEn: 'Historic Street Sign' },
+];
+
+const values = [
+    { icon: '📖', title: 'शास्त्रोक्त विधि', titleEn: 'Authentic Vedic Methods', desc: 'हर पूजा शुद्ध विधि से सम्पन्न', descEn: 'Every pooja performed with pure, prescribed methods' },
+    { icon: '🤝', title: 'विश्वास और पारदर्शिता', titleEn: 'Trust & Transparency', desc: 'कोई छुपी लागत नहीं', descEn: 'No hidden costs, ever' },
+    { icon: '❤️', title: 'भक्त सेवा', titleEn: 'Devotee First', desc: 'भक्तों का कल्याण हमारी प्राथमिकता', descEn: "Devotees' wellbeing is our top priority" },
+    { icon: '🌍', title: 'वैश्विक पहुँच', titleEn: 'Global Reach', desc: 'देश-विदेश कहीं भी, काशी की सेवा आपके पास', descEn: 'Kashi\'s service, wherever you are in the world' },
+];
 
 export default function About() {
-    const heritageCards = [
-        {
-            tagEn: 'History',
-            image: '/images/kashi-history.png',
-            title: 'काशी का इतिहास',
-            titleEn: 'History of Kashi',
-            desc: 'जानिए कैसे काशी हजारों वर्षों से ज्ञान, आध्यात्म और मोक्ष का केंद्र रही है — गंगा के तट से लेकर विश्वनाथ मंदिर तक की यात्रा।',
-            link: '/kashi-history',
-        },
-        {
-            tagEn: 'Knowledge',
-            image: '/images/pooja-importance.png',
-            title: 'पूजा क्यों आवश्यक है',
-            titleEn: 'Why Pooja is Important',
-            desc: 'शास्त्रों के अनुसार पूजा का महत्व, इसके पीछे का विज्ञान और यह हमारे जीवन में सकारात्मक ऊर्जा कैसे लाती है।',
-            link: '/why-pooja',
-        },
-        {
-            tagEn: 'Family',
-            image: '/images/family-tree.png',
-            title: 'हमारा परिवार एवं वंशावली',
-            titleEn: 'Our Family & Family Tree',
-            desc: 'दो सदियों से अधिक पुरानी शर्मा वंशावली — पीढ़ी दर पीढ़ी ज्योतिष और वेद परंपरा की अखंड धारा।',
-            link: '/family-tree',
-        },
-    ];
+    const { t, lang } = useLanguage();
 
     return (
         <div>
             <header className="page-header">
                 <div className="container">
-                    <div className="breadcrumb"><Link to="/">Home</Link><span>›</span><span>हमारे बारे में</span></div>
-                    <h1>हमारे बारे में</h1>
-                    <p className="subtitle">About Kashi Pooja Seva</p>
+                    <div className="breadcrumb"><Link to="/">{t('होम', 'Home')}</Link><span>›</span><span>{t('हमारे बारे में', 'About Us')}</span></div>
+                    <h1>{t('हमारे बारे में', 'About Us')}</h1>
+                    <p className="subtitle">{t('About Kashi Pooja Seva — शर्मा परिवार की विरासत', 'About Kashi Pooja Seva — Legacy of the Sharma Family')}</p>
                 </div>
             </header>
 
-            {/* Our Story */}
+            {/* Intro */}
             <section className="section">
                 <div className="container">
                     <div className="about-story">
                         <div className="about-image">
-                            <img src="/images/temple-diyas.png" alt="Temple Diyas" loading="lazy" />
+                            <img src="/images/temple-diyas.jpg" alt="Temple Diyas" loading="lazy" />
                         </div>
                         <div>
-                            <span className="section-label">हमारी कहानी</span>
-                            <h2 className="section-title">काशी की प्राचीन परम्परा के वाहक</h2>
-                            <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '1rem' }}>
-                                हम बनारस (काशी) में स्थित पंडितों का एक समूह हैं जो पीढ़ियों से शास्त्रोक्त विधि-विधान से पूजा, पाठ, जप और हवन करा रहे हैं। हमारे पंडित बनारस हिंदू विश्वविद्यालय, संपूर्णानंद संस्कृत विश्वविद्यालय जैसे प्रतिष्ठित संस्थानों से शिक्षित हैं।
-                            </p>
-                            <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '1rem' }}>
-                                We are a group of experienced Pandits based in Banaras (Kashi), carrying forward a tradition spanning generations. Our Pandits are educated from renowned institutions like BHU and Sampurnanand Sanskrit University.
-                            </p>
+                            <span className="section-label">{t('हमारी कहानी', 'Our Story')}</span>
+                            <h2 className="section-title">{t('काशी की प्राचीन परम्परा के वाहक', "Carrying Kashi's Ancient Tradition Forward")}</h2>
                             <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '1.25rem' }}>
-                                अब हम अपनी सेवाओं को ऑनलाइन भी उपलब्ध करा रहे हैं ताकि देश-विदेश में रहने वाले भक्तगण भी काशी के पंडितों की सेवाओं का लाभ उठा सकें।
+                                {t(
+                                    'शर्मा परिवार की गाथा मात्र एक वंशावली नहीं, बल्कि दो शताब्दियों से अधिक समय तक वैदिक विज्ञान की अक्षुण्ण शक्ति का प्रमाण है। यह वंश प्राचीन आध्यात्मिक ज्ञान और आधुनिक वैश्विक मान्यता के दुर्लभ संगम का प्रतीक है।',
+                                    'The saga of the Sharma family is a profound testament to the enduring potency of Vedic sciences, spanning over two centuries — a rare confluence of ancient metaphysical wisdom and modern global recognition, born in the ghats of Varanasi.'
+                                )}
                             </p>
-                            <Link to="/booking" className="btn btn-primary"><img src="/images/logo.png" alt="" className="inline-logo" /> पूजा बुक करें</Link>
+                            <Link to="/booking" className="btn btn-primary"><img src="/images/logo.png" alt="" className="inline-logo" /> {t('पूजा बुक करें', 'Book a Pooja')}</Link>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* Heritage Card Grid: Kashi History / Why Pooja / Family Tree */}
-            <section className="section section-warm">
+            {/* Heritage Summary strip */}
+            <section className="section section-dark">
                 <div className="container">
-                    <div className="text-center">
-                        <span className="section-label">जानिए और</span>
-                        <h2 className="section-title">हमारी विरासत को समझें</h2>
-                        <p className="section-subtitle">Explore Our Heritage</p>
+                    <div className="text-center" style={{ marginBottom: '1rem' }}>
+                        <h2 className="section-title" style={{ color: 'var(--gold-300)' }}>{t('विरासत का सारांश', 'Summary of the Heritage')}</h2>
                     </div>
-                    <div className="om-divider">ॐ</div>
-
-                    <div
-                        style={{
-                            display: 'grid',
-                            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                            gap: '2rem',
-                            marginTop: '2.5rem',
-                        }}
-                    >
-                        {heritageCards.map((card, i) => (
-                            <div
-                                key={i}
-                                style={{
-                                    background: 'var(--bg-card, #fff)',
-                                    borderRadius: '14px',
-                                    overflow: 'hidden',
-                                    boxShadow: '0 4px 18px rgba(0,0,0,0.08)',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    transition: 'transform 0.25s ease, box-shadow 0.25s ease',
-                                }}
-                                onMouseEnter={(e) => {
-                                    e.currentTarget.style.transform = 'translateY(-6px)';
-                                    e.currentTarget.style.boxShadow = '0 10px 28px rgba(0,0,0,0.14)';
-                                }}
-                                onMouseLeave={(e) => {
-                                    e.currentTarget.style.transform = 'translateY(0)';
-                                    e.currentTarget.style.boxShadow = '0 4px 18px rgba(0,0,0,0.08)';
-                                }}
-                            >
-                                {/* Image */}
-                                <div style={{ position: 'relative', width: '100%', paddingTop: '58%' }}>
-                                    <img
-                                        src={card.image}
-                                        alt={card.titleEn}
-                                        loading="lazy"
-                                        style={{
-                                            position: 'absolute',
-                                            inset: 0,
-                                            width: '100%',
-                                            height: '100%',
-                                            objectFit: 'cover',
-                                        }}
-                                    />
-                                </div>
-
-                                {/* Body */}
-                                <div style={{ padding: '1.25rem 1.5rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                                    <span
-                                        style={{
-                                            alignSelf: 'flex-end',
-                                            fontSize: '0.8rem',
-                                            fontWeight: 600,
-                                            color: 'var(--gold-700, #b8860b)',
-                                            textTransform: 'uppercase',
-                                            letterSpacing: '0.03em',
-                                            marginBottom: '0.5rem',
-                                        }}
-                                    >
-                                        {card.tagEn}
-                                    </span>
-
-                                    <h3 style={{ fontSize: '1.25rem', marginBottom: '0.3rem', lineHeight: 1.3 }}>
-                                        {card.title}
-                                    </h3>
-                                    <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '0.75rem' }}>
-                                        {card.titleEn}
-                                    </p>
-
-                                    <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, fontSize: '0.95rem', marginBottom: '1.25rem' }}>
-                                        {card.desc}
-                                    </p>
-
-                                    <div style={{ marginTop: 'auto' }}>
-                                        <Link
-                                            to={card.link}
-                                            style={{
-                                                color: 'var(--gold-700, #b8860b)',
-                                                fontWeight: 600,
-                                                fontSize: '0.9rem',
-                                                textDecoration: 'none',
-                                            }}
-                                        >
-                                            और जानें →
-                                        </Link>
-                                    </div>
-                                </div>
+                    <div className="stats-grid">
+                        {heritageSummary.map(h => (
+                            <div className="stat-card" key={h.labelEn}>
+                                <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>{h.icon}</div>
+                                <div className="stat-label" style={{ fontWeight: 700, color: 'var(--gold-300)', marginBottom: '0.35rem' }}>{t(h.label, h.labelEn)}</div>
+                                <div className="stat-label" style={{ fontSize: '0.8rem' }}>{t(h.desc, h.descEn)}</div>
                             </div>
                         ))}
                     </div>
+                </div>
+            </section>
+
+            {/* Three Generations Timeline */}
+            <section className="section section-warm">
+                <div className="container">
+                    <div className="text-center">
+                        <span className="section-label">{t('तीन पीढ़ियाँ, एक विरासत', 'Three Generations, One Legacy')}</span>
+                        <h2 className="section-title">{t('शर्मा वंश की गाथा', 'Chronicles of the Sharma Lineage')}</h2>
+                        <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>{t('वैदिक विद्वता की एक द्विशताब्दी यात्रा', 'A Bicentennial Odyssey of Vedic Erudition')}</p>
+                    </div>
+                    <div className="om-divider">ॐ</div>
+
+                    {generations.map((g, i) => (
+                        <div key={g.gen} className="about-story" style={{ marginBottom: i === generations.length - 1 ? 0 : 'clamp(2.5rem, 6vw, 4rem)' }}>
+                            {i % 2 === 0 ? (
+                                <>
+                                    <div className="about-image">
+                                        <img src={g.img} alt={g.nameEn} loading="lazy" style={{ objectFit: 'cover' }} />
+                                    </div>
+                                    <GenText g={g} t={t} lang={lang} />
+                                </>
+                            ) : (
+                                <>
+                                    <GenText g={g} t={t} lang={lang} />
+                                    <div className="about-image">
+                                        <img src={g.img} alt={g.nameEn} loading="lazy" style={{ objectFit: 'cover' }} />
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    ))}
                 </div>
             </section>
 
@@ -170,14 +161,69 @@ export default function About() {
                 <div className="container">
                     <div className="stats-grid">
                         {[
-                            { num: '25+', label: 'वर्षों का अनुभव\nYears of Experience' },
-                            { num: '10,000+', label: 'सफल पूजन\nPoojas Performed' },
-                            { num: '5,000+', label: 'संतुष्ट भक्तगण\nHappy Devotees' },
-                            { num: '50+', label: 'पूजा प्रकार\nService Types' },
+                            { num: '25+', label: t('वर्षों का अनुभव', 'Years of Experience') },
+                            { num: '10,000+', label: t('सफल पूजन', 'Poojas Performed') },
+                            { num: '5,000+', label: t('संतुष्ट भक्तगण', 'Happy Devotees') },
+                            { num: '50+', label: t('पूजा प्रकार', 'Service Types') },
                         ].map(s => (
                             <div className="stat-card" key={s.num}>
                                 <div className="stat-number">{s.num}</div>
-                                <div className="stat-label" style={{ whiteSpace: 'pre-line' }}>{s.label}</div>
+                                <div className="stat-label">{s.label}</div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* International Testimonials */}
+            <section className="section">
+                <div className="container">
+                    <div className="text-center">
+                        <span className="section-label">{t('अंतरराष्ट्रीय प्रशंसापत्र', 'International Testimonials')}</span>
+                        <h2 className="section-title">{t('चार दशकों से भक्तों का विश्वास', "Devotees' Trust for Four Decades")}</h2>
+                        <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>{t('1979 से संरक्षित', 'Preserved Since 1979')}</p>
+                    </div>
+                    <div className="om-divider">ॐ</div>
+                    <p style={{ textAlign: 'center', maxWidth: '760px', margin: '0 auto 2.5rem', color: 'var(--text-secondary)', lineHeight: 1.8 }}>
+                        {t(
+                            '1979 से 1983 के बीच दुनिया भर से आए साधकों ने पं. शम्भु नाथ शर्मा को धन्यवाद-पत्र लिखे। इनमें से कुछ मूल पत्र, उनके नाम और स्थान सहित, यहाँ प्रस्तुत हैं।',
+                            'Between 1979 and 1983, seekers from around the world wrote letters of gratitude to Pandit Shambhu Nath Sharma. A selection of these original testimonials, with names and locations as given, is presented below.'
+                        )}
+                    </p>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
+                        {testimonials.map((tst, i) => (
+                            <div key={i} style={{ background: 'var(--cream)', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-lg)', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                                <span style={{ fontSize: '1.5rem', color: 'var(--gold-400)', lineHeight: 1 }}>&ldquo;</span>
+                                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: 1.7, flex: 1 }}>{t(tst.quoteHi, tst.quoteEn)}</p>
+                                <div style={{ borderTop: '1px solid var(--border-light)', paddingTop: '0.6rem' }}>
+                                    <div style={{ fontWeight: 700, color: 'var(--gold-700)', fontSize: '0.9rem' }}>{tst.name}</div>
+                                    <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>{tst.place}</div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    <p style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.8rem', marginTop: '1.5rem', fontStyle: 'italic' }}>
+                        {t(
+                            'मूल पत्रों से लिया गया, भाषा को थोड़ा सरल किया गया है। पूर्ण पते गोपनीयता हेतु संक्षिप्त किए गए हैं।',
+                            'Adapted from original letters; full street addresses abbreviated for privacy.'
+                        )}
+                    </p>
+                </div>
+            </section>
+
+            {/* Heritage Gallery */}
+            <section className="section section-warm">
+                <div className="container">
+                    <div className="text-center">
+                        <span className="section-label">{t('यादें', 'Memories')}</span>
+                        <h2 className="section-title">{t('हमारी यात्रा के क्षण', 'Moments from Our Journey')}</h2>
+                    </div>
+                    <div className="om-divider">ॐ</div>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem' }}>
+                        {gallery.map(item => (
+                            <div key={item.src} style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', border: '1px solid var(--border-light)', background: 'var(--cream)' }}>
+                                <img src={item.src} alt={item.capEn} loading="lazy" style={{ width: '100%', height: '220px', objectFit: 'cover', display: 'block' }} />
+                                <p style={{ padding: '0.75rem 1rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{t(item.capHi, item.capEn)}</p>
                             </div>
                         ))}
                     </div>
@@ -185,100 +231,60 @@ export default function About() {
             </section>
 
             {/* Values */}
-            <section className="section section-warm">
+            <section className="section">
                 <div className="container">
                     <div className="text-center">
-                        <span className="section-label">हमारे मूल्य</span>
-                        <h2 className="section-title">Our Core Values</h2>
+                        <span className="section-label">{t('हमारे मूल्य', 'Our Values')}</span>
+                        <h2 className="section-title">{t('हमारे मूल सिद्धांत', 'Our Core Values')}</h2>
                     </div>
                     <div className="om-divider">ॐ</div>
                     <div className="features-grid">
-                        {[
-                            { icon: '📖', title: 'शास्त्रोक्त विधि', desc: 'Authentic Vedic Methods — हर पूजा शुद्ध विधि से सम्पन्न' },
-                            { icon: '🤝', title: 'विश्वास और पारदर्शिता', desc: 'Trust & Transparency — कोई छुपी लागत नहीं' },
-                            { icon: '❤️', title: 'भक्त सेवा', desc: 'Devotee First — भक्तों का कल्याण हमारी प्राथमिकता' },
-                            { icon: '🌍', title: 'वैश्विक पहुँच', desc: 'Global Reach — देश-विदेश कहीं भी, काशी की सेवा आपके पास' },
-                        ].map((v, i) => (
+                        {values.map((v, i) => (
                             <div className="feature-card" key={i}>
                                 <span className="feature-icon">{v.icon}</span>
-                                <h3 className="feature-title">{v.title}</h3>
-                                <p className="feature-desc">{v.desc}</p>
+                                <h3 className="feature-title">{t(v.title, v.titleEn)}</h3>
+                                <p className="feature-desc">{t(v.desc, v.descEn)}</p>
                             </div>
                         ))}
                     </div>
                 </div>
             </section>
 
-            {/* Special Home Session */}
+            {/* Kashi */}
             <section className="section section-warm">
                 <div className="container">
-                    <div className="text-center">
-                        <span className="section-label">विशेष सेवा</span>
-                        <h2 className="section-title">घर पर ज्योतिष एवं पूजा सत्र</h2>
-                        <p className="section-subtitle">Astrology, History & Live Pooja — At Your Doorstep</p>
-                    </div>
-                    <div className="om-divider">ॐ</div>
                     <div className="about-story">
                         <div>
+                            <span className="section-label">{t('हमारा ठिकाना', 'Our Home')}</span>
+                            <h2 className="section-title">{t('काशी — विश्व की आध्यात्मिक राजधानी', "Kashi — The World's Spiritual Capital")}</h2>
                             <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '1rem' }}>
-                                यह एक विशेष अनुभव है जिसमें हमारे विद्वान पंडित स्वयं आपके निवास पर आते हैं।
-                                सत्र की शुरुआत एक विस्तृत ज्योतिषीय एवं पारिवारिक पृष्ठभूमि चर्चा से होती है,
-                                साथ ही काशी के इतिहास और उसकी आध्यात्मिक परम्परा की जानकारी भी साझा की जाती है।
-                                इसके पश्चात जीवंत (live) पूजा सम्पन्न कराई जाती है, और सत्र का समापन एक आत्मीय
-                                हाई टी सेशन के साथ होता है।
-                            </p>
-                            <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '1rem' }}>
-                                This is a personalized in-home experience where our scholar Pandit visits you directly.
-                                The session begins with an in-depth astrology and background consultation, along with
-                                insights into the history and spiritual heritage of Kashi. This is followed by a live
-                                Pooja performed at your residence, concluding with a warm high-tea session together.
-                            </p>
-                            <ul style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '1rem', paddingLeft: '1.25rem' }}>
-                                <li>ज्योतिष एवं पारिवारिक पृष्ठभूमि सत्र — Astrology & Background Session</li>
-                                <li>काशी का इतिहास — History of Kashi & its Spiritual Legacy</li>
-                                <li>आपके निवास पर जीवंत पूजा — Live Pooja at Your Residence</li>
-                                <li>हाई टी सत्र — High Tea Session</li>
-                            </ul>
-                            <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '1.25rem' }}>
-                                यह सत्र हमारे गुरु परंपरा — बीस दशकों से अधिक पुरानी शर्मा वंशावली — की धारा में
-                                आधारित है, जिसे बीएचयू की भूमि पूजन से लेकर अंतरराष्ट्रीय मान्यता तक पहचाना गया है,
-                                और जिसे जापान के हुलु टीवी द्वारा वर्ष 2019 में एक वृत्तचित्र (documentary) के
-                                माध्यम से भी प्रलेखित किया गया।
-                            </p>
-                            <Link to="/booking" className="btn btn-primary">
-                                <img src="/images/logo.png" alt="" className="inline-logo" /> सत्र बुक करें
-                            </Link>
-                        </div>
-                        <div className="about-image">
-                            <img src="/images/home-visit-pooja.png" alt="Home Visit Pooja & High Tea Session" loading="lazy" />
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Kashi */}
-            <section className="section">
-                <div className="container">
-                    <div className="about-story">
-                        <div>
-                            <span className="section-label">हमारा ठिकाना</span>
-                            <h2 className="section-title">काशी — विश्व की आध्यात्मिक राजधानी</h2>
-                            <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '1rem' }}>
-                                बनारस (वाराणसी) दुनिया के सबसे प्राचीन शहरों में से एक है और हिंदू धर्म की आध्यात्मिक राजधानी मानी जाती है। गंगा नदी के तट पर बसा यह पवित्र शहर — काशी विश्वनाथ मंदिर, दशाश्वमेध घाट की गंगा आरती, और अगणित मंदिरों का घर है।
-                            </p>
-                            <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '1rem' }}>
-                                Banaras (Varanasi) is one of the oldest cities in the world and the spiritual capital of Hinduism. Home to Kashi Vishwanath Temple and the iconic Ganga Aarti at Dashashwamedh Ghat.
+                                {t(
+                                    'बनारस (वाराणसी) दुनिया के सबसे प्राचीन शहरों में से एक है और हिंदू धर्म की आध्यात्मिक राजधानी मानी जाती है। गंगा नदी के तट पर बसा यह पवित्र शहर — काशी विश्वनाथ मंदिर, दशाश्वमेध घाट की गंगा आरती, और अगणित मंदिरों का घर है।',
+                                    'Banaras (Varanasi) is one of the oldest cities in the world and the spiritual capital of Hinduism. Home to Kashi Vishwanath Temple and the iconic Ganga Aarti at Dashashwamedh Ghat.'
+                                )}
                             </p>
                             <p style={{ color: 'var(--gold-700)', fontWeight: 600, fontStyle: 'italic' }}>
-                                "काशी में जो पूजा होती है, उसका फल सर्वोत्तम होता है।"
+                                {t('"काशी में जो पूजा होती है, उसका फल सर्वोत्तम होता है।"', '"A pooja performed in Kashi yields the most auspicious results."')}
                             </p>
                         </div>
                         <div className="about-image">
-                            <img src="/images/ganga-aarti.png" alt="Ganga Aarti" loading="lazy" />
+                            <img src="/images/ganga-aarti.jpg" alt="Ganga Aarti" loading="lazy" />
                         </div>
                     </div>
                 </div>
             </section>
+        </div>
+    );
+}
+
+function GenText({ g, t, lang }) {
+    return (
+        <div>
+            <span className="section-label" style={{ display: 'inline-block', marginBottom: '0.5rem' }}>{t(`पीढ़ी ${g.gen}`, `Generation ${g.gen}`)}</span>
+            <h3 style={{ fontFamily: 'var(--font-hindi)', marginBottom: '0.15rem', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)' }}>{lang === 'hi' ? g.name : g.nameEn}</h3>
+            {lang === 'en' && <p style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-hindi)' }}>{g.name}</p>}
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '1rem' }}>{t(g.era, g.eraEn)}</p>
+            <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8 }}>{t(g.body, g.bodyEn)}</p>
         </div>
     );
 }

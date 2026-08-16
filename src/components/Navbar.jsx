@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const location = useLocation();
     const isHome = location.pathname === '/';
+    const { lang, toggleLang, t } = useLanguage();
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -26,12 +28,12 @@ export default function Navbar() {
     const navClass = `navbar ${scrolled ? 'scrolled' : ''} ${!isHome ? 'solid' : ''}`;
 
     const links = [
-        { to: '/', label: 'Home' },
-        { to: '/services', label: 'सेवाएं' },
-        { to: '/booking', label: 'Book Pooja' },
-        { to: '/about', label: 'हमारे बारे में' },
-        { to: '/blog', label: 'ब्लॉग' },
-        { to: '/contact', label: 'Contact' },
+        { to: '/', label: t('होम', 'Home') },
+        { to: '/services', label: t('सेवाएं', 'Services') },
+        { to: '/booking', label: t('पूजा बुक करें', 'Book Pooja') },
+        { to: '/about', label: t('हमारे बारे में', 'About Us') },
+        { to: '/blog', label: t('ब्लॉग', 'Blog') },
+        { to: '/contact', label: t('संपर्क करें', 'Contact') },
     ];
 
     return (
@@ -55,7 +57,18 @@ export default function Navbar() {
                             {link.label}
                         </Link>
                     ))}
-                    <Link to="/booking" className="nav-cta"><img src="/images/logo.png" alt="" className="inline-logo" /> Book Now</Link>
+                    <button
+                        type="button"
+                        onClick={toggleLang}
+                        className="lang-toggle"
+                        aria-label="Switch language"
+                        title={lang === 'hi' ? 'Switch to English' : 'हिंदी में बदलें'}
+                    >
+                        <span className={lang === 'hi' ? 'active' : ''}>हिं</span>
+                        <span className="lang-sep">/</span>
+                        <span className={lang === 'en' ? 'active' : ''}>EN</span>
+                    </button>
+                    <Link to="/booking" className="nav-cta"><img src="/images/logo.png" alt="" className="inline-logo" /> {t('बुक करें', 'Book Now')}</Link>
                 </div>
 
                 <button

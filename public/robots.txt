@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
- 
-Sitemap: https://adhbhutgyaan.vercel.app/sitemap.xml
+
+Sitemap: https://www.adhbhutgyaan.com/sitemap.xml
