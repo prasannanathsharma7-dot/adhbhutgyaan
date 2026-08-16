@@ -1,0 +1,20 @@
+{
+  "name": "kashi-pooja-seva",
+  "private": true,
+  "version": "2.0.0",
+  "description": "Kashi Pooja Seva - Online Pooja Booking Platform (React)",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.3.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.0",
+    "vite": "^6.2.0"
+  }
+}

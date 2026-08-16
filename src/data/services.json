@@ -1,0 +1,420 @@
+[
+  {
+    "id": "vipreet-pratyangira",
+    "image": "vipreet_pratyangira.png",
+    "name": "विपरीत प्रत्यंगिरा पाठ",
+    "nameEn": "Vipreet Pratyangira Paath",
+    "shortDesc": "शत्रुओं द्वारा किये गए काले जादू से रक्षा और नकारात्मक ऊर्जा को वापस लौटाने का सबसे बड़ा तांत्रिक अनुष्ठान।",
+    "description": "यह देवी प्रत्यंगिरा को समर्पित एक अत्यंत शक्तिशाली तांत्रिक अनुष्ठान है। 'विपरीत' का अर्थ है उल्टा — अर्थात् शत्रु द्वारा किये गए अभिचार को वापस लौटाना। यह अनुष्ठान 7 विद्वान ब्राह्मणों द्वारा सम्पन्न किया जाता है।",
+    "descriptionEn": "An extremely powerful tantric ritual dedicated to Goddess Pratyangira. 'Vipreet' means reverse - returning black magic and negative energy back to the sender. Performed by 7 learned Brahmins.",
+    "bestTime": "सायंकाल गोधूली बेला में या रात्रि काल में",
+    "bestTimeEn": "Evening twilight or nighttime",
+    "benefits": [
+      "शत्रुओं द्वारा किये गए तंत्र-मंत्र और काले जादू से रक्षा",
+      "नकारात्मक ऊर्जा को शत्रु की ओर वापस भेजना",
+      "भूत-प्रेत बाधा निवारण",
+      "शत्रु भय से मुक्ति एवं विपत्तियों से रक्षा"
+    ],
+    "benefitsEn": [
+      "Protection from enemies' black magic and tantra",
+      "Reversing negative energy back to the sender",
+      "Removal of evil spirits and ghost obstacles",
+      "Liberation from enemy fear and sudden calamities"
+    ],
+    "packages": [
+      {
+        "name": "501 अनुष्ठान पाठ",
+        "nameEn": "501 Paath Anushthan",
+        "paathCount": "501 पाठ (7 ब्राह्मण)",
+        "includes": "₹60 प्रति पाठ। हवन का खर्च अलग से होगा।",
+        
+        "popular": false
+      },
+      {
+        "name": "1008 महापाठ",
+        "nameEn": "1008 Maha Paath",
+        "paathCount": "1008 पाठ (7 ब्राह्मण)",
+        "includes": "₹60 प्रति पाठ। हवन का खर्च अलग से होगा।",
+       
+        "popular": true
+      }
+    ]
+  },
+  {
+    "id": "mahavidya-paath",
+    "image": "mahavidya_paath.png",
+    "name": "दस महाविद्या पाठ",
+    "nameEn": "Dus Mahavidya Paath",
+    "shortDesc": "दस महाविद्याओं को समर्पित तांत्रिक अनुष्ठान—शत्रु बाधा निवारण और मनोकामना पूर्ति के लिए।",
+    "description": "यह पाठ दस महाविद्याओं (काली, तारा, त्रिपुर सुंदरी, भुवनेश्वरी, छिन्नमस्ता, त्रिपुर भैरवी, धूमावती, बगलामुखी, मातंगी, कमला) को समर्पित एक पवित्र तांत्रिक अनुष्ठान है जो 5 ब्राह्मणों द्वारा किया जाता है।",
+    "descriptionEn": "A sacred tantric ritual dedicated to the ten Mahavidyas (Kali, Tara, Tripura Sundari, etc.) performed by 5 Brahmins for spiritual power and protection.",
+    "bestTime": "नवरात्रि, अमावस्या या गुप्त नवरात्रि",
+    "bestTimeEn": "Navratri, Amavasya or Gupt Navratri",
+    "benefits": [
+      "नकारात्मक शक्तियों के निवारण के लिए",
+      "आध्यात्मिक शक्ति और सुरक्षा के लिए",
+      "शत्रु बाधा निवारण के लिए",
+      "दैवीय शक्ति की कृपा प्राप्त करने के लिए"
+    ],
+    "benefitsEn": [
+      "Removal of negative forces",
+      "Spiritual power and supreme protection",
+      "Eradication of enemy-created obstacles",
+      "Attaining the grace of divine feminine power"
+    ],
+    "packages": [
+      {
+        "name": "108 पाठ",
+        "nameEn": "108 Paath",
+        "paathCount": "108 पाठ (5 ब्राह्मण)",
+        "includes": "₹30 प्रति पाठ।",
+       
+        "popular": true
+      },
+      {
+        "name": "501 पाठ",
+        "nameEn": "501 Paath",
+        "paathCount": "501 पाठ (5 ब्राह्मण)",
+        "includes": "₹30 प्रति पाठ।",
+        
+        "popular": false
+      },
+      {
+        "name": "1008 महापाठ",
+        "nameEn": "1008 Maha Paath",
+        "paathCount": "1008 पाठ (5 ब्राह्मण)",
+        "includes": "₹30 प्रति पाठ।",
+     
+        "popular": false
+      }
+    ]
+  },
+  {
+    "id": "tripindi-shradh",
+    "image": "tripindi_shradh.png",
+    "name": "त्रिपिंडी श्राद्ध (पितृ पूजन)",
+    "nameEn": "Tripindi Shradh (Pitru Pooja)",
+    "shortDesc": "काशी के पिशाच मोचन पर पितृ दोष निवारण, अतृप्त पूर्वजों की शांति के लिए विशेष पूजा।",
+    "description": "यह पूजा पितृ दोष निवारण के लिए, अकाल मृत्यु प्राप्त और अतृप्त पूर्वजों की शांति के लिए की जाती है। यह ब्रह्मा, विष्णु, महेश को समर्पित है। यह श्राद्ध काशी में पिशाच मोचन (विमल तीर्थ) पर किया जाता है और इसका विशेष फल प्राप्त होता है।",
+    "descriptionEn": "Performed at Pishach Mochan in Kashi for the pacification of Pitru Dosh and finding peace for unsatisfied ancestral souls. Dedicated to Brahma, Vishnu, and Mahesh.",
+    "bestTime": "पितृ पक्ष, सर्वपितृ अमावस्या या किसी भी मास की अमावस्या",
+    "bestTimeEn": "Pitru Paksha, Sarvapitru Amavasya, or any Amavasya",
+    "benefits": [
+      "पितृ दोष से पूर्ण निवारण",
+      "अतृप्त और अकाल मृत्यु प्राप्त आत्माओं की शांति",
+      "पारिवारिक कलह और वंश वृद्धि में आ रही बाधाओं का अंत",
+      "मोक्ष प्राप्ति का मार्ग प्रशस्त होना"
+    ],
+    "benefitsEn": [
+      "Complete resolution of Pitru Dosh (Ancestral Affliction)",
+      "Peace for unsatisfied souls and untimely deaths in family",
+      "End of family disputes and lineage growth obstacles",
+      "Clearing the path to Moksha (Salvation)"
+    ],
+    "packages": [
+      {
+        "name": "त्रिपिंडी श्राद्ध (3 ब्राह्मण)",
+        "nameEn": "Tripindi Shradh (3 Brahmins)",
+        "paathCount": "सम्पूर्ण पूजन विधि",
+        "includes": "3 ब्राह्मण भोजन व्यवस्था एवं दक्षिणा सहित।",
+      
+        "popular": true
+      },
+      {
+        "name": "त्रिपिंडी श्राद्ध (5 ब्राह्मण)",
+        "nameEn": "Tripindi Shradh (5 Brahmins)",
+        "paathCount": "सम्पूर्ण विस्तृत पूजन विधि",
+        "includes": "5 ब्राह्मण भोजन व्यवस्था एवं दक्षिणा सहित।",
+     
+        "popular": false
+      }
+    ]
+  },
+  {
+    "id": "kalsarp-dosh",
+    "image": "kalsarp_dosh.png",
+    "name": "कालसर्प दोष पूजा",
+    "nameEn": "Kalsarp Dosh Nivaran",
+    "shortDesc": "राहु-केतु के नकारात्मक प्रभाव, जीवन के संघर्ष और स्वप्न भय से मुक्ति के लिए नाग कूप मंदिर में पूजा।",
+    "description": "राहु और केतु ग्रह के नकारात्मक प्रभाव को कम करने के लिए किया जाता है। यह पूजा पंचमी तिथि को काशी में नाग कूप मंदिर में प्रत्येक माह की जाती है। साथ ही महाकालेश्वर मंदिर परिसर के नागेश्वर महादेव मंदिर में भी किया जाता है।",
+    "descriptionEn": "Performed to reduce the negative effects of Rahu and Ketu planets. This pooja is conducted on Panchami Tithi at the famous Nag Koop Temple in Kashi.",
+    "bestTime": "नाग पंचमी या प्रत्येक माह की पंचमी तिथि",
+    "bestTimeEn": "Nag Panchami or Panchami Tithi of any month",
+    "benefits": [
+      "जीवन के अत्यधिक संघर्ष (Struggle) से मुक्ति",
+      "आर्थिक समस्याओं का निवारण",
+      "स्वप्न भय और अज्ञात डर से मुक्ति",
+      "कार्यों में आ रही अकारण बाधाओं का अंत"
+    ],
+    "benefitsEn": [
+      "Liberation from excessive life struggles",
+      "Resolution of severe financial problems",
+      "Freedom from nightmare fears and unknown phobias",
+      "End of unexplained obstacles in work"
+    ],
+    "packages": [
+      {
+        "name": "कालसर्प शांति (अकेला व्यक्ति)",
+        "nameEn": "Kalsarp Shanti (Single Person)",
+        "paathCount": "सम्पूर्ण वैदिक विधि",
+        "includes": "2 ब्राह्मण द्वारा पूजन एवं अनुष्ठान।",
+    
+        "popular": true
+      }
+    ]
+  },
+  {
+    "id": "rudrabhishek",
+    "image": "rudrabhishek_new.png",
+    "name": "रुद्राभिषेक",
+    "nameEn": "Rudrabhishek",
+    "shortDesc": "भगवान शिव का अत्यंत पवित्र अभिषेक — रोग निवारण, मनोकामना पूर्ति और समस्त पापों के नाश के लिए।",
+    "description": "यह भगवान शिव का एक अत्यंत पवित्र और शक्तिशाली अभिषेक है जिसमें शिवलिंग पर जल, दूध, दही, घी, शहद (पंचामृत) आदि से अभिषेक किया जाता है।",
+    "descriptionEn": "A highly sacred and powerful abhishekam of Lord Shiva using water, milk, curd, ghee, honey, etc. on the Shivling.",
+    "bestTime": "सावन मास, महाशिवरात्रि, प्रदोष व्रत, सोमवार",
+    "bestTimeEn": "Shravan Month, Mahashivratri, Pradosh Vrat, Mondays",
+    "benefits": [
+      "समस्त पापों का निवारण",
+      "स्वास्थ्य, सुख और समृद्धि की प्राप्ति",
+      "रोग निवारण और दीर्घायु",
+      "कुण्डली के ग्रह दोषों का शमन"
+    ],
+    "benefitsEn": [
+      "Eradication of all sins",
+      "Attaining health, happiness, and prosperity",
+      "Cure of diseases and blessing of long life",
+      "Pacification of planetary defects in horoscope"
+    ],
+    "packages": [
+      {
+        "name": "रूद्राष्टाध्यायी पाठ अभिषेक",
+        "nameEn": "Rudrashtadhyayi Abhishek",
+        "paathCount": "1 सम्पूर्ण अभिषेक",
+        "includes": "रूद्राष्टाध्यायी के सम्पूर्ण पाठ के साथ दुग्धाभिषेक।",
+       
+        "popular": true
+      },
+      {
+        "name": "एकादश रुद्राभिषेक",
+        "nameEn": "Ekadash Rudrabhishek",
+        "paathCount": "11 पाठ",
+        "includes": "11 ब्राह्मणों द्वारा एक साथ महा रुद्राभिषेक।",
+      
+        "popular": false
+      }
+    ]
+  },
+  {
+    "id": "shree-suktam",
+    "image": "shree_suktam.png",
+    "name": "श्री सूक्तम् पाठ",
+    "nameEn": "Shree Suktam Paath",
+    "shortDesc": "माँ लक्ष्मी की विशेष कृपा, धन, वैभव, और व्यापार में उन्नति के लिए ऋग्वेद का पवित्र सूक्त।",
+    "description": "यह ऋग्वेद का एक पवित्र सूक्त है जो माँ लक्ष्मी को समर्पित है। इसका पाठ घर में सुख-शांति और लक्ष्मी की स्थिरता के लिए किया जाता है।",
+    "descriptionEn": "A sacred hymn from the Rigveda dedicated to Goddess Lakshmi, performed for wealth, prosperity, and financial stability.",
+    "bestTime": "शुक्रवार, पूर्णिमा, दीपावली, या अक्षय तृतीया",
+    "bestTimeEn": "Fridays, Purnima, Diwali, or Akshaya Tritiya",
+    "benefits": [
+      "धन, वैभव और समृद्धि की असीम प्राप्ति",
+      "घोर आर्थिक समस्याओं का निवारण",
+      "घर में सुख-शांति और लक्ष्मी की स्थिरता",
+      "व्यापार में दिन-दूनी रात-चौगुनी उन्नति"
+    ],
+    "benefitsEn": [
+      "Immense wealth, luxury, and prosperity",
+      "Resolution of severe financial crises",
+      "Peace and permanent residence of Lakshmi at home",
+      "Exponential growth in business"
+    ],
+    "packages": [
+      {
+        "name": "501 पाठ",
+        "nameEn": "501 Paath",
+        "paathCount": "501 पाठ",
+        "includes": "₹20 प्रति पाठ के अनुसार।",
+  
+        "popular": true
+      },
+      {
+        "name": "1008 महापाठ",
+        "nameEn": "1008 Maha Paath",
+        "paathCount": "1008 पाठ",
+        "includes": "₹20 प्रति पाठ के अनुसार।",
+      
+        "popular": false
+      }
+    ]
+  },
+  {
+    "id": "kanakdhara-stotra",
+    "image": "kanakdhara_stotra.png",
+    "name": "कनकधारा स्तोत्र पाठ",
+    "nameEn": "Kanakdhara Stotra Paath",
+    "shortDesc": "अत्यधिक दरिद्रता दूर करने और अचानक धन प्राप्ति के लिए आदि शंकराचार्य रचित महान स्तोत्र।",
+    "description": "यह अत्यंत शक्तिशाली स्तोत्र आदि शंकराचार्य द्वारा रचित है और माँ लक्ष्मी को समर्पित है। 'कनकधारा' का अर्थ है सोने की बारिश। यह रुके हुए व्यापार को नया मार्ग प्रदान करता है।",
+    "descriptionEn": "A powerful hymn composed by Adi Shankaracharya dedicated to Goddess Lakshmi. 'Kanakdhara' means a shower of gold. It opens new paths for stalled businesses.",
+    "bestTime": "दीपावली, धनतेरस, या कोई भी शुभ शुक्रवार",
+    "bestTimeEn": "Diwali, Dhanteras, or any auspicious Friday",
+    "benefits": [
+      "अत्यधिक गरीबी और दरिद्रता का समूल नाश",
+      "अचानक धन प्राप्ति के योग",
+      "घर में सोने जैसी समृद्धि की वर्षा",
+      "रुके हुए व्यापार को फिर से नया मार्ग प्राप्त होना"
+    ],
+    "benefitsEn": [
+      "Eradication of extreme poverty",
+      "Chances of sudden wealth gain",
+      "Shower of golden prosperity in the household",
+      "Opening of new paths for stalled/blocked businesses"
+    ],
+    "packages": [
+      {
+        "name": "251 पाठ",
+        "nameEn": "251 Paath",
+        "paathCount": "251 पाठ",
+        "includes": "₹25 प्रति पाठ।",
+       
+        "popular": false
+      },
+      {
+        "name": "501 पाठ",
+        "nameEn": "501 Paath",
+        "paathCount": "501 पाठ",
+        "includes": "₹25 प्रति पाठ।",
+      
+        "popular": true
+      },
+      {
+        "name": "1008 महापाठ",
+        "nameEn": "1008 Maha Paath",
+        "paathCount": "1008 पाठ",
+        "includes": "₹25 प्रति पाठ।",
+        
+        "popular": false
+      }
+    ]
+  },
+  {
+    "id": "ganesh-atharvashirsha",
+    "image": "ganesh_atharvashirsha.png",
+    "name": "गणेश अथर्व शीर्ष पाठ",
+    "nameEn": "Ganesh Atharvashirsha",
+    "shortDesc": "शुभ कार्यों में विघ्न निवारण, बुद्धि, पढ़ाई में एकाग्रता और व्यापार में सफलता के लिए।",
+    "description": "यह भगवान गणेश को समर्पित एक विशेष पूजा और पाठ है जिसमें श्री गणेश अथर्वशीर्ष का शास्त्रोक्त विधि से पाठ किया जाता है।",
+    "descriptionEn": "A special pooja and recitation of the Ganesh Atharvashirsha dedicated to Lord Ganesha for intellect, success, and removing obstacles.",
+    "bestTime": "गणेश चतुर्थी, बुधवार, या कोई भी नया कार्य आरंभ करते समय",
+    "bestTimeEn": "Ganesh Chaturthi, Wednesdays, or before starting any new work",
+    "benefits": [
+      "शुभ कार्य के प्रारम्भ में विघ्न निवारण",
+      "बुद्धि, विद्या और पढ़ाई में एकाग्रता की प्राप्ति",
+      "जीवन में आने वाली बाधाओं का नाश",
+      "भगवान गणेश की विशेष कृपा"
+    ],
+    "benefitsEn": [
+      "Removal of obstacles before auspicious work",
+      "Attainment of intellect, knowledge, and study focus",
+      "Destruction of hurdles in life",
+      "Special grace of Lord Ganesha"
+    ],
+    "packages": [
+      {
+        "name": "251 पाठ",
+        "nameEn": "251 Paath",
+        "paathCount": "251 पाठ",
+        "includes": "₹30 प्रति पाठ।",
+        
+        "popular": true
+      },
+      {
+        "name": "501 पाठ",
+        "nameEn": "501 Paath",
+        "paathCount": "501 पाठ",
+        "includes": "₹30 प्रति पाठ।",
+       
+        "popular": false
+      },
+      {
+        "name": "1008 महापाठ",
+        "nameEn": "1008 Maha Paath",
+        "paathCount": "1008 पाठ",
+        "includes": "₹30 प्रति पाठ।",
+        
+        "popular": false
+      }
+    ]
+  },
+  {
+    "id": "purush-suktam",
+    "image": "purush_suktam.png",
+    "name": "पुरुष सूक्त पाठ",
+    "nameEn": "Purush Suktam Paath",
+    "shortDesc": "भगवान विष्णु का वैदिक सूक्त—स्वास्थ्य, दीर्घायु, पितृ दोष शमन और समस्त पापों के नाश के लिए।",
+    "description": "यह ऋग्वेद का एक महत्वपूर्ण सूक्त है जो भगवान विष्णु/नारायण को समर्पित है। यह पाठ पितृ दोष शांति एवं आध्यात्मिक उन्नति के लिए अत्यंत श्रेष्ठ माना गया है।",
+    "descriptionEn": "An important Vedic hymn from the Rigveda dedicated to Lord Vishnu/Narayana, excellent for health, long life, and spiritual upliftment.",
+    "bestTime": "एकादशी, गुरुवार या पितृ पक्ष",
+    "bestTimeEn": "Ekadashi, Thursdays, or Pitru Paksha",
+    "benefits": [
+      "स्वास्थ्य, दीर्घायु और आध्यात्मिक उन्नति",
+      "जीवन में सुख-समृद्धि और अलौकिक शांति",
+      "ब्रह्माण्डीय संतुलन और सामंजस्य की स्थापना",
+      "समस्त प्रकार के पापों का शमन"
+    ],
+    "benefitsEn": [
+      "Health, long life, and spiritual growth",
+      "Happiness, prosperity, and supreme peace in life",
+      "Establishment of cosmic balance and harmony",
+      "Pacification of all types of sins"
+    ],
+    "packages": [
+      {
+        "name": "501 पाठ",
+        "nameEn": "501 Paath",
+        "paathCount": "501 पाठ",
+        "includes": "₹25 प्रति पाठ।",
+        
+        "popular": true
+      },
+      {
+        "name": "1008 महापाठ",
+        "nameEn": "1008 Maha Paath",
+        "paathCount": "1008 पाठ",
+        "includes": "₹25 प्रति पाठ।",
+        
+        "popular": false
+      }
+    ]
+  },
+  {
+    "id": "kumbh-vivah",
+    "image": "kumbh_vivah.png",
+    "name": "कुम्भ विवाह (मंगल दोष निवारण)",
+    "nameEn": "Kumbh Vivah (Manglik Dosh)",
+    "shortDesc": "मंगली दोष के अमंगल प्रभावों को समाप्त करने के लिए विवाह पूर्व सम्पन्न किया जाने वाला प्रतीकात्मक विवाह।",
+    "description": "मंगली दोष के निवारण के लिए किया जाने वाला एक शास्त्रीय प्रतीकात्मक विवाह। वास्तविक विवाह से पूर्व मंगल के दुष्प्रभावों को हमेशा के लिए शांत करने हेतु यह संस्कार काशी के विद्वानों द्वारा किया जाता है।",
+    "descriptionEn": "A symbolic marriage performed before the actual wedding to permanently eliminate the negative effects of Manglik Dosh in the horoscope.",
+    "bestTime": "विवाह तय होने के बाद या शुभ मुहूर्त में",
+    "bestTimeEn": "After marriage is fixed or in auspicious muhurat",
+    "benefits": [
+      "मंगल दोष के दुष्प्रभावों का पूर्ण शमन",
+      "विवाह में आ रही अकारण बाधाओं का अंत",
+      "वर/वधू के वैवाहिक जीवन की पूर्ण सुरक्षा",
+      "सुखी और तनावमुक्त दांपत्य जीवन"
+    ],
+    "benefitsEn": [
+      "Complete pacification of Manglik Dosh evil effects",
+      "End of unexplained obstacles in marriage",
+      "Complete protection of the bridal couple's married life",
+      "Happy and stress-free conjugal life"
+    ],
+    "packages": [
+      {
+        "name": "कुम्भ विवाह अनुष्ठान",
+        "nameEn": "Kumbh Vivah Anushthan",
+        "paathCount": "सम्पूर्ण वैदिक विधि",
+        "includes": "5 ब्राह्मणों द्वारा विधि-विधान से सम्पन्न।",
+     
+        "popular": true
+      }
+    ]
+  }
+]
