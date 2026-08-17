@@ -64,6 +64,21 @@ ${form.notes ? `*${t('विशेष', 'Notes')}:* ${form.notes}` : ''}
 
 ${t('कृपया मूल्य व उपलब्धता की जानकारी दें।', 'Please share pricing and availability.')} 🙏` : '';
 
+    const emailMsg = selectedService && selectedPkg ? `${t('नमस्कार, मैं निम्नलिखित पूजा हेतु पूछताछ करना चाहता/चाहती हूँ:', 'Hello, I would like to enquire about the following pooja:')}
+
+${t('सेवा', 'Service')}: ${selectedService.name} (${selectedService.nameEn})
+${t('पैकेज', 'Package')}: ${selectedPkg.name} (${selectedPkg.nameEn})
+${t('जाप/पाठ', 'Jaap/Paath')}: ${selectedPkg.paathCount}
+${t('माध्यम', 'Mode')}: ${modeLabel}
+
+${t('नाम', 'Name')}: ${form.name}
+${t('फ़ोन', 'Phone')}: ${form.phone}
+${t('तिथि', 'Date')}: ${form.date || dateNotSet}
+${form.address ? `${t('पता', 'Address')}: ${form.address}` : ''}
+${form.notes ? `${t('विशेष', 'Notes')}: ${form.notes}` : ''}
+
+${t('कृपया मूल्य व उपलब्धता की जानकारी दें। धन्यवाद।', 'Please share pricing and availability. Thank you.')}` : '';
+
     const steps = [
         t('पूजा चुनें', 'Select Pooja'),
         t('पैकेज चुनें', 'Select Package'),
@@ -277,6 +292,11 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                                 <button className="btn btn-outline-dark btn-lg" onClick={() => goToStep(3)}>{t('← वापस', '← Back')}</button>
                                 <a href={`https://wa.me/919278148269?text=${encodeURIComponent(whatsAppMsg)}`} target="_blank" rel="noreferrer" className="btn btn-whatsapp btn-lg">💬 {t('WhatsApp पर पूछताछ करें', 'Enquire on WhatsApp')}</a>
                                 <a href="tel:+919278148269" className="btn btn-primary btn-lg">📞 {t('कॉल करें', 'Call Us')}</a>
+                            </div>
+                            <div className="text-center" style={{ marginTop: '1rem' }}>
+                                <a href={`mailto:info@kashipoojaseva.com?subject=${encodeURIComponent(t('नई पूजा पूछताछ', 'New Pooja Enquiry'))}&body=${encodeURIComponent(emailMsg)}`} style={{ fontSize: '0.85rem', color: 'var(--gold-700)', fontWeight: 600 }}>
+                                    ✉️ {t('या ईमेल से पूछताछ करें', 'Or enquire by email instead')}
+                                </a>
                             </div>
                             <p style={{ textAlign: 'center', marginTop: '1.25rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
                                 {t('WhatsApp पर पूछताछ विवरण भेजा जाएगा। पंडित जी आपसे मूल्य व उपलब्धता के साथ संपर्क करेंगे।', 'Your enquiry details will be sent via WhatsApp. The Pandit will contact you with pricing and availability.')}

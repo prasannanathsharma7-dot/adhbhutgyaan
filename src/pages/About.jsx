@@ -36,7 +36,7 @@ const generations = [
 ];
 
 const heritageSummary = [
-    { icon: '📜', label: 'द्विशताब्दी विरासत', labelEn: 'Bicentennial Pedigree', desc: '200 वर्षों से अधिक की अखंड वैदिक परम्परा', descEn: 'An unbroken Vedic tradition spanning over 200 years' },
+    { icon: '📜', label: 'चतुःशताब्दी विरासत', labelEn: 'Four Centuries of Legacy', desc: '400 वर्षों से अधिक की अखंड वैदिक परम्परा', descEn: 'An unbroken Vedic tradition spanning over 400 years' },
     { icon: '🏛️', label: 'संस्थागत मान्यता', labelEn: 'Institutional Recognition', desc: 'BHU की स्थापना से लेकर अमेरिकी डॉक्टरेट तक', descEn: 'From the founding of BHU to an American doctorate' },
     { icon: '🤝', label: 'राजनयिक प्रभाव', labelEn: 'Diplomatic & Political Influence', desc: 'भारतीय प्रधानमंत्रियों व अंतरराष्ट्रीय राजनयिकों का विश्वास', descEn: 'Trusted by Indian Prime Ministers and international diplomats' },
     { icon: '🌏', label: 'वैश्विक मीडिया उपस्थिति', labelEn: 'Global Media Presence', desc: 'जापानी मीडिया द्वारा प्रामाणिक विशेषज्ञ के रूप में दस्तावेज़ीकृत', descEn: 'Documented by Japanese media as an authoritative expert' },
@@ -105,8 +105,8 @@ export default function About() {
                             <h2 className="section-title">{t('काशी की प्राचीन परम्परा के वाहक', "Carrying Kashi's Ancient Tradition Forward")}</h2>
                             <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '1.25rem' }}>
                                 {t(
-                                    'शर्मा परिवार की गाथा मात्र एक वंशावली नहीं, बल्कि दो शताब्दियों से अधिक समय तक वैदिक विज्ञान की अक्षुण्ण शक्ति का प्रमाण है। यह वंश प्राचीन आध्यात्मिक ज्ञान और आधुनिक वैश्विक मान्यता के दुर्लभ संगम का प्रतीक है।',
-                                    'The saga of the Sharma family is a profound testament to the enduring potency of Vedic sciences, spanning over two centuries — a rare confluence of ancient metaphysical wisdom and modern global recognition, born in the ghats of Varanasi.'
+                                    'शर्मा परिवार की गाथा मात्र एक वंशावली नहीं, बल्कि चार शताब्दियों से अधिक समय तक वैदिक विज्ञान की अक्षुण्ण शक्ति का प्रमाण है। यह वंश प्राचीन आध्यात्मिक ज्ञान और आधुनिक वैश्विक मान्यता के दुर्लभ संगम का प्रतीक है। पीढ़ी-दर-पीढ़ी परिवार के पंडितों द्वारा वाराणसी एवं विश्व भर के भक्तों की सेवा करते हुए यह विरासत आज एक विशाल एवं निरंतर अनुष्ठान-सेवा का रूप ले चुकी है।',
+                                    'The saga of the Sharma family is a profound testament to the enduring potency of Vedic sciences, spanning over four centuries — a rare confluence of ancient metaphysical wisdom and modern global recognition, born in the ghats of Varanasi. Across generations of family Pandits serving devotees from Varanasi and around the world, this legacy has grown into a large and continuing body of ritual service.'
                                 )}
                             </p>
                             <Link to="/booking" className="btn btn-primary"><img src="/images/logo.png" alt="" className="inline-logo" /> {t('पूजा बुक करें', 'Book a Pooja')}</Link>
@@ -139,7 +139,13 @@ export default function About() {
                     <div className="text-center">
                         <span className="section-label">{t('तीन पीढ़ियाँ, एक विरासत', 'Three Generations, One Legacy')}</span>
                         <h2 className="section-title">{t('शर्मा वंश की गाथा', 'Chronicles of the Sharma Lineage')}</h2>
-                        <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>{t('वैदिक विद्वता की एक द्विशताब्दी यात्रा', 'A Bicentennial Odyssey of Vedic Erudition')}</p>
+                        <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>{t('वैदिक विद्वता की एक चतुःशताब्दी यात्रा', 'A Four-Century Odyssey of Vedic Erudition')}</p>
+                        <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', maxWidth: '640px', margin: '0.75rem auto 0', lineHeight: 1.7 }}>
+                            {t(
+                                'परिवार की वैदिक परंपरा चार शताब्दियों से अधिक पुरानी मानी जाती है। नीचे हम तीन प्रलेखित पीढ़ियों की गाथा प्रस्तुत करते हैं, जिनके चित्र व प्रमाण आज भी उपलब्ध हैं।',
+                                "The family's Vedic tradition is held to stretch back over four centuries. Below, we present the story of the three most recent, documented generations — those for whom photographs and records survive today."
+                            )}
+                        </p>
                     </div>
                     <div className="om-divider">ॐ</div>
 

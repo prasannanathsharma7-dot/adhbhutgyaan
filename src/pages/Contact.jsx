@@ -18,10 +18,19 @@ ${form.subject ? `*${t('विषय', 'Subject')}:* ${form.subject}` : ''}
         window.open(`https://wa.me/919278148269?text=${encodeURIComponent(msg)}`, '_blank');
     };
 
+    const handleEmailSubmit = () => {
+        const body = `${t('नाम', 'Name')}: ${form.name}
+${t('फ़ोन', 'Phone')}: ${form.phone}
+${form.subject ? `${t('विषय', 'Subject')}: ${form.subject}` : ''}
+
+${form.message}`;
+        window.location.href = `mailto:info@kashipoojaseva.com?subject=${encodeURIComponent(form.subject || t('वेबसाइट से संदेश', 'Message from website'))}&body=${encodeURIComponent(body)}`;
+    };
+
     const contactCards = [
         { icon: '💬', label: 'WhatsApp', value: '+91 92781 48269', sub: t('तुरंत जवाब', 'Instant Reply'), href: 'https://wa.me/919278148269', color: 'var(--whatsapp)', bgColor: 'rgba(37,211,102,0.08)', borderColor: 'rgba(37,211,102,0.2)' },
         { icon: '📞', label: t('फ़ोन', 'Phone'), value: '+91 92781 48269', sub: t('सुबह 7 बजे - रात 9 बजे', '7 AM - 9 PM'), href: 'tel:+919278148269', color: 'var(--gold-500)', bgColor: 'rgba(255,152,0,0.08)', borderColor: 'rgba(255,152,0,0.2)' },
-        { icon: '✉️', label: t('ईमेल', 'Email'), value: 'info@kashipoojaseva.com', sub: null, href: null, color: 'var(--gold-500)', bgColor: 'rgba(196,154,44,0.08)', borderColor: 'rgba(196,154,44,0.2)' },
+        { icon: '✉️', label: t('ईमेल', 'Email'), value: 'info@kashipoojaseva.com', sub: t('क्लिक करके ईमेल भेजें', 'Click to send an email'), href: 'mailto:info@kashipoojaseva.com', color: 'var(--gold-500)', bgColor: 'rgba(196,154,44,0.08)', borderColor: 'rgba(196,154,44,0.2)' },
         { icon: '📍', label: t('कार्यालय का पता', 'Office Address'), value: 'J11, Pt Umang Nath Sharma,\n19, Nati Imli Rd, Ishwargangi,\nBunker Colony, Varanasi, UP 221002', sub: t('दिशा-निर्देश के लिए क्लिक करें', 'Click for directions'), href: 'https://www.google.com/maps/place/J11,+Pt+Umang+Nath+Sharma,+19,+Nati+Imli+Rd,+Ishwargangi,+Bunker+Colony,+Vijay+Gram+Colony,+Naibasti,+Varanasi,+Uttar+Pradesh+221002,+India/data=!4m2!3m1!1s0x398e2f4802c93edf:0x609d2040bced58c9!18m1!1e1', color: 'var(--red-400)', bgColor: 'rgba(183,28,28,0.05)', borderColor: 'rgba(183,28,28,0.15)' },
     ];
 
@@ -107,7 +116,8 @@ ${form.subject ? `*${t('विषय', 'Subject')}:* ${form.subject}` : ''}
                                         <label className="form-label">{t('संदेश', 'Message')} *</label>
                                         <textarea className="form-textarea" placeholder={t('अपना संदेश लिखें...', 'Write your message...')} required value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} />
                                     </div>
-                                    <button type="submit" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }}>📩 {t('संदेश भेजें', 'Send Message')}</button>
+                                    <button type="submit" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', marginBottom: '0.75rem' }}>💬 {t('WhatsApp पर भेजें', 'Send via WhatsApp')}</button>
+                                    <button type="button" onClick={handleEmailSubmit} className="btn btn-outline-dark" style={{ width: '100%', justifyContent: 'center' }}>✉️ {t('ईमेल से भेजें', 'Send via Email')}</button>
                                 </form>
                             </div>
                         </div>

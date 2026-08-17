@@ -83,7 +83,7 @@ export default function Footer() {
                 </div>
 
                 <div className="footer-bottom">
-                    <span>© 2026 {t('एस्ट्रो काशी', 'Astro Kashi')} | Astro Kashi. {t('सर्वाधिकार सुरक्षित।', 'All rights reserved.')}</span>
+                    <span>© 2026 {t('एस्ट्रो काशी', 'Astro Kashi')} | Astro Kashi. {t('सर्वाधिकार सुरक्षित।', 'All rights reserved.')} · <Link to="/privacy" style={{ color: 'inherit' }}>{t('गोपनीयता नीति', 'Privacy Policy')}</Link> · <Link to="/terms" style={{ color: 'inherit' }}>{t('नियम एवं शर्तें', 'Terms')}</Link></span>
                     <span>{t('बनारस में निर्मित', 'Made in Banaras')} <img src="/images/logo.png" alt="Banaras" className="inline-logo-sm" /></span>
                 </div>
             </div>
