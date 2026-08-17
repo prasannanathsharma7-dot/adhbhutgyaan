@@ -205,47 +205,6 @@
     ]
   },
   {
-    "id": "shree-suktam",
-    "image": "shree_suktam.png",
-    "name": "श्री सूक्तम् पाठ",
-    "nameEn": "Shree Suktam Paath",
-    "shortDesc": "माँ लक्ष्मी की विशेष कृपा, धन, वैभव, और व्यापार में उन्नति के लिए ऋग्वेद का पवित्र सूक्त।",
-    "description": "यह ऋग्वेद का एक पवित्र सूक्त है जो माँ लक्ष्मी को समर्पित है। इसका पाठ घर में सुख-शांति और लक्ष्मी की स्थिरता के लिए किया जाता है।",
-    "descriptionEn": "A sacred hymn from the Rigveda dedicated to Goddess Lakshmi, performed for wealth, prosperity, and financial stability.",
-    "bestTime": "शुक्रवार, पूर्णिमा, दीपावली, या अक्षय तृतीया",
-    "bestTimeEn": "Fridays, Purnima, Diwali, or Akshaya Tritiya",
-    "benefits": [
-      "धन, वैभव और समृद्धि की असीम प्राप्ति",
-      "घोर आर्थिक समस्याओं का निवारण",
-      "घर में सुख-शांति और लक्ष्मी की स्थिरता",
-      "व्यापार में दिन-दूनी रात-चौगुनी उन्नति"
-    ],
-    "benefitsEn": [
-      "Immense wealth, luxury, and prosperity",
-      "Resolution of severe financial crises",
-      "Peace and permanent residence of Lakshmi at home",
-      "Exponential growth in business"
-    ],
-    "packages": [
-      {
-        "name": "501 पाठ",
-        "nameEn": "501 Paath",
-        "paathCount": "501 पाठ",
-        "includes": "शास्त्रोक्त विधि से सम्पन्न। मूल्य हेतु पूछताछ करें।",
-        "price": 10020,
-        "popular": true
-      },
-      {
-        "name": "1008 महापाठ",
-        "nameEn": "1008 Maha Paath",
-        "paathCount": "1008 पाठ",
-        "includes": "शास्त्रोक्त विधि से सम्पन्न। मूल्य हेतु पूछताछ करें।",
-        "price": 20160,
-        "popular": false
-      }
-    ]
-  },
-  {
     "id": "kanakdhara-stotra",
     "image": "kanakdhara_stotra.png",
     "name": "कनकधारा स्तोत्र पाठ",
@@ -339,6 +298,47 @@
         "paathCount": "1008 पाठ",
         "includes": "शास्त्रोक्त विधि से सम्पन्न। मूल्य हेतु पूछताछ करें।",
         "price": 30240,
+        "popular": false
+      }
+    ]
+  },
+  {
+    "id": "shree-suktam",
+    "image": "shree_suktam.png",
+    "name": "श्री सूक्तम् पाठ",
+    "nameEn": "Shree Suktam Paath",
+    "shortDesc": "माँ लक्ष्मी की विशेष कृपा, धन, वैभव, और व्यापार में उन्नति के लिए ऋग्वेद का पवित्र सूक्त।",
+    "description": "यह ऋग्वेद का एक पवित्र सूक्त है जो माँ लक्ष्मी को समर्पित है। इसका पाठ घर में सुख-शांति और लक्ष्मी की स्थिरता के लिए किया जाता है।",
+    "descriptionEn": "A sacred hymn from the Rigveda dedicated to Goddess Lakshmi, performed for wealth, prosperity, and financial stability.",
+    "bestTime": "शुक्रवार, पूर्णिमा, दीपावली, या अक्षय तृतीया",
+    "bestTimeEn": "Fridays, Purnima, Diwali, or Akshaya Tritiya",
+    "benefits": [
+      "धन, वैभव और समृद्धि की असीम प्राप्ति",
+      "घोर आर्थिक समस्याओं का निवारण",
+      "घर में सुख-शांति और लक्ष्मी की स्थिरता",
+      "व्यापार में दिन-दूनी रात-चौगुनी उन्नति"
+    ],
+    "benefitsEn": [
+      "Immense wealth, luxury, and prosperity",
+      "Resolution of severe financial crises",
+      "Peace and permanent residence of Lakshmi at home",
+      "Exponential growth in business"
+    ],
+    "packages": [
+      {
+        "name": "501 पाठ",
+        "nameEn": "501 Paath",
+        "paathCount": "501 पाठ",
+        "includes": "शास्त्रोक्त विधि से सम्पन्न। मूल्य हेतु पूछताछ करें।",
+        "price": 10020,
+        "popular": true
+      },
+      {
+        "name": "1008 महापाठ",
+        "nameEn": "1008 Maha Paath",
+        "paathCount": "1008 पाठ",
+        "includes": "शास्त्रोक्त विधि से सम्पन्न। मूल्य हेतु पूछताछ करें।",
+        "price": 20160,
         "popular": false
       }
     ]
