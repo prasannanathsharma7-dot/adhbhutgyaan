@@ -170,9 +170,9 @@ export default function About() {
                 <div className="container">
                     <div className="stats-grid">
                         {[
-                            { num: '25+', label: t('वर्षों का अनुभव', 'Years of Experience') },
-                            { num: '10,000+', label: t('सफल पूजन', 'Poojas Performed') },
-                            { num: '5,000+', label: t('संतुष्ट भक्तगण', 'Happy Devotees') },
+                            { num: '400+', label: t('वर्षों का अनुभव', 'Years of Experience') },
+                            { num: '1,000,000+', label: t('सफल पूजन', 'Poojas Performed') },
+                            { num: '100,000+', label: t('संतुष्ट भक्तगण', 'Happy Devotees') },
                             { num: '50+', label: t('पूजा प्रकार', 'Service Types') },
                         ].map(s => (
                             <div className="stat-card" key={s.num}>
