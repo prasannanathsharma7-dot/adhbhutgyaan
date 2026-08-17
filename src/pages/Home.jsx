@@ -76,29 +76,26 @@ export default function Home() {
                         <p className="section-subtitle">{t('काशी (बनारस) के विद्वान पंडितों द्वारा शास्त्रोक्त विधि से सभी प्रकार की पूजा, पाठ, जप और हवन सम्पन्न करवाएं।', 'Get every kind of pooja, paath, jaap and havan performed by learned Pandits of Kashi (Banaras) according to authentic Vedic methods.')}</p>
                     </div>
                     <div className="om-divider">ॐ</div>
-                    <div className="service-card-grid">
+                    <div className="icon-service-grid">
                         {servicesData.map((service, i) => {
+                            const icons = {
+                                'vipreet-pratyangira': '🔥',
+                                'mahavidya-paath': '🕉️',
+                                'tripindi-shradh': '🙏',
+                                'kalsarp-dosh': '🔯',
+                                'rudrabhishek': '🔱',
+                                'shree-suktam': '🪷',
+                                'kanakdhara-stotra': '✨',
+                                'ganesh-atharvashirsha': '🐘',
+                                'purush-suktam': '📿',
+                                'kumbh-vivah': '💍',
+                            };
                             return (
-                                <div className={`card fade-up stagger-${i + 1}`} key={service.id}>
-                                    <div className="card-image-wrapper">
-                                        <img src={`/images/${service.image}`} alt={service.nameEn} className="card-image" loading="lazy" />
-                                        <span className="card-badge">{service.bestTimeEn}</span>
-                                    </div>
-                                    <div className="card-body">
-                                        <h3 className="card-title">{lang === 'hi' ? service.name : service.nameEn}</h3>
-                                        {lang === 'hi' && <p className="card-title-en">{service.nameEn}</p>}
-                                        <p className="card-desc">{service.shortDesc}</p>
-                                        <div className="card-actions">
-                                            <Link to={`/services#${service.id}`} className="btn btn-primary btn-sm">{t('विवरण देखें', 'View Details')}</Link>
-                                            <a
-                                                href={`https://wa.me/919278148269?text=${encodeURIComponent(t(`नमस्कार! मुझे "${service.name}" के बारे में पूछताछ करनी है।`, `Hello! I would like to inquire about "${service.nameEn}".`))}`}
-                                                target="_blank" rel="noreferrer"
-                                                className="btn btn-sm" style={{ color: 'var(--gold-700)', border: '2px solid var(--gold-500)', background: 'transparent' }}
-                                            >
-                                                💬 {t('पूछताछ करें', 'Enquire Now')}
-                                            </a>
-                                        </div>
-                                    </div>
+                                <div className={`icon-service-card fade-up stagger-${(i % 5) + 1}`} key={service.id}>
+                                    <div className="icon-service-icon">{icons[service.id] || '🕉️'}</div>
+                                    <h3 className="icon-service-title">{lang === 'hi' ? service.name : service.nameEn}</h3>
+                                    <p className="icon-service-desc">{service.shortDesc}</p>
+                                    <Link to={`/services#${service.id}`} className="icon-service-link">{t('विवरण देखें', 'Know More')} →</Link>
                                 </div>
                             );
                         })}

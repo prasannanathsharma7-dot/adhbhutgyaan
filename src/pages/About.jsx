@@ -51,13 +51,15 @@ const testimonials = [
     { quoteHi: 'मेरे भूतकाल के बारे में जानना बेहद रोचक रहा; भविष्य की जानकारी से भी मैं संतुष्ट हूँ।', quoteEn: 'It was quite interesting to hear about my past and I was very satisfied about my future reading.', name: 'Joshua Soffer', place: 'Kibutz Gan Shmuel, Israel · 1981' },
     { quoteHi: 'आपकी सलाह के लिए हार्दिक धन्यवाद।', quoteEn: 'Thank you very much for the good advice you gave us.', name: 'Edith Paither', place: 'Paris, France · Jan 1980' },
     { quoteHi: 'आज रात हमसे मिलकर पंडितजी बहुत ही सहृदय रहे; हम इसे कभी नहीं भूलेंगे।', quoteEn: "Mr. Shambhunath Sharma was so good to meet us tonight; we'll not forget it.", name: 'Jacques Guepratte', place: 'Consul General of France, Varanasi · Jan 1980' },
-    { quoteHi: 'आपकी बुद्धिमत्ता और दयालुता के लिए मैं अत्यंत आभारी और विनम्र महसूस करता हूँ।', quoteEn: 'Embarrassed by your wisdom and kindness — thankful for your words. You knew the important happenings of my life.', name: 'Aupie Dullingder', place: 'Munich, West Germany · Apr 1980' },
+    { quoteHi: 'आपकी बुद्धिमत्ता और दयालुता से मैं अत्यंत प्रभावित हूँ — आपके शब्दों के लिए आभारी हूँ। आपने मेरे जीवन की महत्वपूर्ण घटनाओं को सही पहचाना।', quoteEn: 'Impressed by your wisdom and kindness — thankful for your words. You knew the important happenings of my life.', name: 'Aupie Dullingder', place: 'Munich, West Germany · Apr 1980' },
     { quoteHi: 'ज्योतिष पर आपके रोचक स्पष्टीकरण हेतु धन्यवाद; यह विज्ञान के रूप में इसके महत्व को समझने में सहायक होगा।', quoteEn: 'Thank you for your very interesting explanation on astrology as a science.', name: 'Télévision Belge', place: 'Brussels, Belgium · May 1980' },
     { quoteHi: 'भविष्य के प्रति आशा जगी और भूतकाल स्पष्ट हुआ।', quoteEn: 'Gave me hope for the future and could see the past.', name: 'Sonia Appelman', place: 'Utrecht, Holland · Sep 1981' },
 ];
 
 const gallery = [
     { src: '/images/heritage/shambhu-with-jatti.jpg', capHi: 'पं. शम्भु नाथ शर्मा भारत के भूतपूर्व उपराष्ट्रपति श्री बी.डी. जत्ती के साथ', capEn: 'Pt. Shambhu Nath Sharma with former Vice President of India, B.D. Jatti' },
+    { src: '/images/heritage/bbc-newspaper-clip.jpg', capHi: 'ज्योतिर्विद् पं. शम्भु नाथ शर्मा का बी.बी.सी. (लंदन) द्वारा साक्षात्कार — "गांडीव" हिंदी दैनिक, 4 फरवरी 1975', capEn: 'Pt. Shambhu Nath Sharma interviewed by BBC (London) — reported in "Gandiv" Hindi Daily, 4 February 1975' },
+    { src: '/images/heritage/phd-certificate.jpg', capHi: 'डॉ. उमंग नाथ शर्मा — ज्योतिष में डॉक्टरेट उपाधि, मैरीलैंड स्टेट यूनिवर्सिटी, USA', capEn: 'Dr. Umang Nath Sharma — Doctorate in Astrology, Maryland State University, USA' },
     { src: '/images/heritage/pooja-session-1.jpg', capHi: 'परामर्श सत्र', capEn: 'Consultation Session' },
     { src: '/images/heritage/pooja-session-2.jpg', capHi: 'अंतरराष्ट्रीय भक्त सत्र', capEn: 'International Devotee Session' },
     { src: '/images/heritage/signboard-1.jpg', capHi: 'पं. अयोध्या नाथ शर्मा मार्ग — वाराणसी', capEn: 'Named Road, Varanasi' },
