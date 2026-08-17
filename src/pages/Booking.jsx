@@ -81,6 +81,25 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                 </div>
             </header>
 
+            {/* Welcome video */}
+            <section className="section" style={{ paddingTop: 'clamp(2rem, 5vw, 3rem)', paddingBottom: 'clamp(2rem, 5vw, 3rem)' }}>
+                <div className="container" style={{ maxWidth: 720 }}>
+                    <div className="text-center" style={{ marginBottom: '1.25rem' }}>
+                        <h2 style={{ fontFamily: 'var(--font-hindi)', color: 'var(--text-primary)', marginBottom: '0.35rem' }}>
+                            {t('बुकिंग से पहले, हमसे मिलिए', 'Meet Us Before You Book')}
+                        </h2>
+                        <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
+                            {t('हमारे परिवार की ओर से आपके लिए एक स्नेहिल संदेश', 'A personal message from our family, just for you')}
+                        </p>
+                    </div>
+                    <div style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: 'var(--shadow-lg)', border: '1px solid var(--border-gold)' }}>
+                        <video controls preload="none" poster="/images/gallery/welcome-poster.jpg" playsInline style={{ width: '100%', display: 'block', background: '#000', aspectRatio: '16/9' }}>
+                            <source src="/videos/welcome.mp4" type="video/mp4" />
+                        </video>
+                    </div>
+                </div>
+            </section>
+
             {/* Trust strip - real ceremony photos */}
             <section style={{ padding: '1.75rem 0', background: 'var(--cream)', borderBottom: '1px solid var(--border-light)' }}>
                 <div className="container">
