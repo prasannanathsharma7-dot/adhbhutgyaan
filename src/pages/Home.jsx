@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import servicesData from '../data/services.json';
 import { useLanguage } from '../context/LanguageContext';
+import { triptych, videoClips, youtubeUploadsPlaylistId, youtubeChannelId } from '../data/media';
 
 function useInView() {
     const ref = useRef();
@@ -63,6 +64,22 @@ export default function Home() {
                         <div className="hero-visual-ring">
                             <img src="/images/bada-ganesh-ji.png" alt="Bada Ganesh Ji - Varanasi" />
                         </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* TRIPTYCH */}
+            <section className="section" style={{ paddingBottom: 0 }}>
+                <div className="container">
+                    <div className="triptych">
+                        {triptych.map(item => (
+                            <div className="triptych-card" key={item.capEn}>
+                                <img src={item.src} alt={item.capEn} loading="lazy" />
+                                <div className="triptych-overlay">
+                                    <span className="triptych-caption">{t(item.capHi, item.capEn)} <span className="arrow">›</span></span>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </section>
@@ -169,6 +186,47 @@ export default function Home() {
                                 </div>
                             </div>
                         ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* VIDEOS */}
+            <section className="section section-dark" id="videos">
+                <div className="container">
+                    <div className="text-center fade-up">
+                        <span className="section-label" style={{ justifyContent: 'center' }}>{t('जीवंत झलकियाँ', 'Live Glimpses')}</span>
+                        <h2 className="section-title" style={{ color: 'var(--gold-300)' }}>{t('वीडियो में हमारी पूजा सेवाएं', 'Our Pooja Services in Video')}</h2>
+                        <p style={{ color: 'var(--warm-200)', marginTop: '0.5rem' }}>{t('वास्तविक अनुष्ठानों की झलक — जैसा है वैसा', 'Real ceremonies, exactly as they happen')}</p>
+                    </div>
+                    <div className="om-divider">ॐ</div>
+
+                    <div className="video-showcase-grid" style={{ marginBottom: '2.5rem' }}>
+                        {videoClips.map(clip => (
+                            <div className="video-showcase-card" key={clip.src}>
+                                <video controls preload="none" poster={clip.poster} playsInline>
+                                    <source src={clip.src} type="video/mp4" />
+                                </video>
+                                <p className="video-showcase-caption">{t(clip.capHi, clip.capEn)}</p>
+                            </div>
+                        ))}
+                    </div>
+
+                    <h3 style={{ textAlign: 'center', color: 'var(--gold-300)', marginBottom: '1rem', fontFamily: 'var(--font-hindi)' }}>
+                        {t('हमारे YouTube चैनल पर और देखें', 'See More on Our YouTube Channel')}
+                    </h3>
+                    <div className="youtube-embed-wrapper">
+                        <iframe
+                            src={`https://www.youtube.com/embed/videoseries?list=${youtubeUploadsPlaylistId}`}
+                            title="YouTube video playlist"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            loading="lazy"
+                        />
+                    </div>
+                    <div className="text-center" style={{ marginTop: '1.5rem' }}>
+                        <a href={`https://www.youtube.com/channel/${youtubeChannelId}`} target="_blank" rel="noreferrer" className="btn btn-primary">
+                            ▶️ {t('YouTube पर सब्सक्राइब करें', 'Subscribe on YouTube')}
+                        </a>
                     </div>
                 </div>
             </section>

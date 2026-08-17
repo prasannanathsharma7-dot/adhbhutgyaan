@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import blogData from '../data/blog.json';
 import { useEffect, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import { gallery, videoClips } from '../data/media';
 
 function useInView() {
     const ref = useRef(null);
@@ -70,6 +71,44 @@ export default function Blog() {
                                 </div>
                             </Link>
                         ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Gallery & Videos */}
+            <section className="section section-warm" id="blog-gallery">
+                <div className="container">
+                    <div className="text-center">
+                        <span className="section-label">{t('झलकियाँ', 'Glimpses')}</span>
+                        <h2 className="section-title">{t('हमारी सेवाओं की तस्वीरें', 'Photos from Our Services')}</h2>
+                    </div>
+                    <div className="om-divider">ॐ</div>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '3rem' }}>
+                        {gallery.slice(4, 12).map(item => (
+                            <div key={item.src} style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', border: '1px solid var(--border-light)', background: 'var(--cream)' }}>
+                                <img src={item.src} alt={item.capEn} loading="lazy" style={{ width: '100%', height: '180px', objectFit: 'cover', display: 'block' }} />
+                                <p style={{ padding: '0.6rem 0.85rem', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{t(item.capHi, item.capEn)}</p>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="text-center">
+                        <span className="section-label">{t('वीडियो', 'Videos')}</span>
+                        <h2 className="section-title">{t('वीडियो में हमारी पूजा सेवाएं', 'Our Pooja Services in Video')}</h2>
+                    </div>
+                    <div className="om-divider">ॐ</div>
+                    <div className="video-showcase-grid">
+                        {videoClips.map(clip => (
+                            <div className="video-showcase-card" key={clip.src} style={{ background: 'var(--dark-100)' }}>
+                                <video controls preload="none" poster={clip.poster} playsInline>
+                                    <source src={clip.src} type="video/mp4" />
+                                </video>
+                                <p className="video-showcase-caption">{t(clip.capHi, clip.capEn)}</p>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="text-center" style={{ marginTop: '1.5rem' }}>
+                        <Link to="/about" className="btn btn-gold">{t('पूरी गैलरी देखें →', 'View Full Gallery →')}</Link>
                     </div>
                 </div>
             </section>

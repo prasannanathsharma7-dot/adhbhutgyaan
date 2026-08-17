@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import servicesData from '../data/services.json';
 import { useLanguage } from '../context/LanguageContext';
+import { gallery, videoClips } from '../data/media';
 
 export default function Booking() {
     const [searchParams] = useSearchParams();
@@ -79,6 +80,26 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                     <p className="subtitle">{t('4 सरल चरणों में पूछताछ करें', 'Enquire in 4 Simple Steps')}</p>
                 </div>
             </header>
+
+            {/* Trust strip - real ceremony photos */}
+            <section style={{ padding: '1.75rem 0', background: 'var(--cream)', borderBottom: '1px solid var(--border-light)' }}>
+                <div className="container">
+                    <p style={{ textAlign: 'center', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.85rem', letterSpacing: '0.3px' }}>
+                        {t('हमारी वास्तविक पूजाओं की झलक', 'Glimpses from our real ceremonies')}
+                    </p>
+                    <div style={{ display: 'flex', gap: '0.75rem', overflowX: 'auto', paddingBottom: '0.25rem' }}>
+                        {gallery.slice(4, 12).map(item => (
+                            <img
+                                key={item.src}
+                                src={item.src}
+                                alt={item.capEn}
+                                loading="lazy"
+                                style={{ width: '90px', height: '90px', objectFit: 'cover', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-light)', flexShrink: 0 }}
+                            />
+                        ))}
+                    </div>
+                </div>
+            </section>
 
             <section className="section">
                 <div className="container" style={{ maxWidth: 900, margin: '0 auto' }}>
@@ -243,6 +264,27 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                             </p>
                         </div>
                     )}
+                </div>
+            </section>
+
+            {/* Videos */}
+            <section className="section section-dark">
+                <div className="container">
+                    <div className="text-center">
+                        <span className="section-label" style={{ justifyContent: 'center' }}>{t('जीवंत झलकियाँ', 'Live Glimpses')}</span>
+                        <h2 className="section-title" style={{ color: 'var(--gold-300)' }}>{t('देखें — हमारी पूजा सेवाएं वीडियो में', 'Watch — Our Pooja Services in Video')}</h2>
+                    </div>
+                    <div className="om-divider">ॐ</div>
+                    <div className="video-showcase-grid">
+                        {videoClips.map(clip => (
+                            <div className="video-showcase-card" key={clip.src}>
+                                <video controls preload="none" poster={clip.poster} playsInline>
+                                    <source src={clip.src} type="video/mp4" />
+                                </video>
+                                <p className="video-showcase-caption">{t(clip.capHi, clip.capEn)}</p>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </section>
         </div>
