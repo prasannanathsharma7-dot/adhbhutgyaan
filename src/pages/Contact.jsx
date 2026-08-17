@@ -8,7 +8,7 @@ export default function Contact() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const msg = `🙏 *${t('नया संदेश — काशी पूजा सेवा', 'New Message — Kashi Pooja Seva')}*
+        const msg = `🙏 *${t('नया संदेश — एस्ट्रो काशी', 'New Message — Astro Kashi')}*
 
 *${t('नाम', 'Name')}:* ${form.name}
 *${t('फ़ोन', 'Phone')}:* ${form.phone}

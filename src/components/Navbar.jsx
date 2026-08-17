@@ -42,8 +42,8 @@ export default function Navbar() {
                 <Link to="/" className="logo">
                     <img src="/images/logo.png" alt="" className="logo-img" />
                     <div className="logo-text">
-                        <span className="logo-main">काशी पूजा सेवा</span>
-                        <span className="logo-sub">Kashi Pooja Seva</span>
+                        <span className="logo-main">एस्ट्रो काशी</span>
+                        <span className="logo-sub">Astro Kashi</span>
                     </div>
                 </Link>
 

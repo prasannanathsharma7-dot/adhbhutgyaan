@@ -12,8 +12,8 @@ export default function Footer() {
                         <div className="footer-logo">
                             <img src="/images/logo.png" alt="" className="logo-img" />
                             <div className="logo-text">
-                                <span className="logo-main">काशी पूजा सेवा</span>
-                                <span className="logo-sub">Kashi Pooja Seva</span>
+                                <span className="logo-main">एस्ट्रो काशी</span>
+                                <span className="logo-sub">Astro Kashi</span>
                             </div>
                         </div>
                         <p className="footer-desc">
@@ -83,7 +83,7 @@ export default function Footer() {
                 </div>
 
                 <div className="footer-bottom">
-                    <span>© 2026 {t('काशी पूजा सेवा', 'Kashi Pooja Seva')} | Kashi Pooja Seva. {t('सर्वाधिकार सुरक्षित।', 'All rights reserved.')}</span>
+                    <span>© 2026 {t('एस्ट्रो काशी', 'Astro Kashi')} | Astro Kashi. {t('सर्वाधिकार सुरक्षित।', 'All rights reserved.')}</span>
                     <span>{t('बनारस में निर्मित', 'Made in Banaras')} <img src="/images/logo.png" alt="Banaras" className="inline-logo-sm" /></span>
                 </div>
             </div>

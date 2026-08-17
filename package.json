@@ -1,8 +1,8 @@
 {
-  "name": "kashi-pooja-seva",
+  "name": "astro-kashi",
   "private": true,
   "version": "2.0.0",
-  "description": "Kashi Pooja Seva - Online Pooja Booking Platform (React)",
+  "description": "Astro Kashi - Online Pooja Booking Platform (React)",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

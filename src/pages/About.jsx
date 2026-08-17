@@ -83,7 +83,7 @@ export default function About() {
                 <div className="container">
                     <div className="breadcrumb"><Link to="/">{t('होम', 'Home')}</Link><span>›</span><span>{t('हमारे बारे में', 'About Us')}</span></div>
                     <h1>{t('हमारे बारे में', 'About Us')}</h1>
-                    <p className="subtitle">{t('About Kashi Pooja Seva — शर्मा परिवार की विरासत', 'About Kashi Pooja Seva — Legacy of the Sharma Family')}</p>
+                    <p className="subtitle">{t('About Astro Kashi — शर्मा परिवार की विरासत', 'About Astro Kashi — Legacy of the Sharma Family')}</p>
                 </div>
             </header>
 
