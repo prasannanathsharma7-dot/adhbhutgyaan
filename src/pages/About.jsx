@@ -61,10 +61,31 @@ const gallery = [
     { src: '/images/heritage/bbc-newspaper-clip.jpg', capHi: 'ज्योतिर्विद् पं. शम्भु नाथ शर्मा का बी.बी.सी. (लंदन) द्वारा साक्षात्कार — "गांडीव" हिंदी दैनिक, 4 फरवरी 1975', capEn: 'Pt. Shambhu Nath Sharma interviewed by BBC (London) — reported in "Gandiv" Hindi Daily, 4 February 1975' },
     { src: '/images/heritage/dainik-jagran-clip.jpg', capHi: 'परिवार की ज्योतिषीय परंपरा एवं जापान की Hulu TV द्वारा बनाई जा रही वृत्तचित्र पर "दैनिक जागरण" की रिपोर्ट', capEn: 'Coverage in "Dainik Jagran" on the family\'s astrological tradition and the documentary being made by Japan\'s Hulu TV' },
     { src: '/images/heritage/phd-certificate.jpg', capHi: 'डॉ. उमंग नाथ शर्मा — ज्योतिष में डॉक्टरेट उपाधि, मैरीलैंड स्टेट यूनिवर्सिटी, USA', capEn: 'Dr. Umang Nath Sharma — Doctorate in Astrology, Maryland State University, USA' },
+    { src: '/images/gallery/havan-group.jpg', capHi: 'सामूहिक हवन अनुष्ठान', capEn: 'Collective Havan Ceremony' },
+    { src: '/images/gallery/havan-closeup.jpg', capHi: 'हवन में आहुति', capEn: 'Offering Ahuti in Havan' },
+    { src: '/images/gallery/vedic-paath.jpg', capHi: 'वैदिक पाठ', capEn: 'Vedic Scripture Recitation' },
+    { src: '/images/gallery/devi-puja-phal.jpg', capHi: 'देवी पूजन — फल अर्पण', capEn: 'Devi Puja — Fruit Offering' },
+    { src: '/images/gallery/group-puja.jpg', capHi: 'सामूहिक देवी पूजन', capEn: 'Collective Devi Puja' },
+    { src: '/images/gallery/devi-shringar.jpg', capHi: 'माँ का भव्य श्रृंगार', capEn: 'Divine Adornment of the Goddess' },
+    { src: '/images/gallery/ram-sita-jhanki.jpg', capHi: 'राम-लक्ष्मण-सीता झांकी', capEn: 'Ram-Lakshman-Sita Tableau' },
+    { src: '/images/gallery/ram-katha-event.jpg', capHi: 'राम कथा — विशेष आयोजन', capEn: 'Ram Katha — Special Event' },
     { src: '/images/heritage/pooja-session-1.jpg', capHi: 'परामर्श सत्र', capEn: 'Consultation Session' },
     { src: '/images/heritage/pooja-session-2.jpg', capHi: 'अंतरराष्ट्रीय भक्त सत्र', capEn: 'International Devotee Session' },
     { src: '/images/heritage/signboard-1.jpg', capHi: 'पं. अयोध्या नाथ शर्मा मार्ग — वाराणसी', capEn: 'Named Road, Varanasi' },
     { src: '/images/heritage/signboard-2.jpg', capHi: 'ऐतिहासिक मार्ग चिन्ह', capEn: 'Historic Street Sign' },
+];
+
+const triptych = [
+    { src: '/images/gallery/vedic-paath.jpg', capHi: 'आचार्य', capEn: 'The Scholar' },
+    { src: '/images/gallery/havan-closeup.jpg', capHi: 'साधना', capEn: 'The Practice' },
+    { src: '/images/gallery/ram-katha-event.jpg', capHi: 'सेवा', capEn: 'The Mission' },
+];
+
+const videoClips = [
+    { src: '/videos/clip-2.mp4', poster: '/images/gallery/clip-2-poster.jpg', capHi: 'सामूहिक हवन — लाइव झलक', capEn: 'Collective Havan — Live Glimpse' },
+    { src: '/videos/clip-4.mp4', poster: '/images/gallery/clip-4-poster.jpg', capHi: 'हवन अग्नि — आहुति क्षण', capEn: 'Havan Fire — Moment of Offering' },
+    { src: '/videos/clip-3.mp4', poster: '/images/gallery/clip-3-poster.jpg', capHi: 'माँ का दिव्य श्रृंगार', capEn: "The Goddess's Divine Adornment" },
+    { src: '/videos/clip-1.mp4', poster: '/images/gallery/clip-1-poster.jpg', capHi: 'पूजन विधि — क्षण भर', capEn: 'A Moment from the Ritual' },
 ];
 
 const values = [
@@ -86,6 +107,22 @@ export default function About() {
                     <p className="subtitle">{t('About Astro Kashi — शर्मा परिवार की विरासत', 'About Astro Kashi — Legacy of the Sharma Family')}</p>
                 </div>
             </header>
+
+            {/* Triptych - evocative opener */}
+            <section className="section" style={{ paddingBottom: 0 }}>
+                <div className="container">
+                    <div className="triptych">
+                        {triptych.map(item => (
+                            <div className="triptych-card" key={item.capEn}>
+                                <img src={item.src} alt={item.capEn} loading="lazy" />
+                                <div className="triptych-overlay">
+                                    <span className="triptych-caption">{lang === 'hi' ? item.capHi : item.capEn} <span className="arrow">›</span></span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
 
             {/* Intro */}
             <section className="section">
@@ -229,6 +266,47 @@ export default function About() {
                                 <p style={{ padding: '0.75rem 1rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{t(item.capHi, item.capEn)}</p>
                             </div>
                         ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Videos */}
+            <section className="section section-dark">
+                <div className="container">
+                    <div className="text-center">
+                        <span className="section-label" style={{ justifyContent: 'center' }}>{t('जीवंत झलकियाँ', 'Live Glimpses')}</span>
+                        <h2 className="section-title" style={{ color: 'var(--gold-300)' }}>{t('वीडियो में हमारी पूजा सेवाएं', 'Our Pooja Services in Video')}</h2>
+                        <p style={{ color: 'var(--warm-200)', marginTop: '0.5rem' }}>{t('वास्तविक अनुष्ठानों की झलक — जैसा है वैसा', 'Real ceremonies, exactly as they happen')}</p>
+                    </div>
+                    <div className="om-divider">ॐ</div>
+
+                    <div className="video-showcase-grid" style={{ marginBottom: '2.5rem' }}>
+                        {videoClips.map(clip => (
+                            <div className="video-showcase-card" key={clip.src}>
+                                <video controls preload="none" poster={clip.poster} playsInline>
+                                    <source src={clip.src} type="video/mp4" />
+                                </video>
+                                <p className="video-showcase-caption">{t(clip.capHi, clip.capEn)}</p>
+                            </div>
+                        ))}
+                    </div>
+
+                    <h3 style={{ textAlign: 'center', color: 'var(--gold-300)', marginBottom: '1rem', fontFamily: 'var(--font-hindi)' }}>
+                        {t('हमारे YouTube चैनल पर और देखें', 'See More on Our YouTube Channel')}
+                    </h3>
+                    <div className="youtube-embed-wrapper">
+                        <iframe
+                            src="https://www.youtube.com/embed/videoseries?list=UUdRLqFjBr4NA4t5ZsTlidJg"
+                            title="YouTube video playlist"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            loading="lazy"
+                        />
+                    </div>
+                    <div className="text-center" style={{ marginTop: '1.5rem' }}>
+                        <a href="https://www.youtube.com/channel/UCdRLqFjBr4NA4t5ZsTlidJg" target="_blank" rel="noreferrer" className="btn btn-primary">
+                            ▶️ {t('YouTube पर सब्सक्राइब करें', 'Subscribe on YouTube')}
+                        </a>
                     </div>
                 </div>
             </section>
