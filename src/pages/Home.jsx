@@ -34,8 +34,8 @@ export default function Home() {
                 <div className="hero-content">
                     <div className="hero-text">
                         <div className="hero-om">ॐ</div>
-                        <h1 className="hero-title-hindi">{t('एस्ट्रो काशी', 'Astro Kashi')}</h1>
-                        <p className="hero-title-en">{t('Astro Kashi', 'एस्ट्रो काशी')}</p>
+                        <h1 className="hero-title-hindi">{t('अद्भुत ज्ञान', 'Adbhut Gyaan')}</h1>
+                        <p className="hero-title-en">{t('Adbhut Gyaan', 'अद्भुत ज्ञान')}</p>
                         <p className="hero-desc">
                             {t(
                                 <>बनारस (काशी) के अनुभवी और विद्वान पंडितों द्वारा<br />सभी प्रकार की पूजा, पाठ, जप और हवन सेवाएं<br /><strong style={{ color: 'var(--gold-300)' }}>घर बैठे ऑनलाइन बुक करें</strong></>,

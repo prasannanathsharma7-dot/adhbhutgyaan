@@ -20,8 +20,8 @@ export default function Privacy() {
 
                         <p style={{ marginBottom: '1.5rem' }}>
                             {t(
-                                'एस्ट्रो काशी ("हम", "हमारा") आपकी गोपनीयता का सम्मान करता है। यह पृष्ठ बताता है कि जब आप हमारी वेबसाइट का उपयोग करते हैं या पूजा बुकिंग हेतु फ़ॉर्म भरते हैं, तो हम कौन सी जानकारी एकत्र करते हैं और उसका उपयोग कैसे करते हैं।',
-                                'Astro Kashi ("we", "our", "us") respects your privacy. This page explains what information we collect and how we use it when you use our website or fill out a form to enquire about or book a pooja.'
+                                'अद्भुत ज्ञान ("हम", "हमारा") आपकी गोपनीयता का सम्मान करता है। यह पृष्ठ बताता है कि जब आप हमारी वेबसाइट का उपयोग करते हैं या पूजा बुकिंग हेतु फ़ॉर्म भरते हैं, तो हम कौन सी जानकारी एकत्र करते हैं और उसका उपयोग कैसे करते हैं।',
+                                'Adbhut Gyaan ("we", "our", "us") respects your privacy. This page explains what information we collect and how we use it when you use our website or fill out a form to enquire about or book a pooja.'
                             )}
                         </p>
 

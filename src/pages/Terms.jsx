@@ -20,8 +20,8 @@ export default function Terms() {
 
                         <p style={{ marginBottom: '1.5rem' }}>
                             {t(
-                                'यह वेबसाइट (एस्ट्रो काशी) उपयोग करके, आप निम्नलिखित शर्तों से सहमत होते हैं।',
-                                'By using this website (Astro Kashi), you agree to the following terms.'
+                                'यह वेबसाइट (अद्भुत ज्ञान) उपयोग करके, आप निम्नलिखित शर्तों से सहमत होते हैं।',
+                                'By using this website (Adbhut Gyaan), you agree to the following terms.'
                             )}
                         </p>
 

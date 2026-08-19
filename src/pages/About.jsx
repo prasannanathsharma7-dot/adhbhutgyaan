@@ -73,7 +73,7 @@ export default function About() {
                 <div className="container">
                     <div className="breadcrumb"><Link to="/">{t('होम', 'Home')}</Link><span>›</span><span>{t('हमारे बारे में', 'About Us')}</span></div>
                     <h1>{t('हमारे बारे में', 'About Us')}</h1>
-                    <p className="subtitle">{t('About Astro Kashi — शर्मा परिवार की विरासत', 'About Astro Kashi — Legacy of the Sharma Family')}</p>
+                    <p className="subtitle">{t('About Adbhut Gyaan — शर्मा परिवार की विरासत', 'About Adbhut Gyaan — Legacy of the Sharma Family')}</p>
                 </div>
             </header>
 
@@ -108,9 +108,6 @@ export default function About() {
                                     'शर्मा परिवार की गाथा मात्र एक वंशावली नहीं, बल्कि चार शताब्दियों से अधिक समय तक वैदिक विज्ञान की अक्षुण्ण शक्ति का प्रमाण है। यह वंश प्राचीन आध्यात्मिक ज्ञान और आधुनिक वैश्विक मान्यता के दुर्लभ संगम का प्रतीक है। पीढ़ी-दर-पीढ़ी परिवार के पंडितों द्वारा वाराणसी एवं विश्व भर के भक्तों की सेवा करते हुए यह विरासत आज एक विशाल एवं निरंतर अनुष्ठान-सेवा का रूप ले चुकी है।',
                                     'The saga of the Sharma family is a profound testament to the enduring potency of Vedic sciences, spanning over four centuries — a rare confluence of ancient metaphysical wisdom and modern global recognition, born in the ghats of Varanasi. Across generations of family Pandits serving devotees from Varanasi and around the world, this legacy has grown into a large and continuing body of ritual service.'
                                 )}
-                            </p>
-                            <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '1.25rem' }}>
-                                {t('आप हमें एस्ट्रो काशी (Astro Kashi) या अद्भुत ज्ञान (Adbhut Gyaan) — दोनों नामों से जान सकते हैं।', 'You may know us by either name — Astro Kashi or Adbhut Gyaan.')}
                             </p>
                             <Link to="/booking" className="btn btn-primary"><img src="/images/logo.png" alt="" className="inline-logo" /> {t('पूजा बुक करें', 'Book a Pooja')}</Link>
                         </div>

@@ -29,7 +29,7 @@ export default function Contact() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const msg = `🙏 *${t('नया संदेश — एस्ट्रो काशी', 'New Message — Astro Kashi')}*
+        const msg = `🙏 *${t('नया संदेश — अद्भुत ज्ञान', 'New Message — Adbhut Gyaan')}*
 
 *${t('नाम', 'Name')}:* ${form.name}
 *${t('फ़ोन', 'Phone')}:* ${form.phone}
