@@ -109,6 +109,9 @@ export default function About() {
                                     'The saga of the Sharma family is a profound testament to the enduring potency of Vedic sciences, spanning over four centuries — a rare confluence of ancient metaphysical wisdom and modern global recognition, born in the ghats of Varanasi. Across generations of family Pandits serving devotees from Varanasi and around the world, this legacy has grown into a large and continuing body of ritual service.'
                                 )}
                             </p>
+                            <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '1.25rem' }}>
+                                {t('आप हमें एस्ट्रो काशी (Astro Kashi) या अद्भुत ज्ञान (Adbhut Gyaan) — दोनों नामों से जान सकते हैं।', 'You may know us by either name — Astro Kashi or Adbhut Gyaan.')}
+                            </p>
                             <Link to="/booking" className="btn btn-primary"><img src="/images/logo.png" alt="" className="inline-logo" /> {t('पूजा बुक करें', 'Book a Pooja')}</Link>
                         </div>
                     </div>
