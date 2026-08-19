@@ -14,6 +14,7 @@ export default function Booking() {
     const [selectedService, setSelectedService] = useState(null);
     const [selectedPkg, setSelectedPkg] = useState(null);
     const [form, setForm] = useState({ name: '', phone: '', date: '', address: '', notes: '', mode: '' });
+    const [saveStatus, setSaveStatus] = useState('idle'); // idle | saving | saved | error
 
     const modeOptions = [
         { v: 'online', icon: '🌐', label: t('ऑनलाइन', 'Online') },
@@ -39,11 +40,38 @@ export default function Booking() {
 
     const goToStep = (n) => { setStep(n); window.scrollTo({ top: 200, behavior: 'smooth' }); };
 
+    const saveBookingToServer = async () => {
+        setSaveStatus('saving');
+        try {
+            const res = await fetch('/api/bookings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: form.name,
+                    phone: form.phone,
+                    serviceId: selectedService?.id || '',
+                    serviceName: selectedService ? `${selectedService.name} (${selectedService.nameEn})` : '',
+                    packageName: selectedPkg ? `${selectedPkg.name} (${selectedPkg.nameEn})` : '',
+                    mode: form.mode,
+                    preferredDate: form.date,
+                    address: form.address,
+                    notes: form.notes,
+                    language: lang,
+                }),
+            });
+            setSaveStatus(res.ok ? 'saved' : 'error');
+        } catch {
+            // Network/DB issue - fail silently. WhatsApp/Call/Email still work regardless.
+            setSaveStatus('error');
+        }
+    };
+
     const handleSubmit = () => {
         if (!form.name.trim()) { alert(t('कृपया अपना नाम लिखें', 'Please enter your name')); return; }
         if (!form.phone.trim() || form.phone.length < 10) { alert(t('कृपया सही मोबाइल नंबर लिखें', 'Please enter a valid phone number')); return; }
         if (!form.mode) { alert(t('कृपया पूजा का माध्यम चुनें', 'Please select how you want the pooja performed')); return; }
         goToStep(4);
+        saveBookingToServer();
     };
 
     const dateNotSet = t('पंडित जी से तय होगी', 'To be decided with the Pandit');
@@ -259,6 +287,11 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                     {step === 4 && selectedService && selectedPkg && (
                         <div className="wizard-panel">
                             <h3 style={{ textAlign: 'center', marginBottom: '0.5rem' }}>{t('पूछताछ समीक्षा', 'Review Your Enquiry')}</h3>
+                            {saveStatus === 'saved' && (
+                                <p style={{ textAlign: 'center', fontSize: '0.8rem', color: 'var(--whatsapp)', marginBottom: '1rem' }}>
+                                    ✓ {t('आपकी पूछताछ सुरक्षित रूप से दर्ज हो गई है', 'Your enquiry has been securely recorded')}
+                                </p>
+                            )}
                             <div style={{ maxWidth: 600, margin: '0 auto', background: 'white', borderRadius: 'var(--radius-lg)', padding: 'clamp(1.25rem,4vw,2rem)', border: '2px solid var(--border-gold)', boxShadow: 'var(--shadow-gold)' }}>
                                 <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
                                     <img src={`/images/${selectedService.image}`} alt={selectedService.nameEn} style={{ width: '120px', height: '120px', borderRadius: '50%', objectFit: 'cover', border: '3px solid var(--gold-400)', margin: '0 auto 1rem auto', display: 'block' }} />

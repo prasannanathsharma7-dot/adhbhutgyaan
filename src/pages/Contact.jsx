@@ -4,7 +4,28 @@ import { useLanguage } from '../context/LanguageContext';
 
 export default function Contact() {
     const [form, setForm] = useState({ name: '', phone: '', email: '', subject: '', message: '' });
+    const [saveStatus, setSaveStatus] = useState('idle'); // idle | saving | saved | error
     const { t, lang } = useLanguage();
+
+    const saveMessageToServer = async () => {
+        setSaveStatus('saving');
+        try {
+            const res = await fetch('/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: form.name,
+                    phone: form.phone,
+                    email: form.email,
+                    subject: form.subject,
+                    message: form.message,
+                }),
+            });
+            setSaveStatus(res.ok ? 'saved' : 'error');
+        } catch {
+            setSaveStatus('error');
+        }
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -16,6 +37,7 @@ ${form.email ? `*${t('ईमेल', 'Email')}:* ${form.email}` : ''}
 ${form.subject ? `*${t('विषय', 'Subject')}:* ${form.subject}` : ''}
 *${t('संदेश', 'Message')}:* ${form.message}`;
         window.open(`https://wa.me/919278148269?text=${encodeURIComponent(msg)}`, '_blank');
+        saveMessageToServer();
     };
 
     const handleEmailSubmit = () => {
@@ -25,6 +47,7 @@ ${form.subject ? `${t('विषय', 'Subject')}: ${form.subject}` : ''}
 
 ${form.message}`;
         window.location.href = `mailto:info@kashipoojaseva.com?subject=${encodeURIComponent(form.subject || t('वेबसाइट से संदेश', 'Message from website'))}&body=${encodeURIComponent(body)}`;
+        saveMessageToServer();
     };
 
     const contactCards = [
@@ -90,6 +113,11 @@ ${form.message}`;
                         <div>
                             <div style={{ background: 'white', borderRadius: 'var(--radius-lg)', padding: 'clamp(1.25rem,4vw,2rem)', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-md)' }}>
                                 <h3 style={{ marginBottom: '1.5rem', fontFamily: 'var(--font-hindi)' }}>{t('संदेश भेजें', 'Send us a Message')}</h3>
+                                {saveStatus === 'saved' && (
+                                    <p style={{ fontSize: '0.8rem', color: 'var(--whatsapp)', marginTop: '-1rem', marginBottom: '1rem' }}>
+                                        ✓ {t('आपका संदेश सुरक्षित रूप से दर्ज हो गया है', 'Your message has been securely recorded')}
+                                    </p>
+                                )}
                                 <form onSubmit={handleSubmit}>
                                     <div className="form-group">
                                         <label className="form-label">{t('नाम', 'Name')} *</label>
