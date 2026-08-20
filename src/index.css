@@ -770,7 +770,7 @@ h3 {
     .triptych-card:nth-child(1),
     .triptych-card:nth-child(2),
     .triptych-card:nth-child(3) {
-        margin: 0; transform: none; border-radius: var(--radius-lg); height: 220px;
+        flex: none; margin: 0; transform: none; border-radius: var(--radius-lg); height: 220px; width: 100%;
     }
     .triptych-card:hover { transform: none; }
 }
