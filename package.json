@@ -1,8 +1,8 @@
 {
-  "name": "adbhut-gyaan",
+  "name": "adhbhut-gyaan",
   "private": true,
   "version": "2.0.0",
-  "description": "Adbhut Gyaan - Online Pooja Booking Platform (React)",
+  "description": "Adhbhut Gyaan - Online Pooja Booking Platform (React)",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

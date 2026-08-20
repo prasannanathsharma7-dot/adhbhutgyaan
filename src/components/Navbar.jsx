@@ -43,7 +43,7 @@ export default function Navbar() {
                     <img src="/images/logo.png" alt="" className="logo-img" />
                     <div className="logo-text">
                         <span className="logo-main">अद्भुत ज्ञान</span>
-                        <span className="logo-sub">Adbhut Gyaan</span>
+                        <span className="logo-sub">Adhbhut Gyaan</span>
                     </div>
                 </Link>
 

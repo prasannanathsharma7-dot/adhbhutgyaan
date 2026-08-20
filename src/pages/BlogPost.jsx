@@ -92,7 +92,7 @@ export default function BlogPost() {
                         <div className="blog-article-cta">
                             <div className="blog-article-cta-content">
                                 <img src="/images/logo.png" alt="" className="blog-article-cta-logo" />
-                                <h3>{t('पूजा बुक करें — अद्भुत ज्ञान', 'Book a Pooja — Adbhut Gyaan')}</h3>
+                                <h3>{t('पूजा बुक करें — अद्भुत ज्ञान', 'Book a Pooja — Adhbhut Gyaan')}</h3>
                                 <p>{t('काशी के अनुभवी पंडितों द्वारा शास्त्रोक्त विधि से सम्पूर्ण पूजन कार्य। अभी WhatsApp पर संपर्क करें!', 'Complete pooja rituals performed authentically by experienced Pandits of Kashi. Contact us on WhatsApp now!')}</p>
                                 <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', justifyContent: 'center' }}>
                                     {post.serviceId && (

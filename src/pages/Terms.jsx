@@ -21,7 +21,7 @@ export default function Terms() {
                         <p style={{ marginBottom: '1.5rem' }}>
                             {t(
                                 'यह वेबसाइट (अद्भुत ज्ञान) उपयोग करके, आप निम्नलिखित शर्तों से सहमत होते हैं।',
-                                'By using this website (Adbhut Gyaan), you agree to the following terms.'
+                                'By using this website (Adhbhut Gyaan), you agree to the following terms.'
                             )}
                         </p>
 

@@ -13,7 +13,7 @@ export default function Footer() {
                             <img src="/images/logo.png" alt="" className="logo-img" />
                             <div className="logo-text">
                                 <span className="logo-main">अद्भुत ज्ञान</span>
-                                <span className="logo-sub">Adbhut Gyaan</span>
+                                <span className="logo-sub">Adhbhut Gyaan</span>
                             </div>
                         </div>
                         <p className="footer-desc">
@@ -83,7 +83,7 @@ export default function Footer() {
                 </div>
 
                 <div className="footer-bottom">
-                    <span>© 2026 {t('अद्भुत ज्ञान', 'Adbhut Gyaan')} | Adbhut Gyaan. {t('सर्वाधिकार सुरक्षित।', 'All rights reserved.')} · <Link to="/privacy" style={{ color: 'inherit' }}>{t('गोपनीयता नीति', 'Privacy Policy')}</Link> · <Link to="/terms" style={{ color: 'inherit' }}>{t('नियम एवं शर्तें', 'Terms')}</Link></span>
+                    <span>© 2026 {t('अद्भुत ज्ञान', 'Adhbhut Gyaan')} | Adhbhut Gyaan. {t('सर्वाधिकार सुरक्षित।', 'All rights reserved.')} · <Link to="/privacy" style={{ color: 'inherit' }}>{t('गोपनीयता नीति', 'Privacy Policy')}</Link> · <Link to="/terms" style={{ color: 'inherit' }}>{t('नियम एवं शर्तें', 'Terms')}</Link></span>
                     <span>{t('बनारस में निर्मित', 'Made in Banaras')} <img src="/images/logo.png" alt="Banaras" className="inline-logo-sm" /></span>
                 </div>
             </div>
