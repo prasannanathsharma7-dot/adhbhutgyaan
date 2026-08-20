@@ -78,7 +78,7 @@ export default function Privacy() {
                         <p>
                             {t('गोपनीयता संबंधी किसी भी प्रश्न के लिए हमसे संपर्क करें:', 'For any privacy-related questions, contact us at:')}<br />
                             <strong>WhatsApp:</strong> +91 92781 48269<br />
-                            <strong>Email:</strong> info@kashipoojaseva.com
+                            <strong>Email:</strong> astrokashi369@gmail.com
                         </p>
                     </div>
                 </div>

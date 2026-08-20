@@ -83,14 +83,14 @@ ${t('फ़ोन', 'Phone')}: ${form.phone}
 ${form.subject ? `${t('विषय', 'Subject')}: ${form.subject}` : ''}
 
 ${form.message}`;
-        window.location.href = `mailto:info@kashipoojaseva.com?subject=${encodeURIComponent(form.subject || t('वेबसाइट से संदेश', 'Message from website'))}&body=${encodeURIComponent(body)}`;
+        window.location.href = `mailto:astrokashi369@gmail.com?subject=${encodeURIComponent(form.subject || t('वेबसाइट से संदेश', 'Message from website'))}&body=${encodeURIComponent(body)}`;
         saveMessageToServer();
     };
 
     const contactCards = [
         { icon: '💬', label: 'WhatsApp', value: '+91 92781 48269', sub: t('तुरंत जवाब', 'Instant Reply'), href: 'https://wa.me/919278148269', color: 'var(--whatsapp)', bgColor: 'rgba(37,211,102,0.08)', borderColor: 'rgba(37,211,102,0.2)' },
         { icon: '📞', label: t('फ़ोन', 'Phone'), value: '+91 92781 48269', sub: t('सुबह 7 बजे - रात 9 बजे', '7 AM - 9 PM'), href: 'tel:+919278148269', color: 'var(--gold-500)', bgColor: 'rgba(255,152,0,0.08)', borderColor: 'rgba(255,152,0,0.2)' },
-        { icon: '✉️', label: t('ईमेल', 'Email'), value: 'info@kashipoojaseva.com', sub: t('क्लिक करके ईमेल भेजें', 'Click to send an email'), href: 'mailto:info@kashipoojaseva.com', color: 'var(--gold-500)', bgColor: 'rgba(196,154,44,0.08)', borderColor: 'rgba(196,154,44,0.2)' },
+        { icon: '✉️', label: t('ईमेल', 'Email'), value: 'astrokashi369@gmail.com', sub: t('क्लिक करके ईमेल भेजें', 'Click to send an email'), href: 'mailto:astrokashi369@gmail.com', color: 'var(--gold-500)', bgColor: 'rgba(196,154,44,0.08)', borderColor: 'rgba(196,154,44,0.2)' },
         { icon: '📍', label: t('कार्यालय का पता', 'Office Address'), value: 'J11/19, Pt Umang Nath Sharma,\nNati Imli Rd, Ishwargangi,\nVaranasi, UP 221001', sub: t('दिशा-निर्देश के लिए क्लिक करें', 'Click for directions'), href: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent('J11/19, Pt Umang Nath Sharma, Nati Imli Rd, Ishwargangi, Varanasi, UP 221001'), color: 'var(--red-400)', bgColor: 'rgba(183,28,28,0.05)', borderColor: 'rgba(183,28,28,0.15)' },
     ];
 

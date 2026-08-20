@@ -384,7 +384,7 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                                 <a href="tel:+919278148269" className="btn btn-primary btn-lg">📞 {t('कॉल करें', 'Call Us')}</a>
                             </div>
                             <div className="text-center" style={{ marginTop: '1rem' }}>
-                                <a href={`mailto:info@kashipoojaseva.com?subject=${encodeURIComponent(t('नई पूजा पूछताछ', 'New Pooja Enquiry'))}&body=${encodeURIComponent(emailMsg)}`} style={{ fontSize: '0.85rem', color: 'var(--gold-700)', fontWeight: 600 }}>
+                                <a href={`mailto:astrokashi369@gmail.com?subject=${encodeURIComponent(t('नई पूजा पूछताछ', 'New Pooja Enquiry'))}&body=${encodeURIComponent(emailMsg)}`} style={{ fontSize: '0.85rem', color: 'var(--gold-700)', fontWeight: 600 }}>
                                     ✉️ {t('या ईमेल से पूछताछ करें', 'Or enquire by email instead')}
                                 </a>
                             </div>

@@ -77,7 +77,7 @@ export default function Footer() {
                         </div>
                         <div className="footer-contact-item">
                             <span className="footer-contact-icon">✉️</span>
-                            <span>info@kashipoojaseva.com</span>
+                            <span>astrokashi369@gmail.com</span>
                         </div>
                     </div>
                 </div>
