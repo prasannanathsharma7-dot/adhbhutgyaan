@@ -1458,6 +1458,28 @@ h3 {
     box-shadow: 0 0 0 4px rgba(255, 152, 0, 0.1);
 }
 
+/* Inline validation error state */
+.form-input.has-error,
+.form-textarea.has-error,
+.form-select.has-error {
+    border-color: var(--red-400);
+    background: rgba(211, 47, 47, 0.03);
+}
+
+.form-input.has-error:focus,
+.form-textarea.has-error:focus,
+.form-select.has-error:focus {
+    border-color: var(--red-400);
+    box-shadow: 0 0 0 4px rgba(211, 47, 47, 0.1);
+}
+
+.form-error {
+    color: var(--red-400);
+    font-size: 0.8rem;
+    margin-top: 0.35rem;
+    line-height: 1.5;
+}
+
 .form-textarea {
     min-height: 120px;
     resize: vertical;

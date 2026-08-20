@@ -22,6 +22,7 @@ export default function Booking() {
     const [selectedPkg, setSelectedPkg] = useState(null);
     const [form, setForm] = useState({ name: '', phone: '', date: '', address: '', notes: '', mode: '' });
     const [saveStatus, setSaveStatus] = useState('idle'); // idle | saving | saved | error
+    const [errors, setErrors] = useState({});
 
     const modeOptions = [
         { v: 'online', icon: '🌐', label: t('ऑनलाइन', 'Online') },
@@ -74,9 +75,30 @@ export default function Booking() {
     };
 
     const handleSubmit = () => {
-        if (!form.name.trim()) { alert(t('कृपया अपना नाम लिखें', 'Please enter your name')); return; }
-        if (!form.phone.trim() || form.phone.length < 10) { alert(t('कृपया सही मोबाइल नंबर लिखें', 'Please enter a valid phone number')); return; }
-        if (!form.mode) { alert(t('कृपया पूजा का माध्यम चुनें', 'Please select how you want the pooja performed')); return; }
+        const next = {};
+        if (!form.name.trim()) {
+            next.name = t('कृपया अपना नाम लिखें', 'Please enter your name');
+        }
+        if (!form.phone.trim() || form.phone.replace(/\D/g, '').length < 10) {
+            next.phone = t('कृपया सही मोबाइल नंबर लिखें (कम से कम 10 अंक)', 'Please enter a valid phone number (at least 10 digits)');
+        }
+        if (!form.mode) {
+            next.mode = t('कृपया पूजा का माध्यम चुनें', 'Please select how you want the pooja performed');
+        }
+
+        setErrors(next);
+
+        if (Object.keys(next).length > 0) {
+            // Scroll to the first field with an error so the user sees it immediately
+            const firstKey = next.mode ? 'mode' : (next.name ? 'name' : 'phone');
+            const el = document.getElementById(`booking-${firstKey}`);
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                if (firstKey !== 'mode') el.focus({ preventScroll: true });
+            }
+            return;
+        }
+
         goToStep(4);
         saveBookingToServer();
     };
@@ -240,18 +262,18 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                         <div className="wizard-panel">
                             <h3 style={{ textAlign: 'center', marginBottom: '0.5rem' }}>{t('अपना विवरण भरें', 'Enter Your Details')}</h3>
                             <div style={{ maxWidth: 600, margin: '0 auto' }}>
-                                <div className="form-group">
+                                <div className="form-group" id="booking-mode">
                                     <label className="form-label">{t('पूजा किस माध्यम से करवानी है', 'How would you like the pooja performed')} *</label>
                                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem', marginTop: '0.4rem' }}>
                                         {modeOptions.map(m => (
                                             <button
                                                 key={m.v}
                                                 type="button"
-                                                onClick={() => setForm({ ...form, mode: m.v })}
+                                                onClick={() => { setForm({ ...form, mode: m.v }); setErrors({ ...errors, mode: undefined }); }}
                                                 style={{
                                                     display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
                                                     padding: '0.55rem 1rem', borderRadius: 'var(--radius-xl)',
-                                                    border: form.mode === m.v ? '2px solid var(--gold-500)' : '1px solid var(--border-light)',
+                                                    border: form.mode === m.v ? '2px solid var(--gold-500)' : (errors.mode ? '1px solid var(--red-400)' : '1px solid var(--border-light)'),
                                                     background: form.mode === m.v ? 'var(--gold-50)' : 'white',
                                                     color: form.mode === m.v ? 'var(--gold-700)' : 'var(--text-secondary)',
                                                     fontWeight: 600, fontSize: '0.85rem', cursor: 'pointer',
@@ -261,14 +283,32 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                                             </button>
                                         ))}
                                     </div>
+                                    {errors.mode && <p className="form-error">⚠ {errors.mode}</p>}
                                 </div>
                                 <div className="form-group">
-                                    <label className="form-label">{t('पूरा नाम', 'Full Name')} *</label>
-                                    <input className="form-input" placeholder={t('अपना नाम लिखें', 'Enter your name')} value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} />
+                                    <label className="form-label" htmlFor="booking-name">{t('पूरा नाम', 'Full Name')} *</label>
+                                    <input
+                                        id="booking-name"
+                                        className={`form-input ${errors.name ? 'has-error' : ''}`}
+                                        placeholder={t('अपना नाम लिखें', 'Enter your name')}
+                                        value={form.name}
+                                        aria-invalid={errors.name ? 'true' : 'false'}
+                                        onChange={e => { setForm({ ...form, name: e.target.value }); setErrors({ ...errors, name: undefined }); }}
+                                    />
+                                    {errors.name && <p className="form-error">⚠ {errors.name}</p>}
                                 </div>
                                 <div className="form-group">
-                                    <label className="form-label">{t('मोबाइल नंबर', 'Phone Number')} *</label>
-                                    <input className="form-input" type="tel" placeholder="+91 92781 48269" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} />
+                                    <label className="form-label" htmlFor="booking-phone">{t('मोबाइल नंबर', 'Phone Number')} *</label>
+                                    <input
+                                        id="booking-phone"
+                                        className={`form-input ${errors.phone ? 'has-error' : ''}`}
+                                        type="tel"
+                                        placeholder="+91 92781 48269"
+                                        value={form.phone}
+                                        aria-invalid={errors.phone ? 'true' : 'false'}
+                                        onChange={e => { setForm({ ...form, phone: e.target.value }); setErrors({ ...errors, phone: undefined }); }}
+                                    />
+                                    {errors.phone && <p className="form-error">⚠ {errors.phone}</p>}
                                 </div>
                                 <div className="form-group">
                                     <label className="form-label">{t('पसंदीदा तिथि', 'Preferred Date')}</label>
@@ -294,9 +334,19 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                     {step === 4 && selectedService && selectedPkg && (
                         <div className="wizard-panel">
                             <h3 style={{ textAlign: 'center', marginBottom: '0.5rem' }}>{t('पूछताछ समीक्षा', 'Review Your Enquiry')}</h3>
+                            {saveStatus === 'saving' && (
+                                <p style={{ textAlign: 'center', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
+                                    {t('आपकी पूछताछ दर्ज की जा रही है…', 'Recording your enquiry…')}
+                                </p>
+                            )}
                             {saveStatus === 'saved' && (
                                 <p style={{ textAlign: 'center', fontSize: '0.8rem', color: 'var(--whatsapp)', marginBottom: '1rem' }}>
                                     ✓ {t('आपकी पूछताछ सुरक्षित रूप से दर्ज हो गई है', 'Your enquiry has been securely recorded')}
+                                </p>
+                            )}
+                            {saveStatus === 'error' && (
+                                <p style={{ textAlign: 'center', fontSize: '0.8rem', color: 'var(--gold-700)', background: 'var(--gold-50)', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-md)', padding: '0.6rem 0.9rem', marginBottom: '1rem', maxWidth: 600, marginLeft: 'auto', marginRight: 'auto' }}>
+                                    {t('आपका विवरण सहेजा नहीं जा सका, परंतु चिंता न करें — नीचे WhatsApp, कॉल या ईमेल से सीधे संपर्क करें, आपकी बुकिंग वैसे ही हो जाएगी।', "We couldn't save your details automatically, but don't worry — just reach us directly via WhatsApp, call, or email below and your booking will go through as usual.")}
                                 </p>
                             )}
                             <div style={{ maxWidth: 600, margin: '0 auto', background: 'white', borderRadius: 'var(--radius-lg)', padding: 'clamp(1.25rem,4vw,2rem)', border: '2px solid var(--border-gold)', boxShadow: 'var(--shadow-gold)' }}>
