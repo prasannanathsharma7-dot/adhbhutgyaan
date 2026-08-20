@@ -193,7 +193,7 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                                         onClick={() => setSelectedService(svc)}
                                         style={{ padding: 0, overflow: 'hidden' }}
                                     >
-                                        <img src={`/images/${svc.image}`} alt={svc.nameEn} style={{ width: '100%', height: '140px', objectFit: 'cover', display: 'block' }} />
+                                        <img src={`/images/${svc.image}`} alt={svc.nameEn} loading="lazy" style={{ width: '100%', height: '140px', objectFit: 'cover', display: 'block' }} />
                                         <div style={{ padding: '1.25rem' }}>
                                             <h4 style={{ fontFamily: 'var(--font-hindi)', marginBottom: '0.25rem' }}>{lang === 'hi' ? svc.name : svc.nameEn}</h4>
                                             {lang === 'hi' && <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{svc.nameEn}</p>}
