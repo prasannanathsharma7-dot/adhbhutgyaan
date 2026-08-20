@@ -140,6 +140,36 @@ export default function About() {
                 </div>
             </section>
 
+            {/* Chief Astrologer Spotlight */}
+            <section className="section">
+                <div className="container">
+                    <div className="text-center">
+                        <span className="section-label">{t('वर्तमान प्रधान', 'Current Head')}</span>
+                        <h2 className="section-title">{t('प्रधान ज्योतिषाचार्य — डॉ. उमंग नाथ शर्मा', 'Chief Astrologer — Dr. Umang Nath Sharma')}</h2>
+                    </div>
+                    <div className="om-divider">ॐ</div>
+                    <div className="about-story">
+                        <div className="about-image">
+                            <img src="/images/heritage/umang-with-ayodhya-portrait.jpg" alt="Dr. Umang Nath Sharma" loading="lazy" style={{ objectFit: 'cover' }} />
+                        </div>
+                        <div>
+                            <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '1rem' }}>
+                                {t(
+                                    'डॉ. उमंग नाथ शर्मा शर्मा परिवार की वैदिक परंपरा के वर्तमान प्रधान एवं परिवार के एकमात्र प्रशिक्षित ज्योतिषाचार्य हैं — इनसे वरिष्ठ या इनके समकक्ष अन्य कोई नहीं है। अद्भुत ज्ञान से जुड़े अन्य सभी पंडितगण शास्त्रोक्त कर्मकांड — पूजा, हवन, अनुष्ठान — सम्पन्न कराने में दक्ष एवं प्रशिक्षित हैं, जबकि ज्योतिषीय परामर्श, कुंडली विश्लेषण एवं भविष्यवाणी का दायित्व विशेष रूप से डॉ. शर्मा ही वहन करते हैं।',
+                                    'Dr. Umang Nath Sharma is the current head of the Sharma family\'s Vedic tradition and the family\'s sole trained astrologer — no one is senior to him or his equal in this role. Every other Pandit associated with Adhbhut Gyaan is skilled and trained in performing scripture-based karmakand — pooja, havan, and rituals — while astrological consultation, horoscope analysis, and prediction are Dr. Sharma\'s exclusive responsibility.'
+                                )}
+                            </p>
+                            <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8 }}>
+                                {t(
+                                    'यूनिवर्सिटी ऑफ मैरीलैंड, अमेरिका द्वारा "डॉक्टर ऑफ एस्ट्रोलॉजी" की उपाधि से सम्मानित, और सन् 2019 में जापान के Hulu TV द्वारा जिन पर एक वृत्तचित्र बनाई गई — डॉ. शर्मा ही अद्भुत ज्ञान की समस्त ज्योतिषीय गतिविधियों का मार्गदर्शन करते हैं।',
+                                    'Conferred the degree of "Doctor of Astrology" by the University of Maryland, USA, and the subject of a 2019 documentary by Japan\'s Hulu TV — Dr. Sharma personally guides every astrological activity at Adhbhut Gyaan.'
+                                )}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* Three Generations Timeline */}
             <section className="section section-warm">
                 <div className="container">
@@ -344,6 +374,11 @@ function GenText({ g, t, lang }) {
     return (
         <div>
             <span className="section-label" style={{ display: 'inline-block', marginBottom: '0.5rem' }}>{t(`पीढ़ी ${g.gen}`, `Generation ${g.gen}`)}</span>
+            {g.gen === 'III' && (
+                <span style={{ display: 'inline-block', marginLeft: '0.6rem', fontSize: '0.7rem', fontWeight: 700, color: 'var(--navy-950)', background: 'linear-gradient(135deg, var(--gold-400), var(--gold-600))', padding: '0.2rem 0.7rem', borderRadius: 'var(--radius-xl)', verticalAlign: 'middle' }}>
+                    {t('वर्तमान प्रधान', 'Current Head')}
+                </span>
+            )}
             <h3 style={{ fontFamily: 'var(--font-hindi)', marginBottom: '0.15rem', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)' }}>{lang === 'hi' ? g.name : g.nameEn}</h3>
             {lang === 'en' && <p style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-hindi)' }}>{g.name}</p>}
             <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '1rem' }}>{t(g.era, g.eraEn)}</p>
