@@ -2,6 +2,7 @@ import { useParams, Link, Navigate } from 'react-router-dom';
 import blogData from '../data/blog.json';
 import { useEffect, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import useSEO from '../hooks/useSEO';
 
 function useInView() {
     const ref = useRef(null);
@@ -35,6 +36,24 @@ export default function BlogPost() {
     const pageRef = useInView();
     const post = blogData.find(p => p.id === slug);
     const { t, lang } = useLanguage();
+
+    useSEO({
+        title: post ? `${lang === 'hi' ? post.title : post.titleEn} | Adhbhut Gyaan` : t('ब्लॉग | Adhbhut Gyaan', 'Blog | Adhbhut Gyaan'),
+        description: post ? (lang === 'hi' ? post.excerpt : post.excerptEn) : '',
+        path: post ? `/blog/${post.id}` : '/blog',
+        image: post ? `https://www.adhbhutgyaan.com/images/${post.image}` : undefined,
+        jsonLd: post ? {
+            '@context': 'https://schema.org',
+            '@type': 'BlogPosting',
+            headline: lang === 'hi' ? post.title : post.titleEn,
+            description: lang === 'hi' ? post.excerpt : post.excerptEn,
+            image: `https://www.adhbhutgyaan.com/images/${post.image}`,
+            datePublished: post.date,
+            author: { '@type': 'Organization', name: 'Adhbhut Gyaan' },
+            publisher: { '@type': 'Organization', name: 'Adhbhut Gyaan' },
+            mainEntityOfPage: `https://www.adhbhutgyaan.com/blog/${post.id}`,
+        } : null,
+    });
 
     if (!post) return <Navigate to="/blog" replace />;
 

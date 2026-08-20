@@ -2,10 +2,17 @@ import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import servicesData from '../data/services.json';
 import { useLanguage } from '../context/LanguageContext';
+import useSEO from '../hooks/useSEO';
 
 export default function Services() {
     const { hash } = useLocation();
     const { t, lang } = useLanguage();
+
+    useSEO({
+        title: t('हमारी पूजा सेवाएं | Adhbhut Gyaan', 'Our Pooja Services | Adhbhut Gyaan'),
+        description: t('रुद्राभिषेक, कालसर्प दोष, त्रिपिंडी श्राद्ध, दस महाविद्या पाठ सहित 10+ प्रामाणिक पूजा सेवाएं — बनारस के विद्वान पंडितों द्वारा।', 'Rudrabhishek, Kalsarp Dosh Nivaran, Tripindi Shradh, Dus Mahavidya Paath and 10+ other authentic pooja services performed by learned Pandits of Banaras.'),
+        path: '/services',
+    });
 
     useEffect(() => {
         if (hash) {

@@ -1,8 +1,15 @@
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
+import useSEO from '../hooks/useSEO';
 
 export default function Privacy() {
     const { t } = useLanguage();
+
+    useSEO({
+        title: t('गोपनीयता नीति | Adhbhut Gyaan', 'Privacy Policy | Adhbhut Gyaan'),
+        description: t('हम आपकी जानकारी कैसे एकत्र और उपयोग करते हैं।', 'How we collect and use your information.'),
+        path: '/privacy',
+    });
 
     return (
         <div>

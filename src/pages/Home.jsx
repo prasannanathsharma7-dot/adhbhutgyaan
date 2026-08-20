@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import servicesData from '../data/services.json';
 import { useLanguage } from '../context/LanguageContext';
 import { triptych, videoClips, youtubeUploadsPlaylistId, youtubeChannelId } from '../data/media';
+import useSEO from '../hooks/useSEO';
 
 function useInView() {
     const ref = useRef();
@@ -22,6 +23,12 @@ function useInView() {
 export default function Home() {
     const pageRef = useInView();
     const { t, lang } = useLanguage();
+
+    useSEO({
+        title: t('अद्भुत ज्ञान | Adhbhut Gyaan - काशी में ऑनलाइन पूजा बुकिंग', 'Adhbhut Gyaan | Online Pooja Booking in Varanasi'),
+        description: t('बनारस के अनुभवी पंडितों द्वारा रुद्राभिषेक, कालसर्प दोष, त्रिपिंडी श्राद्ध जैसी सभी पूजा सेवाएं ऑनलाइन बुक करें।', 'Book authentic Hindu poojas, havans, and rituals performed by experienced Banaras pandits — Rudrabhishek, Kalsarp Dosh, Tripindi Shradh, and more.'),
+        path: '/',
+    });
 
     return (
         <div ref={pageRef}>

@@ -3,6 +3,7 @@ import blogData from '../data/blog.json';
 import { useEffect, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { gallery, videoClips } from '../data/media';
+import useSEO from '../hooks/useSEO';
 
 function useInView() {
     const ref = useRef(null);
@@ -34,6 +35,12 @@ function useInView() {
 export default function Blog() {
     const pageRef = useInView();
     const { t, lang } = useLanguage();
+
+    useSEO({
+        title: t('ब्लॉग — पूजा विधि व ज्योतिष ज्ञान | Adhbhut Gyaan', 'Blog — Pooja Rituals & Astrology Knowledge | Adhbhut Gyaan'),
+        description: t('पूजा विधि, ज्योतिष उपाय और काशी के आध्यात्मिक ज्ञान से जुड़े विस्तृत लेख।', 'In-depth articles on pooja rituals, astrological remedies, and the spiritual knowledge of Kashi.'),
+        path: '/blog',
+    });
 
     return (
         <div ref={pageRef}>

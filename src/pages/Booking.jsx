@@ -3,12 +3,19 @@ import { Link, useSearchParams } from 'react-router-dom';
 import servicesData from '../data/services.json';
 import { useLanguage } from '../context/LanguageContext';
 import { gallery, videoClips } from '../data/media';
+import useSEO from '../hooks/useSEO';
 
 export default function Booking() {
     const [searchParams] = useSearchParams();
     const preServiceId = searchParams.get('service');
     const prePkgName = searchParams.get('package');
     const { t, lang } = useLanguage();
+
+    useSEO({
+        title: t('पूजा बुक करें | Adhbhut Gyaan', 'Book a Pooja | Adhbhut Gyaan'),
+        description: t('4 सरल चरणों में अपनी पूजा बुक करें — सेवा चुनें, पैकेज चुनें, विवरण भरें, और WhatsApp पर पुष्टि करें।', 'Book your pooja in 4 simple steps — select a service, choose a package, enter your details, and confirm on WhatsApp.'),
+        path: '/booking',
+    });
 
     const [step, setStep] = useState(1);
     const [selectedService, setSelectedService] = useState(null);

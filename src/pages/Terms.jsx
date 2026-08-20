@@ -1,8 +1,15 @@
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
+import useSEO from '../hooks/useSEO';
 
 export default function Terms() {
     const { t } = useLanguage();
+
+    useSEO({
+        title: t('नियम एवं शर्तें | Adhbhut Gyaan', 'Terms of Service | Adhbhut Gyaan'),
+        description: t('इस वेबसाइट के उपयोग की शर्तें।', 'Terms and conditions for using this website.'),
+        path: '/terms',
+    });
 
     return (
         <div>
