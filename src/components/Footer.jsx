@@ -65,7 +65,7 @@ export default function Footer() {
                         <h4 className="footer-heading">{t('संपर्क करें', 'Contact Us')}</h4>
                         <div className="footer-contact-item">
                             <span className="footer-contact-icon">📍</span>
-                            <span>J11/19, Pt Umang Nath Sharma, Nati Imli Rd<br/>Ishwargangi, Bunker Colony, Varanasi, UP 221001</span>
+                            <span>J11/19, Pt Umang Nath Sharma, Nati Imli Rd<br/>Ishwargangi, Varanasi, UP 221001</span>
                         </div>
                         <div className="footer-contact-item">
                             <span className="footer-contact-icon">📞</span>
