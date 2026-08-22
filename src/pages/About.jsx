@@ -31,8 +31,8 @@ const generations = [
         era: 'वर्तमान — आधुनिक मनीषी',
         eraEn: 'Present Day — The Modern Luminary',
         img: '/images/heritage/umang-with-ayodhya-portrait.jpg',
-        body: 'पारिवारिक परम्परा और आधुनिक शैक्षणिक कठोरता के बीच की खाई को सफलतापूर्वक पाटा है। यूनिवर्सिटी ऑफ मैरीलैंड, अमेरिका द्वारा "डॉक्टर ऑफ एस्ट्रोलॉजी" की प्रतिष्ठित उपाधि से सम्मानित। सन् 2019 में जापान के Hulu TV द्वारा इनके जीवन और ज्योतिषीय पद्धति की वैज्ञानिक प्रामाणिकता पर एक विस्तृत वृत्तचित्र (डॉक्यूमेंट्री) बनाई गई।',
-        bodyEn: 'Has meticulously bridged the chasm between ancestral tradition and modern academic rigor. Conferred the prestigious degree of Doctor of Astrology by the University of Maryland, USA. In 2019, Japan\'s Hulu TV produced a documentary on Dr. Umang Nath Sharma\'s life and methodology.',
+        body: 'पारिवारिक परम्परा और आधुनिक शैक्षणिक कठोरता के बीच की खाई को सफलतापूर्वक पाटा है। मैरीलैंड स्टेट यूनिवर्सिटी, अमेरिका द्वारा "डॉक्टर ऑफ एस्ट्रोलॉजी" की प्रतिष्ठित उपाधि से सम्मानित। सन् 2019 में जापान के Hulu TV द्वारा इनके जीवन और ज्योतिषीय पद्धति की वैज्ञानिक प्रामाणिकता पर एक विस्तृत वृत्तचित्र (डॉक्यूमेंट्री) बनाई गई।',
+        bodyEn: 'Has meticulously bridged the chasm between ancestral tradition and modern academic rigor. Conferred the prestigious degree of Doctor of Astrology by Maryland State University, USA. In 2019, Japan\'s Hulu TV produced a documentary on Dr. Umang Nath Sharma\'s life and methodology.',
     },
 ];
 
@@ -161,8 +161,8 @@ export default function About() {
                             </p>
                             <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8 }}>
                                 {t(
-                                    'यूनिवर्सिटी ऑफ मैरीलैंड, अमेरिका द्वारा "डॉक्टर ऑफ एस्ट्रोलॉजी" की उपाधि से सम्मानित, और सन् 2019 में जापान के Hulu TV द्वारा जिन पर एक वृत्तचित्र बनाई गई — डॉ. शर्मा ही अद्भुत ज्ञान की समस्त ज्योतिषीय गतिविधियों का मार्गदर्शन करते हैं।',
-                                    'Conferred the degree of "Doctor of Astrology" by the University of Maryland, USA, and the subject of a 2019 documentary by Japan\'s Hulu TV — Dr. Sharma personally guides every astrological activity at Adhbhut Gyaan.'
+                                    'मैरीलैंड स्टेट यूनिवर्सिटी, अमेरिका द्वारा "डॉक्टर ऑफ एस्ट्रोलॉजी" की उपाधि से सम्मानित, और सन् 2019 में जापान के Hulu TV द्वारा जिन पर एक वृत्तचित्र बनाई गई — डॉ. शर्मा ही अद्भुत ज्ञान की समस्त ज्योतिषीय गतिविधियों का मार्गदर्शन करते हैं।',
+                                    'Conferred the degree of "Doctor of Astrology" by Maryland State University, USA, and the subject of a 2019 documentary by Japan\'s Hulu TV — Dr. Sharma personally guides every astrological activity at Adhbhut Gyaan.'
                                 )}
                             </p>
                         </div>
