@@ -215,7 +215,7 @@ export default function Admin() {
                                 {it.phone && <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>📞 {it.phone}</div>}
                                 <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.75rem' }}>
                                     <button type="button" className="btn btn-primary" style={{ padding: '0.4rem 0.9rem' }} disabled={it.status === 'approved'} onClick={() => reviewAction(it._id, 'approved')}>Approve</button>
-                                    <button type="button" className="btn btn-outline-dark" style={{ padding: '0.4rem 0.9rem' }} disabled={it.status === 'rejected'} onClick={() => reviewAction(it._id, 'rejected')}>Reject</button>
+                                    <button type="button" className="btn btn-outline-dark" style={{ padding: '0.4rem 0.9rem' }} disabled={it.status === 'rejected'} onClick={() => { if (window.confirm('Reject this review? It will not be shown on the site.')) reviewAction(it._id, 'rejected'); }}>Reject</button>
                                 </div>
                             </div>
                         ))}
