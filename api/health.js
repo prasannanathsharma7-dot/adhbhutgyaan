@@ -1,7 +1,7 @@
 const { getDb, withCors } = require('./_db');
 
 module.exports = async (req, res) => {
-    withCors(res);
+    withCors(req, res);
 
     if (req.method === 'OPTIONS') {
         res.status(200).end();

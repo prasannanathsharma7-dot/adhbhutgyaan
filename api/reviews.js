@@ -1,5 +1,5 @@
 const { ObjectId } = require('mongodb');
-const { getDb, withCors } = require('./_db');
+const { getDb, withCors, capStr, checkRateLimit } = require('./_db');
 
 function isAdmin(req) {
     const providedKey = req.headers['x-admin-key'] || req.query.key;
@@ -7,7 +7,7 @@ function isAdmin(req) {
 }
 
 module.exports = async (req, res) => {
-    withCors(res);
+    withCors(req, res);
 
     if (req.method === 'OPTIONS') {
         res.status(200).end();
@@ -16,28 +16,35 @@ module.exports = async (req, res) => {
 
     // ---- Submit a new review (public) ----
     if (req.method === 'POST') {
-        const body = req.body || {};
-        const name = (body.name || '').toString().trim();
-        const text = (body.text || '').toString().trim();
-        let rating = parseInt(body.rating, 10);
-
-        if (!name || !text) {
-            res.status(400).json({ ok: false, error: 'name and text are required' });
-            return;
-        }
-        if (!Number.isInteger(rating) || rating < 1 || rating > 5) {
-            rating = 5;
-        }
-
         try {
             const db = await getDb();
+
+            const allowed = await checkRateLimit(db, req, 'reviews', { limit: 5, windowMs: 10 * 60 * 1000 });
+            if (!allowed) {
+                res.status(429).json({ ok: false, error: 'Too many requests. Please try again in a few minutes.' });
+                return;
+            }
+
+            const body = req.body || {};
+            const name = capStr(body.name, 100);
+            const text = capStr(body.text, 1500);
+            let rating = parseInt(body.rating, 10);
+
+            if (!name || !text) {
+                res.status(400).json({ ok: false, error: 'name and text are required' });
+                return;
+            }
+            if (!Number.isInteger(rating) || rating < 1 || rating > 5) {
+                rating = 5;
+            }
+
             const doc = {
                 name,
-                phone: (body.phone || '').toString().trim(),
+                phone: capStr(body.phone, 30),
                 text,
                 rating,
-                serviceName: (body.serviceName || '').toString().trim(),
-                location: (body.location || '').toString().trim(),
+                serviceName: capStr(body.serviceName, 200),
+                location: capStr(body.location, 100),
                 status: 'pending', // pending -> approved | rejected
                 source: 'website',
                 createdAt: new Date(),

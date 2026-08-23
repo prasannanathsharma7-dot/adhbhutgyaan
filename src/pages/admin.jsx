@@ -35,6 +35,21 @@ function StatusBadge({ status }) {
     );
 }
 
+function StatusSelect({ value, options, onChange }) {
+    return (
+        <select
+            className="form-input"
+            style={{ padding: '0.3rem 0.6rem', fontSize: '0.8rem', width: 'auto' }}
+            value={value || options[0]}
+            onChange={e => onChange(e.target.value)}
+        >
+            {options.map(opt => (
+                <option key={opt} value={opt}>{opt}</option>
+            ))}
+        </select>
+    );
+}
+
 export default function Admin() {
     useSEO({ title: 'Admin | Adhbhut Gyaan', noindex: true });
 
@@ -97,6 +112,22 @@ export default function Admin() {
     const reviewAction = async (id, status) => {
         try {
             const res = await fetch('/api/reviews', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json', 'x-admin-key': key },
+                body: JSON.stringify({ id, status }),
+            });
+            const data = await res.json();
+            if (data.ok) {
+                setItems(prev => prev.map(it => (it._id === id ? { ...it, status } : it)));
+            }
+        } catch {
+            /* ignore */
+        }
+    };
+
+    const updateStatus = async (endpoint, id, status) => {
+        try {
+            const res = await fetch(endpoint, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json', 'x-admin-key': key },
                 body: JSON.stringify({ id, status }),
@@ -183,6 +214,13 @@ export default function Admin() {
                                     {it.mode ? `Mode: ${it.mode} · ` : ''}{it.preferredDate ? `Date: ${it.preferredDate} · ` : ''}{fmtDate(it.createdAt)}
                                 </div>
                                 {it.notes && <p style={{ fontSize: '0.9rem', marginTop: '0.5rem' }}>{it.notes}</p>}
+                                <div style={{ marginTop: '0.75rem' }}>
+                                    <StatusSelect
+                                        value={it.status}
+                                        options={['new', 'contacted', 'confirmed', 'completed', 'cancelled']}
+                                        onChange={(status) => updateStatus('/api/bookings', it._id, status)}
+                                    />
+                                </div>
                             </div>
                         ))}
 
@@ -190,12 +228,22 @@ export default function Admin() {
                             <div key={it._id} style={{ background: 'white', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-lg)', padding: '1rem 1.25rem', boxShadow: 'var(--shadow-md)' }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', gap: '0.5rem', flexWrap: 'wrap' }}>
                                     <strong>{it.name}</strong>
-                                    <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{fmtDate(it.createdAt)}</span>
+                                    <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                        <StatusBadge status={it.status} />
+                                        <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{fmtDate(it.createdAt)}</span>
+                                    </span>
                                 </div>
                                 <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginTop: '0.35rem' }}>
                                     📞 <a href={`tel:${it.phone}`}>{it.phone}</a>{it.email ? ` · ✉️ ${it.email}` : ''}{it.subject ? ` · ${it.subject}` : ''}
                                 </div>
                                 <p style={{ fontSize: '0.9rem', marginTop: '0.5rem' }}>{it.message}</p>
+                                <div style={{ marginTop: '0.75rem' }}>
+                                    <StatusSelect
+                                        value={it.status}
+                                        options={['new', 'contacted', 'resolved']}
+                                        onChange={(status) => updateStatus('/api/contact', it._id, status)}
+                                    />
+                                </div>
                             </div>
                         ))}
 
