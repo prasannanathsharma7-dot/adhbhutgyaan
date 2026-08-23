@@ -62,7 +62,7 @@ export default function Home() {
                     {playHeroVideo && heroVideoOk ? (
                         <video
                             src="/videos/hero-diyas.mp4"
-                            poster="/images/havan-samuhik-wide.webp"
+                            poster="/images/havan-samuhik-wide.png"
                             autoPlay
                             muted
                             loop
@@ -71,7 +71,7 @@ export default function Home() {
                             onError={() => setHeroVideoOk(false)}
                         />
                     ) : (
-                        <img src="/images/havan-samuhik-wide.webp" alt={t('काशी में सम्पन्न सामूहिक हवन', 'Collective havan performed in Kashi')} width="1400" height="788" fetchPriority="high" />
+                        <img src="/images/havan-samuhik-wide.png" alt={t('काशी में सम्पन्न सामूहिक हवन', 'Collective havan performed in Kashi')} width="1400" height="788" fetchPriority="high" />
                     )}
                 </div>
                 <div className="hero-overlay" />
@@ -106,7 +106,7 @@ export default function Home() {
                     </div>
                     <div className="hero-visual">
                         <div className="hero-visual-ring">
-                            <img src="/images/devi-shringar-real.webp" alt={t('माँ का पुष्प श्रृंगार — काशी', 'Floral adornment of the Goddess — Kashi')} width="640" height="640" loading="lazy" />
+                            <img src="/images/devi-shringar-real.png" alt={t('माँ का पुष्प श्रृंगार — काशी', 'Floral adornment of the Goddess — Kashi')} width="640" height="640" loading="lazy" />
                         </div>
                     </div>
                 </div>
@@ -175,7 +175,7 @@ export default function Home() {
                         <h2 className="section-title">{t('काशी की परम्परा, आपके द्वार', "Kashi's Tradition, At Your Door")}</h2>
                         <p className="section-subtitle">{t('हजारों वर्षों की आध्यात्मिक परम्परा के वाहक, बनारस के अनुभवी पंडित — अब ऑनलाइन उपलब्ध।', 'Experienced Pandits of Banaras, carrying forward thousands of years of spiritual tradition — now available online.')}</p>
                     </div>
-                    <div className="om-divider"><img src="/images/logo.webp" alt="" className="inline-logo-md" width="512" height="512" /></div>
+                    <div className="om-divider"><img src="/images/logo.png" alt="" className="inline-logo-md" width="512" height="512" /></div>
                     <div className="features-grid">
                         {[
                             { icon: '🏛️', title: t('काशी के विद्वान पंडित', 'Learned Pandits of Kashi'), desc: t('बनारस हिंदू विश्वविद्यालय और संस्कृत विद्यापीठ से शिक्षित, अनुभवी एवं प्रमाणित पंडित।', 'Experienced, certified Pandits educated at Banaras Hindu University and Sanskrit Vidyapeeth.') },
@@ -285,7 +285,7 @@ export default function Home() {
             {/* CTA */}
             <section className="cta-section" id="cta">
                 <div className="cta-bg">
-                    <img src="/images/havan-samuhik-wide.webp" alt={t('सामूहिक हवन — काशी', 'Collective havan in Kashi')} width="1400" height="788" loading="lazy" />
+                    <img src="/images/havan-samuhik-wide.png" alt={t('सामूहिक हवन — काशी', 'Collective havan in Kashi')} width="1400" height="788" loading="lazy" />
                 </div>
                 <div className="cta-overlay" />
                 <div className="cta-content container">
