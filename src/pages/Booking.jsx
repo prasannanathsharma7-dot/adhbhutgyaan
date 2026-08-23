@@ -165,7 +165,7 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                         </p>
                     </div>
                     <div style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: 'var(--shadow-lg)', border: '1px solid var(--border-gold)' }}>
-                        <video controls preload="none" poster="/images/gallery/welcome-poster.jpg" playsInline style={{ width: '100%', display: 'block', background: '#000', aspectRatio: '16/9' }}>
+                        <video controls preload="none" poster="/images/gallery/welcome-poster.webp" playsInline style={{ width: '100%', display: 'block', background: '#000', aspectRatio: '16/9' }}>
                             <source src="/videos/welcome.mp4" type="video/mp4" />
                         </video>
                     </div>
@@ -195,32 +195,45 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
             <section className="section">
                 <div className="container" style={{ maxWidth: 900, margin: '0 auto' }}>
                     {/* Steps */}
-                    <div className="wizard-steps">
+                    <div className="wizard-steps" role="list">
                         {steps.map((label, i) => (
-                            <div key={i} className={`wizard-step ${step === i + 1 ? 'active' : ''} ${step > i + 1 ? 'completed' : ''}`}>
-                                <div className="wizard-step-number">{i + 1}</div>
+                            <div
+                                key={i}
+                                role="listitem"
+                                className={`wizard-step ${step === i + 1 ? 'active' : ''} ${step > i + 1 ? 'completed' : ''}`}
+                                aria-current={step === i + 1 ? 'step' : undefined}
+                            >
+                                <div className="wizard-step-number" aria-hidden="true">{i + 1}</div>
                                 <span className="wizard-step-label">{label}</span>
                             </div>
                         ))}
                     </div>
 
+                    {/* Announces progress to screen readers when the step changes,
+                        since the visual indicator alone conveys it only sighted users. */}
+                    <p className="sr-only" role="status" aria-live="polite">
+                        {t(`चरण ${step} / ${steps.length}: ${steps[step - 1]}`, `Step ${step} of ${steps.length}: ${steps[step - 1]}`)}
+                    </p>
+
                     {/* Step 1 */}
                     {step === 1 && (
                         <div className="wizard-panel">
                             <h3 style={{ textAlign: 'center', marginBottom: '0.5rem' }}>{t('पूजा सेवा चुनें', 'Select a Pooja Service')}</h3>
+                            <p style={{ textAlign: 'center', color: 'var(--text-muted)', marginBottom: '1.5rem', fontSize: '0.9rem' }}>
+                                {t('नीचे से कोई भी सेवा चुनें', 'Tap any service below')}
+                            </p>
                             <div className="service-select-grid">
                                 {servicesData.map(svc => (
-                                    <div key={svc.id}
+                                    <button
+                                        type="button"
+                                        key={svc.id}
                                         className={`service-select-card ${selectedService?.id === svc.id ? 'selected' : ''}`}
                                         onClick={() => setSelectedService(svc)}
-                                        style={{ padding: 0, overflow: 'hidden' }}
+                                        aria-pressed={selectedService?.id === svc.id}
                                     >
-                                        <img src={`/images/${svc.image}`} alt={svc.nameEn} loading="lazy" style={{ width: '100%', height: '140px', objectFit: 'cover', display: 'block' }} />
-                                        <div style={{ padding: '1.25rem' }}>
-                                            <h4 style={{ fontFamily: 'var(--font-hindi)', marginBottom: '0.25rem' }}>{lang === 'hi' ? svc.name : svc.nameEn}</h4>
-                                            {lang === 'hi' && <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{svc.nameEn}</p>}
-                                        </div>
-                                    </div>
+                                        <span className="service-select-name">{lang === 'hi' ? svc.name : svc.nameEn}</span>
+                                        {lang === 'hi' && <span className="service-select-name-en">{svc.nameEn}</span>}
+                                    </button>
                                 ))}
                             </div>
                             <div style={{ textAlign: 'center', marginTop: '2rem' }}>
