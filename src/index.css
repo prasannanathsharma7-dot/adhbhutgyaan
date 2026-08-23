@@ -1159,6 +1159,67 @@ h3 {
     letter-spacing: 1px;
 }
 
+/* ===== Astrology Consultation ===== */
+.astro-consult-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+    .astro-consult-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.astro-consult-photo img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    border: 3px solid var(--border-gold);
+    box-shadow: var(--shadow-md);
+}
+
+.astro-consult-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+}
+
+.astro-consult-card {
+    background: white;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    padding: clamp(1.25rem, 3vw, 1.75rem);
+    box-shadow: var(--shadow-md);
+    transition: all var(--dur-normal) var(--ease-out);
+}
+
+.astro-consult-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--border-gold);
+}
+
+.astro-consult-icon {
+    font-size: 1.75rem;
+    display: block;
+    margin-bottom: 0.6rem;
+}
+
+.astro-consult-card h3 {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    margin-bottom: 0.4rem;
+}
+
+.astro-consult-card p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
 /* ===== Features ===== */
 .features-grid {
     display: grid;

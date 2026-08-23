@@ -82,8 +82,8 @@ export default function Home() {
                         <p className="hero-title-en">{t('पं. उमंग नाथ शर्मा — काशी, वाराणसी', 'Pt. Umang Nath Sharma — Kashi, Varanasi')}</p>
                         <p className="hero-desc">
                             {t(
-                                <>बनारस (काशी) के अनुभवी और विद्वान पंडितों द्वारा<br />सभी प्रकार की पूजा, पाठ, जप और हवन सेवाएं<br /><strong style={{ color: 'var(--gold-300)' }}>घर बैठे ऑनलाइन बुक करें</strong></>,
-                                <>Authentic pooja, paath, jaap &amp; havan services<br />by experienced, learned Pandits of Banaras (Kashi)<br /><strong style={{ color: 'var(--gold-300)' }}>Book online from anywhere in the world</strong></>
+                                <>बनारस (काशी) के अनुभवी और विद्वान पंडितों द्वारा<br />सभी प्रकार की पूजा, पाठ, जप, हवन एवं ज्योतिष परामर्श<br /><strong style={{ color: 'var(--gold-300)' }}>घर बैठे ऑनलाइन बुक करें</strong></>,
+                                <>Authentic pooja, paath, jaap, havan &amp; astrology consultation<br />by experienced, learned Pandits of Banaras (Kashi)<br /><strong style={{ color: 'var(--gold-300)' }}>Book online from anywhere in the world</strong></>
                             )}
                         </p>
                         <div className="hero-actions">
@@ -163,6 +163,54 @@ export default function Home() {
                     </div>
                     <div className="text-center" style={{ marginTop: '2rem' }}>
                         <Link to="/services" className="btn btn-gold">{t('सभी सेवाएं देखें →', 'View All Services →')}</Link>
+                    </div>
+                </div>
+            </section>
+
+            {/* ASTROLOGY CONSULTATION */}
+            <section className="section section-warm" id="astrology-consultation">
+                <div className="container">
+                    <div className="text-center fade-up">
+                        <span className="section-label">{t('ज्योतिष परामर्श', 'Astrology Consultation')}</span>
+                        <h2 className="section-title">{t('डॉ. उमंग नाथ शर्मा से ज्योतिष परामर्श लें', 'Astrology Consultation with Dr. Umang Nath Sharma')}</h2>
+                        <p className="section-subtitle">
+                            {t(
+                                'कुंडली विश्लेषण, ग्रह दोष निवारण, विवाह मिलान और जीवन की हर समस्या का ज्योतिषीय समाधान — काशी की 400+ वर्षों की परम्परा के साथ।',
+                                'Kundli analysis, planetary dosh remedies, marriage matching, and astrological solutions for every life concern — backed by 400+ years of Kashi tradition.'
+                            )}
+                        </p>
+                    </div>
+                    <div className="om-divider">ॐ</div>
+                    <div className="astro-consult-grid">
+                        <div className="astro-consult-photo fade-up">
+                            <img src="/images/heritage/umang-with-ayodhya-portrait.jpg" alt={t('डॉ. उमंग नाथ शर्मा', 'Dr. Umang Nath Sharma')} loading="lazy" />
+                        </div>
+                        <div className="astro-consult-options">
+                            <div className="astro-consult-card fade-up">
+                                <span className="astro-consult-icon">🏛️</span>
+                                <h3>{t('ऑफलाइन परामर्श', 'Offline Consultation')}</h3>
+                                <p>
+                                    {t(
+                                        'सुबह 9 बजे से दोपहर 12 बजे के बीच सीधे हमारे स्थान (वाराणसी) पर आकर व्यक्तिगत रूप से परामर्श लें।',
+                                        'Visit us directly at our location in Varanasi between 9 AM – 12 PM for an in-person consultation.'
+                                    )}
+                                </p>
+                            </div>
+                            <div className="astro-consult-card fade-up stagger-2">
+                                <span className="astro-consult-icon">🌐</span>
+                                <h3>{t('ऑनलाइन परामर्श', 'Online Consultation')}</h3>
+                                <p>
+                                    {t(
+                                        'देश-विदेश कहीं से भी — WhatsApp पर पूछताछ करें या अपनी अपॉइंटमेंट बुक करें।',
+                                        'From anywhere in the world — send an enquiry on WhatsApp or book your appointment.'
+                                    )}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="text-center fade-up" style={{ marginTop: '2rem', display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+                        <a href={`https://wa.me/919278148269?text=${encodeURIComponent(t('नमस्कार! मुझे ज्योतिष परामर्श के लिए अपॉइंटमेंट चाहिए।', 'Hello! I would like to book an astrology consultation appointment.'))}`} target="_blank" rel="noreferrer" className="btn btn-whatsapp btn-lg">💬 {t('अपॉइंटमेंट के लिए पूछें', 'Enquire for Appointment')}</a>
+                        <Link to="/contact" className="btn btn-outline btn-lg">📅 {t('अपॉइंटमेंट बुक करें', 'Book Appointment')}</Link>
                     </div>
                 </div>
             </section>

@@ -45,7 +45,7 @@ export default function Services() {
     }, [hash]);
 
     const overseasItems = [
-        t('एस्ट्रो परामर्श पैकेज — ऑनलाइन', 'Astro consultation packages — online'),
+        t('डॉ. उमंग नाथ शर्मा से ज्योतिष परामर्श — ऑनलाइन पूछताछ करें या अपॉइंटमेंट बुक करें', 'Astrology consultation with Dr. Umang Nath Sharma — enquire online or book an appointment'),
         t('पूजा पैकेज, श्राद्ध सहित', 'Pooja packages, including Shradh etc.'),
         t('ज्ञान सत्र एवं वार्ताएं — ऑनलाइन', 'Knowledge sessions & talks — online'),
         t('दैनिक निःशुल्क प्रसारण में ऑनलाइन पूजा सत्र जुड़ें', 'Join daily free telecast of online Pooja sessions'),
@@ -53,6 +53,7 @@ export default function Services() {
     ];
 
     const varanasiItems = [
+        t('डॉ. उमंग नाथ शर्मा से ज्योतिष परामर्श — सुबह 9 बजे से दोपहर 12 बजे तक हमारे स्थान पर व्यक्तिगत रूप से आएं', 'Astrology consultation with Dr. Umang Nath Sharma — visit our location in person between 9 AM – 12 PM'),
         t('ज्योतिष एवं काशी के इतिहास पर सत्र — आपके स्थान पर लाइव पूजा दर्शन व हाई-टी सत्र सहित', 'Astrology & Kashi-history session — visit to your place with live Pooja & high-tea'),
         t('ऑफ़लाइन पूजा बुकिंग — विभिन्न मंदिरों या किसी भी स्थान पर व्यक्तिगत रूप से', 'Offline Pooja bookings — in person, at temples or any venue'),
         t('व्यक्तिगत रूप से पंडित बुक करें', 'Book a Pandit, in person'),
@@ -66,8 +67,8 @@ export default function Services() {
                     <div className="breadcrumb">
                         <Link to="/">{t('होम', 'Home')}</Link><span>›</span><span>{t('सेवाएं', 'Services')}</span>
                     </div>
-                    <h1>{t('हमारी पूजा सेवाएं', 'Our Pooja Services')}</h1>
-                    <p className="subtitle">{t('हमारी पवित्र पूजा सेवाएं', 'Our Sacred Pooja Services')}</p>
+                    <h1>{t('हमारी पूजा सेवाएं एवं ज्योतिष परामर्श', 'Our Pooja Services & Astrology Consultation')}</h1>
+                    <p className="subtitle">{t('हमारी पवित्र पूजा सेवाएं एवं डॉ. उमंग नाथ शर्मा द्वारा ज्योतिष परामर्श', 'Our Sacred Pooja Services & Astrology Consultation with Dr. Umang Nath Sharma')}</p>
                 </div>
             </header>
 
