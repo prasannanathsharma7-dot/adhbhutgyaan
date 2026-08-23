@@ -106,7 +106,7 @@ export default function Home() {
                     </div>
                     <div className="hero-visual">
                         <div className="hero-visual-ring">
-                            <img src="/images/devi-shringar-real.png" alt={t('माँ का पुष्प श्रृंगार — काशी', 'Floral adornment of the Goddess — Kashi')} width="640" height="640" loading="lazy" />
+                            <img src="/images/gallery/devi-shringar.jpg" alt={t('माँ का पुष्प श्रृंगार — काशी', 'Floral adornment of the Goddess — Kashi')} width="640" height="640" loading="lazy" />
                         </div>
                     </div>
                 </div>
