@@ -117,7 +117,7 @@ export default function Services() {
                                 {index % 2 === 0 ? (
                                     <>
                                         <div className="about-image">
-                                            <img src={`/images/${service.image}`} alt={service.nameEn} loading="lazy" />
+                                            <img src={`/images/${service.image}`} alt={service.nameEn} width="640" height="640" loading="lazy" />
                                         </div>
                                         <ServiceInfo service={service} t={t} lang={lang} />
                                     </>
@@ -125,7 +125,7 @@ export default function Services() {
                                     <>
                                         <ServiceInfo service={service} t={t} lang={lang} />
                                         <div className="about-image">
-                                            <img src={`/images/${service.image}`} alt={service.nameEn} loading="lazy" />
+                                            <img src={`/images/${service.image}`} alt={service.nameEn} width="640" height="640" loading="lazy" />
                                         </div>
                                     </>
                                 )}
