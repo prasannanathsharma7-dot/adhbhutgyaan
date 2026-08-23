@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import servicesData from '../data/services.json';
 import { useLanguage } from '../context/LanguageContext';
@@ -23,10 +23,34 @@ function useInView() {
 export default function Home() {
     const pageRef = useInView();
     const { t, lang } = useLanguage();
+    const [liveReviews, setLiveReviews] = useState(null);
+    // Only autoplay the ambient hero clip when the visitor hasn't asked their
+    // device to reduce motion; otherwise the still image is shown instead.
+    const [playHeroVideo, setPlayHeroVideo] = useState(false);
+    const [heroVideoOk, setHeroVideoOk] = useState(true);
+
+    useEffect(() => {
+        const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+        const apply = () => setPlayHeroVideo(!mq.matches);
+        apply();
+        mq.addEventListener('change', apply);
+        return () => mq.removeEventListener('change', apply);
+    }, []);
+
+    useEffect(() => {
+        fetch('/api/reviews?limit=6')
+            .then((r) => r.json())
+            .then((data) => {
+                if (data.ok && Array.isArray(data.items) && data.items.length >= 3) {
+                    setLiveReviews(data.items);
+                }
+            })
+            .catch(() => { /* fall back to static testimonials below */ });
+    }, []);
 
     useSEO({
-        title: t('अद्भुत ज्ञान | Adhbhut Gyaan - काशी में ऑनलाइन पूजा बुकिंग', 'Adhbhut Gyaan | Online Pooja Booking in Varanasi'),
-        description: t('बनारस के अनुभवी पंडितों द्वारा रुद्राभिषेक, कालसर्प दोष, त्रिपिंडी श्राद्ध जैसी सभी पूजा सेवाएं ऑनलाइन बुक करें।', 'Book authentic Hindu poojas, havans, and rituals performed by experienced Banaras pandits — Rudrabhishek, Kalsarp Dosh, Tripindi Shradh, and more.'),
+        title: t('पं. उमंग नाथ शर्मा | अद्भुत ज्ञान — काशी, वाराणसी में ऑनलाइन पूजा बुकिंग', 'Pt. Umang Nath Sharma | Adhbhut Gyaan — Pandit & Online Pooja Booking in Kashi, Varanasi'),
+        description: t('पं. उमंग नाथ शर्मा (काशी, वाराणसी) द्वारा रुद्राभिषेक, कालसर्प दोष, त्रिपिंडी श्राद्ध जैसी सभी पूजा सेवाएं — ऑनलाइन या वाराणसी में प्रत्यक्ष बुक करें।', 'Book Rudrabhishek, Kalsarp Dosh Nivaran, Tripindi Shradh and other authentic poojas with Pt. Umang Nath Sharma and the pandits of Kashi (Varanasi) — online or in person in Banaras.'),
         path: '/',
     });
 
@@ -35,14 +59,27 @@ export default function Home() {
             {/* HERO */}
             <section className="hero" id="hero">
                 <div className="hero-bg">
-                    <img src="/images/hero-banaras.jpg" alt="Varanasi Ghats at Sunrise" />
+                    {playHeroVideo && heroVideoOk ? (
+                        <video
+                            src="/videos/hero-diyas.mp4"
+                            poster="/images/havan-samuhik-wide.webp"
+                            autoPlay
+                            muted
+                            loop
+                            playsInline
+                            aria-hidden="true"
+                            onError={() => setHeroVideoOk(false)}
+                        />
+                    ) : (
+                        <img src="/images/havan-samuhik-wide.webp" alt={t('काशी में सम्पन्न सामूहिक हवन', 'Collective havan performed in Kashi')} width="1400" height="788" fetchPriority="high" />
+                    )}
                 </div>
                 <div className="hero-overlay" />
                 <div className="hero-content">
                     <div className="hero-text">
                         <div className="hero-om">ॐ</div>
                         <h1 className="hero-title-hindi">{t('अद्भुत ज्ञान', 'Adhbhut Gyaan')}</h1>
-                        <p className="hero-title-en">{t('Adhbhut Gyaan', 'अद्भुत ज्ञान')}</p>
+                        <p className="hero-title-en">{t('पं. उमंग नाथ शर्मा — काशी, वाराणसी', 'Pt. Umang Nath Sharma — Kashi, Varanasi')}</p>
                         <p className="hero-desc">
                             {t(
                                 <>बनारस (काशी) के अनुभवी और विद्वान पंडितों द्वारा<br />सभी प्रकार की पूजा, पाठ, जप और हवन सेवाएं<br /><strong style={{ color: 'var(--gold-300)' }}>घर बैठे ऑनलाइन बुक करें</strong></>,
@@ -50,7 +87,7 @@ export default function Home() {
                             )}
                         </p>
                         <div className="hero-actions">
-                            <Link to="/services" className="btn btn-primary btn-lg"><img src="/images/logo.png" alt="" className="inline-logo" /> {t('सेवाएं देखें', 'View Services')}</Link>
+                            <Link to="/services" className="btn btn-primary btn-lg"><img src="/images/logo.webp" alt="" className="inline-logo" width="512" height="512" /> {t('सेवाएं देखें', 'View Services')}</Link>
                             <a href={`https://wa.me/919278148269?text=${encodeURIComponent(t('नमस्कार! मैं पूजा बुक करना चाहता हूँ।', 'Hello! I would like to book a pooja.'))}`} target="_blank" rel="noreferrer" className="btn btn-outline btn-lg">💬 {t('WhatsApp करें', 'WhatsApp Us')}</a>
                         </div>
                         <div className="hero-stats">
@@ -69,7 +106,7 @@ export default function Home() {
                     </div>
                     <div className="hero-visual">
                         <div className="hero-visual-ring">
-                            <img src="/images/bada-ganesh-ji.png" alt="Bada Ganesh Ji - Varanasi" />
+                            <img src="/images/devi-shringar-real.webp" alt={t('माँ का पुष्प श्रृंगार — काशी', 'Floral adornment of the Goddess — Kashi')} width="640" height="640" loading="lazy" />
                         </div>
                     </div>
                 </div>
@@ -138,7 +175,7 @@ export default function Home() {
                         <h2 className="section-title">{t('काशी की परम्परा, आपके द्वार', "Kashi's Tradition, At Your Door")}</h2>
                         <p className="section-subtitle">{t('हजारों वर्षों की आध्यात्मिक परम्परा के वाहक, बनारस के अनुभवी पंडित — अब ऑनलाइन उपलब्ध।', 'Experienced Pandits of Banaras, carrying forward thousands of years of spiritual tradition — now available online.')}</p>
                     </div>
-                    <div className="om-divider"><img src="/images/logo.png" alt="" className="inline-logo-md" /></div>
+                    <div className="om-divider"><img src="/images/logo.webp" alt="" className="inline-logo-md" width="512" height="512" /></div>
                     <div className="features-grid">
                         {[
                             { icon: '🏛️', title: t('काशी के विद्वान पंडित', 'Learned Pandits of Kashi'), desc: t('बनारस हिंदू विश्वविद्यालय और संस्कृत विद्यापीठ से शिक्षित, अनुभवी एवं प्रमाणित पंडित।', 'Experienced, certified Pandits educated at Banaras Hindu University and Sanskrit Vidyapeeth.') },
@@ -166,33 +203,40 @@ export default function Home() {
                         <h2 className="section-title">{t('हमारे भक्तगण क्या कहते हैं', 'What Our Devotees Say')}</h2>
                     </div>
                     <div className="testimonials-grid">
-                        {[
+                        {(liveReviews || [
                             {
                                 text: t('बनारस से दूर रहकर भी काशी के पंडित जी द्वारा इतनी शुद्ध विधि से पूजा करवा पाना बहुत अच्छा अनुभव रहा। पूरे परिवार को शांति मिली।', 'Even while living far from Banaras, having the pooja performed so authentically by a Kashi Pandit was a wonderful experience. Our whole family found peace.'),
-                                name: 'राजेश शर्मा', loc: t('दिल्ली, भारत', 'Delhi, India'), av: 'र'
+                                name: 'राजेश शर्मा', loc: t('दिल्ली, भारत', 'Delhi, India'), av: 'र', rating: 5,
                             },
                             {
                                 text: t('महामृत्युंजय जप के बाद पत्नी की तबियत में चमत्कारिक सुधार हुआ। पंडित जी का ज्ञान और विधि दोनों अद्भुत हैं। बहुत आभारी हूँ।', "After the Mahamrityunjay Jaap, my wife's health improved remarkably. The Pandit's knowledge and method were both wonderful. Very grateful."),
-                                name: 'Suresh Patel', loc: t('मुंबई, भारत', 'Mumbai, India'), av: 'S'
+                                name: 'Suresh Patel', loc: t('मुंबई, भारत', 'Mumbai, India'), av: 'S', rating: 5,
                             },
                             {
                                 text: t('अमेरिका में रहते हुए हमारे गृह प्रवेश के लिए प्रामाणिक काशी पंडित मिलना मुश्किल था। इनकी ऑनलाइन सेवा अद्भुत रही — बिल्कुल बनारस में होने जैसा अनुभव!', 'Being in the US, I missed having authentic Kashi pandits for our Griha Pravesh. Their online service was incredible — felt like being right in Banaras!'),
-                                name: 'Priya Gupta', loc: t('न्यू जर्सी, अमेरिका', 'New Jersey, USA'), av: 'P'
+                                name: 'Priya Gupta', loc: t('न्यू जर्सी, अमेरिका', 'New Jersey, USA'), av: 'P', rating: 5,
                             },
-                        ].map((tst, i) => (
-                            <div className={`testimonial-card fade-up stagger-${i + 1}`} key={i}>
-                                <div className="testimonial-stars">★★★★★</div>
-                                <div className="testimonial-quote">"</div>
-                                <p className="testimonial-text">{tst.text}</p>
-                                <div className="testimonial-author">
-                                    <div className="testimonial-avatar">{tst.av}</div>
-                                    <div>
-                                        <div className="testimonial-name">{tst.name}</div>
-                                        <div className="testimonial-location">{tst.loc}</div>
+                        ]).map((tst, i) => {
+                            // Live reviews from the API use {name, text, rating, location, serviceName};
+                            // static fallback uses {name, text, loc, av, rating}.
+                            const displayLoc = tst.loc || tst.location || tst.serviceName || '';
+                            const displayAv = tst.av || (tst.name || '?').trim().charAt(0).toUpperCase();
+                            const stars = '★'.repeat(tst.rating || 5) + '☆'.repeat(5 - (tst.rating || 5));
+                            return (
+                                <div className={`testimonial-card fade-up stagger-${i + 1}`} key={tst._id || i}>
+                                    <div className="testimonial-stars">{stars}</div>
+                                    <div className="testimonial-quote">"</div>
+                                    <p className="testimonial-text">{tst.text}</p>
+                                    <div className="testimonial-author">
+                                        <div className="testimonial-avatar">{displayAv}</div>
+                                        <div>
+                                            <div className="testimonial-name">{tst.name}</div>
+                                            <div className="testimonial-location">{displayLoc}</div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 </div>
             </section>
@@ -241,7 +285,7 @@ export default function Home() {
             {/* CTA */}
             <section className="cta-section" id="cta">
                 <div className="cta-bg">
-                    <img src="/images/ganga-aarti.jpg" alt="Ganga Aarti" loading="lazy" />
+                    <img src="/images/havan-samuhik-wide.webp" alt={t('सामूहिक हवन — काशी', 'Collective havan in Kashi')} width="1400" height="788" loading="lazy" />
                 </div>
                 <div className="cta-overlay" />
                 <div className="cta-content container">
