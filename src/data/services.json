@@ -1,7 +1,7 @@
 [
   {
     "id": "vipreet-pratyangira",
-    "image": "vipreet_pratyangira.png",
+    "image": "vipreet_pratyangira.jpg",
     "name": "विपरीत प्रत्यंगिरा पाठ",
     "nameEn": "Vipreet Pratyangira Paath",
     "shortDesc": "शत्रुओं द्वारा किये गए काले जादू से रक्षा और नकारात्मक ऊर्जा को वापस लौटाने का सबसे बड़ा तांत्रिक अनुष्ठान।",
@@ -42,7 +42,7 @@
   },
   {
     "id": "mahavidya-paath",
-    "image": "mahavidya_paath.png",
+    "image": "mahavidya_paath.jpg",
     "name": "दस महाविद्या पाठ",
     "nameEn": "Dus Mahavidya Paath",
     "shortDesc": "दस महाविद्याओं को समर्पित तांत्रिक अनुष्ठान—शत्रु बाधा निवारण और मनोकामना पूर्ति के लिए।",
@@ -91,7 +91,7 @@
   },
   {
     "id": "tripindi-shradh",
-    "image": "tripindi_shradh.png",
+    "image": "tripindi_shradh.jpg",
     "name": "त्रिपिंडी श्राद्ध (पितृ पूजन)",
     "nameEn": "Tripindi Shradh (Pitru Pooja)",
     "shortDesc": "काशी के पिशाच मोचन पर पितृ दोष निवारण, अतृप्त पूर्वजों की शांति के लिए विशेष पूजा।",
@@ -132,7 +132,7 @@
   },
   {
     "id": "kalsarp-dosh",
-    "image": "kalsarp_dosh.png",
+    "image": "kalsarp_dosh.jpg",
     "name": "कालसर्प दोष पूजा",
     "nameEn": "Kalsarp Dosh Nivaran",
     "shortDesc": "राहु-केतु के नकारात्मक प्रभाव, जीवन के संघर्ष और स्वप्न भय से मुक्ति के लिए नाग कूप मंदिर में पूजा।",
@@ -165,7 +165,7 @@
   },
   {
     "id": "rudrabhishek",
-    "image": "rudrabhishek_new.png",
+    "image": "rudrabhishek_new.jpg",
     "name": "रुद्राभिषेक",
     "nameEn": "Rudrabhishek",
     "shortDesc": "भगवान शिव का अत्यंत पवित्र अभिषेक — रोग निवारण, मनोकामना पूर्ति और समस्त पापों के नाश के लिए।",
@@ -206,7 +206,7 @@
   },
   {
     "id": "kanakdhara-stotra",
-    "image": "kanakdhara_stotra.png",
+    "image": "kanakdhara_stotra.jpg",
     "name": "कनकधारा स्तोत्र पाठ",
     "nameEn": "Kanakdhara Stotra Paath",
     "shortDesc": "अत्यधिक दरिद्रता दूर करने और अचानक धन प्राप्ति के लिए आदि शंकराचार्य रचित महान स्तोत्र।",
@@ -255,7 +255,7 @@
   },
   {
     "id": "ganesh-atharvashirsha",
-    "image": "ganesh_atharvashirsha.png",
+    "image": "ganesh_atharvashirsha.jpg",
     "name": "गणेश अथर्व शीर्ष पाठ",
     "nameEn": "Ganesh Atharvashirsha",
     "shortDesc": "शुभ कार्यों में विघ्न निवारण, बुद्धि, पढ़ाई में एकाग्रता और व्यापार में सफलता के लिए।",
@@ -304,7 +304,7 @@
   },
   {
     "id": "shree-suktam",
-    "image": "shree_suktam.png",
+    "image": "shree_suktam.jpg",
     "name": "श्री सूक्तम् पाठ",
     "nameEn": "Shree Suktam Paath",
     "shortDesc": "माँ लक्ष्मी की विशेष कृपा, धन, वैभव, और व्यापार में उन्नति के लिए ऋग्वेद का पवित्र सूक्त।",
@@ -345,7 +345,7 @@
   },
   {
     "id": "purush-suktam",
-    "image": "purush_suktam.png",
+    "image": "purush_suktam.jpg",
     "name": "पुरुष सूक्त पाठ",
     "nameEn": "Purush Suktam Paath",
     "shortDesc": "भगवान विष्णु का वैदिक सूक्त—स्वास्थ्य, दीर्घायु, पितृ दोष शमन और समस्त पापों के नाश के लिए।",
@@ -386,7 +386,7 @@
   },
   {
     "id": "kumbh-vivah",
-    "image": "kumbh_vivah.png",
+    "image": "kumbh_vivah.jpg",
     "name": "कुम्भ विवाह (मंगल दोष निवारण)",
     "nameEn": "Kumbh Vivah (Manglik Dosh)",
     "shortDesc": "मंगली दोष के अमंगल प्रभावों को समाप्त करने के लिए विवाह पूर्व सम्पन्न किया जाने वाला प्रतीकात्मक विवाह।",
