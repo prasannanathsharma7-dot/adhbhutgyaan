@@ -18,11 +18,22 @@ const BlogPost = lazy(() => import('./pages/BlogPost'));
 const Privacy = lazy(() => import('./pages/Privacy'));
 const Terms = lazy(() => import('./pages/Terms'));
 const NotFound = lazy(() => import('./pages/NotFound'));
+const Admin = lazy(() => import('./pages/Admin'));
+const LeaveReview = lazy(() => import('./pages/LeaveReview'));
 
 function PageLoader() {
     return (
-        <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <div className="hero-om" style={{ color: 'var(--gold-500)', fontSize: '2.5rem' }}>ॐ</div>
+        <div className="page-skeleton" role="status" aria-live="polite">
+            <span className="sr-only">Loading…</span>
+            <div className="skeleton skeleton-title" />
+            <div className="skeleton skeleton-line" />
+            <div className="skeleton skeleton-line" />
+            <div className="skeleton skeleton-line short" />
+            <div className="skeleton-grid">
+                <div className="skeleton skeleton-card" />
+                <div className="skeleton skeleton-card" />
+                <div className="skeleton skeleton-card" />
+            </div>
         </div>
     );
 }
@@ -31,8 +42,9 @@ function App() {
     return (
         <ErrorBoundary>
             <ScrollToTop />
+            <a href="#main-content" className="skip-link">Skip to content</a>
             <Navbar />
-            <main>
+            <main id="main-content" tabIndex={-1}>
                 <Suspense fallback={<PageLoader />}>
                     <Routes>
                         <Route path="/" element={<Home />} />
@@ -44,6 +56,8 @@ function App() {
                         <Route path="/blog/:slug" element={<BlogPost />} />
                         <Route path="/privacy" element={<Privacy />} />
                         <Route path="/terms" element={<Terms />} />
+                        <Route path="/admin" element={<Admin />} />
+                        <Route path="/leave-a-review" element={<LeaveReview />} />
                         <Route path="*" element={<NotFound />} />
                     </Routes>
                 </Suspense>
