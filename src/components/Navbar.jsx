@@ -56,7 +56,7 @@ export default function Navbar() {
         <nav className={navClass} id="navbar">
             <div className="container">
                 <Link to="/" className="logo">
-                    <img src="/images/logo.webp" alt="" className="logo-img" width="512" height="512" />
+                    <img src="/images/logo.png" alt="" className="logo-img" width="512" height="512" />
                     <div className="logo-text">
                         <span className="logo-main">अद्भुत ज्ञान</span>
                         <span className="logo-sub">Adhbhut Gyaan</span>
@@ -85,7 +85,7 @@ export default function Navbar() {
                         <span className="lang-sep">/</span>
                         <span className={lang === 'en' ? 'active' : ''}>EN</span>
                     </button>
-                    <Link to="/booking" className="nav-cta"><img src="/images/logo.webp" alt="" className="inline-logo" width="512" height="512" /> {t('बुक करें', 'Book Now')}</Link>
+                    <Link to="/booking" className="nav-cta"><img src="/images/logo.png" alt="" className="inline-logo" width="512" height="512" /> {t('बुक करें', 'Book Now')}</Link>
                 </div>
 
                 <button
