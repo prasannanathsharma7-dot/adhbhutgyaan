@@ -5,7 +5,7 @@
   "description": "Adhbhut Gyaan - Online Pooja Booking Platform (React)",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node scripts/generate-seo-pages.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
