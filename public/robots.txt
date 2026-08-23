@@ -1,4 +1,9 @@
 User-agent: *
 Allow: /
 
+# Private pages - no reason for these to appear in search results
+Disallow: /admin
+Disallow: /leave-a-review
+Disallow: /api/
+
 Sitemap: https://www.adhbhutgyaan.com/sitemap.xml
