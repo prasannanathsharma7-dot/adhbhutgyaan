@@ -18,7 +18,7 @@ const BlogPost = lazy(() => import('./pages/BlogPost'));
 const Privacy = lazy(() => import('./pages/Privacy'));
 const Terms = lazy(() => import('./pages/Terms'));
 const NotFound = lazy(() => import('./pages/NotFound'));
-const Admin = lazy(() => import('./pages/Admin'));
+const Admin = lazy(() => import('./pages/admin'));
 const LeaveReview = lazy(() => import('./pages/LeaveReview'));
 
 function PageLoader() {
@@ -56,7 +56,7 @@ function App() {
                         <Route path="/blog/:slug" element={<BlogPost />} />
                         <Route path="/privacy" element={<Privacy />} />
                         <Route path="/terms" element={<Terms />} />
-                        <Route path="/admin" element={<Admin />} />
+                        <Route path="/admin" element={<admin />} />
                         <Route path="/leave-a-review" element={<LeaveReview />} />
                         <Route path="*" element={<NotFound />} />
                     </Routes>
