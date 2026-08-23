@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import useSEO from '../hooks/useSEO';
+import { breadcrumbJsonLd, combineJsonLd } from '../utils/seo';
 
 export default function Terms() {
     const { t } = useLanguage();
@@ -9,6 +10,10 @@ export default function Terms() {
         title: t('नियम एवं शर्तें | Adhbhut Gyaan', 'Terms of Service | Adhbhut Gyaan'),
         description: t('इस वेबसाइट के उपयोग की शर्तें।', 'Terms and conditions for using this website.'),
         path: '/terms',
+        jsonLd: combineJsonLd(breadcrumbJsonLd([
+            { name: 'Home', path: '/' },
+            { name: 'Terms of Service', path: '/terms' },
+        ])),
     });
 
     return (

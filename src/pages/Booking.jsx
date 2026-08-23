@@ -4,6 +4,7 @@ import servicesData from '../data/services.json';
 import { useLanguage } from '../context/LanguageContext';
 import { gallery, videoClips } from '../data/media';
 import useSEO from '../hooks/useSEO';
+import { breadcrumbJsonLd, combineJsonLd } from '../utils/seo';
 
 export default function Booking() {
     const [searchParams] = useSearchParams();
@@ -15,6 +16,10 @@ export default function Booking() {
         title: t('पूजा बुक करें | Adhbhut Gyaan', 'Book a Pooja | Adhbhut Gyaan'),
         description: t('4 सरल चरणों में अपनी पूजा बुक करें — सेवा चुनें, पैकेज चुनें, विवरण भरें, और WhatsApp पर पुष्टि करें।', 'Book your pooja in 4 simple steps — select a service, choose a package, enter your details, and confirm on WhatsApp.'),
         path: '/booking',
+        jsonLd: combineJsonLd(breadcrumbJsonLd([
+            { name: 'Home', path: '/' },
+            { name: 'Book a Pooja', path: '/booking' },
+        ])),
     });
 
     const [step, setStep] = useState(1);

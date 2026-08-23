@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import useSEO from '../hooks/useSEO';
+import { breadcrumbJsonLd, combineJsonLd } from '../utils/seo';
 
 export default function Privacy() {
     const { t } = useLanguage();
@@ -9,6 +10,10 @@ export default function Privacy() {
         title: t('गोपनीयता नीति | Adhbhut Gyaan', 'Privacy Policy | Adhbhut Gyaan'),
         description: t('हम आपकी जानकारी कैसे एकत्र और उपयोग करते हैं।', 'How we collect and use your information.'),
         path: '/privacy',
+        jsonLd: combineJsonLd(breadcrumbJsonLd([
+            { name: 'Home', path: '/' },
+            { name: 'Privacy Policy', path: '/privacy' },
+        ])),
     });
 
     return (

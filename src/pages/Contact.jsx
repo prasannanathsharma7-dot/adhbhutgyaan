@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import useSEO from '../hooks/useSEO';
+import { breadcrumbJsonLd, combineJsonLd } from '../utils/seo';
 
 export default function Contact() {
     const [form, setForm] = useState({ name: '', phone: '', email: '', subject: '', message: '' });
@@ -13,6 +14,10 @@ export default function Contact() {
         title: t('संपर्क करें | Adhbhut Gyaan', 'Contact Us | Adhbhut Gyaan'),
         description: t('WhatsApp, फ़ोन या ईमेल से हमसे संपर्क करें — वाराणसी, उत्तर प्रदेश।', 'Get in touch with us via WhatsApp, phone, or email — Varanasi, Uttar Pradesh.'),
         path: '/contact',
+        jsonLd: combineJsonLd(breadcrumbJsonLd([
+            { name: 'Home', path: '/' },
+            { name: 'Contact Us', path: '/contact' },
+        ])),
     });
 
     const validate = () => {

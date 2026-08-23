@@ -3,6 +3,7 @@ import blogData from '../data/blog.json';
 import { useEffect, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import useSEO from '../hooks/useSEO';
+import { breadcrumbJsonLd, combineJsonLd } from '../utils/seo';
 
 function useInView() {
     const ref = useRef(null);
@@ -42,17 +43,23 @@ export default function BlogPost() {
         description: post ? (lang === 'hi' ? post.excerpt : post.excerptEn) : '',
         path: post ? `/blog/${post.id}` : '/blog',
         image: post ? `https://www.adhbhutgyaan.com/images/${post.image}` : undefined,
-        jsonLd: post ? {
-            '@context': 'https://schema.org',
-            '@type': 'BlogPosting',
-            headline: lang === 'hi' ? post.title : post.titleEn,
-            description: lang === 'hi' ? post.excerpt : post.excerptEn,
-            image: `https://www.adhbhutgyaan.com/images/${post.image}`,
-            datePublished: post.date,
-            author: { '@type': 'Organization', name: 'Adhbhut Gyaan' },
-            publisher: { '@type': 'Organization', name: 'Adhbhut Gyaan' },
-            mainEntityOfPage: `https://www.adhbhutgyaan.com/blog/${post.id}`,
-        } : null,
+        jsonLd: post ? combineJsonLd(
+            {
+                '@type': 'BlogPosting',
+                headline: lang === 'hi' ? post.title : post.titleEn,
+                description: lang === 'hi' ? post.excerpt : post.excerptEn,
+                image: `https://www.adhbhutgyaan.com/images/${post.image}`,
+                datePublished: post.date,
+                author: { '@type': 'Organization', name: 'Adhbhut Gyaan' },
+                publisher: { '@type': 'Organization', name: 'Adhbhut Gyaan' },
+                mainEntityOfPage: `https://www.adhbhutgyaan.com/blog/${post.id}`,
+            },
+            breadcrumbJsonLd([
+                { name: 'Home', path: '/' },
+                { name: 'Blog', path: '/blog' },
+                { name: lang === 'hi' ? post.title : post.titleEn, path: `/blog/${post.id}` },
+            ])
+        ) : null,
     });
 
     if (!post) return <Navigate to="/blog" replace />;

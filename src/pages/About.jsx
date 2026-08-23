@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { gallery, triptych, videoClips, youtubeUploadsPlaylistId, youtubeChannelId } from '../data/media';
 import useSEO from '../hooks/useSEO';
+import { breadcrumbJsonLd, combineJsonLd } from '../utils/seo';
 
 const generations = [
     {
@@ -72,6 +73,10 @@ export default function About() {
         title: t('हमारे बारे में — शर्मा परिवार की विरासत | Adhbhut Gyaan', 'About Us — Legacy of the Sharma Family | Adhbhut Gyaan'),
         description: t('400+ वर्षों की वैदिक परंपरा, तीन पीढ़ियों की गाथा — महामहोपाध्याय पं. अयोध्या नाथ शर्मा से डॉ. उमंग नाथ शर्मा तक।', "Four centuries of Vedic tradition across three generations — from Mahamahopadhyaya Pt. Ayodhya Nath Sharma to Dr. Umang Nath Sharma."),
         path: '/about',
+        jsonLd: combineJsonLd(breadcrumbJsonLd([
+            { name: 'Home', path: '/' },
+            { name: 'About Us', path: '/about' },
+        ])),
     });
 
     return (

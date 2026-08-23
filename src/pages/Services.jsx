@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import servicesData from '../data/services.json';
 import { useLanguage } from '../context/LanguageContext';
 import useSEO from '../hooks/useSEO';
+import { breadcrumbJsonLd, faqJsonLd, combineJsonLd } from '../utils/seo';
 
 export default function Services() {
     const { hash } = useLocation();
@@ -12,6 +13,26 @@ export default function Services() {
         title: t('हमारी पूजा सेवाएं | Adhbhut Gyaan', 'Our Pooja Services | Adhbhut Gyaan'),
         description: t('रुद्राभिषेक, कालसर्प दोष, त्रिपिंडी श्राद्ध, दस महाविद्या पाठ सहित 10+ प्रामाणिक पूजा सेवाएं — बनारस के विद्वान पंडितों द्वारा।', 'Rudrabhishek, Kalsarp Dosh Nivaran, Tripindi Shradh, Dus Mahavidya Paath and 10+ other authentic pooja services performed by learned Pandits of Banaras.'),
         path: '/services',
+        jsonLd: combineJsonLd(
+            breadcrumbJsonLd([
+                { name: 'Home', path: '/' },
+                { name: 'Services', path: '/services' },
+            ]),
+            faqJsonLd([
+                {
+                    q: t('पूजा बुक करने के लिए क्या मुझे वाराणसी आना जरूरी है?', 'Do I need to visit Varanasi to book a pooja?'),
+                    a: t('नहीं, हमारी अधिकतर पूजाएं ऑनलाइन (लाइव वीडियो के साथ) भी करवाई जा सकती हैं। आप विदेश में रहकर भी अपने नाम व गोत्र से पूजा करवा सकते हैं।', 'No, most of our poojas can also be performed online with a live video call. You can have the pooja performed in your name and gotra even while living abroad.'),
+                },
+                {
+                    q: t('पूजा की कीमत में क्या शामिल है?', 'What is included in the pooja price?'),
+                    a: t('पूजा मूल्य में सम्पूर्ण पूजन सामग्री, अनुभवी पंडितों की दक्षिणा और हवन (जहाँ लागू हो) शामिल है। कोई छुपा हुआ शुल्क नहीं है।', 'The price includes all pooja materials, the experienced pandits\u2019 fees, and havan where applicable. There are no hidden charges.'),
+                },
+                {
+                    q: t('बुकिंग की पुष्टि कैसे होती है?', 'How is my booking confirmed?'),
+                    a: t('बुकिंग फॉर्म भरने के बाद हमारी टीम WhatsApp या कॉल के माध्यम से 24 घंटे के भीतर आपसे संपर्क कर तारीख व विवरण पक्का करती है।', 'After you submit the booking form, our team contacts you via WhatsApp or phone within 24 hours to confirm the date and details.'),
+                },
+            ])
+        ),
     });
 
     useEffect(() => {
