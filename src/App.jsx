@@ -56,7 +56,7 @@ function App() {
                         <Route path="/blog/:slug" element={<BlogPost />} />
                         <Route path="/privacy" element={<Privacy />} />
                         <Route path="/terms" element={<Terms />} />
-                        <Route path="/admin" element={<admin />} />
+                        <Route path="/admin" element={<Admin />} />
                         <Route path="/leave-a-review" element={<LeaveReview />} />
                         <Route path="*" element={<NotFound />} />
                     </Routes>
