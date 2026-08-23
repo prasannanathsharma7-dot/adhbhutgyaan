@@ -1410,6 +1410,11 @@ h3 {
     border-color: #25D366;
 }
 
+.social-link.phone:hover {
+    background: var(--gold-500);
+    border-color: var(--gold-500);
+}
+
 .footer-heading {
     font-family: var(--font-heading);
     font-size: 1rem;
