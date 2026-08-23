@@ -150,6 +150,7 @@ export default function Home() {
                                 'ganesh-atharvashirsha': '🐘',
                                 'purush-suktam': '📿',
                                 'kumbh-vivah': '💍',
+                                'astrology-consultation': '🔮',
                             };
                             return (
                                 <div className={`icon-service-card fade-up stagger-${(i % 5) + 1}`} key={service.id}>

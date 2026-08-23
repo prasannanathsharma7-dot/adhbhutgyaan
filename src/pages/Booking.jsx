@@ -36,6 +36,17 @@ export default function Booking() {
         { v: 'temple', icon: '🛕', label: t('मंदिर में', 'At a Temple') },
     ];
 
+    // Astrology consultation works differently from a pooja: it's either a video/call
+    // consultation, or the devotee visits our Varanasi location themselves (9 AM - 12 PM) -
+    // not the pandit travelling to them, so it needs its own mode options.
+    const astrologyModeOptions = [
+        { v: 'online', icon: '🌐', label: t('ऑनलाइन परामर्श', 'Online Consultation') },
+        { v: 'visit', icon: '🏛️', label: t('हमारे स्थान पर आएं (सुबह 9 - दोपहर 12)', 'Visit Our Location (9 AM - 12 PM)') },
+    ];
+
+    const isAstrology = selectedService?.id === 'astrology-consultation';
+    const activeModeOptions = isAstrology ? astrologyModeOptions : modeOptions;
+
     // Pre-select from URL
     useEffect(() => {
         if (preServiceId) {
@@ -109,9 +120,9 @@ export default function Booking() {
     };
 
     const dateNotSet = t('पंडित जी से तय होगी', 'To be decided with the Pandit');
-    const modeLabel = modeOptions.find(m => m.v === form.mode)?.label || '';
+    const modeLabel = activeModeOptions.find(m => m.v === form.mode)?.label || '';
 
-    const whatsAppMsg = selectedService && selectedPkg ? `🙏 *${t('नमस्कार! नई पूजा पूछताछ', 'Hello! New Pooja Enquiry')}*
+    const whatsAppMsg = selectedService && selectedPkg ? `🙏 *${isAstrology ? t('नमस्कार! नई ज्योतिष परामर्श पूछताछ', 'Hello! New Astrology Consultation Enquiry') : t('नमस्कार! नई पूजा पूछताछ', 'Hello! New Pooja Enquiry')}*
 
 *${t('सेवा', 'Service')}:* ${selectedService.name} (${selectedService.nameEn})
 *${t('पैकेज', 'Package')}:* ${selectedPkg.name} (${selectedPkg.nameEn})
@@ -281,9 +292,9 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                             <h3 style={{ textAlign: 'center', marginBottom: '0.5rem' }}>{t('अपना विवरण भरें', 'Enter Your Details')}</h3>
                             <div style={{ maxWidth: 600, margin: '0 auto' }}>
                                 <div className="form-group" id="booking-mode">
-                                    <label className="form-label">{t('पूजा किस माध्यम से करवानी है', 'How would you like the pooja performed')} *</label>
+                                    <label className="form-label">{isAstrology ? t('परामर्श किस माध्यम से लेना है', 'How would you like the consultation') : t('पूजा किस माध्यम से करवानी है', 'How would you like the pooja performed')} *</label>
                                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem', marginTop: '0.4rem' }}>
-                                        {modeOptions.map(m => (
+                                        {activeModeOptions.map(m => (
                                             <button
                                                 key={m.v}
                                                 type="button"
@@ -402,7 +413,7 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                                 <a href="tel:+919278148269" className="btn btn-primary btn-lg">📞 {t('कॉल करें', 'Call Us')}</a>
                             </div>
                             <div className="text-center" style={{ marginTop: '1rem' }}>
-                                <a href={`mailto:astrokashi369@gmail.com?subject=${encodeURIComponent(t('नई पूजा पूछताछ', 'New Pooja Enquiry'))}&body=${encodeURIComponent(emailMsg)}`} style={{ fontSize: '0.85rem', color: 'var(--gold-700)', fontWeight: 600 }}>
+                                <a href={`mailto:astrokashi369@gmail.com?subject=${encodeURIComponent(isAstrology ? t('नई ज्योतिष परामर्श पूछताछ', 'New Astrology Consultation Enquiry') : t('नई पूजा पूछताछ', 'New Pooja Enquiry'))}&body=${encodeURIComponent(emailMsg)}`} style={{ fontSize: '0.85rem', color: 'var(--gold-700)', fontWeight: 600 }}>
                                     ✉️ {t('या ईमेल से पूछताछ करें', 'Or enquire by email instead')}
                                 </a>
                             </div>

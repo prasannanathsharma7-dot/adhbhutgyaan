@@ -416,5 +416,38 @@
         "popular": true
       }
     ]
+  },
+  {
+    "id": "astrology-consultation",
+    "image": "heritage/umang-with-ayodhya-portrait.jpg",
+    "name": "ज्योतिष परामर्श",
+    "nameEn": "Astrology Consultation",
+    "shortDesc": "डॉ. उमंग नाथ शर्मा से कुंडली विश्लेषण, ग्रह दोष निवारण एवं जीवन की हर समस्या का ज्योतिषीय समाधान।",
+    "description": "डॉ. उमंग नाथ शर्मा — काशी की 400+ वर्षों की वैदिक परंपरा के वाहक — व्यक्तिगत ज्योतिष परामर्श प्रदान करते हैं। कुंडली विश्लेषण, ग्रह दोष निवारण, विवाह मिलान एवं जीवन की समस्याओं का समाधान। सुबह 9 बजे से दोपहर 12 बजे के बीच हमारे स्थान पर व्यक्तिगत रूप से आएं, या ऑनलाइन अपॉइंटमेंट बुक करें।",
+    "descriptionEn": "Dr. Umang Nath Sharma - carrying forward 400+ years of Kashi's Vedic tradition - offers personal astrology consultations. Kundli analysis, planetary dosh remedies, marriage matching, and solutions for life's challenges. Visit us in person between 9 AM - 12 PM, or book an appointment online.",
+    "bestTime": "सुबह 9 बजे से दोपहर 12 बजे (ऑफलाइन) या किसी भी समय ऑनलाइन",
+    "bestTimeEn": "9 AM to 12 PM (offline) or anytime online",
+    "benefits": [
+      "कुंडली विश्लेषण एवं ग्रह दशा की जानकारी",
+      "ग्रह दोष निवारण के उपाय",
+      "विवाह मिलान (गुण मिलान)",
+      "जीवन की समस्याओं का ज्योतिषीय समाधान"
+    ],
+    "benefitsEn": [
+      "Kundli analysis and planetary period insights",
+      "Remedies for planetary doshas",
+      "Marriage matching (Gun Milan)",
+      "Astrological solutions for life's challenges"
+    ],
+    "packages": [
+      {
+        "name": "व्यक्तिगत परामर्श सत्र",
+        "nameEn": "Personal Consultation Session",
+        "paathCount": "एक-पर-एक परामर्श सत्र",
+        "includes": "कुंडली विश्लेषण एवं उपाय सहित सम्पूर्ण मार्गदर्शन।",
+        "price": null,
+        "popular": true
+      }
+    ]
   }
 ]
