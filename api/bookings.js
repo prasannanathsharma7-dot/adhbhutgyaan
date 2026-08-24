@@ -1,6 +1,7 @@
 const { ObjectId } = require('mongodb');
 const { getDb, withCors, capStr, checkRateLimit } = require('./_db');
-const { sendMail, ADMIN_EMAIL } = require('./_email');
+const { sendMail } = require('./_email');
+const { notifyAdmin } = require('./_notify');
 
 function isAdmin(req) {
     const providedKey = req.headers['x-admin-key'] || req.query.key;
@@ -54,11 +55,10 @@ module.exports = async (req, res) => {
             };
             const result = await db.collection('bookings').insertOne(doc);
 
-            // Fire-and-forget: emails never block or fail the booking response.
-            sendMail({
-                to: ADMIN_EMAIL,
-                subject: `🙏 New Booking Enquiry - ${doc.name}`,
-                html: `
+            // Fire-and-forget: notifications never block or fail the booking response.
+            notifyAdmin({
+                emailSubject: `🙏 New Booking Enquiry - ${doc.name}`,
+                emailHtml: `
                     <h2>New Pooja Booking Enquiry</h2>
                     <p><b>Name:</b> ${doc.name}</p>
                     <p><b>Phone:</b> ${doc.phone}</p>
@@ -71,6 +71,7 @@ module.exports = async (req, res) => {
                     ${doc.notes ? `<p><b>Notes:</b> ${doc.notes}</p>` : ''}
                     <p style="color:#888;font-size:12px;">Booking ID: ${result.insertedId}</p>
                 `,
+                whatsappText: `🙏 New Booking Enquiry\n\nName: ${doc.name}\nPhone: ${doc.phone}\nService: ${doc.serviceName || '-'}\nPackage: ${doc.packageName || '-'}\nMode: ${doc.mode || '-'}\nDate: ${doc.preferredDate || 'To be decided'}${doc.address ? `\nAddress: ${doc.address}` : ''}${doc.notes ? `\nNotes: ${doc.notes}` : ''}`,
             });
 
             if (doc.email) {

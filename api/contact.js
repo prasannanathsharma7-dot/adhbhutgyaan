@@ -1,6 +1,7 @@
 const { ObjectId } = require('mongodb');
 const { getDb, withCors, capStr, checkRateLimit } = require('./_db');
-const { sendMail, ADMIN_EMAIL } = require('./_email');
+const { sendMail } = require('./_email');
+const { notifyAdmin } = require('./_notify');
 
 function isAdmin(req) {
     const providedKey = req.headers['x-admin-key'] || req.query.key;
@@ -49,11 +50,10 @@ module.exports = async (req, res) => {
             };
             const result = await db.collection('messages').insertOne(doc);
 
-            // Fire-and-forget: emails never block or fail the response.
-            sendMail({
-                to: ADMIN_EMAIL,
-                subject: `✉️ New Contact Message - ${doc.name}`,
-                html: `
+            // Fire-and-forget: notifications never block or fail the response.
+            notifyAdmin({
+                emailSubject: `✉️ New Contact Message - ${doc.name}`,
+                emailHtml: `
                     <h2>New Contact Form Message</h2>
                     <p><b>Name:</b> ${doc.name}</p>
                     <p><b>Phone:</b> ${doc.phone}</p>
@@ -62,6 +62,7 @@ module.exports = async (req, res) => {
                     <p><b>Message:</b><br/>${doc.message.replace(/\n/g, '<br/>')}</p>
                     <p style="color:#888;font-size:12px;">Message ID: ${result.insertedId}</p>
                 `,
+                whatsappText: `✉️ New Contact Message\n\nName: ${doc.name}\nPhone: ${doc.phone}${doc.subject ? `\nSubject: ${doc.subject}` : ''}\n\nMessage: ${doc.message}`,
             });
 
             if (doc.email) {

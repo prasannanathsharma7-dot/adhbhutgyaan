@@ -1,6 +1,6 @@
 const { ObjectId } = require('mongodb');
 const { getDb, withCors, capStr, checkRateLimit } = require('./_db');
-const { sendMail, ADMIN_EMAIL } = require('./_email');
+const { notifyAdmin } = require('./_notify');
 
 function isAdmin(req) {
     const providedKey = req.headers['x-admin-key'] || req.query.key;
@@ -52,10 +52,9 @@ module.exports = async (req, res) => {
             };
             const result = await db.collection('reviews').insertOne(doc);
 
-            sendMail({
-                to: ADMIN_EMAIL,
-                subject: `⭐ New Review Submitted - ${doc.name} (${doc.rating}★)`,
-                html: `
+            notifyAdmin({
+                emailSubject: `⭐ New Review Submitted - ${doc.name} (${doc.rating}★)`,
+                emailHtml: `
                     <h2>New Review Awaiting Approval</h2>
                     <p><b>Name:</b> ${doc.name}</p>
                     ${doc.phone ? `<p><b>Phone:</b> ${doc.phone}</p>` : ''}
@@ -64,6 +63,7 @@ module.exports = async (req, res) => {
                     <p><b>Review:</b><br/>${doc.text.replace(/\n/g, '<br/>')}</p>
                     <p style="color:#888;font-size:12px;">Log in to the admin panel to approve or reject this review.</p>
                 `,
+                whatsappText: `⭐ New Review Submitted (${doc.rating}★)\n\nName: ${doc.name}\n${doc.serviceName ? `Service: ${doc.serviceName}\n` : ''}\nReview: ${doc.text}\n\nApprove/reject it from the admin panel.`,
             });
 
             res.status(201).json({ ok: true, id: result.insertedId });
