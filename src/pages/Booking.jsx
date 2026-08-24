@@ -25,7 +25,7 @@ export default function Booking() {
     const [step, setStep] = useState(1);
     const [selectedService, setSelectedService] = useState(null);
     const [selectedPkg, setSelectedPkg] = useState(null);
-    const [form, setForm] = useState({ name: '', phone: '', date: '', address: '', notes: '', mode: '' });
+    const [form, setForm] = useState({ name: '', phone: '', email: '', date: '', address: '', notes: '', mode: '' });
     const [saveStatus, setSaveStatus] = useState('idle'); // idle | saving | saved | error
     const [errors, setErrors] = useState({});
 
@@ -73,6 +73,7 @@ export default function Booking() {
                 body: JSON.stringify({
                     name: form.name,
                     phone: form.phone,
+                    email: form.email,
                     serviceId: selectedService?.id || '',
                     serviceName: selectedService ? `${selectedService.name} (${selectedService.nameEn})` : '',
                     packageName: selectedPkg ? `${selectedPkg.name} (${selectedPkg.nameEn})` : '',
@@ -340,6 +341,17 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                                     {errors.phone && <p className="form-error">⚠ {errors.phone}</p>}
                                 </div>
                                 <div className="form-group">
+                                    <label className="form-label" htmlFor="booking-email">{t('ईमेल (वैकल्पिक — पुष्टि प्राप्त करने के लिए)', 'Email (optional — to receive a confirmation)')}</label>
+                                    <input
+                                        id="booking-email"
+                                        className="form-input"
+                                        type="email"
+                                        placeholder="you@example.com"
+                                        value={form.email}
+                                        onChange={e => setForm({ ...form, email: e.target.value })}
+                                    />
+                                </div>
+                                <div className="form-group">
                                     <label className="form-label">{t('पसंदीदा तिथि', 'Preferred Date')}</label>
                                     <input className="form-input" type="date" value={form.date} onChange={e => setForm({ ...form, date: e.target.value })} />
                                 </div>
@@ -399,7 +411,7 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                                         💬 {t('मूल्य हेतु पूछताछ करें', 'Enquire Now for Pricing')}
                                     </div>
                                     <div style={{ borderTop: '1px solid var(--border-light)', paddingTop: '1rem', marginTop: '0.5rem' }}>
-                                        {[[t('नाम', 'Name'), form.name], [t('फ़ोन', 'Phone'), form.phone], [t('तिथि', 'Date'), form.date || dateNotSet], ...(form.address ? [[t('पता', 'Address'), form.address]] : []), ...(form.notes ? [[t('विशेष', 'Notes'), form.notes]] : [])].map(([k, v]) => (
+                                        {[[t('नाम', 'Name'), form.name], [t('फ़ोन', 'Phone'), form.phone], ...(form.email ? [[t('ईमेल', 'Email'), form.email]] : []), [t('तिथि', 'Date'), form.date || dateNotSet], ...(form.address ? [[t('पता', 'Address'), form.address]] : []), ...(form.notes ? [[t('विशेष', 'Notes'), form.notes]] : [])].map(([k, v]) => (
                                             <div key={k} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', fontSize: '0.9rem', gap: '1rem' }}>
                                                 <strong>{k}:</strong><span style={{ textAlign: 'right' }}>{v}</span>
                                             </div>

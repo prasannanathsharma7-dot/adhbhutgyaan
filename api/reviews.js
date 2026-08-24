@@ -1,5 +1,6 @@
 const { ObjectId } = require('mongodb');
 const { getDb, withCors, capStr, checkRateLimit } = require('./_db');
+const { sendMail, ADMIN_EMAIL } = require('./_email');
 
 function isAdmin(req) {
     const providedKey = req.headers['x-admin-key'] || req.query.key;
@@ -50,6 +51,21 @@ module.exports = async (req, res) => {
                 createdAt: new Date(),
             };
             const result = await db.collection('reviews').insertOne(doc);
+
+            sendMail({
+                to: ADMIN_EMAIL,
+                subject: `⭐ New Review Submitted - ${doc.name} (${doc.rating}★)`,
+                html: `
+                    <h2>New Review Awaiting Approval</h2>
+                    <p><b>Name:</b> ${doc.name}</p>
+                    ${doc.phone ? `<p><b>Phone:</b> ${doc.phone}</p>` : ''}
+                    <p><b>Rating:</b> ${doc.rating} / 5</p>
+                    ${doc.serviceName ? `<p><b>Service:</b> ${doc.serviceName}</p>` : ''}
+                    <p><b>Review:</b><br/>${doc.text.replace(/\n/g, '<br/>')}</p>
+                    <p style="color:#888;font-size:12px;">Log in to the admin panel to approve or reject this review.</p>
+                `,
+            });
+
             res.status(201).json({ ok: true, id: result.insertedId });
         } catch (err) {
             console.error('reviews API error:', err);

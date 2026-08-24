@@ -1,5 +1,6 @@
 const { ObjectId } = require('mongodb');
 const { getDb, withCors, capStr, checkRateLimit } = require('./_db');
+const { sendMail, ADMIN_EMAIL } = require('./_email');
 
 function isAdmin(req) {
     const providedKey = req.headers['x-admin-key'] || req.query.key;
@@ -47,6 +48,37 @@ module.exports = async (req, res) => {
                 createdAt: new Date(),
             };
             const result = await db.collection('messages').insertOne(doc);
+
+            // Fire-and-forget: emails never block or fail the response.
+            sendMail({
+                to: ADMIN_EMAIL,
+                subject: `✉️ New Contact Message - ${doc.name}`,
+                html: `
+                    <h2>New Contact Form Message</h2>
+                    <p><b>Name:</b> ${doc.name}</p>
+                    <p><b>Phone:</b> ${doc.phone}</p>
+                    ${doc.email ? `<p><b>Email:</b> ${doc.email}</p>` : ''}
+                    ${doc.subject ? `<p><b>Subject:</b> ${doc.subject}</p>` : ''}
+                    <p><b>Message:</b><br/>${doc.message.replace(/\n/g, '<br/>')}</p>
+                    <p style="color:#888;font-size:12px;">Message ID: ${result.insertedId}</p>
+                `,
+            });
+
+            if (doc.email) {
+                sendMail({
+                    to: doc.email,
+                    subject: 'We received your message - Adhbhut Gyaan',
+                    html: `
+                        <h2>Namaste ${doc.name} 🙏</h2>
+                        <p>Thank you for reaching out. We have received your message and will get back to you on <b>${doc.phone}</b> shortly.</p>
+                        <p><b>Your message:</b><br/>${doc.message.replace(/\n/g, '<br/>')}</p>
+                        <p>Need an urgent response? WhatsApp us at <a href="https://wa.me/919278148269">+91 92781 48269</a>.</p>
+                        <br/>
+                        <p>🙏 Adhbhut Gyaan<br/>Varanasi, Kashi</p>
+                    `,
+                });
+            }
+
             res.status(201).json({ ok: true, id: result.insertedId });
         } catch (err) {
             console.error('contact API error:', err);

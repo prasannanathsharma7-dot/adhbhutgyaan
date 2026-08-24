@@ -1,5 +1,6 @@
 const { ObjectId } = require('mongodb');
 const { getDb, withCors, capStr, checkRateLimit } = require('./_db');
+const { sendMail, ADMIN_EMAIL } = require('./_email');
 
 function isAdmin(req) {
     const providedKey = req.headers['x-admin-key'] || req.query.key;
@@ -38,6 +39,7 @@ module.exports = async (req, res) => {
             const doc = {
                 name,
                 phone,
+                email: capStr(body.email, 200),
                 serviceId: capStr(body.serviceId, 100),
                 serviceName: capStr(body.serviceName, 200),
                 packageName: capStr(body.packageName, 200),
@@ -51,6 +53,42 @@ module.exports = async (req, res) => {
                 createdAt: new Date(),
             };
             const result = await db.collection('bookings').insertOne(doc);
+
+            // Fire-and-forget: emails never block or fail the booking response.
+            sendMail({
+                to: ADMIN_EMAIL,
+                subject: `🙏 New Booking Enquiry - ${doc.name}`,
+                html: `
+                    <h2>New Pooja Booking Enquiry</h2>
+                    <p><b>Name:</b> ${doc.name}</p>
+                    <p><b>Phone:</b> ${doc.phone}</p>
+                    ${doc.email ? `<p><b>Email:</b> ${doc.email}</p>` : ''}
+                    <p><b>Service:</b> ${doc.serviceName || '-'}</p>
+                    <p><b>Package:</b> ${doc.packageName || '-'}</p>
+                    <p><b>Mode:</b> ${doc.mode || '-'}</p>
+                    <p><b>Preferred Date:</b> ${doc.preferredDate || 'To be decided'}</p>
+                    ${doc.address ? `<p><b>Address:</b> ${doc.address}</p>` : ''}
+                    ${doc.notes ? `<p><b>Notes:</b> ${doc.notes}</p>` : ''}
+                    <p style="color:#888;font-size:12px;">Booking ID: ${result.insertedId}</p>
+                `,
+            });
+
+            if (doc.email) {
+                sendMail({
+                    to: doc.email,
+                    subject: 'We received your booking enquiry - Adhbhut Gyaan',
+                    html: `
+                        <h2>Namaste ${doc.name} 🙏</h2>
+                        <p>We have received your booking enquiry for <b>${doc.serviceName || 'a pooja'}</b>.</p>
+                        <p>Our team will contact you on WhatsApp or phone at <b>${doc.phone}</b> within 24 hours to confirm the date, pricing, and further details.</p>
+                        <p><b>Preferred Date:</b> ${doc.preferredDate || 'To be decided with the Pandit'}</p>
+                        <p>If you need to reach us urgently, WhatsApp us at <a href="https://wa.me/919278148269">+91 92781 48269</a>.</p>
+                        <br/>
+                        <p>🙏 Adhbhut Gyaan<br/>Varanasi, Kashi</p>
+                    `,
+                });
+            }
+
             res.status(201).json({ ok: true, id: result.insertedId });
         } catch (err) {
             console.error('bookings API error:', err);
