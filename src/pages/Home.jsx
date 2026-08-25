@@ -24,18 +24,6 @@ export default function Home() {
     const pageRef = useInView();
     const { t, lang } = useLanguage();
     const [liveReviews, setLiveReviews] = useState(null);
-    // Only autoplay the ambient hero clip when the visitor hasn't asked their
-    // device to reduce motion; otherwise the still image is shown instead.
-    const [playHeroVideo, setPlayHeroVideo] = useState(false);
-    const [heroVideoOk, setHeroVideoOk] = useState(true);
-
-    useEffect(() => {
-        const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-        const apply = () => setPlayHeroVideo(!mq.matches);
-        apply();
-        mq.addEventListener('change', apply);
-        return () => mq.removeEventListener('change', apply);
-    }, []);
 
     useEffect(() => {
         fetch('/api/reviews?limit=6')
@@ -59,20 +47,7 @@ export default function Home() {
             {/* HERO */}
             <section className="hero" id="hero">
                 <div className="hero-bg">
-                    {playHeroVideo && heroVideoOk ? (
-                        <video
-                            src="/videos/hero-diyas.mp4"
-                            poster="/images/havan-samuhik-wide.png"
-                            autoPlay
-                            muted
-                            loop
-                            playsInline
-                            aria-hidden="true"
-                            onError={() => setHeroVideoOk(false)}
-                        />
-                    ) : (
-                        <img src="/images/havan-samuhik-wide.png" alt={t('काशी में सम्पन्न सामूहिक हवन', 'Collective havan performed in Kashi')} width="1400" height="788" fetchPriority="high" />
-                    )}
+                    <img src="/images/gallery/havan-group.jpg" alt={t('काशी में सम्पन्न सामूहिक हवन', 'Collective havan performed in Kashi')} width="1280" height="720" fetchPriority="high" />
                 </div>
                 <div className="hero-overlay" />
                 <div className="hero-content">
@@ -334,7 +309,7 @@ export default function Home() {
             {/* CTA */}
             <section className="cta-section" id="cta">
                 <div className="cta-bg">
-                    <img src="/images/havan-samuhik-wide.png" alt={t('सामूहिक हवन — काशी', 'Collective havan in Kashi')} width="1400" height="788" loading="lazy" />
+                    <img src="/images/gallery/havan-group.jpg" alt={t('सामूहिक हवन — काशी', 'Collective havan in Kashi')} width="1280" height="720" loading="lazy" />
                 </div>
                 <div className="cta-overlay" />
                 <div className="cta-content container">
