@@ -153,6 +153,12 @@ export default function Services() {
                                 )}
                             </div>
 
+                            <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+                                <Link to={`/services/${service.id}`} className="btn btn-outline">
+                                    {t('पूरी जानकारी देखें', 'View Full Details')} →
+                                </Link>
+                            </div>
+
                             <h3 style={{ textAlign: 'center', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)' }}>{t('उपलब्ध विकल्प', 'Available Options')}</h3>
                             <p style={{ textAlign: 'center', color: 'var(--text-muted)', marginBottom: '1.25rem', fontSize: '0.9rem' }}>{t('यह सेवा निम्न में से किसी भी तरीके से उपलब्ध है', 'This service is available in any of the following ways')}</p>
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', justifyContent: 'center', marginBottom: '2rem' }}>

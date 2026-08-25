@@ -34,6 +34,7 @@ if (!existsSync(join(DIST, 'index.html'))) {
 
 const template = readFileSync(join(DIST, 'index.html'), 'utf-8');
 const blogData = JSON.parse(readFileSync(join(ROOT, 'src/data/blog.json'), 'utf-8'));
+const servicesData = JSON.parse(readFileSync(join(ROOT, 'src/data/services.json'), 'utf-8'));
 
 function breadcrumbJsonLd(items) {
     return {
@@ -54,6 +55,23 @@ function faqJsonLd(items) {
             '@type': 'Question',
             name: it.q,
             acceptedAnswer: { '@type': 'Answer', text: it.a },
+        })),
+    };
+}
+
+function serviceJsonLd(service) {
+    return {
+        '@type': 'Service',
+        serviceType: service.name,
+        name: service.name,
+        description: service.description,
+        provider: { '@type': 'HinduTemple', name: 'Adhbhut Gyaan', url: `${SITE_URL}/` },
+        areaServed: ['Varanasi', 'Kashi', 'Banaras', 'India', 'Worldwide (online)'],
+        offers: (service.packages || []).map(pkg => ({
+            '@type': 'Offer',
+            name: pkg.name,
+            description: pkg.includes,
+            availability: 'https://schema.org/InStock',
         })),
     };
 }
@@ -180,6 +198,37 @@ for (const post of blogData) {
                 { name: 'Home', path: '/' },
                 { name: 'Blog', path: '/blog' },
                 { name: post.title, path: `/blog/${post.id}` },
+            ])
+        ),
+    });
+}
+
+// ---- Individual service pages (one route per pooja, from services.json) ----
+// Each pooja gets its own indexable URL so it can rank independently for
+// long-tail, service-specific searches (e.g. "rudrabhishek puja varanasi
+// price") instead of competing with the other 10 poojas on one /services page.
+for (const service of servicesData) {
+    routes.push({
+        path: `/services/${service.id}`,
+        title: `${service.name} — बुक करें | Adhbhut Gyaan`,
+        description: service.shortDesc,
+        image: `${SITE_URL}/images/${service.image}`,
+        jsonLd: combineJsonLd(
+            breadcrumbJsonLd([
+                { name: 'Home', path: '/' },
+                { name: 'Services', path: '/services' },
+                { name: service.name, path: `/services/${service.id}` },
+            ]),
+            serviceJsonLd(service),
+            faqJsonLd([
+                {
+                    q: `${service.name} बुक करने के लिए क्या वाराणसी आना जरूरी है?`,
+                    a: 'नहीं, यह पूजा ऑनलाइन (लाइव वीडियो के साथ) भी करवाई जा सकती है। आप विदेश में रहकर भी अपने नाम व गोत्र से पूजा करवा सकते हैं।',
+                },
+                {
+                    q: `${service.name} की कीमत में क्या शामिल है?`,
+                    a: 'पूजा मूल्य में सम्पूर्ण पूजन सामग्री, अनुभवी पंडितों की दक्षिणा और हवन (जहाँ लागू हो) शामिल है। कोई छुपा हुआ शुल्क नहीं है।',
+                },
             ])
         ),
     });

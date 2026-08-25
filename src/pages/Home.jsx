@@ -157,7 +157,7 @@ export default function Home() {
                                     <div className="icon-service-icon">{icons[service.id] || '🕉️'}</div>
                                     <h3 className="icon-service-title">{lang === 'hi' ? service.name : service.nameEn}</h3>
                                     <p className="icon-service-desc">{service.shortDesc}</p>
-                                    <Link to={`/services#${service.id}`} className="icon-service-link">{t('विवरण देखें', 'Know More')} →</Link>
+                                    <Link to={`/services/${service.id}`} className="icon-service-link">{t('विवरण देखें', 'Know More')} →</Link>
                                 </div>
                             );
                         })}

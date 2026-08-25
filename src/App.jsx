@@ -10,6 +10,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 // visitor actually navigates to it, instead of one large bundle upfront.
 const Home = lazy(() => import('./pages/Home'));
 const Services = lazy(() => import('./pages/Services'));
+const ServiceDetail = lazy(() => import('./pages/ServiceDetail'));
 const Booking = lazy(() => import('./pages/Booking'));
 const About = lazy(() => import('./pages/About'));
 const Contact = lazy(() => import('./pages/Contact'));
@@ -49,6 +50,7 @@ function App() {
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/services" element={<Services />} />
+                        <Route path="/services/:id" element={<ServiceDetail />} />
                         <Route path="/booking" element={<Booking />} />
                         <Route path="/about" element={<About />} />
                         <Route path="/contact" element={<Contact />} />
