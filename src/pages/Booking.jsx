@@ -182,7 +182,7 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                         </p>
                     </div>
                     <div style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: 'var(--shadow-lg)', border: '1px solid var(--border-gold)' }}>
-                        <video controls preload="none" poster="/images/gallery/welcome-poster.webp" playsInline style={{ width: '100%', display: 'block', background: '#000', aspectRatio: '16/9' }}>
+                        <video controls preload="none" poster="/images/gallery/welcome-poster.jpg" playsInline style={{ width: '100%', display: 'block', background: '#000', aspectRatio: '16/9' }}>
                             <source src="/videos/welcome.mp4" type="video/mp4" />
                         </video>
                     </div>
