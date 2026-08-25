@@ -140,14 +140,49 @@ module.exports = async (req, res) => {
 
         try {
             const db = await getDb();
-            const result = await db.collection('bookings').updateOne(
+            const result = await db.collection('bookings').findOneAndUpdate(
                 { _id: new ObjectId(id) },
-                { $set: { status, statusUpdatedAt: new Date() } }
+                { $set: { status, statusUpdatedAt: new Date() } },
+                { returnDocument: 'after' }
             );
-            if (result.matchedCount === 0) {
+            const updatedDoc = result && result.value ? result.value : result;
+            if (!updatedDoc) {
                 res.status(404).json({ ok: false, error: 'Booking not found' });
                 return;
             }
+
+            // Automatically ask for a review once a pooja is marked completed.
+            // We can only auto-send this by email (a WhatsApp message can't be
+            // pushed to the customer without them messaging first) - so we also
+            // hand the admin a ready-to-forward WhatsApp text as a fallback.
+            if (status === 'completed' && updatedDoc.email) {
+                sendMail({
+                    to: updatedDoc.email,
+                    subject: 'How was your pooja? - Adhbhut Gyaan',
+                    html: `
+                        <h2>Namaste ${escapeHtml(updatedDoc.name)} 🙏</h2>
+                        <p>We hope your <b>${escapeHtml(updatedDoc.serviceName) || 'pooja'}</b> was performed to your satisfaction.</p>
+                        <p>If you have a moment, we'd be grateful if you could share your experience - it helps other devotees find authentic guidance.</p>
+                        <p><a href="https://www.adhbhutgyaan.com/leave-a-review" style="display:inline-block;background:#C49A2C;color:#fff;padding:10px 20px;border-radius:6px;text-decoration:none;">Leave a Review</a></p>
+                        <br/>
+                        <p>🙏 Adhbhut Gyaan<br/>Varanasi, Kashi</p>
+                    `,
+                });
+            }
+            if (status === 'completed') {
+                notifyAdmin({
+                    emailSubject: `✅ Booking completed - ${escapeHtml(updatedDoc.name)} (review request ${updatedDoc.email ? 'emailed' : 'not emailed - no email on file'})`,
+                    emailHtml: `
+                        <p>Booking for <b>${escapeHtml(updatedDoc.name)}</b> (${escapeHtml(updatedDoc.phone)}) marked completed.</p>
+                        ${updatedDoc.email ? '<p>A review-request email was sent to them automatically.</p>' : `
+                        <p>No email on file, so please forward this on WhatsApp yourself:</p>
+                        <p style="background:#f5f5f5;padding:10px;border-radius:6px;">Namaste ${escapeHtml(updatedDoc.name)} 🙏 Aapki pooja safaltapoorvak sampann ho gayi. Agar anubhav accha laga to yahan review chhod sakte hain: https://www.adhbhutgyaan.com/leave-a-review</p>
+                        `}
+                    `,
+                    whatsappText: `✅ Booking completed - ${updatedDoc.name}. ${updatedDoc.email ? 'Review email sent.' : 'No email on file - please forward review request on WhatsApp yourself.'}`,
+                });
+            }
+
             res.status(200).json({ ok: true });
         } catch (err) {
             console.error('bookings API error:', err);
