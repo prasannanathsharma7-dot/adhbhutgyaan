@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import WhatsAppFloat from './components/WhatsAppFloat';
+import ChatWidget from './components/ChatWidget';
 import ScrollToTop from './components/ScrollToTop';
 import ErrorBoundary from './components/ErrorBoundary';
 
@@ -66,6 +67,7 @@ function App() {
             </main>
             <Footer />
             <WhatsAppFloat />
+            <ChatWidget />
         </ErrorBoundary>
     );
 }
