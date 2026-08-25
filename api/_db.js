@@ -58,6 +58,21 @@ function capStr(value, maxLen) {
     return (value || '').toString().trim().slice(0, maxLen);
 }
 
+// Escapes text before it's interpolated into an HTML email body. Without this,
+// a form submission containing e.g. <a href="...">click here</a> in the name
+// or message field would render as a real, clickable link in the notification
+// email sent to the admin/customer - usable for phishing. Plain-text fields
+// (Mongo docs, WhatsApp text, JSON responses) don't need this; only HTML does.
+function escapeHtml(value) {
+    return (value || '')
+        .toString()
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
 // Best-effort client IP (Vercel sets x-forwarded-for).
 function getClientIp(req) {
     const fwd = req.headers['x-forwarded-for'];
@@ -85,4 +100,4 @@ async function checkRateLimit(db, req, route, { limit = 5, windowMs = 10 * 60 * 
     return true;
 }
 
-module.exports = { getDb, withCors, capStr, checkRateLimit, getClientIp };
+module.exports = { getDb, withCors, capStr, escapeHtml, checkRateLimit, getClientIp };

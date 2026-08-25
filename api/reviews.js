@@ -1,5 +1,5 @@
 const { ObjectId } = require('mongodb');
-const { getDb, withCors, capStr, checkRateLimit } = require('./_db');
+const { getDb, withCors, capStr, escapeHtml, checkRateLimit } = require('./_db');
 const { notifyAdmin } = require('./_notify');
 
 function isAdmin(req) {
@@ -56,11 +56,11 @@ module.exports = async (req, res) => {
                 emailSubject: `⭐ New Review Submitted - ${doc.name} (${doc.rating}★)`,
                 emailHtml: `
                     <h2>New Review Awaiting Approval</h2>
-                    <p><b>Name:</b> ${doc.name}</p>
-                    ${doc.phone ? `<p><b>Phone:</b> ${doc.phone}</p>` : ''}
+                    <p><b>Name:</b> ${escapeHtml(doc.name)}</p>
+                    ${doc.phone ? `<p><b>Phone:</b> ${escapeHtml(doc.phone)}</p>` : ''}
                     <p><b>Rating:</b> ${doc.rating} / 5</p>
-                    ${doc.serviceName ? `<p><b>Service:</b> ${doc.serviceName}</p>` : ''}
-                    <p><b>Review:</b><br/>${doc.text.replace(/\n/g, '<br/>')}</p>
+                    ${doc.serviceName ? `<p><b>Service:</b> ${escapeHtml(doc.serviceName)}</p>` : ''}
+                    <p><b>Review:</b><br/>${escapeHtml(doc.text).replace(/\n/g, '<br/>')}</p>
                     <p style="color:#888;font-size:12px;">Log in to the admin panel to approve or reject this review.</p>
                 `,
                 whatsappText: `⭐ New Review Submitted (${doc.rating}★)\n\nName: ${doc.name}\n${doc.serviceName ? `Service: ${doc.serviceName}\n` : ''}\nReview: ${doc.text}\n\nApprove/reject it from the admin panel.`,
