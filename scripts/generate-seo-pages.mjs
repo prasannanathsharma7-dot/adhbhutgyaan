@@ -127,8 +127,8 @@ function renderPage(route) {
 const routes = [
     {
         path: '/services',
-        title: 'हमारी पूजा सेवाएं | Adhbhut Gyaan',
-        description: 'रुद्राभिषेक, कालसर्प दोष, त्रिपिंडी श्राद्ध, दस महाविद्या पाठ सहित 10+ प्रामाणिक पूजा सेवाएं — बनारस के विद्वान पंडितों द्वारा।',
+        title: 'Pooja & Astrology Services in Kashi, Varanasi | हमारी पूजा सेवाएं | Adhbhut Gyaan',
+        description: 'Book authentic pooja in Kashi, Varanasi - Rudrabhishek, Kalsarp Dosh Nivaran, Tripindi Shradh, Astrology consultation & 10+ more Vedic services by Pt. Umang Nath Sharma.',
         jsonLd: combineJsonLd(
             breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Services', path: '/services' }]),
             faqJsonLd([
@@ -205,13 +205,21 @@ for (const post of blogData) {
 
 // ---- Individual service pages (one route per pooja, from services.json) ----
 // Each pooja gets its own indexable URL so it can rank independently for
-// long-tail, service-specific searches (e.g. "rudrabhishek puja varanasi
-// price") instead of competing with the other 10 poojas on one /services page.
+// long-tail, service-specific searches (e.g. "rudrabhishek in kashi",
+// "astrology in varanasi") instead of competing with the other 10 poojas on
+// one /services page. Title/description are bilingual (English keyword
+// phrase + Hindi name) since the site now defaults to English but the
+// Devanagari service name still matters for Hindi-language searches.
 for (const service of servicesData) {
+    const isAstrology = service.id === 'astrology-consultation';
+    const enDescription = isAstrology
+        ? `Astrology consultation in Kashi, Varanasi with Dr. Umang Nath Sharma - kundli analysis, dosh remedies, marriage matching, online or in person.`
+        : `Book ${service.nameEn} in Kashi, Varanasi with Pt. Umang Nath Sharma - authentic Vedic pooja, available online or in person.`;
+
     routes.push({
         path: `/services/${service.id}`,
-        title: `${service.name} — बुक करें | Adhbhut Gyaan`,
-        description: service.shortDesc,
+        title: `${service.nameEn} in Kashi, Varanasi | ${service.name} — Adhbhut Gyaan`,
+        description: enDescription,
         image: `${SITE_URL}/images/${service.image}`,
         jsonLd: combineJsonLd(
             breadcrumbJsonLd([

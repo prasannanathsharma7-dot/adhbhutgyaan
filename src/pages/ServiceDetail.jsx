@@ -15,9 +15,14 @@ export default function ServiceDetail() {
     const name = lang === 'hi' ? service.name : service.nameEn;
     const description = lang === 'hi' ? service.description : service.descriptionEn;
 
+    const isAstrology = service.id === 'astrology-consultation';
+    const enDescription = isAstrology
+        ? 'Astrology consultation in Kashi, Varanasi with Dr. Umang Nath Sharma - kundli analysis, dosh remedies, marriage matching, online or in person.'
+        : `Book ${service.nameEn} in Kashi, Varanasi with Pt. Umang Nath Sharma - authentic Vedic pooja, available online or in person.`;
+
     useSEO({
-        title: t(`${service.name} — बुक करें | Adhbhut Gyaan`, `${service.nameEn} — Book Online | Adhbhut Gyaan`),
-        description: t(service.shortDesc, service.descriptionEn.slice(0, 155)),
+        title: t(`${service.name} — बुक करें | Adhbhut Gyaan`, `${service.nameEn} in Kashi, Varanasi | ${service.name} — Adhbhut Gyaan`),
+        description: t(service.shortDesc, enDescription),
         path: `/services/${service.id}`,
         image: `https://www.adhbhutgyaan.com/images/${service.image}`,
         jsonLd: combineJsonLd(
