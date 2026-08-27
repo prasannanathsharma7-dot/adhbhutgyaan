@@ -61,6 +61,42 @@ const testimonials = [
 
 const testimonialFlags = [...new Set(testimonials.map(t => t.flag).filter(Boolean))];
 
+// Additional testimonials found in the original 1973-1983 letter archive,
+// shown in their own separate section rather than mixed with the first batch.
+const moreTestimonials = [
+    { quoteHi: 'हम सबसे अधिक प्रभावित हुए श्री शर्मा जी की योग्यता से — एक ऐसा अनुभव जो हमें पहले कभी नहीं हुआ। हमारे भूतकाल का वर्णन करने की उनकी क्षमता विश्वसनीय रूप से सटीक थी।', quoteEn: "We have been most impressed with Mr. Sharma's skills as a fortune teller — an experience we had not known before. His ability to describe our past lives was convincingly accurate; he is worthy of his reputation as palmist, astrologer and mystic.", name: 'Cadetle Reynolds & Siron Areke', place: 'Sydney, Australia · Oct 1980', flag: '🇦🇺' },
+    { quoteHi: 'मैं कुछ संशय लेकर आया था, परंतु जो हुआ उससे पूर्णतः आश्वस्त हो गया। एक सर्वांगीण एवं सकारात्मक अनुभव रहा। मैं अत्यंत आभारी हूँ।', quoteEn: 'I came with some cynicism, and was much convinced by what took place. A wholesome and positive experience. I am much obliged.', name: 'E. Shenton', place: 'Stanmore, Middlesex, England · Oct 1980', flag: '🇬🇧' },
+    { quoteHi: 'व्यक्तित्व के विषय में रोचक अंतर्दृष्टि तथा कुछ अच्छी सलाह।', quoteEn: 'Interesting insight into personalities and some good advice.', name: 'Linda & Neil Greenhill', place: 'Australia · Jan 1980', flag: '🇦🇺' },
+    { quoteHi: 'आपके अत्यंत गंभीर पाठ के लिए धन्यवाद, और भविष्य की घटनाओं की पुष्टि हेतु मैं उत्सुकता से प्रतीक्षा करूँगा। यदि सब सुचारु रहा तो मैं 6 माह में आपके दर्शन हेतु पुनः आऊँगा।', quoteEn: 'I thank you for a most profound reading & shall eagerly check future events for verification. If all goes well I shall return for your Darshan in 6 months.', name: 'Bhavanand Goswami', place: 'Mar 1980', flag: '🌐' },
+    { quoteHi: 'मैं पंडितजी से मिला और उनके ज्ञान के लिए हार्दिक धन्यवाद देता हूँ, और आशा करता हूँ कि उनके मार्ग पर चल सकूँ।', quoteEn: 'I met Mr. Panditji and I thank him very much for his knowledge, and I hope to follow his way.', name: 'Jacqueline Mahler', place: 'France · Apr 1980', flag: '🇫🇷' },
+    { quoteHi: 'मैं अत्यंत भाग्यशाली हूँ कि मुझे इतनी प्रबुद्ध आत्मा के साथ अपने जीवन के कुछ क्षण बिताने को मिले। मैं अपना प्रेम एवं आपकी सहायता के लिए धन्यवाद देती हूँ — आज का यह पाठ मेरे जीवन को बदल देगा, ऐसा मुझे ज्ञात है। आप एक सुंदर व्यक्ति हैं।', quoteEn: "I am very fortunate to have spared a few moments of my life with such an enlightened soul. I give my thanks for your assistance and know that today's reading will cause my life to change. You are a beautiful person, and I thank you for the honour of being with you.", name: 'Peggie Aurand', place: 'Atlanta, Georgia, USA · Sep 1980', flag: '🇺🇸' },
+    { quoteHi: 'श्री शर्मा हस्तरेखा/ज्योतिष में सहायक सिद्ध हुए — जीवन के आगामी पैटर्न के कुछ संकेत एवं दिशाएं बताईं, रत्न आदि की भी सलाह दी। परिवार संबंधी बातें भी सहायक रहीं।', quoteEn: 'Mr. Sharma has been helpful in palmistry/astrology, giving clues to life patterns to come and directions to take; recommending stones etc. Insights on family relations were also helpful.', name: 'John Islone', place: 'Thousand Oaks, California, USA · Oct 1980', flag: '🇺🇸' },
+    { quoteHi: 'श्री शर्मा ने मेरे वर्तमान, भूत एवं भविष्य के जीवन के विषय में कुछ प्रबोधक जानकारी दी, जिसके लिए मैं अत्यंत आभारी हूँ ताकि मैं अपने जीवन एवं संसार से संबंध सुधार सकूँ।', quoteEn: 'Mr. Sharma has given me some enlightening information about my present, past and future life, and I am very grateful for this so I can improve my life and my relationship with the world.', name: 'Victor Blocuttik', place: 'Cupertino, California, USA · Oct 1980', flag: '🇺🇸' },
+    { quoteHi: 'मेरे जीवन में आपकी सूक्ष्म एवं ईमानदार अंतर्दृष्टि के लिए धन्यवाद। आपके कथनों में मुझे एक सत्यता का आभास होता है जो मुझे अपनी वर्तमान परिस्थितियों को एक बेहतर भविष्य हेतु तैयार करने में सहायक होगी।', quoteEn: 'Thank you for your perceptive and honest insight into my life. I sense a validity in your statements that should help me prepare my present circumstances for a more perfect future.', name: 'Tom Hevsant', place: 'Carlsbad, California, USA · Oct 1980', flag: '🇺🇸' },
+    { quoteHi: 'आपकी सलाह के लिए हम हार्दिक धन्यवाद देते हैं, और स्वीकार करते हैं कि हमने यहाँ अत्यंत रोचक एवं महत्वपूर्ण समय व्यतीत किया।', quoteEn: 'We thank you so much for your advice and we hereby admit that we spent a very interesting and important time here.', name: 'Elke Rappold', place: 'Berlin, West Germany · Mar 1981', flag: '🇩🇪' },
+    { quoteHi: 'शम्भुजी की गहन दृष्टि एवं उस शक्ति के लिए अनेक धन्यवाद जो बहुत आगे तक जाती है, वहाँ तक भी जहाँ आत्मा स्वयं पुकारती है।', quoteEn: 'Many thanks to Shambhuji for his deep insight and strength which reaches far beyond, even to where the Atman itself calls out.', name: 'Genient Bogrand', place: 'Paris, France · Nov 1980', flag: '🇫🇷' },
+    { quoteHi: 'मैं आपका हार्दिक आभारी हूँ। आपका स्थान नई बस्ती एक ऐसी जगह है जहाँ मुझे घर जैसा अनुभव होता है। मुझे बहुत प्रसन्नता है कि मैं आपसे मिला, और अगली बार वाराणसी आने पर पुनः मिलूँगा।', quoteEn: 'I thank you very much. Your place Nai Basti is somewhere I feel at home. I am so glad to have met you, and I will see you again next time I come to Varanasi.', name: 'Alain Extz', place: 'Paris, France · Jan 1979', flag: '🇫🇷' },
+    { quoteHi: 'आज मुझे पंडित एस.एन. शर्मा द्वारा हस्तरेखा पाठ प्राप्त हुआ और मैं उनकी अंतर्दृष्टि से अत्यंत आश्चर्यचकित हूँ जो उन्हें किसी के व्यक्तित्व की गहराई तक ले जाती है।', quoteEn: "Today I got a palm reading by Pandit S.N. Sharma and was very amazed by the insight he has into one's personality.", name: 'Klaus Dierolf', place: 'Kirchheim-Teck, West Germany · Mar 1979', flag: '🇩🇪' },
+    { quoteHi: 'मुझे एवं मेरे पति एलन को शम्भुनाथ शर्मा द्वारा पुनः कहे गए हमारे भूतकाल की घटनाओं का अत्यंत सटीक विवरण मिला, जिसकी सलाह के लिए हम आभारी हैं।', quoteEn: 'My husband Allan and I had a very accurate account of past incidents of our lives retold by Shambhunath Sharma, and are thankful for the advice he offered.', name: 'J. Hoorn', place: 'Apr 1979', flag: '🌐' },
+    { quoteHi: 'मैंने ज्ञान एवं अंतर्दृष्टि देखी, आपकी बातें सहायक थीं, और सच्चाई का सही बोध कराती थीं।', quoteEn: 'I saw knowledge & insight; your words were helpful, and made true sense.', name: 'Sina Sadegh', place: 'Tehran, Iran · May 1979', flag: '🇮🇷' },
+    { quoteHi: 'मुझे पंडित शम्भुनाथ शर्मा से मिलकर अत्यंत प्रसन्नता हुई। मेरे भूतकाल के विषय में उनके कुछ कथन अत्यंत सटीक थे। मैं उनकी सलाह को सहेज कर रखूँगा। वे एक अत्यंत सौम्य आत्मा हैं।', quoteEn: 'I was very happy to meet Pandit Shambhunath Sharma. Some of his declarations about my past were very accurate. I shall keep his advice. He is a very gentle soul.', name: 'Sumanta Banerjee', place: 'Paris, France · May 1979', flag: '🇫🇷' },
+    { quoteHi: 'मैं आपकी आतिथ्य-सत्कार एवं हस्तरेखा पाठ से अत्यंत प्रसन्न हूँ। मैं केवल यही आशा करता हूँ कि आपकी एक भविष्यवाणी गलत सिद्ध हो।', quoteEn: 'I am very happy with your hospitality and hand reading. I only hope that one of your predictions will be wrong.', name: 'Jacint Paulesa', place: 'Reus, Catalunya, Spain · Aug 1979', flag: '🇪🇸' },
+    { quoteHi: 'हम शम्भुनाथ शर्मा से मिले, और उनके अनुसार बताई गई सभी बातें सत्य सिद्ध हुईं। हम उनसे पुनः-पुनः मिलते रहेंगे।', quoteEn: 'We met Shambhunath Sharma; according to what he said, everything proved correct. We will meet him again and again.', name: 'M.A.A. Ariyaratna & G.D. Samarapala', place: 'Sri Lanka · Sep 1974', flag: '🇱🇰' },
+    { quoteHi: 'मैंने उन्हें व्यवहार में सुखद पाया और मानता हूँ कि वे एक विद्वान व्यक्ति हैं। उनके साथ मेरा प्रवास अत्यंत सुखद एवं ज्ञानवर्धक रहा, और मैं उनके लिए शांति एवं समृद्धि की कामना करता हूँ।', quoteEn: 'I found him pleasant to deal with and believe him a learned man. My stay with him was most pleasant and informative, and I wish him peace and prosperity in the future.', name: 'Ran Wallace', place: 'Chatham, New Brunswick, Canada · Oct 1974', flag: '🇨🇦' },
+    { quoteHi: 'मैंने आपकी प्रोत्साहक सलाह का पूर्ण आनंद लिया।', quoteEn: 'I have thoroughly enjoyed your encouraging advice.', name: 'Esther & Frank Crow', place: 'Chula Vista, California, USA · 1975', flag: '🇺🇸' },
+    { quoteHi: 'मैं शम्भुनाथ शर्मा से मिली, उनके साथ बिताया समय मुझे बहुत अच्छा लगा। मैं अगले एक वर्ष की प्रतीक्षा करूँगी।', quoteEn: 'I visited Shambhunath Sharma; I quite enjoyed the time spent talking with him. I will be looking forward to the next year.', name: 'Carol MacMillan', place: 'Vancouver, Canada · Dec 1973', flag: '🇨🇦' },
+    { quoteHi: 'यद्यपि शम्भुनाथ शर्मा के साथ मेरा सत्र सीमित था, उन्होंने भूतकाल की कुछ प्रकट घटनाएं तथा भविष्य की भविष्यवाणियां बताईं जिनकी मैं प्रतीक्षा कर रहा हूँ।', quoteEn: "Although my session with Shambhunath Sharma was limited, he came up with some revealing past events and predicted future events which I'm looking forward to.", name: 'M. Farichuk', place: 'Vancouver, Canada · Dec 1973', flag: '🇨🇦' },
+    { quoteHi: 'मेरे भूतकाल के विषय में उनकी भविष्यवाणियां पूर्णतः सटीक हैं, जो मेरे लिए आश्चर्यजनक है। कुछ मामलों में वे इतने सटीक हैं कि वे उन दिशाओं को प्रकट करते हैं जिनका मुझे बोध तो था परंतु महत्व समझ नहीं आया था।', quoteEn: "His predictions of my past life are all completely accurate, which is amazing to me. In some respects he is so accurate that he reveals directions I was aware of but could not see the significance of.", name: 'Jim Funk', place: 'Malacca, Malaysia · Sep 1975', flag: '🇲🇾' },
+    { quoteHi: 'मुझे लगता है कि उनकी व्याख्या में बहुत सच्चाई है। हम अत्यंत संतुष्ट थे।', quoteEn: 'I think there is a lot of truth in his interpretation. We were very satisfied.', name: 'Leonidas Goulandries', place: 'London, England', flag: '🇬🇧' },
+    { quoteHi: 'मुझे अपने हाथों का पाठ प्राप्त हुआ, जिसकी विधि स्पर्श एवं बनावट पर आधारित थी। मेरे भूतकाल के विषय में जो कुछ भी बताया गया वह सटीक एवं अद्भुत था।', quoteEn: 'I was given a reading of my hands; the method he used was touch & texture. Whatever he told me about my past was exact and fantastic.', name: 'Jeanne Sarthreat', place: 'Paris, France', flag: '🇫🇷' },
+    { quoteHi: 'आपसे मिलकर अत्यंत प्रसन्नता हुई। मुझे लगता है कि आप मुझे मेरे भूतकाल के जीवन का पाठ देने में सफल रहे, और भविष्य की भविष्यवाणियां भी अत्यंत संभावित प्रतीत होती हैं।', quoteEn: 'It has been a pleasure to meet you. I feel you have been successful in giving me a reading of my past life, and I feel the predictions for the future are very possible.', name: 'Vada V. Beard', place: 'Modesto, California, USA', flag: '🇺🇸' },
+    { quoteHi: 'मुझे यह पाठ अत्यंत रोचक लगा और यह भविष्य के विषय में मेरे अंतर्ज्ञान से मेल खाता है।', quoteEn: 'I found the reading most interesting and it conforms to my intuitions as to the future.', name: 'Hony W. Patterson', place: 'New York, USA · Feb 1981', flag: '🇺🇸' },
+    { quoteHi: 'मुझे अत्यंत प्रसन्नता है कि मैं आपसे मिलने आई। अब से मैं अपने जीवन की आपकी दी हुई दृष्टि से संतुष्ट अनुभव करती हूँ।', quoteEn: 'I am very happy that I came to see you. I feel contented with your vision of my life from now on.', name: 'June Wilson', place: 'Davison, Michigan, USA', flag: '🇺🇸' },
+    { quoteHi: 'मैंने अपने हाथ उन्हें दिखाए और मात्र स्पर्श से उन्होंने भूतकाल की घटनाओं के विषय में बताया जो बिल्कुल सटीक थीं। उन्होंने मेरी कई जिज्ञासाओं का समाधान किया। मैं उनका अत्यंत सम्मान करता हूँ।', quoteEn: 'I showed him my hands, and with a mere touch he spoke of past events which were correct to the point. He resolved several of my queries. I hold him in great respect.', name: 'S.M. Micklason', place: 'Dec 1973', flag: '🌐' },
+];
+
+const moreTestimonialFlags = [...new Set(moreTestimonials.map(t => t.flag).filter(Boolean))];
+
 const values = [
     { icon: '📖', title: 'शास्त्रोक्त विधि', titleEn: 'Authentic Vedic Methods', desc: 'प्रत्येक पूजा शुद्ध एवं शास्त्रोक्त विधि से सम्पन्न', descEn: 'Every pooja performed with impeccable, time-honored precision' },
     { icon: '🤝', title: 'विश्वास एवं पारदर्शिता', titleEn: 'Trust & Transparency', desc: 'कोई छिपा हुआ शुल्क नहीं', descEn: 'No concealed costs, ever' },
@@ -314,6 +350,68 @@ export default function About() {
                                 <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', lineHeight: 1.7, flex: 1, fontStyle: 'italic' }}>{t(tst.quoteHi, tst.quoteEn)}</p>
                                 <div style={{ borderTop: '1px dashed var(--border-gold)', paddingTop: '0.7rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                     <span style={{ fontSize: '1.4rem' }}>{tst.flag || '🌐'}</span>
+                                    <div>
+                                        <div style={{ fontWeight: 700, color: 'var(--gold-700)', fontSize: '0.9rem' }}>{tst.name}</div>
+                                        <div style={{ color: 'var(--text-muted)', fontSize: '0.78rem' }}>{tst.place}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    <p style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.8rem', marginTop: '1.5rem', fontStyle: 'italic' }}>
+                        {t(
+                            'मूल पत्रों से लिया गया, भाषा को थोड़ा सरल किया गया है। पूर्ण पते गोपनीयता हेतु संक्षिप्त किए गए हैं।',
+                            'Adapted from original letters; full street addresses abbreviated for privacy.'
+                        )}
+                    </p>
+                </div>
+            </section>
+
+            {/* Our Testimonials - additional letters found in the same original archive,
+                kept in their own section so they display separately from the first batch. */}
+            <section className="section section-warm" id="our-testimonials">
+                <div className="container">
+                    <div className="text-center">
+                        <span className="section-label">{t('हमारे प्रशंसापत्र', 'Our Testimonials')}</span>
+                        <h2 className="section-title">{t('संग्रह से और भी पत्र', 'More Letters From the Archive')}</h2>
+                        <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>{t('1973 से 1982 के मध्य', 'From Between 1973 and 1982')}</p>
+                    </div>
+                    <div className="om-divider">ॐ</div>
+                    <div style={{ display: 'flex', justifyContent: 'center', gap: '0.6rem', flexWrap: 'wrap', marginBottom: '2.5rem' }}>
+                        <span style={{ background: 'white', border: '1px solid var(--border-gold)', color: 'var(--gold-700)', fontWeight: 700, fontSize: '0.85rem', padding: '0.4rem 1rem', borderRadius: 'var(--radius-xl)' }}>
+                            ✉️ {moreTestimonials.length} {t('पत्र', 'Letters')}
+                        </span>
+                        <span style={{ background: 'white', border: '1px solid var(--border-gold)', color: 'var(--gold-700)', fontWeight: 700, fontSize: '0.85rem', padding: '0.4rem 1rem', borderRadius: 'var(--radius-xl)', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
+                            <span style={{ fontSize: '1.1rem', letterSpacing: '0.1em' }}>{moreTestimonialFlags.join(' ')}</span>
+                            {moreTestimonialFlags.length}+ {t('देश', 'Countries')}
+                        </span>
+                        <span style={{ background: 'white', border: '1px solid var(--border-gold)', color: 'var(--gold-700)', fontWeight: 700, fontSize: '0.85rem', padding: '0.4rem 1rem', borderRadius: 'var(--radius-xl)' }}>
+                            📅 1973–1982
+                        </span>
+                    </div>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.75rem' }}>
+                        {moreTestimonials.map((tst, i) => (
+                            <div key={i} style={{
+                                position: 'relative',
+                                background: 'linear-gradient(165deg, #FFFCF5 0%, var(--cream) 100%)',
+                                border: '1px solid var(--border-light)',
+                                borderRadius: 'var(--radius-lg)',
+                                padding: '1.5rem',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: '0.75rem',
+                                boxShadow: 'var(--shadow-lg)',
+                                overflow: 'hidden',
+                            }}>
+                                <div style={{
+                                    position: 'absolute', top: 0, left: 0, right: 0, height: '6px',
+                                    background: 'repeating-linear-gradient(-45deg, #B8860B 0 10px, #fff 10px 20px, #8B0000 20px 30px, #fff 30px 40px)',
+                                    opacity: 0.55,
+                                }} />
+                                <span style={{ fontSize: '1.8rem', color: 'var(--gold-400)', lineHeight: 1, fontFamily: 'var(--font-heading)' }}>&ldquo;</span>
+                                <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', lineHeight: 1.7, flex: 1, fontStyle: 'italic' }}>{t(tst.quoteHi, tst.quoteEn)}</p>
+                                <div style={{ borderTop: '1px dashed var(--border-gold)', paddingTop: '0.7rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                    <span style={{ fontSize: '1.4rem' }}>{tst.flag}</span>
                                     <div>
                                         <div style={{ fontWeight: 700, color: 'var(--gold-700)', fontSize: '0.9rem' }}>{tst.name}</div>
                                         <div style={{ color: 'var(--text-muted)', fontSize: '0.78rem' }}>{tst.place}</div>
