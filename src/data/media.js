@@ -2,9 +2,9 @@
 // Single source of truth so all pages stay in sync when new photos/videos are added.
 
 export const triptych = [
-    { src: '/images/gallery/vedic-paath.jpg', capHi: 'परम्परा', capEn: 'The Tradition' },
-    { src: '/images/heritage/umang-with-ayodhya-portrait.jpg', capHi: 'डॉ. उमंग नाथ शर्मा', capEn: 'Dr. Umang Nath Sharma' },
-    { src: '/images/gallery/ram-katha-event.jpg', capHi: 'सेवा', capEn: 'The Mission' },
+    { src: '/images/gallery/vedic-paath.jpg', capHi: 'परम्परा', capEn: 'The Tradition', link: '/about#generations' },
+    { src: '/images/heritage/umang-with-ayodhya-portrait.jpg', capHi: 'डॉ. उमंग नाथ शर्मा', capEn: 'Dr. Umang Nath Sharma', link: '/about#chief-astrologer' },
+    { src: '/images/gallery/ram-katha-event.jpg', capHi: 'सेवा', capEn: 'The Mission', link: '/about#mission' },
 ];
 
 export const videoClips = [

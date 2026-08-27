@@ -512,7 +512,7 @@ export default function About() {
             </section>
 
             {/* Values */}
-            <section className="section">
+            <section className="section" id="mission">
                 <div className="container">
                     <div className="text-center">
                         <span className="section-label">{t('हमारे मूल्य', 'Our Values')}</span>

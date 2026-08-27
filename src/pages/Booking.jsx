@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import servicesData from '../data/services.json';
 import { useLanguage } from '../context/LanguageContext';
@@ -11,6 +11,8 @@ export default function Booking() {
     const preServiceId = searchParams.get('service');
     const prePkgName = searchParams.get('package');
     const { t, lang } = useLanguage();
+    const [activeClip, setActiveClip] = useState(null);
+    const heroVideoRef = useRef(null);
 
     useSEO({
         title: t('पूजा बुक करें | Adhbhut Gyaan', 'Book a Pooja | Adhbhut Gyaan'),
@@ -170,33 +172,58 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                 </div>
             </header>
 
-            {/* Welcome video */}
+            {/* Welcome video - swaps to a real ceremony clip when one is picked below */}
             <section className="section" style={{ paddingTop: 'clamp(2rem, 5vw, 3rem)', paddingBottom: 'clamp(2rem, 5vw, 3rem)' }}>
                 <div className="container" style={{ maxWidth: 720 }}>
                     <div className="text-center" style={{ marginBottom: '1.25rem' }}>
                         <h2 style={{ fontFamily: 'var(--font-hindi)', color: 'var(--text-primary)', marginBottom: '0.35rem' }}>
-                            {t('बुकिंग से पहले, हमसे मिलिए', 'Meet Us Before You Book')}
+                            {activeClip ? t(activeClip.capHi, activeClip.capEn) : t('बुकिंग से पहले, हमसे मिलिए', 'Meet Us Before You Book')}
                         </h2>
                         <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-                            {t('हमारे परिवार की ओर से आपके लिए एक स्नेहिल संदेश', 'A personal message from our family, just for you')}
+                            {activeClip
+                                ? t('हमारी वास्तविक पूजाओं में से एक झलक', 'A glimpse from one of our real ceremonies')
+                                : t('हमारे परिवार की ओर से आपके लिए एक स्नेहिल संदेश', 'A personal message from our family, just for you')}
                         </p>
                     </div>
-                    <div style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: 'var(--shadow-lg)', border: '1px solid var(--border-gold)' }}>
-                        <video controls preload="none" poster="/images/gallery/welcome-poster.jpg" playsInline style={{ width: '100%', display: 'block', background: '#000', aspectRatio: '16/9' }}>
-                            <source src="/videos/welcome.mp4" type="video/mp4" />
+                    <div ref={heroVideoRef} style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: 'var(--shadow-lg)', border: '1px solid var(--border-gold)' }}>
+                        <video key={activeClip ? activeClip.src : 'welcome'} controls autoPlay={Boolean(activeClip)} preload="none" poster={activeClip ? activeClip.poster : '/images/gallery/welcome-poster.jpg'} playsInline style={{ width: '100%', display: 'block', background: '#000', aspectRatio: '16/9' }}>
+                            <source src={activeClip ? activeClip.src : '/videos/welcome.mp4'} type="video/mp4" />
                         </video>
                     </div>
+                    {activeClip && (
+                        <div style={{ textAlign: 'center', marginTop: '0.85rem' }}>
+                            <button type="button" onClick={() => setActiveClip(null)} className="btn btn-outline" style={{ fontSize: '0.82rem', padding: '0.4rem 1rem' }}>
+                                ↺ {t('स्वागत संदेश पर वापस जाएं', 'Back to the welcome message')}
+                            </button>
+                        </div>
+                    )}
                 </div>
             </section>
 
-            {/* Trust strip - real ceremony photos */}
+            {/* Trust strip - click any clip to play it large above */}
             <section style={{ padding: '1.75rem 0', background: 'var(--cream)', borderBottom: '1px solid var(--border-light)' }}>
                 <div className="container">
                     <p style={{ textAlign: 'center', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.85rem', letterSpacing: '0.3px' }}>
-                        {t('हमारी वास्तविक पूजाओं की झलक', 'Glimpses from our real ceremonies')}
+                        {t('हमारी वास्तविक पूजाओं की झलक — किसी भी क्लिप पर टैप करें', 'Glimpses from our real ceremonies — tap any clip to play it above')}
                     </p>
                     <div style={{ display: 'flex', gap: '0.75rem', overflowX: 'auto', paddingBottom: '0.25rem' }}>
-                        {gallery.slice(4, 12).map(item => (
+                        {videoClips.map(clip => (
+                            <button
+                                key={clip.src}
+                                type="button"
+                                onClick={() => { setActiveClip(clip); heroVideoRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }); }}
+                                style={{
+                                    position: 'relative', width: '90px', height: '90px', flexShrink: 0, padding: 0,
+                                    borderRadius: 'var(--radius-md)', overflow: 'hidden', cursor: 'pointer',
+                                    border: activeClip?.src === clip.src ? '2px solid var(--gold-600)' : '1px solid var(--border-light)',
+                                }}
+                                aria-label={t(clip.capHi, clip.capEn)}
+                            >
+                                <img src={clip.poster} alt={clip.capEn} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                                <span style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.25)', color: 'white', fontSize: '1.4rem' }}>▶</span>
+                            </button>
+                        ))}
+                        {gallery.slice(4, 9).map(item => (
                             <img
                                 key={item.src}
                                 src={item.src}

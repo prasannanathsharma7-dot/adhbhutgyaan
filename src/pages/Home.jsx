@@ -92,12 +92,12 @@ export default function Home() {
                 <div className="container">
                     <div className="triptych">
                         {triptych.map(item => (
-                            <div className="triptych-card" key={item.capEn}>
+                            <Link className="triptych-card" key={item.capEn} to={item.link}>
                                 <img src={item.src} alt={item.capEn} loading="lazy" />
                                 <div className="triptych-overlay">
                                     <span className="triptych-caption">{t(item.capHi, item.capEn)} <span className="arrow">›</span></span>
                                 </div>
-                            </div>
+                            </Link>
                         ))}
                     </div>
                 </div>
