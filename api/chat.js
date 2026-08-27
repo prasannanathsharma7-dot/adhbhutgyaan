@@ -37,6 +37,7 @@ module.exports = async (req, res) => {
 
         const body = req.body || {};
         const incoming = Array.isArray(body.messages) ? body.messages : [];
+        const pageContext = capStr(body.pageContext, 100);
         const messages = incoming
             .filter(m => m && (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string')
             .slice(-MAX_TURNS_SENT)
@@ -47,7 +48,7 @@ module.exports = async (req, res) => {
             return;
         }
 
-        const { replyText, bookingCreated } = await runAssistantTurn(db, messages, process.env.ANTHROPIC_API_KEY, 'chatbot');
+        const { replyText, bookingCreated } = await runAssistantTurn(db, messages, process.env.ANTHROPIC_API_KEY, 'chatbot', pageContext);
         res.status(200).json({ ok: true, reply: replyText, bookingCreated });
     } catch (err) {
         console.error('chat API error:', err);

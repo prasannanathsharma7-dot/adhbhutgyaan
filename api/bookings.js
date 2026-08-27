@@ -132,17 +132,33 @@ module.exports = async (req, res) => {
         const body = req.body || {};
         const id = (body.id || '').toString().trim();
         const status = (body.status || '').toString().trim();
+        const scheduledDateRaw = (body.scheduledDate || '').toString().trim();
 
         if (!id || !ObjectId.isValid(id) || !VALID_STATUSES.includes(status)) {
             res.status(400).json({ ok: false, error: `Valid id and status (${VALID_STATUSES.join('/')}) are required` });
             return;
         }
 
+        // scheduledDate is a real date (YYYY-MM-DD, from an admin-set <input
+        // type="date">) - separate from the customer's free-text
+        // preferredDate ("9 sept", "flexible", etc.), which the reminder
+        // cron job can't reliably parse. Optional: only set when provided.
+        const update = { status, statusUpdatedAt: new Date() };
+        if (scheduledDateRaw) {
+            const parsed = new Date(scheduledDateRaw);
+            if (isNaN(parsed.getTime())) {
+                res.status(400).json({ ok: false, error: 'scheduledDate must be a valid date (YYYY-MM-DD)' });
+                return;
+            }
+            update.scheduledDate = scheduledDateRaw; // stored as YYYY-MM-DD string for simple exact-match querying
+            update.reminderSent = false; // reset so a changed date gets a fresh reminder
+        }
+
         try {
             const db = await getDb();
             const result = await db.collection('bookings').findOneAndUpdate(
                 { _id: new ObjectId(id) },
-                { $set: { status, statusUpdatedAt: new Date() } },
+                { $set: update },
                 { returnDocument: 'after' }
             );
             const updatedDoc = result && result.value ? result.value : result;

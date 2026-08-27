@@ -125,16 +125,16 @@ export default function Admin() {
         }
     };
 
-    const updateStatus = async (endpoint, id, status) => {
+    const updateStatus = async (endpoint, id, status, scheduledDate) => {
         try {
             const res = await fetch(endpoint, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json', 'x-admin-key': key },
-                body: JSON.stringify({ id, status }),
+                body: JSON.stringify({ id, status, ...(scheduledDate ? { scheduledDate } : {}) }),
             });
             const data = await res.json();
             if (data.ok) {
-                setItems(prev => prev.map(it => (it._id === id ? { ...it, status } : it)));
+                setItems(prev => prev.map(it => (it._id === id ? { ...it, status, ...(scheduledDate ? { scheduledDate } : {}) } : it)));
             }
         } catch {
             /* ignore */
@@ -214,12 +214,27 @@ export default function Admin() {
                                     {it.mode ? `Mode: ${it.mode} · ` : ''}{it.preferredDate ? `Date: ${it.preferredDate} · ` : ''}{fmtDate(it.createdAt)}
                                 </div>
                                 {it.notes && <p style={{ fontSize: '0.9rem', marginTop: '0.5rem' }}>{it.notes}</p>}
-                                <div style={{ marginTop: '0.75rem' }}>
+                                <div style={{ marginTop: '0.75rem', display: 'flex', gap: '0.6rem', alignItems: 'center', flexWrap: 'wrap' }}>
                                     <StatusSelect
                                         value={it.status}
                                         options={['new', 'contacted', 'confirmed', 'completed', 'cancelled']}
-                                        onChange={(status) => updateStatus('/api/bookings', it._id, status)}
+                                        onChange={(status) => updateStatus('/api/bookings', it._id, status, it.scheduledDate)}
                                     />
+                                    <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                                        📅 Scheduled:
+                                        <input
+                                            type="date"
+                                            className="form-input"
+                                            style={{ padding: '0.3rem 0.5rem', fontSize: '0.8rem', width: 'auto' }}
+                                            value={it.scheduledDate || ''}
+                                            onChange={(e) => updateStatus('/api/bookings', it._id, it.status || 'confirmed', e.target.value)}
+                                        />
+                                    </label>
+                                    {it.scheduledDate && (
+                                        <span style={{ fontSize: '0.75rem', color: it.reminderSent ? 'var(--gold-600)' : 'var(--text-muted)' }}>
+                                            {it.reminderSent ? '✓ Reminder sent' : '⏳ Reminder pending'}
+                                        </span>
+                                    )}
                                 </div>
                             </div>
                         ))}

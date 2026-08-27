@@ -10,11 +10,15 @@ const servicesData = require('../src/data/services.json');
 const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
 const MODEL = 'claude-haiku-4-5-20251001';
 
-function buildSystemPrompt() {
+function buildSystemPrompt(pageContext) {
     const serviceLines = servicesData.map(s => {
         const pkgs = s.packages.map(p => `${p.nameEn} (${p.paathCount})`).join('; ');
         return `- ${s.nameEn} [id: ${s.id}]: ${s.descriptionEn} Best time: ${s.bestTimeEn}. Packages: ${pkgs}.`;
     }).join('\n');
+
+    const contextLine = pageContext
+        ? `\nThe visitor is currently looking at the page for "${pageContext}" - if their first message is vague (e.g. just "hi" or a general question), assume they're likely interested in this service and offer to tell them more about it, but still let them redirect the conversation freely if they ask about something else.\n`
+        : '';
 
     return `You are the helpful assistant for Adhbhut Gyaan, a Vedic pooja and astrology consultation service run by Pt./Dr. Umang Nath Sharma and family in Kashi (Varanasi), India, continuing a 400+ year family tradition.
 
@@ -29,7 +33,7 @@ Business facts (use only these - never invent prices, dates, or details not give
 
 Available poojas/services:
 ${serviceLines}
-
+${contextLine}
 Your job:
 1. Answer questions about services, what they're for, best timing, and what packages/options exist - using ONLY the facts above.
 2. Do not state exact rupee prices (not provided here) - pricing is confirmed personally by Pandit ji on WhatsApp or call, so tell the person Pandit ji will share the exact price once they connect. Offer to help book an appointment or connect them on WhatsApp for that.
@@ -61,7 +65,7 @@ const CREATE_BOOKING_TOOL = {
     },
 };
 
-async function callAnthropic(messages, apiKey) {
+async function callAnthropic(messages, apiKey, pageContext) {
     const res = await fetch(ANTHROPIC_API_URL, {
         method: 'POST',
         headers: {
@@ -72,7 +76,7 @@ async function callAnthropic(messages, apiKey) {
         body: JSON.stringify({
             model: MODEL,
             max_tokens: 1024,
-            system: buildSystemPrompt(),
+            system: buildSystemPrompt(pageContext),
             tools: [CREATE_BOOKING_TOOL],
             messages,
         }),
@@ -150,8 +154,8 @@ async function createBookingFromTool(db, input, source) {
 // Runs one full turn: sends `messages` to Claude, and if it wants to call
 // create_booking, executes that and asks Claude to continue with the result -
 // so the caller always gets back plain final reply text.
-async function runAssistantTurn(db, messages, apiKey, source) {
-    let response = await callAnthropic(messages, apiKey);
+async function runAssistantTurn(db, messages, apiKey, source, pageContext) {
+    let response = await callAnthropic(messages, apiKey, pageContext);
     let bookingCreated = null;
 
     if (response.stop_reason === 'tool_use') {
@@ -175,7 +179,7 @@ async function runAssistantTurn(db, messages, apiKey, source) {
                 content: [{ type: 'tool_result', tool_use_id: toolUseBlock.id, content: toolResultContent }],
             },
         ];
-        response = await callAnthropic(followupMessages, apiKey);
+        response = await callAnthropic(followupMessages, apiKey, pageContext);
     }
 
     const replyText = (response.content || [])

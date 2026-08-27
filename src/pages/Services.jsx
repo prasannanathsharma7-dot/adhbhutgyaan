@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import servicesData from '../data/services.json';
 import { useLanguage } from '../context/LanguageContext';
@@ -8,6 +8,21 @@ import { breadcrumbJsonLd, faqJsonLd, combineJsonLd } from '../utils/seo';
 export default function Services() {
     const { hash } = useLocation();
     const { t, lang } = useLanguage();
+    const [selectedConcern, setSelectedConcern] = useState(null);
+
+    const concerns = [
+        { id: 'health', icon: '🩺', label: t('स्वास्थ्य संबंधी समस्या', 'Health Issues'), serviceIds: ['rudrabhishek', 'purush-suktam'] },
+        { id: 'marriage', icon: '💍', label: t('विवाह में देरी / मांगलिक दोष', 'Marriage Delay / Manglik Dosh'), serviceIds: ['kumbh-vivah', 'kalsarp-dosh'] },
+        { id: 'money', icon: '💰', label: t('आर्थिक तंगी', 'Financial Struggles'), serviceIds: ['kanakdhara-stotra', 'shree-suktam'] },
+        { id: 'ancestral', icon: '🕯️', label: t('पितृ दोष / पूर्वजों से जुड़ी समस्या', 'Pitru Dosh / Ancestral Issues'), serviceIds: ['tripindi-shradh'] },
+        { id: 'career', icon: '💼', label: t('करियर / व्यापार में रुकावट', 'Career / Business Obstacles'), serviceIds: ['ganesh-atharvashirsha', 'kalsarp-dosh'] },
+        { id: 'negativity', icon: '🛡️', label: t('नकारात्मक शक्ति / शत्रु बाधा', 'Negative Energy / Enemies'), serviceIds: ['vipreet-pratyangira', 'mahavidya-paath'] },
+        { id: 'unsure', icon: '🔮', label: t('पता नहीं, सलाह चाहिए', 'Not Sure, Need Guidance'), serviceIds: ['astrology-consultation'] },
+    ];
+
+    const recommended = selectedConcern
+        ? concerns.find(c => c.id === selectedConcern).serviceIds.map(id => servicesData.find(s => s.id === id)).filter(Boolean)
+        : [];
 
     useSEO({
         title: t('हमारी पूजा सेवाएं | Adhbhut Gyaan', 'Pooja & Astrology Services in Kashi, Varanasi | Adhbhut Gyaan'),
@@ -71,6 +86,59 @@ export default function Services() {
                     <p className="subtitle">{t('हमारी पवित्र पूजा सेवाएं एवं डॉ. उमंग नाथ शर्मा द्वारा प्रदत्त ज्योतिषीय परामर्श', 'Our Sacred Pooja Services & Astrology Consultation, Guided by Dr. Umang Nath Sharma')}</p>
                 </div>
             </header>
+
+            {/* Smart Pooja Finder */}
+            <section className="section" style={{ paddingBottom: selectedConcern ? '1rem' : undefined }}>
+                <div className="container">
+                    <div className="text-center">
+                        <span className="section-label">{t('सही पूजा खोजें', 'Find the Right Pooja')}</span>
+                        <h2 className="section-title">{t('आपकी समस्या क्या है?', "What's Your Concern?")}</h2>
+                        <p className="section-subtitle">{t('नीचे अपनी समस्या चुनें — हम सही पूजा सुझाएंगे।', "Select your concern below and we'll suggest the right pooja.")}</p>
+                    </div>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '0.75rem', marginTop: '1.5rem' }}>
+                        {concerns.map(c => (
+                            <button
+                                key={c.id}
+                                type="button"
+                                onClick={() => setSelectedConcern(c.id === selectedConcern ? null : c.id)}
+                                style={{
+                                    display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+                                    padding: '0.65rem 1.2rem', borderRadius: 'var(--radius-xl)',
+                                    border: c.id === selectedConcern ? 'none' : '1px solid var(--border-gold)',
+                                    background: c.id === selectedConcern ? 'var(--gold-600)' : 'white',
+                                    color: c.id === selectedConcern ? 'white' : 'var(--gold-700)',
+                                    fontWeight: 600, fontSize: '0.9rem', cursor: 'pointer',
+                                }}
+                            >
+                                <span>{c.icon}</span> {c.label}
+                            </button>
+                        ))}
+                    </div>
+
+                    {selectedConcern && (
+                        <div style={{ marginTop: '2rem', maxWidth: '760px', marginLeft: 'auto', marginRight: 'auto' }}>
+                            <p style={{ textAlign: 'center', color: 'var(--text-muted)', marginBottom: '1rem', fontSize: '0.9rem' }}>
+                                {t('इसके लिए ये पूजाएं सुझाई जाती हैं:', 'These poojas are recommended for this:')}
+                            </p>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1rem' }}>
+                                {recommended.map(s => (
+                                    <Link
+                                        key={s.id}
+                                        to={`/services/${s.id}`}
+                                        style={{ display: 'flex', alignItems: 'center', gap: '1rem', background: 'var(--gold-50)', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-lg)', padding: '1rem', textDecoration: 'none' }}
+                                    >
+                                        <img src={`/images/${s.image}`} alt={s.nameEn} width="64" height="64" style={{ borderRadius: 'var(--radius-md)', objectFit: 'cover', flexShrink: 0 }} />
+                                        <div>
+                                            <div style={{ fontWeight: 700, color: 'var(--gold-700)' }}>{lang === 'hi' ? s.name : s.nameEn}</div>
+                                            <div style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>{t('विवरण देखें →', 'View Details →')}</div>
+                                        </div>
+                                    </Link>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </section>
 
             {/* Special Inquiry-Only Services */}
             <section className="section section-warm">

@@ -1,17 +1,26 @@
 import { useState, useRef, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
+import servicesData from '../data/services.json';
 
 const GREETING_HI = 'नमस्कार 🙏 मैं Adhbhut Gyaan का सहायक हूं। पूजा, सेवाओं या बुकिंग के बारे में कुछ भी पूछ सकते हैं।';
 const GREETING_EN = "Namaste 🙏 I'm the Adhbhut Gyaan assistant. Ask me anything about our poojas, services, or bookings.";
 
 export default function ChatWidget() {
     const { t, lang } = useLanguage();
+    const location = useLocation();
     const [open, setOpen] = useState(false);
     const [messages, setMessages] = useState([]); // {role: 'user'|'assistant', content: string}
     const [input, setInput] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const bodyRef = useRef(null);
+
+    // If the visitor is on a specific service's page, the bot's greeting and
+    // its first response lean toward that service instead of being fully
+    // generic - a small but real conversion nudge.
+    const serviceMatch = location.pathname.match(/^\/services\/([a-z-]+)$/);
+    const currentService = serviceMatch ? servicesData.find(s => s.id === serviceMatch[1]) : null;
 
     useEffect(() => {
         if (bodyRef.current) {
@@ -34,7 +43,7 @@ export default function ChatWidget() {
             const res = await fetch('/api/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ messages: nextMessages }),
+                body: JSON.stringify({ messages: nextMessages, pageContext: currentService ? currentService.nameEn : undefined }),
             });
             const data = await res.json();
             if (!res.ok || !data.ok) {
@@ -48,7 +57,9 @@ export default function ChatWidget() {
         }
     }
 
-    const greeting = lang === 'hi' ? GREETING_HI : GREETING_EN;
+    const greeting = currentService
+        ? t(`नमस्कार 🙏 ${currentService.name} के बारे में कुछ भी पूछ सकते हैं, या बुकिंग में मदद चाहिए तो बताइए।`, `Namaste 🙏 Ask me anything about ${currentService.nameEn}, or let me know if you'd like help booking it.`)
+        : (lang === 'hi' ? GREETING_HI : GREETING_EN);
 
     return (
         <>
