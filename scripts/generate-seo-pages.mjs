@@ -213,12 +213,12 @@ for (const post of blogData) {
 for (const service of servicesData) {
     const isAstrology = service.id === 'astrology-consultation';
     const enDescription = isAstrology
-        ? `Astrology consultation in Kashi, Varanasi with Dr. Umang Nath Sharma - kundli analysis, dosh remedies, marriage matching, online or in person.`
+        ? `Best Astrologer in Kashi, Varanasi - Dr. Umang Nath Sharma offers kundli analysis, dosh remedies, marriage matching, online or in person.`
         : `Book ${service.nameEn} in Kashi, Varanasi with Pt. Umang Nath Sharma - authentic Vedic pooja, available online or in person.`;
 
     routes.push({
         path: `/services/${service.id}`,
-        title: `${service.nameEn} in Kashi, Varanasi | ${service.name} — Adhbhut Gyaan`,
+        title: isAstrology ? `Best Astrologer in Kashi, Varanasi | ${service.name} — Adhbhut Gyaan` : `${service.nameEn} in Kashi, Varanasi | ${service.name} — Adhbhut Gyaan`,
         description: enDescription,
         image: `${SITE_URL}/images/${service.image}`,
         jsonLd: combineJsonLd(

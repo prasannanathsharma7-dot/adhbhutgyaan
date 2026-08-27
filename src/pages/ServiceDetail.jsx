@@ -17,7 +17,7 @@ export default function ServiceDetail() {
 
     const isAstrology = service.id === 'astrology-consultation';
     const enDescription = isAstrology
-        ? 'Astrology consultation in Kashi, Varanasi with Dr. Umang Nath Sharma - kundli analysis, dosh remedies, marriage matching, online or in person.'
+        ? 'Best Astrologer in Kashi, Varanasi - Dr. Umang Nath Sharma offers kundli analysis, dosh remedies, marriage matching, online or in person.'
         : `Book ${service.nameEn} in Kashi, Varanasi with Pt. Umang Nath Sharma - authentic Vedic pooja, available online or in person.`;
 
     const faqItems = [
@@ -40,7 +40,7 @@ export default function ServiceDetail() {
     ];
 
     useSEO({
-        title: t(`${service.name} — बुक करें | Adhbhut Gyaan`, `${service.nameEn} in Kashi, Varanasi | ${service.name} — Adhbhut Gyaan`),
+        title: t(`${service.name} — बुक करें | Adhbhut Gyaan`, isAstrology ? `Best Astrologer in Kashi, Varanasi | ${service.name} — Adhbhut Gyaan` : `${service.nameEn} in Kashi, Varanasi | ${service.name} — Adhbhut Gyaan`),
         description: t(service.shortDesc, enDescription),
         path: `/services/${service.id}`,
         image: `https://www.adhbhutgyaan.com/images/${service.image}`,
