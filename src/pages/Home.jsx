@@ -219,6 +219,31 @@ export default function Home() {
                 </div>
             </section>
 
+            {/* Who this is for - audience segments */}
+            <section className="section">
+                <div className="container">
+                    <div className="text-center fade-up">
+                        <span className="section-label">{t('किसके लिए है', "Who It's For")}</span>
+                        <h2 className="section-title">{t('हर भक्त के लिए उपयुक्त', 'Designed for Every Devotee')}</h2>
+                    </div>
+                    <div className="om-divider">ॐ</div>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem' }}>
+                        {[
+                            { icon: '🙏', title: t('व्यक्तिगत भक्त', 'Individuals'), desc: t('स्वयं की मनोकामना पूर्ति, दोष निवारण अथवा नियमित पूजा-पाठ हेतु।', 'For your own wishes, dosh remedies, or regular pooja-paath.') },
+                            { icon: '👨‍👩‍👧‍👦', title: t('परिवार', 'Families'), desc: t('पितृ श्राद्ध, वंश-वृद्धि, विवाह में बाधा निवारण जैसे पारिवारिक अनुष्ठान।', 'Family rituals like ancestral rites, lineage blessings, and marriage-obstacle remedies.') },
+                            { icon: '✈️', title: t('प्रवासी भारतीय (NRI)', 'NRIs Abroad'), desc: t('विदेश में रहते हुए भी लाइव वीडियो के साथ अपने नाम व गोत्र से पूजा करवाएं।', 'Have a pooja performed in your name and gotra, live on video, from anywhere in the world.') },
+                            { icon: '🏢', title: t('व्यवसायी', 'Businesses'), desc: t('व्यापार वृद्धि, वास्तु दोष निवारण एवं कार्यालय हेतु शुभ पूजा।', 'Business growth, vastu dosh remedies, and auspicious poojas for your office.') },
+                        ].map((seg, i) => (
+                            <div className={`feature-card fade-up stagger-${i + 1}`} key={i}>
+                                <span className="feature-icon">{seg.icon}</span>
+                                <h3 className="feature-title">{seg.title}</h3>
+                                <p className="feature-desc">{seg.desc}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
             {/* Featured In - compact press strip, links to full showcase on About page */}
             <section className="section" style={{ paddingTop: '2rem', paddingBottom: '2rem' }}>
                 <div className="container">

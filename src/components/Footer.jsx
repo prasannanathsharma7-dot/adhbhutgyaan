@@ -1,8 +1,30 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 
 export default function Footer() {
     const { t } = useLanguage();
+    const [email, setEmail] = useState('');
+    const [status, setStatus] = useState('idle'); // idle | loading | done | error
+
+    async function handleSubscribe(e) {
+        e.preventDefault();
+        if (!email.trim() || status === 'loading') return;
+        setStatus('loading');
+        try {
+            const res = await fetch('/api/newsletter', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email }),
+            });
+            const data = await res.json();
+            if (!res.ok || !data.ok) throw new Error(data.error || 'Failed');
+            setStatus('done');
+            setEmail('');
+        } catch {
+            setStatus('error');
+        }
+    }
 
     return (
         <footer className="footer" id="footer">
@@ -56,12 +78,44 @@ export default function Footer() {
                     <div>
                         <h4 className="footer-heading">{t('पूजा सेवाएं', 'Pooja Services')}</h4>
                         <div className="footer-links">
-                            <Link to="/services#rudrabhishek">{t('रुद्राभिषेक', 'Rudrabhishek')}</Link>
-                            <Link to="/services#shree-suktam">{t('श्री सूक्तम्', 'Shree Suktam')}</Link>
-                            <Link to="/services#mahavidya-paath">{t('दस महाविद्या पाठ', 'Dus Mahavidya Paath')}</Link>
-                            <Link to="/services#kalsarp-dosh">{t('कालसर्प दोष', 'Kalsarp Dosh')}</Link>
-                            <Link to="/services#tripindi-shradh">{t('त्रिपिंडी श्राद्ध', 'Tripindi Shradh')}</Link>
+                            <Link to="/services/rudrabhishek">{t('रुद्राभिषेक', 'Rudrabhishek')}</Link>
+                            <Link to="/services/shree-suktam">{t('श्री सूक्तम्', 'Shree Suktam')}</Link>
+                            <Link to="/services/mahavidya-paath">{t('दस महाविद्या पाठ', 'Dus Mahavidya Paath')}</Link>
+                            <Link to="/services/kalsarp-dosh">{t('कालसर्प दोष', 'Kalsarp Dosh')}</Link>
+                            <Link to="/services/tripindi-shradh">{t('त्रिपिंडी श्राद्ध', 'Tripindi Shradh')}</Link>
                         </div>
+                    </div>
+
+                    <div>
+                        <h4 className="footer-heading">{t('अपडेट पाएं', 'Stay Updated')}</h4>
+                        <p style={{ fontSize: '0.85rem', color: 'var(--warm-300)', marginBottom: '0.75rem' }}>
+                            {t('नए ब्लॉग लेख एवं पूजा जानकारी सीधे अपने ईमेल पर पाएं।', 'Get new blog articles and pooja updates straight to your inbox.')}
+                        </p>
+                        {status === 'done' ? (
+                            <p style={{ color: 'var(--gold-300)', fontWeight: 600, fontSize: '0.9rem' }}>✓ {t('धन्यवाद! आप सूचीबद्ध हो गए हैं।', "Thanks! You're subscribed.")}</p>
+                        ) : (
+                            <form onSubmit={handleSubscribe} style={{ display: 'flex', gap: '0.5rem' }}>
+                                <input
+                                    type="email"
+                                    value={email}
+                                    onChange={e => setEmail(e.target.value)}
+                                    placeholder={t('आपका ईमेल', 'Your email')}
+                                    required
+                                    disabled={status === 'loading'}
+                                    style={{ flex: 1, minWidth: 0, padding: '0.55rem 0.8rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-light)', background: 'rgba(255,255,255,0.06)', color: 'white', fontSize: '0.85rem' }}
+                                />
+                                <button
+                                    type="submit"
+                                    disabled={status === 'loading'}
+                                    style={{ flexShrink: 0, padding: '0.55rem 1.1rem', borderRadius: 'var(--radius-md)', border: 'none', background: 'var(--gold-600)', color: 'white', fontWeight: 600, fontSize: '0.85rem', cursor: 'pointer' }}
+                                >
+                                    {status === 'loading' ? '...' : t('सदस्यता लें', 'Subscribe')}
+                                </button>
+                            </form>
+                        )}
+                        {status === 'error' && (
+                            <p style={{ color: '#ff8a8a', fontSize: '0.8rem', marginTop: '0.5rem' }}>{t('कुछ गलत हुआ, कृपया पुनः प्रयास करें।', 'Something went wrong, please try again.')}</p>
+                        )}
                     </div>
 
                     <div>
