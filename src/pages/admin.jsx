@@ -5,6 +5,7 @@ const TABS = [
     { id: 'bookings', label: 'Bookings', endpoint: '/api/bookings' },
     { id: 'messages', label: 'Messages', endpoint: '/api/contact' },
     { id: 'reviews', label: 'Reviews', endpoint: '/api/reviews' },
+    { id: 'subscribers', label: 'Subscribers', endpoint: '/api/newsletter' },
 ];
 
 function fmtDate(d) {
@@ -280,6 +281,26 @@ export default function Admin() {
                                     <button type="button" className="btn btn-primary" style={{ padding: '0.4rem 0.9rem' }} disabled={it.status === 'approved'} onClick={() => reviewAction(it._id, 'approved')}>Approve</button>
                                     <button type="button" className="btn btn-outline-dark" style={{ padding: '0.4rem 0.9rem' }} disabled={it.status === 'rejected'} onClick={() => { if (window.confirm('Reject this review? It will not be shown on the site.')) reviewAction(it._id, 'rejected'); }}>Reject</button>
                                 </div>
+                            </div>
+                        ))}
+                        {tab === 'subscribers' && items.length > 0 && (
+                            <button
+                                type="button"
+                                className="btn btn-outline-dark"
+                                style={{ justifySelf: 'start', marginBottom: '0.25rem' }}
+                                onClick={() => {
+                                    const emails = items.map(it => it.email).join(', ');
+                                    navigator.clipboard?.writeText(emails);
+                                }}
+                            >
+                                📋 Copy all {items.length} emails
+                            </button>
+                        )}
+
+                        {tab === 'subscribers' && items.map(it => (
+                            <div key={it._id} style={{ background: 'white', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-lg)', padding: '0.85rem 1.25rem', boxShadow: 'var(--shadow-md)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
+                                <span>✉️ {it.email}</span>
+                                <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{fmtDate(it.createdAt)}</span>
                             </div>
                         ))}
                     </div>
