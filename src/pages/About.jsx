@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
-import { gallery, triptych, videoClips, youtubeUploadsPlaylistId, youtubeChannelId } from '../data/media';
+import { gallery, pressHighlights, triptych, videoClips, youtubeUploadsPlaylistId, youtubeChannelId } from '../data/media';
 import useSEO from '../hooks/useSEO';
 import { breadcrumbJsonLd, combineJsonLd } from '../utils/seo';
 
@@ -139,6 +139,30 @@ export default function About() {
                                 <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>{h.icon}</div>
                                 <div className="stat-label" style={{ fontWeight: 700, color: 'var(--gold-300)', marginBottom: '0.35rem' }}>{t(h.label, h.labelEn)}</div>
                                 <div className="stat-label" style={{ fontSize: '0.8rem' }}>{t(h.desc, h.descEn)}</div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Press & Recognition - the family's most prestigious credibility
+                markers get their own showcase instead of blending into the
+                general photo gallery further down the page. */}
+            <section className="section" id="press">
+                <div className="container">
+                    <div className="text-center">
+                        <span className="section-label">{t('मीडिया एवं मान्यता', 'Press & Recognition')}</span>
+                        <h2 className="section-title">{t('विश्व स्तर पर सम्मानित', 'Recognized on the World Stage')}</h2>
+                    </div>
+                    <div className="om-divider">ॐ</div>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.75rem' }}>
+                        {pressHighlights.map(item => (
+                            <div key={item.src} style={{ position: 'relative', borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: 'var(--shadow-lg)', border: '1px solid var(--border-gold)', background: 'white' }}>
+                                <div style={{ position: 'absolute', top: '0.9rem', left: '0.9rem', zIndex: 2, background: 'var(--gold-600)', color: 'white', fontWeight: 700, fontSize: '0.75rem', padding: '0.3rem 0.8rem', borderRadius: 'var(--radius-xl)', letterSpacing: '0.02em' }}>
+                                    {t(item.badge, item.badgeEn)}
+                                </div>
+                                <img src={item.src} alt={item.badgeEn} loading="lazy" style={{ width: '100%', height: '260px', objectFit: 'cover', display: 'block' }} />
+                                <p style={{ padding: '1rem 1.1rem', fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{t(item.capHi, item.capEn)}</p>
                             </div>
                         ))}
                     </div>

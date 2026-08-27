@@ -219,6 +219,27 @@ export default function Home() {
                 </div>
             </section>
 
+            {/* Featured In - compact press strip, links to full showcase on About page */}
+            <section className="section" style={{ paddingTop: '2rem', paddingBottom: '2rem' }}>
+                <div className="container">
+                    <p style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.04em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>
+                        {t('मीडिया एवं मान्यता', 'As Featured In')}
+                    </p>
+                    <Link to="/about#press" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 'clamp(1rem, 4vw, 2.5rem)', textDecoration: 'none' }}>
+                        {[
+                            { icon: '📻', label: 'BBC London' },
+                            { icon: '📰', label: 'दैनिक जागरण' },
+                            { icon: '🎓', label: t('अमेरिकी डॉक्टरेट', 'US Doctorate') },
+                            { icon: '🤝', label: t('भूतपूर्व उपराष्ट्रपति', 'Former Vice President') },
+                        ].map((m, i) => (
+                            <span key={i} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-secondary)', fontWeight: 600, fontSize: '0.95rem' }}>
+                                <span style={{ fontSize: '1.3rem' }}>{m.icon}</span> {m.label}
+                            </span>
+                        ))}
+                    </Link>
+                </div>
+            </section>
+
             {/* TESTIMONIALS */}
             <section className="section" id="testimonials">
                 <div className="container">
