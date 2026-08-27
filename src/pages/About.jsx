@@ -127,6 +127,28 @@ export default function About() {
                 </div>
             </header>
 
+            {/* Quick nav - the page has grown to 13 sections, so a jump-to bar helps */}
+            <div style={{ background: 'var(--cream)', borderBottom: '1px solid var(--border-light)', position: 'sticky', top: '60px', zIndex: 50, overflowX: 'auto', whiteSpace: 'nowrap' }}>
+                <div className="container" style={{ display: 'flex', gap: '0.5rem', padding: '0.75rem 1rem' }}>
+                    {[
+                        { id: 'press', label: t('मीडिया', 'Press') },
+                        { id: 'chief-astrologer', label: t('प्रधान ज्योतिषाचार्य', 'Chief Astrologer') },
+                        { id: 'generations', label: t('तीन पीढ़ियाँ', 'Generations') },
+                        { id: 'testimonials-1980', label: t('प्रशंसापत्र', 'Testimonials') },
+                        { id: 'our-testimonials', label: t('और पत्र', 'More Letters') },
+                        { id: 'gallery', label: t('यादें', 'Gallery') },
+                    ].map(item => (
+                        <a
+                            key={item.id}
+                            href={`#${item.id}`}
+                            style={{ flexShrink: 0, fontSize: '0.82rem', fontWeight: 600, color: 'var(--gold-700)', background: 'white', border: '1px solid var(--border-gold)', padding: '0.4rem 0.9rem', borderRadius: 'var(--radius-xl)', textDecoration: 'none' }}
+                        >
+                            {item.label}
+                        </a>
+                    ))}
+                </div>
+            </div>
+
             {/* Triptych - evocative opener */}
             <section className="section" style={{ paddingBottom: 0 }}>
                 <div className="container">
@@ -208,7 +230,7 @@ export default function About() {
             </section>
 
             {/* Chief Astrologer Spotlight */}
-            <section className="section">
+            <section className="section" id="chief-astrologer">
                 <div className="container">
                     <div className="text-center">
                         <span className="section-label">{t('वर्तमान प्रधान', 'Current Head')}</span>
@@ -238,7 +260,7 @@ export default function About() {
             </section>
 
             {/* Three Generations Timeline */}
-            <section className="section section-warm">
+            <section className="section section-warm" id="generations">
                 <div className="container">
                     <div className="text-center">
                         <span className="section-label">{t('तीन पीढ़ियाँ, एक विरासत', 'Three Generations, One Legacy')}</span>
@@ -430,7 +452,7 @@ export default function About() {
             </section>
 
             {/* Heritage Gallery */}
-            <section className="section section-warm">
+            <section className="section section-warm" id="gallery">
                 <div className="container">
                     <div className="text-center">
                         <span className="section-label">{t('यादें', 'Memories')}</span>
