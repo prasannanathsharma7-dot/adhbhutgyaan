@@ -38,7 +38,7 @@ export default function Home() {
 
     useSEO({
         title: t('पं. उमंग नाथ शर्मा | अद्भुत ज्ञान — काशी, वाराणसी में ऑनलाइन पूजा बुकिंग', 'Pt. Umang Nath Sharma | Adhbhut Gyaan — Pandit & Online Pooja Booking in Kashi, Varanasi'),
-        description: t('पं. उमंग नाथ शर्मा (काशी, वाराणसी) द्वारा रुद्राभिषेक, कालसर्प दोष, त्रिपिंडी श्राद्ध जैसी सभी पूजा सेवाएं एवं ज्योतिष परामर्श — ऑनलाइन या वाराणसी में प्रत्यक्ष बुक करें।', 'Book pooja and astrology consultation in Kashi, Varanasi with Pt. Umang Nath Sharma — Rudrabhishek, Kalsarp Dosh Nivaran, Tripindi Shradh and more.'),
+        description: t('पं. उमंग नाथ शर्मा (काशी, वाराणसी) द्वारा रुद्राभिषेक, कालसर्प दोष, त्रिपिंडी श्राद्ध जैसी सभी पूजा सेवाएं एवं ज्योतिष परामर्श — ऑनलाइन या वाराणसी में प्रत्यक्ष बुक करें। विदेश में रहने वाले भारतीयों (NRI) हेतु लाइव ऑनलाइन पूजा उपलब्ध।', 'Book pooja and astrology consultation in Kashi, Varanasi - Rudrabhishek, Kalsarp Dosh Nivaran & more. Live online pooja for NRIs worldwide.'),
         path: '/',
     });
 
