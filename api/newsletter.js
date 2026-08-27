@@ -55,7 +55,7 @@ module.exports = async (req, res) => {
             };
             await db.collection('subscribers').insertOne(doc);
 
-            notifyAdmin({
+            await notifyAdmin({
                 emailSubject: `📧 New Newsletter Subscriber`,
                 emailHtml: `<p>New subscriber: <b>${escapeHtml(email)}</b></p>`,
             });

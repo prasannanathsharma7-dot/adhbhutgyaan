@@ -116,7 +116,7 @@ async function createBookingFromTool(db, input, source) {
     const sourceLabel = source === 'whatsapp' ? 'WhatsApp Bot' : 'Website Chatbot';
     const sourceEmoji = source === 'whatsapp' ? '💬' : '🤖';
 
-    notifyAdmin({
+    await notifyAdmin({
         emailSubject: `${sourceEmoji} New ${sourceLabel} Booking - ${doc.name}`,
         emailHtml: `
             <h2>New Booking via ${sourceLabel}</h2>
@@ -134,7 +134,7 @@ async function createBookingFromTool(db, input, source) {
     });
 
     if (doc.email) {
-        sendMail({
+        await sendMail({
             to: doc.email,
             subject: 'We received your booking enquiry - Adhbhut Gyaan',
             html: `

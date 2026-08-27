@@ -52,7 +52,7 @@ module.exports = async (req, res) => {
             };
             const result = await db.collection('reviews').insertOne(doc);
 
-            notifyAdmin({
+            await notifyAdmin({
                 emailSubject: `⭐ New Review Submitted - ${doc.name} (${doc.rating}★)`,
                 emailHtml: `
                     <h2>New Review Awaiting Approval</h2>

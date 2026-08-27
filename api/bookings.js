@@ -55,8 +55,13 @@ module.exports = async (req, res) => {
             };
             const result = await db.collection('bookings').insertOne(doc);
 
-            // Fire-and-forget: notifications never block or fail the booking response.
-            notifyAdmin({
+            // Awaited (not fire-and-forget): in a serverless environment, an
+            // unawaited promise can get killed once this function's own
+            // async handler resolves - meaning the notification email/
+            // WhatsApp message might never actually finish sending. A
+            // couple seconds of extra latency here is worth guaranteed
+            // delivery of a real customer enquiry.
+            await notifyAdmin({
                 emailSubject: `🙏 New Booking Enquiry - ${doc.name}`,
                 emailHtml: `
                     <h2>New Pooja Booking Enquiry</h2>
@@ -75,7 +80,7 @@ module.exports = async (req, res) => {
             });
 
             if (doc.email) {
-                sendMail({
+                await sendMail({
                     to: doc.email,
                     subject: 'We received your booking enquiry - Adhbhut Gyaan',
                     html: `
@@ -172,7 +177,7 @@ module.exports = async (req, res) => {
             // pushed to the customer without them messaging first) - so we also
             // hand the admin a ready-to-forward WhatsApp text as a fallback.
             if (status === 'completed' && updatedDoc.email) {
-                sendMail({
+                await sendMail({
                     to: updatedDoc.email,
                     subject: 'How was your pooja? - Adhbhut Gyaan',
                     html: `
@@ -186,7 +191,7 @@ module.exports = async (req, res) => {
                 });
             }
             if (status === 'completed') {
-                notifyAdmin({
+                await notifyAdmin({
                     emailSubject: `✅ Booking completed - ${escapeHtml(updatedDoc.name)} (review request ${updatedDoc.email ? 'emailed' : 'not emailed - no email on file'})`,
                     emailHtml: `
                         <p>Booking for <b>${escapeHtml(updatedDoc.name)}</b> (${escapeHtml(updatedDoc.phone)}) marked completed.</p>

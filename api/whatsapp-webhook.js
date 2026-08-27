@@ -69,10 +69,14 @@ module.exports = async (req, res) => {
         return;
     }
 
-    // Always acknowledge quickly so Meta doesn't retry/mark the webhook
-    // unhealthy - we do the actual work after responding.
-    res.status(200).send('EVENT_RECEIVED');
-
+    // IMPORTANT: the response is sent at the END of this handler, after all
+    // work is done - not immediately on receipt. On Vercel's serverless
+    // runtime, execution can be frozen/terminated once a response is sent,
+    // so acknowledging Meta early (a common pattern on traditional always-on
+    // servers) risks the AI reply, the database update, and the actual
+    // WhatsApp send below never completing. Meta's own retry behavior and
+    // this handler's message-ID de-duplication already tolerate a reply
+    // that takes a couple of extra seconds.
     try {
         const entry = req.body?.entry?.[0];
         const change = entry?.changes?.[0];
@@ -81,14 +85,21 @@ module.exports = async (req, res) => {
 
         // Ignore delivery/read-status callbacks and non-text messages (image,
         // audio, sticker, etc.) - the bot only handles plain text for now.
-        if (!message || message.type !== 'text') return;
+        if (!message || message.type !== 'text') {
+            res.status(200).send('EVENT_RECEIVED');
+            return;
+        }
 
         const from = message.from; // sender's WhatsApp number, e.g. "919876543210"
         const text = capStr(message.text?.body, 4000);
-        if (!from || !text) return;
+        if (!from || !text) {
+            res.status(200).send('EVENT_RECEIVED');
+            return;
+        }
 
         if (!process.env.ANTHROPIC_API_KEY || !process.env.WHATSAPP_ACCESS_TOKEN || !process.env.WHATSAPP_PHONE_NUMBER_ID) {
             console.error('WhatsApp bot: missing required env vars');
+            res.status(200).send('EVENT_RECEIVED');
             return;
         }
 
@@ -98,7 +109,10 @@ module.exports = async (req, res) => {
         const messageId = message.id;
         if (messageId) {
             const already = await db.collection('whatsapp_processed').findOne({ messageId });
-            if (already) return;
+            if (already) {
+                res.status(200).send('EVENT_RECEIVED');
+                return;
+            }
             await db.collection('whatsapp_processed').insertOne({ messageId, at: new Date() });
         }
 
@@ -117,7 +131,13 @@ module.exports = async (req, res) => {
         );
 
         await sendWhatsAppMessage(from, replyText);
+
+        res.status(200).send('EVENT_RECEIVED');
     } catch (err) {
         console.error('WhatsApp webhook error:', err);
+        // Still acknowledge with 200: Meta retries on non-2xx responses, and
+        // we've already de-duplicated by message ID above, but there's no
+        // reason to invite a retry storm for e.g. a transient AI API error.
+        res.status(200).send('EVENT_RECEIVED');
     }
 };

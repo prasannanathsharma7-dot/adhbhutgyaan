@@ -36,7 +36,7 @@ module.exports = async (req, res) => {
         let sent = 0;
         for (const doc of bookings) {
             if (doc.email) {
-                sendMail({
+                await sendMail({
                     to: doc.email,
                     subject: `Reminder: Your pooja is tomorrow — Adhbhut Gyaan`,
                     html: `
@@ -50,7 +50,7 @@ module.exports = async (req, res) => {
                 });
             }
 
-            notifyAdmin({
+            await notifyAdmin({
                 emailSubject: `⏰ Reminder due tomorrow - ${escapeHtml(doc.name)}`,
                 emailHtml: `
                     <p>Booking for <b>${escapeHtml(doc.name)}</b> (${escapeHtml(doc.phone)}) is scheduled for tomorrow (${targetDate}).</p>

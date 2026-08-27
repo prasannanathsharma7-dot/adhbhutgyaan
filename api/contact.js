@@ -50,8 +50,10 @@ module.exports = async (req, res) => {
             };
             const result = await db.collection('messages').insertOne(doc);
 
-            // Fire-and-forget: notifications never block or fail the response.
-            notifyAdmin({
+            // Awaited (not fire-and-forget) - see api/bookings.js for why:
+            // an unawaited promise can get killed by the serverless
+            // runtime once this handler resolves.
+            await notifyAdmin({
                 emailSubject: `✉️ New Contact Message - ${doc.name}`,
                 emailHtml: `
                     <h2>New Contact Form Message</h2>
@@ -66,7 +68,7 @@ module.exports = async (req, res) => {
             });
 
             if (doc.email) {
-                sendMail({
+                await sendMail({
                     to: doc.email,
                     subject: 'We received your message - Adhbhut Gyaan',
                     html: `
