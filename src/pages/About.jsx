@@ -45,19 +45,21 @@ const heritageSummary = [
 ];
 
 const testimonials = [
-    { quoteHi: 'अत्यंत सटीक और सहायक परामर्श मिला।', quoteEn: 'Found the reading quite accurate and helpful.', name: 'M. Morow', place: '1983' },
-    { quoteHi: 'पंडितजी ने कुछ बहुत ही रोचक बातें बताईं जिन्हें सुनकर आश्चर्य हुआ।', quoteEn: 'Surprised to hear some very interesting things.', name: 'Irmgard Fleischer', place: 'Königstein, West Germany · Feb 1982' },
-    { quoteHi: 'प्रो. एस.एन. शर्मा के ज्योतिषीय ज्ञान और सलाह से हमें बहुत लाभ हुआ।', quoteEn: "We enjoyed and benefitted from Prof. S.N. Sharma's readings and his wisdom in astrological prediction.", name: 'Group Testimonial', place: 'March 1982' },
-    { quoteHi: 'भ्रमण अत्यंत ज्ञानवर्धक और मूल्यवान रहा।', quoteEn: 'Found the visit very enlightening and valuable.', name: 'Linda Mercurio', place: 'San Francisco, California, USA · Oct 1982' },
-    { quoteHi: 'हस्तरेखा पाठ पूर्णतः सत्य और सटीक निकला। मैं अत्यंत आभारी हूँ।', quoteEn: 'The palmistry reading and statements regarding my life and business were absolutely true and accurate. I am most grateful.', name: 'House of Spectacles Limited', place: "St. John's, Newfoundland, Canada · Feb 1981" },
-    { quoteHi: 'मुझे लगता है आप सब कुछ जानते हैं, फिर भी सब कुछ नहीं बताते — मैं आप पर भरोसा करती हूँ।', quoteEn: 'I feel you know everything but you are careful not to tell me everything. I trust you.', name: 'Isabel Y. Rhyne', place: 'Flint, Michigan, USA · Sep 1981' },
-    { quoteHi: 'मेरे भूतकाल के बारे में जानना बेहद रोचक रहा; भविष्य की जानकारी से भी मैं संतुष्ट हूँ।', quoteEn: 'It was quite interesting to hear about my past and I was very satisfied about my future reading.', name: 'Joshua Soffer', place: 'Kibutz Gan Shmuel, Israel · 1981' },
-    { quoteHi: 'आपकी सलाह के लिए हार्दिक धन्यवाद।', quoteEn: 'Thank you very much for the good advice you gave us.', name: 'Edith Paither', place: 'Paris, France · Jan 1980' },
-    { quoteHi: 'आज रात हमसे मिलकर पंडितजी बहुत ही सहृदय रहे; हम इसे कभी नहीं भूलेंगे।', quoteEn: "Mr. Shambhunath Sharma was so good to meet us tonight; we'll not forget it.", name: 'Jacques Guepratte', place: 'Consul General of France, Varanasi · Jan 1980' },
-    { quoteHi: 'आपकी बुद्धिमत्ता और दयालुता से मैं अत्यंत प्रभावित हूँ — आपके शब्दों के लिए आभारी हूँ। आपने मेरे जीवन की महत्वपूर्ण घटनाओं को सही पहचाना।', quoteEn: 'Impressed by your wisdom and kindness — thankful for your words. You knew the important happenings of my life.', name: 'Aupie Dullingder', place: 'Munich, West Germany · Apr 1980' },
-    { quoteHi: 'ज्योतिष पर आपके रोचक स्पष्टीकरण हेतु धन्यवाद; यह विज्ञान के रूप में इसके महत्व को समझने में सहायक होगा।', quoteEn: 'Thank you for your very interesting explanation on astrology as a science.', name: 'Télévision Belge', place: 'Brussels, Belgium · May 1980' },
-    { quoteHi: 'भविष्य के प्रति आशा जगी और भूतकाल स्पष्ट हुआ।', quoteEn: 'Gave me hope for the future and could see the past.', name: 'Sonia Appelman', place: 'Utrecht, Holland · Sep 1981' },
+    { quoteHi: 'अत्यंत सटीक और सहायक परामर्श मिला।', quoteEn: 'Found the reading quite accurate and helpful.', name: 'M. Morow', place: '1983', flag: '' },
+    { quoteHi: 'पंडितजी ने कुछ बहुत ही रोचक बातें बताईं जिन्हें सुनकर आश्चर्य हुआ।', quoteEn: 'Surprised to hear some very interesting things.', name: 'Irmgard Fleischer', place: 'Königstein, West Germany · Feb 1982', flag: '🇩🇪' },
+    { quoteHi: 'प्रो. एस.एन. शर्मा के ज्योतिषीय ज्ञान और सलाह से हमें बहुत लाभ हुआ।', quoteEn: "We enjoyed and benefitted from Prof. S.N. Sharma's readings and his wisdom in astrological prediction.", name: 'Group Testimonial', place: 'March 1982', flag: '' },
+    { quoteHi: 'भ्रमण अत्यंत ज्ञानवर्धक और मूल्यवान रहा।', quoteEn: 'Found the visit very enlightening and valuable.', name: 'Linda Mercurio', place: 'San Francisco, California, USA · Oct 1982', flag: '🇺🇸' },
+    { quoteHi: 'हस्तरेखा पाठ पूर्णतः सत्य और सटीक निकला। मैं अत्यंत आभारी हूँ।', quoteEn: 'The palmistry reading and statements regarding my life and business were absolutely true and accurate. I am most grateful.', name: 'House of Spectacles Limited', place: "St. John's, Newfoundland, Canada · Feb 1981", flag: '🇨🇦' },
+    { quoteHi: 'मुझे लगता है आप सब कुछ जानते हैं, फिर भी सब कुछ नहीं बताते — मैं आप पर भरोसा करती हूँ।', quoteEn: 'I feel you know everything but you are careful not to tell me everything. I trust you.', name: 'Isabel Y. Rhyne', place: 'Flint, Michigan, USA · Sep 1981', flag: '🇺🇸' },
+    { quoteHi: 'मेरे भूतकाल के बारे में जानना बेहद रोचक रहा; भविष्य की जानकारी से भी मैं संतुष्ट हूँ।', quoteEn: 'It was quite interesting to hear about my past and I was very satisfied about my future reading.', name: 'Joshua Soffer', place: 'Kibutz Gan Shmuel, Israel · 1981', flag: '🇮🇱' },
+    { quoteHi: 'आपकी सलाह के लिए हार्दिक धन्यवाद।', quoteEn: 'Thank you very much for the good advice you gave us.', name: 'Edith Paither', place: 'Paris, France · Jan 1980', flag: '🇫🇷' },
+    { quoteHi: 'आज रात हमसे मिलकर पंडितजी बहुत ही सहृदय रहे; हम इसे कभी नहीं भूलेंगे।', quoteEn: "Mr. Shambhunath Sharma was so good to meet us tonight; we'll not forget it.", name: 'Jacques Guepratte', place: 'Consul General of France, Varanasi · Jan 1980', flag: '🇫🇷', notable: true, notableHi: 'फ्रांस के महावाणिज्यदूत', notableEn: 'Consul General of France' },
+    { quoteHi: 'आपकी बुद्धिमत्ता और दयालुता से मैं अत्यंत प्रभावित हूँ — आपके शब्दों के लिए आभारी हूँ। आपने मेरे जीवन की महत्वपूर्ण घटनाओं को सही पहचाना।', quoteEn: 'Impressed by your wisdom and kindness — thankful for your words. You knew the important happenings of my life.', name: 'Aupie Dullingder', place: 'Munich, West Germany · Apr 1980', flag: '🇩🇪' },
+    { quoteHi: 'ज्योतिष पर आपके रोचक स्पष्टीकरण हेतु धन्यवाद; यह विज्ञान के रूप में इसके महत्व को समझने में सहायक होगा।', quoteEn: 'Thank you for your very interesting explanation on astrology as a science.', name: 'Télévision Belge', place: 'Brussels, Belgium · May 1980', flag: '🇧🇪', notable: true, notableHi: 'बेल्जियम राष्ट्रीय टेलीविज़न', notableEn: 'Belgian National Television' },
+    { quoteHi: 'भविष्य के प्रति आशा जगी और भूतकाल स्पष्ट हुआ।', quoteEn: 'Gave me hope for the future and could see the past.', name: 'Sonia Appelman', place: 'Utrecht, Holland · Sep 1981', flag: '🇳🇱' },
 ];
+
+const testimonialCountryCount = new Set(testimonials.map(t => t.flag).filter(Boolean)).size;
 
 const values = [
     { icon: '📖', title: 'शास्त्रोक्त विधि', titleEn: 'Authentic Vedic Methods', desc: 'हर पूजा शुद्ध विधि से सम्पन्न', descEn: 'Every pooja performed with pure, prescribed methods' },
@@ -257,7 +259,7 @@ export default function About() {
             </section>
 
             {/* International Testimonials */}
-            <section className="section">
+            <section className="section" id="testimonials-1980">
                 <div className="container">
                     <div className="text-center">
                         <span className="section-label">{t('अंतरराष्ट्रीय प्रशंसापत्र', 'International Testimonials')}</span>
@@ -265,20 +267,56 @@ export default function About() {
                         <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>{t('1979 से संरक्षित', 'Preserved Since 1979')}</p>
                     </div>
                     <div className="om-divider">ॐ</div>
-                    <p style={{ textAlign: 'center', maxWidth: '760px', margin: '0 auto 2.5rem', color: 'var(--text-secondary)', lineHeight: 1.8 }}>
+                    <p style={{ textAlign: 'center', maxWidth: '760px', margin: '0 auto 1.25rem', color: 'var(--text-secondary)', lineHeight: 1.8 }}>
                         {t(
                             '1979 से 1983 के बीच दुनिया भर से आए साधकों ने पं. शम्भु नाथ शर्मा को धन्यवाद-पत्र लिखे। इनमें से कुछ मूल पत्र, उनके नाम और स्थान सहित, यहाँ प्रस्तुत हैं।',
                             'Between 1979 and 1983, seekers from around the world wrote letters of gratitude to Pandit Shambhu Nath Sharma. A selection of these original testimonials, with names and locations as given, is presented below.'
                         )}
                     </p>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'center', gap: '0.6rem', flexWrap: 'wrap', marginBottom: '2.5rem' }}>
+                        <span style={{ background: 'var(--gold-50)', border: '1px solid var(--border-gold)', color: 'var(--gold-700)', fontWeight: 700, fontSize: '0.85rem', padding: '0.4rem 1rem', borderRadius: 'var(--radius-xl)' }}>
+                            ✉️ {testimonials.length} {t('पत्र', 'Letters')}
+                        </span>
+                        <span style={{ background: 'var(--gold-50)', border: '1px solid var(--border-gold)', color: 'var(--gold-700)', fontWeight: 700, fontSize: '0.85rem', padding: '0.4rem 1rem', borderRadius: 'var(--radius-xl)' }}>
+                            🌍 {testimonialCountryCount}+ {t('देश', 'Countries')}
+                        </span>
+                        <span style={{ background: 'var(--gold-50)', border: '1px solid var(--border-gold)', color: 'var(--gold-700)', fontWeight: 700, fontSize: '0.85rem', padding: '0.4rem 1rem', borderRadius: 'var(--radius-xl)' }}>
+                            📅 1979–1983
+                        </span>
+                    </div>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.75rem' }}>
                         {testimonials.map((tst, i) => (
-                            <div key={i} style={{ background: 'var(--cream)', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-lg)', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                                <span style={{ fontSize: '1.5rem', color: 'var(--gold-400)', lineHeight: 1 }}>&ldquo;</span>
-                                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: 1.7, flex: 1 }}>{t(tst.quoteHi, tst.quoteEn)}</p>
-                                <div style={{ borderTop: '1px solid var(--border-light)', paddingTop: '0.6rem' }}>
-                                    <div style={{ fontWeight: 700, color: 'var(--gold-700)', fontSize: '0.9rem' }}>{tst.name}</div>
-                                    <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>{tst.place}</div>
+                            <div key={i} style={{
+                                position: 'relative',
+                                background: 'linear-gradient(165deg, #FFFCF5 0%, var(--cream) 100%)',
+                                border: '1px solid var(--border-light)',
+                                borderRadius: 'var(--radius-lg)',
+                                padding: '1.5rem',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: '0.75rem',
+                                boxShadow: 'var(--shadow-lg)',
+                                overflow: 'hidden',
+                            }}>
+                                {/* Airmail stripe - evokes the original international letters */}
+                                <div style={{
+                                    position: 'absolute', top: 0, left: 0, right: 0, height: '6px',
+                                    background: 'repeating-linear-gradient(-45deg, #B8860B 0 10px, #fff 10px 20px, #8B0000 20px 30px, #fff 30px 40px)',
+                                    opacity: 0.55,
+                                }} />
+                                {tst.notable && (
+                                    <div style={{ alignSelf: 'flex-start', background: 'var(--dark-100)', color: 'var(--gold-300)', fontSize: '0.7rem', fontWeight: 700, padding: '0.25rem 0.7rem', borderRadius: 'var(--radius-xl)', letterSpacing: '0.02em' }}>
+                                        🎖️ {t(tst.notableHi, tst.notableEn)}
+                                    </div>
+                                )}
+                                <span style={{ fontSize: '1.8rem', color: 'var(--gold-400)', lineHeight: 1, fontFamily: 'var(--font-heading)' }}>&ldquo;</span>
+                                <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', lineHeight: 1.7, flex: 1, fontStyle: 'italic' }}>{t(tst.quoteHi, tst.quoteEn)}</p>
+                                <div style={{ borderTop: '1px dashed var(--border-gold)', paddingTop: '0.7rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                    {tst.flag && <span style={{ fontSize: '1.4rem' }}>{tst.flag}</span>}
+                                    <div>
+                                        <div style={{ fontWeight: 700, color: 'var(--gold-700)', fontSize: '0.9rem' }}>{tst.name}</div>
+                                        <div style={{ color: 'var(--text-muted)', fontSize: '0.78rem' }}>{tst.place}</div>
+                                    </div>
                                 </div>
                             </div>
                         ))}
