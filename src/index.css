@@ -2501,3 +2501,15 @@ h3 {
     line-height: 1.4;
     font-size: 1.1rem;
 }
+
+/* About page: anchor-jump targets need extra top clearance so the fixed
+   navbar (~60px) plus the sticky quick-nav bar (~56px) don't cover the
+   section heading right after jumping to it. */
+#press,
+#chief-astrologer,
+#generations,
+#testimonials-1980,
+#our-testimonials,
+#gallery {
+    scroll-margin-top: 120px;
+}
