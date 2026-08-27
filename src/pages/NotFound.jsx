@@ -1,13 +1,15 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import useSEO from '../hooks/useSEO';
 
 export default function NotFound() {
     const { t } = useLanguage();
+    const { pathname } = useLocation();
 
     useSEO({
         title: t('पृष्ठ नहीं मिला | Adhbhut Gyaan', 'Page Not Found | Adhbhut Gyaan'),
         description: t('यह पृष्ठ उपलब्ध नहीं है।', 'This page is not available.'),
+        path: pathname,
         noindex: true,
     });
 

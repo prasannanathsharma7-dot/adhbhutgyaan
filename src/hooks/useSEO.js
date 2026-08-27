@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 
 const SITE_URL = 'https://www.adhbhutgyaan.com';
+const DEFAULT_OG_IMAGE = `${SITE_URL}/images/og-image.jpg`;
 
 function setMetaTag(attr, key, content) {
     if (!content) return;
@@ -53,10 +54,8 @@ export default function useSEO({ title, description, path, image, jsonLd, noinde
         setMetaTag('property', 'twitter:title', title);
         setMetaTag('property', 'twitter:description', description);
         setMetaTag('name', 'robots', noindex ? 'noindex, nofollow' : 'index, follow');
-        if (image) {
-            setMetaTag('property', 'og:image', image);
-            setMetaTag('property', 'twitter:image', image);
-        }
+        setMetaTag('property', 'og:image', image || DEFAULT_OG_IMAGE);
+        setMetaTag('property', 'twitter:image', image || DEFAULT_OG_IMAGE);
         if (path) {
             setCanonical(path);
             setMetaTag('property', 'og:url', `${SITE_URL}${path}`);
