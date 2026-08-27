@@ -19,7 +19,11 @@ export default function NotFound() {
                 <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem', fontSize: '1.1rem' }}>
                     {t('क्षमा करें, यह पृष्ठ नहीं मिला।', "Sorry, we couldn't find that page.")}
                 </p>
-                <Link to="/" className="btn btn-primary">{t('होम पर जाएं', 'Go to Home')}</Link>
+                <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '2rem' }}>
+                    <Link to="/" className="btn btn-primary">{t('होम पर जाएं', 'Go to Home')}</Link>
+                    <Link to="/services" className="btn btn-outline">{t('सेवाएं देखें', 'View Services')}</Link>
+                    <Link to="/contact" className="btn btn-outline">{t('संपर्क करें', 'Contact Us')}</Link>
+                </div>
             </div>
         </div>
     );

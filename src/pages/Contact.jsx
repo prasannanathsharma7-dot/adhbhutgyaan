@@ -179,6 +179,7 @@ ${form.message}`;
                                             placeholder={t('अपना नाम लिखें', 'Enter your name')}
                                             value={form.name}
                                             aria-invalid={errors.name ? 'true' : 'false'}
+                                            autoComplete="name"
                                             onChange={e => { setForm({ ...form, name: e.target.value }); setErrors({ ...errors, name: undefined }); }}
                                         />
                                         {errors.name && <p className="form-error">⚠ {errors.name}</p>}
@@ -189,6 +190,8 @@ ${form.message}`;
                                             id="contact-phone"
                                             className={`form-input ${errors.phone ? 'has-error' : ''}`}
                                             type="tel"
+                                            inputMode="tel"
+                                            autoComplete="tel"
                                             placeholder="+91 92781 48269"
                                             value={form.phone}
                                             aria-invalid={errors.phone ? 'true' : 'false'}
@@ -202,6 +205,8 @@ ${form.message}`;
                                             id="contact-email"
                                             className={`form-input ${errors.email ? 'has-error' : ''}`}
                                             type="email"
+                                            inputMode="email"
+                                            autoComplete="email"
                                             placeholder="your@email.com"
                                             value={form.email}
                                             aria-invalid={errors.email ? 'true' : 'false'}

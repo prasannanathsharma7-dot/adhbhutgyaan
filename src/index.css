@@ -2589,3 +2589,39 @@ h3 {
     font-size: 0.92rem;
     line-height: 1.7;
 }
+
+/* Back to Top button - bottom-left, since WhatsApp + Chat already stack
+   on the bottom-right. */
+.back-to-top {
+    position: fixed;
+    bottom: clamp(15px, 3vw, 25px);
+    left: clamp(15px, 3vw, 25px);
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-full);
+    background: var(--dark-100);
+    color: var(--gold-300);
+    border: none;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 998;
+    box-shadow: var(--shadow-lg);
+    transition: all var(--dur-normal) var(--ease-out);
+    opacity: 0.85;
+}
+
+.back-to-top:hover {
+    opacity: 1;
+    transform: translateY(-3px);
+}
+
+@media (max-width: 480px) {
+    .back-to-top {
+        width: 40px;
+        height: 40px;
+        font-size: 1.1rem;
+    }
+}

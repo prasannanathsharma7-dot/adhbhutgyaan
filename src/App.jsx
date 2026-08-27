@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import WhatsAppFloat from './components/WhatsAppFloat';
 import ChatWidget from './components/ChatWidget';
+import BackToTop from './components/BackToTop';
 import ScrollToTop from './components/ScrollToTop';
 import ErrorBoundary from './components/ErrorBoundary';
 
@@ -68,6 +69,7 @@ function App() {
             <Footer />
             <WhatsAppFloat />
             <ChatWidget />
+            <BackToTop />
         </ErrorBoundary>
     );
 }

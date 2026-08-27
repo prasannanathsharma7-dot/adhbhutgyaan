@@ -323,6 +323,7 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                                         placeholder={t('अपना नाम लिखें', 'Enter your name')}
                                         value={form.name}
                                         aria-invalid={errors.name ? 'true' : 'false'}
+                                        autoComplete="name"
                                         onChange={e => { setForm({ ...form, name: e.target.value }); setErrors({ ...errors, name: undefined }); }}
                                     />
                                     {errors.name && <p className="form-error">⚠ {errors.name}</p>}
@@ -333,6 +334,8 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                                         id="booking-phone"
                                         className={`form-input ${errors.phone ? 'has-error' : ''}`}
                                         type="tel"
+                                        inputMode="tel"
+                                        autoComplete="tel"
                                         placeholder="+91 92781 48269"
                                         value={form.phone}
                                         aria-invalid={errors.phone ? 'true' : 'false'}
@@ -346,6 +349,8 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                                         id="booking-email"
                                         className="form-input"
                                         type="email"
+                                        inputMode="email"
+                                        autoComplete="email"
                                         placeholder="you@example.com"
                                         value={form.email}
                                         onChange={e => setForm({ ...form, email: e.target.value })}
