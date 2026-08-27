@@ -313,7 +313,7 @@ export default function About() {
                                 <span style={{ fontSize: '1.8rem', color: 'var(--gold-400)', lineHeight: 1, fontFamily: 'var(--font-heading)' }}>&ldquo;</span>
                                 <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', lineHeight: 1.7, flex: 1, fontStyle: 'italic' }}>{t(tst.quoteHi, tst.quoteEn)}</p>
                                 <div style={{ borderTop: '1px dashed var(--border-gold)', paddingTop: '0.7rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                    {tst.flag && <span style={{ fontSize: '1.4rem' }}>{tst.flag}</span>}
+                                    <span style={{ fontSize: '1.4rem' }}>{tst.flag || '🌐'}</span>
                                     <div>
                                         <div style={{ fontWeight: 700, color: 'var(--gold-700)', fontSize: '0.9rem' }}>{tst.name}</div>
                                         <div style={{ color: 'var(--text-muted)', fontSize: '0.78rem' }}>{tst.place}</div>
