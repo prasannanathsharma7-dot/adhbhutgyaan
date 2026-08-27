@@ -59,7 +59,7 @@ const testimonials = [
     { quoteHi: 'भविष्य के प्रति आशा जगी और भूतकाल स्पष्ट हुआ।', quoteEn: 'Gave me hope for the future and could see the past.', name: 'Sonia Appelman', place: 'Utrecht, Holland · Sep 1981', flag: '🇳🇱' },
 ];
 
-const testimonialCountryCount = new Set(testimonials.map(t => t.flag).filter(Boolean)).size;
+const testimonialFlags = [...new Set(testimonials.map(t => t.flag).filter(Boolean))];
 
 const values = [
     { icon: '📖', title: 'शास्त्रोक्त विधि', titleEn: 'Authentic Vedic Methods', desc: 'हर पूजा शुद्ध विधि से सम्पन्न', descEn: 'Every pooja performed with pure, prescribed methods' },
@@ -277,8 +277,9 @@ export default function About() {
                         <span style={{ background: 'var(--gold-50)', border: '1px solid var(--border-gold)', color: 'var(--gold-700)', fontWeight: 700, fontSize: '0.85rem', padding: '0.4rem 1rem', borderRadius: 'var(--radius-xl)' }}>
                             ✉️ {testimonials.length} {t('पत्र', 'Letters')}
                         </span>
-                        <span style={{ background: 'var(--gold-50)', border: '1px solid var(--border-gold)', color: 'var(--gold-700)', fontWeight: 700, fontSize: '0.85rem', padding: '0.4rem 1rem', borderRadius: 'var(--radius-xl)' }}>
-                            🌍 {testimonialCountryCount}+ {t('देश', 'Countries')}
+                        <span style={{ background: 'var(--gold-50)', border: '1px solid var(--border-gold)', color: 'var(--gold-700)', fontWeight: 700, fontSize: '0.85rem', padding: '0.4rem 1rem', borderRadius: 'var(--radius-xl)', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
+                            <span style={{ fontSize: '1.1rem', letterSpacing: '0.1em' }}>{testimonialFlags.join(' ')}</span>
+                            {testimonialFlags.length}+ {t('देश', 'Countries')}
                         </span>
                         <span style={{ background: 'var(--gold-50)', border: '1px solid var(--border-gold)', color: 'var(--gold-700)', fontWeight: 700, fontSize: '0.85rem', padding: '0.4rem 1rem', borderRadius: 'var(--radius-xl)' }}>
                             📅 1979–1983
