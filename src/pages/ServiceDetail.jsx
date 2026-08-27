@@ -20,6 +20,25 @@ export default function ServiceDetail() {
         ? 'Astrology consultation in Kashi, Varanasi with Dr. Umang Nath Sharma - kundli analysis, dosh remedies, marriage matching, online or in person.'
         : `Book ${service.nameEn} in Kashi, Varanasi with Pt. Umang Nath Sharma - authentic Vedic pooja, available online or in person.`;
 
+    const faqItems = [
+        {
+            q: t(`${service.name} बुक करने के लिए क्या वाराणसी आना जरूरी है?`, `Do I need to visit Varanasi to book ${service.nameEn}?`),
+            a: t('नहीं, यह पूजा ऑनलाइन (लाइव वीडियो के साथ) भी करवाई जा सकती है। आप विदेश में रहकर भी अपने नाम व गोत्र से पूजा करवा सकते हैं।', 'No, this pooja can also be performed online with a live video call. You can have it performed in your name and gotra even while living abroad.'),
+        },
+        {
+            q: t(`${service.name} की कीमत में क्या शामिल है?`, `What is included in the price of ${service.nameEn}?`),
+            a: t('पूजा मूल्य में सम्पूर्ण पूजन सामग्री, अनुभवी पंडितों की दक्षिणा और हवन (जहाँ लागू हो) शामिल है। कोई छुपा हुआ शुल्क नहीं है। अंतिम मूल्य पंडित जी WhatsApp/कॉल पर बताते हैं।', "The price includes all pooja materials, the experienced pandits\u2019 fees, and havan where applicable. There are no hidden charges. Pandit ji confirms the exact final price on WhatsApp/call."),
+        },
+        {
+            q: t('पूजा में कितना समय लगता है?', 'How long does the pooja take?'),
+            a: t(`${service.name} की अवधि पैकेज के अनुसार भिन्न होती है — बुकिंग के समय पंडित जी सही समय बता देंगे।`, `The duration of ${service.nameEn} varies by package - Pandit ji will confirm the exact time when you book.`),
+        },
+        {
+            q: t('बुकिंग के बाद क्या होता है?', 'What happens after I book?'),
+            a: t('बुकिंग फॉर्म भरने या WhatsApp पर पूछताछ करने के 24 घंटों के भीतर हमारी टीम आपसे तारीख, समय एवं मूल्य निश्चित करने हेतु सम्पर्क करेगी।', 'Within 24 hours of submitting the form or messaging on WhatsApp, our team will contact you to confirm the date, time, and price.'),
+        },
+    ];
+
     useSEO({
         title: t(`${service.name} — बुक करें | Adhbhut Gyaan`, `${service.nameEn} in Kashi, Varanasi | ${service.name} — Adhbhut Gyaan`),
         description: t(service.shortDesc, enDescription),
@@ -32,16 +51,7 @@ export default function ServiceDetail() {
                 { name, path: `/services/${service.id}` },
             ]),
             serviceJsonLd(service, lang),
-            faqJsonLd([
-                {
-                    q: t(`${service.name} बुक करने के लिए क्या वाराणसी आना जरूरी है?`, `Do I need to visit Varanasi to book ${service.nameEn}?`),
-                    a: t('नहीं, यह पूजा ऑनलाइन (लाइव वीडियो के साथ) भी करवाई जा सकती है। आप विदेश में रहकर भी अपने नाम व गोत्र से पूजा करवा सकते हैं।', 'No, this pooja can also be performed online with a live video call. You can have it performed in your name and gotra even while living abroad.'),
-                },
-                {
-                    q: t(`${service.name} की कीमत में क्या शामिल है?`, `What is included in the price of ${service.nameEn}?`),
-                    a: t('पूजा मूल्य में सम्पूर्ण पूजन सामग्री, अनुभवी पंडितों की दक्षिणा और हवन (जहाँ लागू हो) शामिल है। कोई छुपा हुआ शुल्क नहीं है।', 'The price includes all pooja materials, the experienced pandits\u2019 fees, and havan where applicable. There are no hidden charges.'),
-                },
-            ])
+            faqJsonLd(faqItems)
         ),
     });
 
@@ -118,6 +128,16 @@ export default function ServiceDetail() {
                                     💬 {t('पूछताछ करें', 'Enquire Now')}
                                 </a>
                             </div>
+                        ))}
+                    </div>
+
+                    <h2 style={{ textAlign: 'center', marginTop: '3.5rem', marginBottom: '1.5rem', fontFamily: 'var(--font-heading)' }}>{t('अक्सर पूछे जाने वाले प्रश्न', 'Frequently Asked Questions')}</h2>
+                    <div style={{ maxWidth: '720px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                        {faqItems.map((item, i) => (
+                            <details key={i} className="faq-item">
+                                <summary>{item.q}</summary>
+                                <p>{item.a}</p>
+                            </details>
                         ))}
                     </div>
 

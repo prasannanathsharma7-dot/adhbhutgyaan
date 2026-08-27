@@ -2547,3 +2547,45 @@ h3 {
 #gallery {
     scroll-margin-top: 120px;
 }
+
+/* FAQ accordion (native <details>/<summary> - accessible, no JS needed) */
+.faq-item {
+    background: var(--cream);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.25rem;
+}
+
+.faq-item summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--text-primary);
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.faq-item summary::-webkit-details-marker {
+    display: none;
+}
+
+.faq-item summary::after {
+    content: '+';
+    flex-shrink: 0;
+    font-size: 1.3rem;
+    color: var(--gold-600);
+    transition: transform var(--dur-normal) var(--ease-out);
+}
+
+.faq-item[open] summary::after {
+    transform: rotate(45deg);
+}
+
+.faq-item p {
+    margin-top: 0.75rem;
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+    line-height: 1.7;
+}
