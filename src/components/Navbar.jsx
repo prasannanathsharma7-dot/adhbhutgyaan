@@ -18,7 +18,6 @@ export default function Navbar() {
 
     useEffect(() => {
         setMenuOpen(false);
-        document.body.style.overflow = '';
     }, [location]);
 
     // Close the mobile menu on Escape and send focus back to the toggle button,
@@ -28,7 +27,6 @@ export default function Navbar() {
         const handleKey = (e) => {
             if (e.key === 'Escape') {
                 setMenuOpen(false);
-                document.body.style.overflow = '';
                 menuButtonRef.current?.focus();
             }
         };
@@ -38,7 +36,6 @@ export default function Navbar() {
 
     const toggleMenu = () => {
         setMenuOpen(prev => !prev);
-        document.body.style.overflow = !menuOpen ? 'hidden' : '';
     };
 
     const navClass = `navbar ${scrolled ? 'scrolled' : ''} ${!isHome ? 'solid' : ''}`;
