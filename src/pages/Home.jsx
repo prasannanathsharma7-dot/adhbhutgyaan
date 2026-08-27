@@ -103,46 +103,6 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* SERVICES PREVIEW */}
-            <section className="section" id="services-preview">
-                <div className="container">
-                    <div className="text-center fade-up">
-                        <span className="section-label">{t('हमारी सेवाएं', 'Our Services')}</span>
-                        <h2 className="section-title">{t('पवित्र पूजा एवं अनुष्ठान', 'Sacred Poojas & Rituals')}</h2>
-                        <p className="section-subtitle">{t('काशी (बनारस) के मनीषी पंडितों द्वारा शास्त्रोक्त विधि-विधान से समस्त प्रकार की पूजा, पाठ, जप और हवन सम्पन्न करवाएं।', 'Avail every form of pooja, paath, jaap and havan, performed by erudite Pandits of Kashi (Banaras) in strict accordance with authentic Vedic methods.')}</p>
-                    </div>
-                    <div className="om-divider">ॐ</div>
-                    <div className="icon-service-grid">
-                        {servicesData.map((service, i) => {
-                            const icons = {
-                                'vipreet-pratyangira': '🔥',
-                                'mahavidya-paath': '🕉️',
-                                'tripindi-shradh': '🙏',
-                                'kalsarp-dosh': '🔯',
-                                'rudrabhishek': '🔱',
-                                'shree-suktam': '🪷',
-                                'kanakdhara-stotra': '✨',
-                                'ganesh-atharvashirsha': '🐘',
-                                'purush-suktam': '📿',
-                                'kumbh-vivah': '💍',
-                                'astrology-consultation': '🔮',
-                            };
-                            return (
-                                <div className={`icon-service-card fade-up stagger-${(i % 5) + 1}`} key={service.id}>
-                                    <div className="icon-service-icon">{icons[service.id] || '🕉️'}</div>
-                                    <h3 className="icon-service-title">{lang === 'hi' ? service.name : service.nameEn}</h3>
-                                    <p className="icon-service-desc">{service.shortDesc}</p>
-                                    <Link to={`/services/${service.id}`} className="icon-service-link">{t('विवरण देखें', 'Know More')} →</Link>
-                                </div>
-                            );
-                        })}
-                    </div>
-                    <div className="text-center" style={{ marginTop: '2rem' }}>
-                        <Link to="/services" className="btn btn-gold">{t('सभी सेवाएं देखें →', 'View All Services →')}</Link>
-                    </div>
-                </div>
-            </section>
-
             {/* ASTROLOGY CONSULTATION */}
             <section className="section section-warm" id="astrology-consultation">
                 <div className="container">
@@ -187,6 +147,46 @@ export default function Home() {
                     <div className="text-center fade-up" style={{ marginTop: '2rem', display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
                         <a href={`https://wa.me/919278148269?text=${encodeURIComponent(t('नमस्कार! मुझे ज्योतिष परामर्श के लिए अपॉइंटमेंट चाहिए।', 'Hello! I would like to book an astrology consultation appointment.'))}`} target="_blank" rel="noreferrer" className="btn btn-whatsapp btn-lg">💬 {t('अपॉइंटमेंट के लिए पूछें', 'Enquire for Appointment')}</a>
                         <Link to="/contact" className="btn btn-outline btn-lg">📅 {t('अपॉइंटमेंट बुक करें', 'Book Appointment')}</Link>
+                    </div>
+                </div>
+            </section>
+
+            {/* SERVICES PREVIEW */}
+            <section className="section" id="services-preview">
+                <div className="container">
+                    <div className="text-center fade-up">
+                        <span className="section-label">{t('हमारी सेवाएं', 'Our Services')}</span>
+                        <h2 className="section-title">{t('पवित्र पूजा एवं अनुष्ठान', 'Sacred Poojas & Rituals')}</h2>
+                        <p className="section-subtitle">{t('काशी (बनारस) के मनीषी पंडितों द्वारा शास्त्रोक्त विधि-विधान से समस्त प्रकार की पूजा, पाठ, जप और हवन सम्पन्न करवाएं।', 'Avail every form of pooja, paath, jaap and havan, performed by erudite Pandits of Kashi (Banaras) in strict accordance with authentic Vedic methods.')}</p>
+                    </div>
+                    <div className="om-divider">ॐ</div>
+                    <div className="icon-service-grid">
+                        {servicesData.map((service, i) => {
+                            const icons = {
+                                'vipreet-pratyangira': '🔥',
+                                'mahavidya-paath': '🕉️',
+                                'tripindi-shradh': '🙏',
+                                'kalsarp-dosh': '🔯',
+                                'rudrabhishek': '🔱',
+                                'shree-suktam': '🪷',
+                                'kanakdhara-stotra': '✨',
+                                'ganesh-atharvashirsha': '🐘',
+                                'purush-suktam': '📿',
+                                'kumbh-vivah': '💍',
+                                'astrology-consultation': '🔮',
+                            };
+                            return (
+                                <div className={`icon-service-card fade-up stagger-${(i % 5) + 1}`} key={service.id}>
+                                    <div className="icon-service-icon">{icons[service.id] || '🕉️'}</div>
+                                    <h3 className="icon-service-title">{lang === 'hi' ? service.name : service.nameEn}</h3>
+                                    <p className="icon-service-desc">{service.shortDesc}</p>
+                                    <Link to={`/services/${service.id}`} className="icon-service-link">{t('विवरण देखें', 'Know More')} →</Link>
+                                </div>
+                            );
+                        })}
+                    </div>
+                    <div className="text-center" style={{ marginTop: '2rem' }}>
+                        <Link to="/services" className="btn btn-gold">{t('सभी सेवाएं देखें →', 'View All Services →')}</Link>
                     </div>
                 </div>
             </section>
