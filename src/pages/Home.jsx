@@ -57,8 +57,8 @@ export default function Home() {
                         <p className="hero-title-en">{t('पं. उमंग नाथ शर्मा — काशी, वाराणसी', 'Pt. Umang Nath Sharma — Kashi, Varanasi')}</p>
                         <p className="hero-desc">
                             {t(
-                                <>बनारस (काशी) के अनुभवी और विद्वान पंडितों द्वारा<br />सभी प्रकार की पूजा, पाठ, जप, हवन एवं ज्योतिष परामर्श<br /><strong style={{ color: 'var(--gold-300)' }}>घर बैठे ऑनलाइन बुक करें</strong></>,
-                                <>Authentic pooja, paath, jaap, havan &amp; astrology consultation<br />by experienced, learned Pandits of Banaras (Kashi)<br /><strong style={{ color: 'var(--gold-300)' }}>Book online from anywhere in the world</strong></>
+                                <>बनारस (काशी) के अनुभवसम्पन्न एवं विद्वत्तापूर्ण पंडितों द्वारा<br />समस्त प्रकार की पूजा, पाठ, जप, हवन एवं ज्योतिषीय परामर्श<br /><strong style={{ color: 'var(--gold-300)' }}>गृह बैठे ऑनलाइन बुक करें</strong></>,
+                                <>Authentic pooja, paath, jaap, havan &amp; astrology consultation<br />performed by seasoned, erudite Pandits of Banaras (Kashi)<br /><strong style={{ color: 'var(--gold-300)' }}>Book online from anywhere in the world</strong></>
                             )}
                         </p>
                         <div className="hero-actions">
@@ -109,7 +109,7 @@ export default function Home() {
                     <div className="text-center fade-up">
                         <span className="section-label">{t('हमारी सेवाएं', 'Our Services')}</span>
                         <h2 className="section-title">{t('पवित्र पूजा एवं अनुष्ठान', 'Sacred Poojas & Rituals')}</h2>
-                        <p className="section-subtitle">{t('काशी (बनारस) के विद्वान पंडितों द्वारा शास्त्रोक्त विधि से सभी प्रकार की पूजा, पाठ, जप और हवन सम्पन्न करवाएं।', 'Get every kind of pooja, paath, jaap and havan performed by learned Pandits of Kashi (Banaras) according to authentic Vedic methods.')}</p>
+                        <p className="section-subtitle">{t('काशी (बनारस) के मनीषी पंडितों द्वारा शास्त्रोक्त विधि-विधान से समस्त प्रकार की पूजा, पाठ, जप और हवन सम्पन्न करवाएं।', 'Avail every form of pooja, paath, jaap and havan, performed by erudite Pandits of Kashi (Banaras) in strict accordance with authentic Vedic methods.')}</p>
                     </div>
                     <div className="om-divider">ॐ</div>
                     <div className="icon-service-grid">
@@ -151,8 +151,8 @@ export default function Home() {
                         <h2 className="section-title">{t('डॉ. उमंग नाथ शर्मा से ज्योतिष परामर्श लें', 'Astrology Consultation with Dr. Umang Nath Sharma')}</h2>
                         <p className="section-subtitle">
                             {t(
-                                'कुंडली विश्लेषण, ग्रह दोष निवारण, विवाह मिलान और जीवन की हर समस्या का ज्योतिषीय समाधान — काशी की 400+ वर्षों की परम्परा के साथ।',
-                                'Kundli analysis, planetary dosh remedies, marriage matching, and astrological solutions for every life concern — backed by 400+ years of Kashi tradition.'
+                                'कुंडली विश्लेषण, ग्रह दोष निवारण, विवाह मिलान एवं जीवन की प्रत्येक समस्या का ज्योतिषीय समाधान — काशी की 400 वर्षों से अधिक पुरातन परम्परा के साथ।',
+                                'Kundli analysis, planetary dosh remedies, marriage matching, and astrological solutions for every concern of life — upheld by over 400 years of Kashi tradition.'
                             )}
                         </p>
                     </div>
@@ -167,8 +167,8 @@ export default function Home() {
                                 <h3>{t('ऑफलाइन परामर्श', 'Offline Consultation')}</h3>
                                 <p>
                                     {t(
-                                        'सुबह 9 बजे से दोपहर 12 बजे के बीच सीधे हमारे स्थान (वाराणसी) पर आकर व्यक्तिगत रूप से परामर्श लें।',
-                                        'Visit us directly at our location in Varanasi between 9 AM – 12 PM for an in-person consultation.'
+                                        'प्रातः 9 से मध्याह्न 12 बजे के मध्य स्वयं हमारे स्थान (वाराणसी) पर पधारकर व्यक्तिगत रूप से परामर्श प्राप्त करें।',
+                                        'Visit us directly at our location in Varanasi between 9 AM – 12 PM for a personal, in-person consultation.'
                                     )}
                                 </p>
                             </div>
@@ -177,8 +177,8 @@ export default function Home() {
                                 <h3>{t('ऑनलाइन परामर्श', 'Online Consultation')}</h3>
                                 <p>
                                     {t(
-                                        'देश-विदेश कहीं से भी — WhatsApp पर पूछताछ करें या अपनी अपॉइंटमेंट बुक करें।',
-                                        'From anywhere in the world — send an enquiry on WhatsApp or book your appointment.'
+                                        'देश-विदेश में कहीं से भी — WhatsApp पर पूछताछ करें अथवा अपनी अपॉइंटमेंट सुनिश्चित करें।',
+                                        'From anywhere across the globe — send an enquiry on WhatsApp or secure your appointment.'
                                     )}
                                 </p>
                             </div>
@@ -197,17 +197,17 @@ export default function Home() {
                     <div className="text-center fade-up">
                         <span className="section-label">{t('हमें क्यों चुनें?', 'Why Choose Us?')}</span>
                         <h2 className="section-title">{t('काशी की परम्परा, आपके द्वार', "Kashi's Tradition, At Your Door")}</h2>
-                        <p className="section-subtitle">{t('हजारों वर्षों की आध्यात्मिक परम्परा के वाहक, बनारस के अनुभवी पंडित — अब ऑनलाइन उपलब्ध।', 'Experienced Pandits of Banaras, carrying forward thousands of years of spiritual tradition — now available online.')}</p>
+                        <p className="section-subtitle">{t('सहस्राब्दियों की आध्यात्मिक परम्परा के वाहक, बनारस के अनुभवसम्पन्न पंडित — अब ऑनलाइन सुलभ।', 'Accomplished Pandits of Banaras, upholding millennia of spiritual tradition — now accessible online.')}</p>
                     </div>
                     <div className="om-divider"><img src="/images/logo.png" alt="" className="inline-logo-md" width="512" height="512" /></div>
                     <div className="features-grid">
                         {[
-                            { icon: '🏛️', title: t('काशी के विद्वान पंडित', 'Learned Pandits of Kashi'), desc: t('बनारस हिंदू विश्वविद्यालय और संस्कृत विद्यापीठ से शिक्षित, अनुभवी एवं प्रमाणित पंडित।', 'Experienced, certified Pandits educated at Banaras Hindu University and Sanskrit Vidyapeeth.') },
-                            { icon: '📖', title: t('शास्त्रोक्त विधि', 'Authentic Vedic Methods'), desc: t('वेद और शास्त्रों के अनुसार शुद्ध विधि-विधान से सम्पूर्ण पूजन कार्य सम्पन्न।', 'Every ritual performed exactly as prescribed by the Vedas and scriptures.') },
-                            { icon: '🌐', title: t('ऑनलाइन बुकिंग', 'Online Booking'), desc: t('घर बैठे आसानी से पूजा बुक करें। WhatsApp या वेबसाइट से तुरंत बुकिंग।', 'Book a pooja easily from home. Instant booking via WhatsApp or our website.') },
-                            { icon: '📹', title: t('लाइव पूजा विकल्प', 'Live Pooja Option'), desc: t('वीडियो कॉल के माध्यम से पूजा में शामिल हों — देश-विदेश कहीं से भी।', 'Join your pooja live via video call — from anywhere in the world.') },
-                            { icon: '📦', title: t('पूजा सामग्री डिलीवरी', 'Pooja Samagri Delivery'), desc: t('पूजा के लिए आवश्यक सभी सामग्री — पूरे भारत में डिलीवरी उपलब्ध।', 'All materials needed for your pooja — delivered anywhere in India.') },
-                            { icon: '💰', title: t('उचित दक्षिणा', 'Fair Pricing'), desc: t('सभी पूजा सेवाओं की कीमत पारदर्शी और उचित। कोई छुपी लागत नहीं।', 'Transparent, fair pricing on every service. No hidden costs.') },
+                            { icon: '🏛️', title: t('काशी के विद्वत्तापूर्ण पंडित', 'Erudite Pandits of Kashi'), desc: t('बनारस हिंदू विश्वविद्यालय और संस्कृत विद्यापीठ से शिक्षित, अनुभवसम्पन्न एवं प्रमाणित पंडितगण।', 'Accomplished, certified Pandits, educated at Banaras Hindu University and Sanskrit Vidyapeeth.') },
+                            { icon: '📖', title: t('शास्त्रोक्त विधि-विधान', 'Authentic Vedic Methods'), desc: t('वेद एवं शास्त्रों के अनुसार शुद्ध विधि-विधान से सम्पूर्ण पूजन कार्य सम्पन्न।', 'Every ritual performed with precision, exactly as prescribed by the Vedas and scriptures.') },
+                            { icon: '🌐', title: t('ऑनलाइन बुकिंग', 'Online Booking'), desc: t('गृह बैठे सुगमता से पूजा बुक करें। WhatsApp अथवा वेबसाइट से त्वरित बुकिंग।', 'Book a pooja with ease, from the comfort of home. Swift booking via WhatsApp or our website.') },
+                            { icon: '📹', title: t('लाइव पूजा विकल्प', 'Live Pooja Option'), desc: t('वीडियो कॉल के माध्यम से पूजा में सम्मिलित हों — देश-विदेश में कहीं से भी।', 'Join your pooja live via video call — from anywhere across the globe.') },
+                            { icon: '📦', title: t('पूजा सामग्री डिलीवरी', 'Pooja Samagri Delivery'), desc: t('पूजा हेतु आवश्यक समस्त सामग्री — सम्पूर्ण भारत में डिलीवरी उपलब्ध।', 'Every material essential to your pooja — delivered anywhere across India.') },
+                            { icon: '💰', title: t('उचित दक्षिणा', 'Fair Pricing'), desc: t('समस्त पूजा सेवाओं का मूल्य पारदर्शी एवं उचित। कोई छुपी हुई लागत नहीं।', 'Transparent, equitable pricing on every service. No hidden costs, ever.') },
                         ].map((f, i) => (
                             <div className={`feature-card fade-up stagger-${i + 1}`} key={i}>
                                 <span className="feature-icon">{f.icon}</span>
@@ -245,7 +245,7 @@ export default function Home() {
                 <div className="container">
                     <div className="text-center fade-up">
                         <span className="section-label">{t('भक्तों के अनुभव', 'Devotee Experiences')}</span>
-                        <h2 className="section-title">{t('हमारे भक्तगण क्या कहते हैं', 'What Our Devotees Say')}</h2>
+                        <h2 className="section-title">{t('हमारे भक्तगण क्या कहते हैं', 'In Our Devotees\' Own Words')}</h2>
                     </div>
                     <div className="testimonials-grid">
                         {(liveReviews || [
@@ -291,8 +291,8 @@ export default function Home() {
                 <div className="container">
                     <div className="text-center fade-up">
                         <span className="section-label" style={{ justifyContent: 'center' }}>{t('जीवंत झलकियाँ', 'Live Glimpses')}</span>
-                        <h2 className="section-title" style={{ color: 'var(--gold-300)' }}>{t('वीडियो में हमारी पूजा सेवाएं', 'Our Pooja Services in Video')}</h2>
-                        <p style={{ color: 'var(--warm-200)', marginTop: '0.5rem' }}>{t('वास्तविक अनुष्ठानों की झलक — जैसा है वैसा', 'Real ceremonies, exactly as they happen')}</p>
+                        <h2 className="section-title" style={{ color: 'var(--gold-300)' }}>{t('वीडियो में हमारी पूजा सेवाएं', 'Our Pooja Services, Captured on Video')}</h2>
+                        <p style={{ color: 'var(--warm-200)', marginTop: '0.5rem' }}>{t('वास्तविक अनुष्ठानों की सजीव झलक — यथावत, बिना किसी बनावट के', 'Authentic ceremonies, exactly as they unfold')}</p>
                     </div>
                     <div className="om-divider">ॐ</div>
 
@@ -338,8 +338,8 @@ export default function Home() {
                     <h2 className="cta-title fade-up">{t('आज ही पूजा बुक करें', 'Book Your Pooja Today')}</h2>
                     <p className="cta-subtitle fade-up">
                         {t(
-                            <>काशी के अनुभवी पंडितों से शास्त्रोक्त विधि से पूजा करवाएं।<br />WhatsApp पर तुरंत बुकिंग उपलब्ध।</>,
-                            <>Get your pooja performed authentically by experienced Pandits of Kashi.<br />Instant booking available on WhatsApp.</>
+                            <>काशी के अनुभवसम्पन्न पंडितों से शास्त्रोक्त विधि-विधान द्वारा पूजा सम्पन्न करवाएं।<br />WhatsApp पर तत्काल बुकिंग उपलब्ध।</>,
+                            <>Have your pooja performed authentically by accomplished Pandits of Kashi.<br />Instant booking available on WhatsApp.</>
                         )}
                     </p>
                     <div className="cta-actions fade-up">
