@@ -1,5 +1,25 @@
 import { Component } from 'react';
 
+// A deployment happening while someone has the site open in a tab is a very
+// common cause of a hard crash: React tries to lazy-load a page's JS chunk,
+// but the old chunk file no longer exists at the new deployment's hash, so
+// the dynamic import fails. That's not a real bug in the code - it just
+// needs a fresh page load to pick up the new build. Detect that specific
+// case and auto-reload once, instead of showing visitors a scary "something
+// went wrong" page for what a simple refresh would have fixed.
+const RELOAD_GUARD_KEY = 'kps_chunk_reload_at';
+const RELOAD_GUARD_WINDOW_MS = 15000; // don't attempt a second auto-reload within 15s (avoids a loop if the deploy is genuinely broken), but do allow one again after that (e.g. for a later, separate deploy in a long-lived tab)
+
+function isChunkLoadError(error) {
+    const msg = (error && error.message || '').toLowerCase();
+    return (
+        msg.includes('failed to fetch dynamically imported module') ||
+        msg.includes('error loading dynamically imported module') ||
+        msg.includes('importing a module script failed') ||
+        (msg.includes('loading chunk') && msg.includes('failed'))
+    );
+}
+
 export default class ErrorBoundary extends Component {
     constructor(props) {
         super(props);
@@ -12,6 +32,22 @@ export default class ErrorBoundary extends Component {
 
     componentDidCatch(error, info) {
         console.error('Site error caught by boundary:', error, info);
+
+        if (isChunkLoadError(error)) {
+            let recentlyTried = false;
+            try {
+                const lastAttempt = parseInt(sessionStorage.getItem(RELOAD_GUARD_KEY), 10);
+                recentlyTried = Number.isFinite(lastAttempt) && (Date.now() - lastAttempt) < RELOAD_GUARD_WINDOW_MS;
+            } catch {
+                // sessionStorage can throw in some private-browsing modes -
+                // treat as "not tried recently" and fall through to reload.
+            }
+            if (!recentlyTried) {
+                try { sessionStorage.setItem(RELOAD_GUARD_KEY, String(Date.now())); } catch { /* ignore */ }
+                window.location.reload();
+                return;
+            }
+        }
     }
 
     render() {
