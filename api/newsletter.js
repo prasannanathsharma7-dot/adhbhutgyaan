@@ -3,7 +3,7 @@
 // silently treated as success (idempotent) rather than erroring, so someone
 // re-subscribing doesn't see a confusing failure.
 
-const { getDb, withCors, capStr, checkRateLimit } = require('./_db');
+const { getDb, withCors, capStr, escapeHtml, checkRateLimit } = require('./_db');
 const { notifyAdmin } = require('./_notify');
 
 function isAdmin(req) {
@@ -57,7 +57,7 @@ module.exports = async (req, res) => {
 
             notifyAdmin({
                 emailSubject: `📧 New Newsletter Subscriber`,
-                emailHtml: `<p>New subscriber: <b>${email}</b></p>`,
+                emailHtml: `<p>New subscriber: <b>${escapeHtml(email)}</b></p>`,
             });
 
             res.status(201).json({ ok: true });
