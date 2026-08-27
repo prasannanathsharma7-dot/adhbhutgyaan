@@ -95,12 +95,18 @@ export default function ServiceDetail() {
                     <h2 style={{ textAlign: 'center', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)' }}>{t('उपलब्ध विकल्प', 'Available Options')}</h2>
                     <p style={{ textAlign: 'center', color: 'var(--text-muted)', marginBottom: '1.25rem', fontSize: '0.9rem' }}>{t('यह सेवा निम्न में से किसी भी तरीके से उपलब्ध है', 'This service is available in any of the following ways')}</p>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', justifyContent: 'center', marginBottom: '2rem' }}>
-                        {[
-                            { icon: '🌐', label: t('ऑनलाइन', 'Online') },
-                            { icon: '🏠', label: t('ऑफलाइन (आपके स्थान पर)', 'Offline (at your location)') },
-                            { icon: '📍', label: t('किसी भी अन्य स्थान पर', 'At any other location') },
-                            { icon: '🛕', label: t('मंदिर में', 'At a Temple') },
-                        ].map((m, i) => (
+                        {(isAstrology
+                            ? [
+                                { icon: '🌐', label: t('ऑनलाइन', 'Online') },
+                                { icon: '🏛️', label: t('व्यक्तिगत रूप से (हमारे वाराणसी स्थान पर)', 'In-person (at our Varanasi office)') },
+                            ]
+                            : [
+                                { icon: '🌐', label: t('ऑनलाइन', 'Online') },
+                                { icon: '🏠', label: t('ऑफलाइन (आपके स्थान पर)', 'Offline (at your location)') },
+                                { icon: '📍', label: t('किसी भी अन्य स्थान पर', 'At any other location') },
+                                { icon: '🛕', label: t('मंदिर में', 'At a Temple') },
+                            ]
+                        ).map((m, i) => (
                             <span key={i} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', background: 'var(--gold-50)', border: '1px solid var(--border-gold)', color: 'var(--gold-700)', fontWeight: 600, fontSize: '0.85rem', padding: '0.45rem 0.9rem', borderRadius: 'var(--radius-xl)' }}>
                                 <span>{m.icon}</span>{m.label}
                             </span>
