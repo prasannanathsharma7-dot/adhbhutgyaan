@@ -112,7 +112,7 @@ ${form.message}`;
                 <div className="container">
                     <div className="breadcrumb"><Link to="/">{t('होम', 'Home')}</Link><span>›</span><span>{t('संपर्क करें', 'Contact')}</span></div>
                     <h1>{t('संपर्क करें', 'Contact Us')}</h1>
-                    <p className="subtitle">{t('पूजा बुकिंग या डॉ. उमंग नाथ शर्मा से ज्योतिष परामर्श — ऑनलाइन पूछताछ करें, या सुबह 9 बजे से दोपहर 12 बजे के बीच हमारे स्थान पर व्यक्तिगत रूप से आएं।', 'For pooja bookings or astrology consultation with Dr. Umang Nath Sharma — enquire online, or visit us in person between 9 AM – 12 PM.')}</p>
+                    <p className="subtitle">{t('पूजा बुकिंग अथवा डॉ. उमंग नाथ शर्मा से ज्योतिषीय परामर्श — ऑनलाइन पूछताछ करें, या प्रातः 9 से मध्याह्न 12 बजे के मध्य हमारे स्थान पर व्यक्तिगत रूप से पधारें।', 'For pooja bookings or astrology consultation with Dr. Umang Nath Sharma — enquire online, or visit us in person between 9 AM – 12 PM.')}</p>
                 </div>
             </header>
 

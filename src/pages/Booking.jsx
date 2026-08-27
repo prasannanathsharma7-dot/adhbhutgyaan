@@ -166,7 +166,7 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                 <div className="container">
                     <div className="breadcrumb"><Link to="/">{t('होम', 'Home')}</Link><span>›</span><span>{t('पूजा बुक करें', 'Book Pooja')}</span></div>
                     <h1>{t('पूजा बुक करें', 'Book Your Pooja')}</h1>
-                    <p className="subtitle">{t('4 सरल चरणों में पूछताछ करें', 'Enquire in 4 Simple Steps')}</p>
+                    <p className="subtitle">{t('4 सुगम चरणों में अपनी पूछताछ दर्ज करें', 'Enquire in 4 Simple Steps')}</p>
                 </div>
             </header>
 

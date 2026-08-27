@@ -62,10 +62,10 @@ const testimonials = [
 const testimonialFlags = [...new Set(testimonials.map(t => t.flag).filter(Boolean))];
 
 const values = [
-    { icon: '📖', title: 'शास्त्रोक्त विधि', titleEn: 'Authentic Vedic Methods', desc: 'हर पूजा शुद्ध विधि से सम्पन्न', descEn: 'Every pooja performed with pure, prescribed methods' },
-    { icon: '🤝', title: 'विश्वास और पारदर्शिता', titleEn: 'Trust & Transparency', desc: 'कोई छुपी लागत नहीं', descEn: 'No hidden costs, ever' },
-    { icon: '❤️', title: 'भक्त सेवा', titleEn: 'Devotee First', desc: 'भक्तों का कल्याण हमारी प्राथमिकता', descEn: "Devotees' wellbeing is our top priority" },
-    { icon: '🌍', title: 'वैश्विक पहुँच', titleEn: 'Global Reach', desc: 'देश-विदेश कहीं भी, काशी की सेवा आपके पास', descEn: 'Kashi\'s service, wherever you are in the world' },
+    { icon: '📖', title: 'शास्त्रोक्त विधि', titleEn: 'Authentic Vedic Methods', desc: 'प्रत्येक पूजा शुद्ध एवं शास्त्रोक्त विधि से सम्पन्न', descEn: 'Every pooja performed with impeccable, time-honored precision' },
+    { icon: '🤝', title: 'विश्वास एवं पारदर्शिता', titleEn: 'Trust & Transparency', desc: 'कोई छिपा हुआ शुल्क नहीं', descEn: 'No concealed costs, ever' },
+    { icon: '❤️', title: 'भक्त सेवा', titleEn: 'Devotee First', desc: 'भक्तों का कल्याण ही हमारी सर्वोच्च प्राथमिकता', descEn: "Devotees' wellbeing remains our foremost priority" },
+    { icon: '🌍', title: 'वैश्विक पहुँच', titleEn: 'Global Reach', desc: 'देश-विदेश में कहीं भी, काशी की सेवा आपके निकट', descEn: "Kashi's service, delivered wherever you may be in the world" },
 ];
 
 export default function About() {
@@ -87,7 +87,7 @@ export default function About() {
                 <div className="container">
                     <div className="breadcrumb"><Link to="/">{t('होम', 'Home')}</Link><span>›</span><span>{t('हमारे बारे में', 'About Us')}</span></div>
                     <h1>{t('हमारे बारे में', 'About Us')}</h1>
-                    <p className="subtitle">{t('About Adhbhut Gyaan — शर्मा परिवार की विरासत', 'About Adhbhut Gyaan — Legacy of the Sharma Family')}</p>
+                    <p className="subtitle">{t('About Adhbhut Gyaan — शर्मा परिवार की गौरवशाली विरासत', 'About Adhbhut Gyaan — The Storied Legacy of the Sharma Family')}</p>
                 </div>
             </header>
 
@@ -355,8 +355,8 @@ export default function About() {
                 <div className="container">
                     <div className="text-center">
                         <span className="section-label" style={{ justifyContent: 'center' }}>{t('जीवंत झलकियाँ', 'Live Glimpses')}</span>
-                        <h2 className="section-title" style={{ color: 'var(--gold-300)' }}>{t('वीडियो में हमारी पूजा सेवाएं', 'Our Pooja Services in Video')}</h2>
-                        <p style={{ color: 'var(--warm-200)', marginTop: '0.5rem' }}>{t('वास्तविक अनुष्ठानों की झलक — जैसा है वैसा', 'Real ceremonies, exactly as they happen')}</p>
+                        <h2 className="section-title" style={{ color: 'var(--gold-300)' }}>{t('वीडियो में हमारी पूजा सेवाएं', 'Our Pooja Services, Captured on Video')}</h2>
+                        <p style={{ color: 'var(--warm-200)', marginTop: '0.5rem' }}>{t('वास्तविक अनुष्ठानों की सजीव झलक — यथावत, बिना किसी बनावट के', 'Authentic ceremonies, exactly as they unfold')}</p>
                     </div>
                     <div className="om-divider">ॐ</div>
 
@@ -372,7 +372,7 @@ export default function About() {
                     </div>
 
                     <h3 style={{ textAlign: 'center', color: 'var(--gold-300)', marginBottom: '1rem', fontFamily: 'var(--font-hindi)' }}>
-                        {t('हमारे YouTube चैनल पर और देखें', 'See More on Our YouTube Channel')}
+                        {t('हमारे YouTube चैनल पर अधिक देखें', 'Explore Further on Our YouTube Channel')}
                     </h3>
                     <div className="youtube-embed-wrapper">
                         <iframe
@@ -421,7 +421,7 @@ export default function About() {
                             <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '1rem' }}>
                                 {t(
                                     'बनारस (वाराणसी) दुनिया के सबसे प्राचीन शहरों में से एक है और हिंदू धर्म की आध्यात्मिक राजधानी मानी जाती है। गंगा नदी के तट पर बसा यह पवित्र शहर — काशी विश्वनाथ मंदिर, दशाश्वमेध घाट की गंगा आरती, और अगणित मंदिरों का घर है।',
-                                    'Banaras (Varanasi) is one of the oldest cities in the world and the spiritual capital of Hinduism. Home to Kashi Vishwanath Temple and the iconic Ganga Aarti at Dashashwamedh Ghat.'
+                                    'Banaras (Varanasi) stands among the oldest cities on Earth, revered as the spiritual capital of Hinduism. This sacred city on the banks of the Ganga is home to the Kashi Vishwanath Temple, the resplendent Ganga Aarti at Dashashwamedh Ghat, and countless other temples.'
                                 )}
                             </p>
                             <p style={{ color: 'var(--gold-700)', fontWeight: 600, fontStyle: 'italic' }}>
