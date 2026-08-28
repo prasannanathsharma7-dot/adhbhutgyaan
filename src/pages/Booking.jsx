@@ -5,6 +5,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { gallery, videoClips } from '../data/media';
 import useSEO from '../hooks/useSEO';
 import { breadcrumbJsonLd, combineJsonLd } from '../utils/seo';
+import BirthDetailsInput from '../components/BirthDetailsInput';
 
 export default function Booking() {
     const [searchParams] = useSearchParams();
@@ -32,18 +33,15 @@ export default function Booking() {
     const [errors, setErrors] = useState({});
 
     const modeOptions = [
-        { v: 'online', icon: '🌐', label: t('ऑनलाइन', 'Online') },
-        { v: 'offline', icon: '🏠', label: t('ऑफलाइन (आपके स्थान पर)', 'Offline (at your location)') },
-        { v: 'location', icon: '📍', label: t('किसी भी अन्य स्थान पर', 'At any other location') },
-        { v: 'temple', icon: '🛕', label: t('मंदिर में', 'At a Temple') },
+        { v: 'online', icon: '📱', label: t('लाइव 1-on-1 WhatsApp वीडियो कॉल संकल्प', 'Direct 1-on-1 Live WhatsApp Video Call Sankalp') },
+        { v: 'temple', icon: '🛕', label: t('काशी में प्रत्यक्ष उपस्थिति (दशाश्वमेध / विश्वनाथ धाम)', 'In-Person in Varanasi (Ghats / Temple)') },
+        { v: 'offline', icon: '🏠', label: t('ऑफलाइन (पंडित जी आपके स्थान पर पधारें)', 'Offline (Pandit Ji travels to your location)') },
     ];
 
-    // Astrology consultation works differently from a pooja: it's either a video/call
-    // consultation, or the devotee visits our Varanasi location themselves (9 AM - 12 PM) -
-    // not the pandit travelling to them, so it needs its own mode options.
+    // Astrology consultation options
     const astrologyModeOptions = [
-        { v: 'online', icon: '🌐', label: t('ऑनलाइन परामर्श', 'Online Consultation') },
-        { v: 'visit', icon: '🏛️', label: t('हमारे स्थान पर आएं (सुबह 9 - दोपहर 12)', 'Visit Our Location (9 AM - 12 PM)') },
+        { v: 'online', icon: '📱', label: t('लाइव वीडियो / ऑडियो कॉल परामर्श', 'Live Video / Audio Call Consultation') },
+        { v: 'visit', icon: '🏛️', label: t('काशी में व्यक्तिगत भेंट (प्रातः 9 - मध्याह्न 12)', 'Personal Visit in Varanasi (9 AM - 12 PM)') },
     ];
 
     const isAstrology = selectedService?.id === 'astrology-consultation';
@@ -384,8 +382,12 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                                     />
                                 </div>
                                 <div className="form-group">
-                                    <label className="form-label">{t('पसंदीदा तिथि', 'Preferred Date')}</label>
-                                    <input className="form-input" type="date" value={form.date} onChange={e => setForm({ ...form, date: e.target.value })} />
+                                    <BirthDetailsInput
+                                        dobValue={form.date}
+                                        onDobChange={d => setForm(prev => ({ ...prev, date: d }))}
+                                        showTime={false}
+                                        required={false}
+                                    />
                                 </div>
                                 <div className="form-group">
                                     <label className="form-label">{t('पता / शहर / मंदिर का नाम', 'City / Address / Temple Name')}</label>

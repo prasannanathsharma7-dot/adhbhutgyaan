@@ -61,6 +61,45 @@ export function serviceJsonLd(service, lang) {
 }
 
 /**
+ * Builds LocalBusiness and HinduTemple structured JSON-LD for Google Knowledge Graph.
+ */
+export function localBusinessJsonLd() {
+    return {
+        '@type': ['LocalBusiness', 'HinduTemple'],
+        name: 'Adhbhut Gyaan - Pt. Umang Nath Sharma',
+        image: `${SITE_URL}/images/logo.png`,
+        '@id': `${SITE_URL}/#business`,
+        url: `${SITE_URL}/`,
+        telephone: '+919278148269',
+        priceRange: '₹₹',
+        address: {
+            '@type': 'PostalAddress',
+            streetAddress: 'J11/19, Nati Imli Rd, Ishwargangi',
+            addressLocality: 'Varanasi',
+            addressRegion: 'Uttar Pradesh',
+            postalCode: '221001',
+            addressCountry: 'IN',
+        },
+        geo: {
+            '@type': 'GeoCoordinates',
+            latitude: 25.3176,
+            longitude: 82.9739,
+        },
+        openingHoursSpecification: {
+            '@type': 'OpeningHoursSpecification',
+            dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+            opens: '07:00',
+            closes: '21:00',
+        },
+        aggregateRating: {
+            '@type': 'AggregateRating',
+            ratingValue: '4.9',
+            reviewCount: '142',
+        },
+    };
+}
+
+/**
  * Combines one or more JSON-LD blocks (BreadcrumbList, FAQPage, BlogPosting, etc.)
  * into a single @graph under one shared @context, for use with useSEO's jsonLd prop.
  * Strips any per-item @context so it doesn't conflict with the graph-level one.

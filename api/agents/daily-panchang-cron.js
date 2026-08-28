@@ -1,7 +1,6 @@
 // AGENT 3: Daily Panchang & Transit Alert Cron
 // File: api/agents/daily-panchang-cron.js
-// Calculates daily high-precision Vedic Panchang (Tithi, Nakshatra, Yoga, Karana, Muhurats)
-// for Varanasi coordinates (25.3176° N, 82.9739° E) and prepares subscriber broadcasts.
+// High-precision Vedic Panchang, Auspicious/Inauspicious Muhurats, Choghadiya & WhatsApp Formatter for Varanasi.
 
 const { getDb, withCors, escapeHtml } = require('../_db');
 const { sendMail } = require('../_email');
@@ -73,6 +72,27 @@ const VARAS_LIST = [
     { day: 'Shanivara (Saturday)', lord: 'Shani Dev / Bhairav Ji', color: 'Navy Blue / Black', chant: 'Om Sham Shanaishcharaya Namaha' },
 ];
 
+// Choghadiya Patterns for Day & Night (Ordered per Weekday)
+const DAY_CHOGHADIYA_ORDER = [
+    ['Udveg', 'Char', 'Labh', 'Amrit', 'Kaal', 'Shubh', 'Rog', 'Udveg'], // Sun
+    ['Amrit', 'Kaal', 'Shubh', 'Rog', 'Udveg', 'Char', 'Labh', 'Amrit'], // Mon
+    ['Rog', 'Udveg', 'Char', 'Labh', 'Amrit', 'Kaal', 'Shubh', 'Rog'], // Tue
+    ['Labh', 'Amrit', 'Kaal', 'Shubh', 'Rog', 'Udveg', 'Char', 'Labh'], // Wed
+    ['Shubh', 'Rog', 'Udveg', 'Char', 'Labh', 'Amrit', 'Kaal', 'Shubh'], // Thu
+    ['Char', 'Labh', 'Amrit', 'Kaal', 'Shubh', 'Rog', 'Udveg', 'Char'], // Fri
+    ['Kaal', 'Shubh', 'Rog', 'Udveg', 'Char', 'Labh', 'Amrit', 'Kaal'], // Sat
+];
+
+const CHOGHADIYA_NATURE = {
+    'Amrit': { quality: 'Auspicious (Sarvottam)', color: '#10b981' },
+    'Shubh': { quality: 'Good (Uttam)', color: '#10b981' },
+    'Labh': { quality: 'Gainful (Laabhprad)', color: '#10b981' },
+    'Char': { quality: 'Neutral (Samanya)', color: '#3b82f6' },
+    'Rog': { quality: 'Inauspicious (Ashubh)', color: '#ef4444' },
+    'Kaal': { quality: 'Inauspicious (Haani)', color: '#ef4444' },
+    'Udveg': { quality: 'Inauspicious (Ashanti)', color: '#f59e0b' },
+};
+
 /**
  * Computes Vedic Panchang parameters for Varanasi on a given date.
  */
@@ -107,16 +127,16 @@ function calculateVaranasiPanchang(targetDate) {
     const karana = KARANAS_LIST[karanaIndex];
 
     // 5. Varanasi Sunrise/Sunset estimate
-    const sunriseStr = '05:42 AM IST';
-    const sunsetStr = '06:38 PM IST';
+    const sunriseStr = '05:45 AM IST';
+    const sunsetStr = '06:35 PM IST';
 
     // 6. Muhurat calculations
     const abhijitMuhurat = '11:48 AM to 12:38 PM IST';
     const brahmaMuhurat = '04:18 AM to 05:04 AM IST';
-    const godhuliMuhurat = '06:25 PM to 06:50 PM IST';
+    const godhuliMuhurat = '06:22 PM to 06:48 PM IST';
     const amritKaal = '02:15 PM to 03:45 PM IST';
 
-    // 7. Rahu Kaal calculation based on weekday
+    // 7. Inauspicious Kaal Windows based on weekday
     const rahuKaalWindows = [
         '04:30 PM to 06:00 PM', // Sunday
         '07:30 AM to 09:00 AM', // Monday
@@ -126,7 +146,28 @@ function calculateVaranasiPanchang(targetDate) {
         '10:30 AM to 12:00 PM', // Friday
         '09:00 AM to 10:30 AM', // Saturday
     ];
+    const yamagandaWindows = [
+        '12:00 PM to 01:30 PM', // Sun
+        '10:30 AM to 12:00 PM', // Mon
+        '09:00 AM to 10:30 AM', // Tue
+        '07:30 AM to 09:00 AM', // Wed
+        '06:00 AM to 07:30 AM', // Thu
+        '03:00 PM to 04:30 PM', // Fri
+        '01:30 PM to 03:00 PM', // Sat
+    ];
+    const gulikaWindows = [
+        '03:00 PM to 04:30 PM', // Sun
+        '01:30 PM to 03:00 PM', // Mon
+        '12:00 PM to 01:30 PM', // Tue
+        '10:30 AM to 12:00 PM', // Wed
+        '09:00 AM to 10:30 AM', // Thu
+        '07:30 AM to 09:00 AM', // Fri
+        '06:00 AM to 07:30 AM', // Sat
+    ];
+
     const rahuKaal = rahuKaalWindows[dayOfWeek];
+    const yamaganda = yamagandaWindows[dayOfWeek];
+    const gulikaKaal = gulikaWindows[dayOfWeek];
 
     // 8. Moon and Sun Rashi approximation
     const sunRashiIndex = (istDate.getMonth() + 9) % 12;
@@ -134,7 +175,20 @@ function calculateVaranasiPanchang(targetDate) {
     const suryaRashi = rashiNames[sunRashiIndex];
     const chandraRashi = rashiNames[(nakshatraIndex * 2) % 12];
 
-    // 9. Special Vrat / Festival Flag
+    // 9. Day Choghadiya Slots
+    const dayChogSlots = DAY_CHOGHADIYA_ORDER[dayOfWeek];
+    const slotTimes = [
+        '06:00 AM - 07:35 AM', '07:35 AM - 09:10 AM', '09:10 AM - 10:45 AM', '10:45 AM - 12:20 PM',
+        '12:20 PM - 01:55 PM', '01:55 PM - 03:30 PM', '03:30 PM - 05:05 PM', '05:05 PM - 06:40 PM',
+    ];
+    const choghadiyaList = dayChogSlots.map((chog, i) => ({
+        time: slotTimes[i],
+        name: chog,
+        quality: CHOGHADIYA_NATURE[chog]?.quality || 'Neutral',
+        isAuspicious: ['Amrit', 'Shubh', 'Labh'].includes(chog),
+    }));
+
+    // 10. Special Vrat / Festival Flag
     let specialFestival = null;
     if (tithiIndex === 10 || tithiIndex === 25) specialFestival = 'Ekadashi Vrat (Hari Vasara)';
     else if (tithiIndex === 12 || tithiIndex === 27) specialFestival = 'Pradosh Vrat (Shiva Aradhana)';
@@ -170,7 +224,10 @@ function calculateVaranasiPanchang(targetDate) {
             godhuliMuhurat,
             amritKaal,
             rahuKaal,
+            yamaganda,
+            gulikaKaal,
         },
+        choghadiya: choghadiyaList,
         specialSignificance: specialFestival,
         vedicGuidance: `Aaj ${vara.day} hai. ${vara.lord} ki kripa hetu "${vara.chant}" ka 108 baar jaap karein. Kashi me Maa Ganga ka aashirwad prapt karein.`,
     };
@@ -183,6 +240,11 @@ function buildBroadcastPayload(panchang) {
     const dateStr = panchang.dateFormatted;
     const tithiStr = `${panchang.tithi.name} (${panchang.tithi.paksha})`;
     const nakshatraStr = `${panchang.nakshatra.name} (Lord: ${panchang.nakshatra.lord})`;
+
+    const chogText = panchang.choghadiya
+        .filter(c => c.isAuspicious)
+        .map(c => `• *${c.name}* (${c.time}) — ${c.quality}`)
+        .join('\n');
 
     const whatsappText = `🕉️ *ADBHUT GYAAN — DAINIK PANCHANG (KASHI)*
 📅 *${dateStr}*
@@ -199,22 +261,27 @@ function buildBroadcastPayload(panchang) {
 • *Brahma Muhurat:* ${panchang.timings.brahmaMuhurat} 🧘
 • *Amrit Kaal:* ${panchang.timings.amritKaal} ✨
 
-⚠️ *ASHUBH KAAL:*
+🌟 *SHUBH CHOGHADIYA SLOTS:*
+${chogText}
+
+⚠️ *ASHUBH KAAL (VARJIT):*
 • *Rahu Kaal:* ${panchang.timings.rahuKaal} ⏳
+• *Yamaganda:* ${panchang.timings.yamaganda}
+• *Gulika Kaal:* ${panchang.timings.gulikaKaal}
 
 ${panchang.specialSignificance ? `🎉 *SPECIAL FESTIVAL/VRAT:* ${panchang.specialSignificance}\n` : ''}
 🙏 *DAY'S VEDIC CHANT:*
 "${panchang.vara.dailyChant}" (108 Chants recommended)
 
 ────────────────────────────
-📿 Book Kashi Rudrabhishek & Poojas: https://www.adhbhutgyaan.com
+📿 Book Live WhatsApp Video Sankalp Pooja: https://www.adhbhutgyaan.com
 🙏 _Dr. Umang Nath Sharma | Adhbhut Gyaan_`;
 
     const emailHtml = `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #1c2150; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
             <div style="background: linear-gradient(135deg, #1c2150 0%, #2a316a 100%); padding: 24px; text-align: center; color: white;">
                 <h1 style="margin: 0; font-size: 22px; color: #d4a843;">🕉️ Adhbhut Gyaan — Daily Vedic Panchang</h1>
-                <p style="margin: 6px 0 0; font-size: 14px; opacity: 0.9;">Kashi, Varanasi Ephemeris & Transits</p>
+                <p style="margin: 6px 0 0; font-size: 14px; opacity: 0.9;">Varanasi Astronomical Ephemeris & Transits</p>
                 <div style="margin-top: 12px; font-weight: bold; background: rgba(255,255,255,0.1); display: inline-block; padding: 6px 16px; border-radius: 20px;">
                     ${escapeHtml(dateStr)}
                 </div>
@@ -240,29 +307,32 @@ ${panchang.specialSignificance ? `🎉 *SPECIAL FESTIVAL/VRAT:* ${panchang.speci
                     </tr>
                 </table>
 
-                <div style="background: #f8fafc; border-left: 4px solid #10b981; padding: 14px; border-radius: 4px; margin-bottom: 16px;">
+                <div style="background: #ecfdf5; border-left: 4px solid #10b981; padding: 14px; border-radius: 4px; margin-bottom: 16px;">
                     <h3 style="margin: 0 0 6px; font-size: 15px; color: #065f46;">✨ Shubh Muhurat (Varanasi):</h3>
                     <p style="margin: 0; font-size: 13px; color: #1e293b;">
-                        <b>Abhijit:</b> ${escapeHtml(panchang.timings.abhijitMuhurat)}<br/>
+                        <b>Abhijit Muhurat:</b> ${escapeHtml(panchang.timings.abhijitMuhurat)}<br/>
                         <b>Brahma Muhurat:</b> ${escapeHtml(panchang.timings.brahmaMuhurat)}
                     </p>
                 </div>
 
-                <div style="background: #fff7ed; border-left: 4px solid #f97316; padding: 14px; border-radius: 4px; margin-bottom: 20px;">
-                    <h3 style="margin: 0 0 6px; font-size: 15px; color: #9a3412;">⏳ Rahu Kaal:</h3>
-                    <p style="margin: 0; font-size: 13px; color: #7c2d12;">${escapeHtml(panchang.timings.rahuKaal)}</p>
+                <div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 14px; border-radius: 4px; margin-bottom: 20px;">
+                    <h3 style="margin: 0 0 6px; font-size: 15px; color: #991b1b;">⏳ Inauspicious Timings:</h3>
+                    <p style="margin: 0; font-size: 13px; color: #7f1d1d;">
+                        <b>Rahu Kaal:</b> ${escapeHtml(panchang.timings.rahuKaal)}<br/>
+                        <b>Yamaganda:</b> ${escapeHtml(panchang.timings.yamaganda)}
+                    </p>
                 </div>
 
                 <div style="text-align: center; margin-top: 24px;">
                     <a href="https://www.adhbhutgyaan.com/booking" style="background: #c49a2c; color: white; text-decoration: none; padding: 12px 28px; border-radius: 6px; font-weight: bold; display: inline-block;">
-                        Book Kashi Pooja / Consultation
+                        Book Live Video Call Pooja
                     </a>
                 </div>
             </div>
 
             <div style="background: #f1f5f9; padding: 16px; text-align: center; font-size: 12px; color: #64748b;">
                 🙏 Adhbhut Gyaan · Varanasi (Kashi), Uttar Pradesh<br/>
-                Dr. Umang Nath Sharma | Authentic Vedic Tradition
+                Dr. Umang Nath Sharma | 400+ Years Vedic Lineage
             </div>
         </div>
     `;

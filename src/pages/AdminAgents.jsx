@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import useSEO from '../hooks/useSEO';
+import BirthDetailsInput from '../components/BirthDetailsInput';
 
 const AGENTS = [
     { id: 'agent1', name: 'Agent 1: Kundli Pre-Analyzer', icon: '🔮', desc: 'Vedic chart, doshas & Pandit dossier' },
@@ -443,26 +444,14 @@ export default function AdminAgents() {
                                     </div>
                                 </div>
 
-                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
-                                    <div>
-                                        <label className="form-label" style={{ fontSize: '0.82rem', fontWeight: 600 }}>Birth Date (DOB)</label>
-                                        <input
-                                            type="date"
-                                            className="form-input"
-                                            value={a1Form.birthDate}
-                                            onChange={e => setA1Form({ ...a1Form, birthDate: e.target.value })}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="form-label" style={{ fontSize: '0.82rem', fontWeight: 600 }}>Birth Time (TOB)</label>
-                                        <input
-                                            type="time"
-                                            className="form-input"
-                                            value={a1Form.birthTime}
-                                            onChange={e => setA1Form({ ...a1Form, birthTime: e.target.value })}
-                                        />
-                                    </div>
-                                </div>
+                                <BirthDetailsInput
+                                    dobValue={a1Form.birthDate}
+                                    tobValue={a1Form.birthTime}
+                                    onDobChange={d => setA1Form(prev => ({ ...prev, birthDate: d }))}
+                                    onTobChange={t => setA1Form(prev => ({ ...prev, birthTime: t }))}
+                                    showTime={true}
+                                    required={true}
+                                />
 
                                 <div style={{ marginBottom: '1rem' }}>
                                     <label className="form-label" style={{ fontSize: '0.82rem', fontWeight: 600 }}>Birth Place (POB)</label>
@@ -776,7 +765,7 @@ export default function AdminAgents() {
                                             📍 {a3Result.panchang?.dateFormatted} · Varanasi
                                         </div>
 
-                                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.6rem', marginBottom: '1rem', fontSize: '0.82rem' }}>
+                                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.6rem', marginBottom: '0.75rem', fontSize: '0.82rem' }}>
                                             <div style={{ background: 'var(--warm-100)', padding: '0.6rem', borderRadius: '4px' }}>
                                                 <b>📜 Tithi:</b> {a3Result.panchang?.tithi?.name}
                                             </div>
@@ -791,16 +780,32 @@ export default function AdminAgents() {
                                             </div>
                                         </div>
 
-                                        <div style={{ background: '#ecfdf5', border: '1px solid #10b981', borderRadius: '6px', padding: '0.75rem', marginBottom: '0.75rem', fontSize: '0.8rem' }}>
-                                            <div style={{ fontWeight: 700, color: '#065f46', marginBottom: '0.2rem' }}>✨ Shubh Muhurats (Varanasi):</div>
+                                        <div style={{ background: '#ecfdf5', border: '1px solid #10b981', borderRadius: '6px', padding: '0.75rem', marginBottom: '0.6rem', fontSize: '0.8rem' }}>
+                                            <div style={{ fontWeight: 700, color: '#065f46', marginBottom: '0.2rem' }}>🟢 Shubh Muhurats (Varanasi):</div>
                                             <div><b>Abhijit:</b> {a3Result.panchang?.timings?.abhijitMuhurat}</div>
                                             <div><b>Brahma:</b> {a3Result.panchang?.timings?.brahmaMuhurat}</div>
                                         </div>
 
-                                        <div style={{ background: '#fff7ed', border: '1px solid #f97316', borderRadius: '6px', padding: '0.75rem', fontSize: '0.8rem' }}>
-                                            <div style={{ fontWeight: 700, color: '#9a3412', marginBottom: '0.2rem' }}>⏳ Rahu Kaal:</div>
-                                            <div>{a3Result.panchang?.timings?.rahuKaal}</div>
+                                        <div style={{ background: '#fef2f2', border: '1px solid #ef4444', borderRadius: '6px', padding: '0.75rem', marginBottom: '0.75rem', fontSize: '0.8rem' }}>
+                                            <div style={{ fontWeight: 700, color: '#991b1b', marginBottom: '0.2rem' }}>🔴 Inauspicious Periods (Varjit):</div>
+                                            <div><b>Rahu Kaal:</b> {a3Result.panchang?.timings?.rahuKaal}</div>
+                                            <div><b>Yamaganda:</b> {a3Result.panchang?.timings?.yamaganda || '12:00 PM - 01:30 PM'}</div>
+                                            <div><b>Gulika Kaal:</b> {a3Result.panchang?.timings?.gulikaKaal || '03:00 PM - 04:30 PM'}</div>
                                         </div>
+
+                                        {a3Result.panchang?.choghadiya && (
+                                            <div>
+                                                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--navy-900)', marginBottom: '0.35rem' }}>🌟 Day Choghadiya Slots:</div>
+                                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.35rem', maxHeight: '140px', overflowY: 'auto' }}>
+                                                    {a3Result.panchang.choghadiya.map((chog, idx) => (
+                                                        <div key={idx} style={{ fontSize: '0.72rem', padding: '0.3rem 0.5rem', borderRadius: '4px', background: chog.isAuspicious ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.08)', display: 'flex', justifyContent: 'space-between' }}>
+                                                            <span><b>{chog.name}:</b> {chog.time}</span>
+                                                            <span>{chog.isAuspicious ? '✓' : '×'}</span>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
                                 )}
                             </div>

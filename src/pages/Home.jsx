@@ -4,6 +4,8 @@ import servicesData from '../data/services.json';
 import { useLanguage } from '../context/LanguageContext';
 import { triptych, videoClips, youtubeUploadsPlaylistId, youtubeChannelId } from '../data/media';
 import useSEO from '../hooks/useSEO';
+import { localBusinessJsonLd, combineJsonLd } from '../utils/seo';
+import DailyPanchangCard from '../components/DailyPanchangCard';
 
 function useInView() {
     const ref = useRef();
@@ -40,6 +42,7 @@ export default function Home() {
         title: t('पं. उमंग नाथ शर्मा | अद्भुत ज्ञान — काशी, वाराणसी में ऑनलाइन पूजा बुकिंग', 'Pt. Umang Nath Sharma | Adhbhut Gyaan — Pandit & Online Pooja Booking in Kashi, Varanasi'),
         description: t('पं. उमंग नाथ शर्मा (काशी, वाराणसी) द्वारा रुद्राभिषेक, कालसर्प दोष, त्रिपिंडी श्राद्ध जैसी सभी पूजा सेवाएं एवं ज्योतिष परामर्श — ऑनलाइन या वाराणसी में प्रत्यक्ष बुक करें। विदेश में रहने वाले भारतीयों (NRI) हेतु लाइव ऑनलाइन पूजा उपलब्ध।', 'Book pooja and astrology consultation in Kashi, Varanasi - Rudrabhishek, Kalsarp Dosh Nivaran & more. Live online pooja for NRIs worldwide.'),
         path: '/',
+        jsonLd: combineJsonLd(localBusinessJsonLd()),
     });
 
     return (
@@ -179,6 +182,13 @@ export default function Home() {
                             </Link>
                         </div>
                     </div>
+                </div>
+            </section>
+
+            {/* LIVE DAILY PANCHANG & SHUBH MUHURAT */}
+            <section className="section" style={{ paddingTop: '1rem', paddingBottom: '2.5rem' }}>
+                <div className="container">
+                    <DailyPanchangCard />
                 </div>
             </section>
 
