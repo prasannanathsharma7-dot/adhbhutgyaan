@@ -23,31 +23,9 @@
 
 const { getDb, capStr } = require('./_db');
 const { runAssistantTurn } = require('./_assistant');
+const { sendWhatsAppText } = require('./_whatsapp');
 
-const GRAPH_API_URL = 'https://graph.facebook.com/v21.0';
 const MAX_HISTORY = 20; // messages of context kept per phone number
-
-async function sendWhatsAppMessage(to, text) {
-    const phoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID;
-    const accessToken = process.env.WHATSAPP_ACCESS_TOKEN;
-    const res = await fetch(`${GRAPH_API_URL}/${phoneNumberId}/messages`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({
-            messaging_product: 'whatsapp',
-            to,
-            type: 'text',
-            text: { body: text },
-        }),
-    });
-    if (!res.ok) {
-        const errText = await res.text().catch(() => '');
-        console.error('WhatsApp send error:', res.status, errText.slice(0, 300));
-    }
-}
 
 module.exports = async (req, res) => {
     // ---- Webhook verification (Meta calls this once, when you save the
@@ -130,7 +108,7 @@ module.exports = async (req, res) => {
             { upsert: true }
         );
 
-        await sendWhatsAppMessage(from, replyText);
+        await sendWhatsAppText(from, replyText);
 
         res.status(200).send('EVENT_RECEIVED');
     } catch (err) {

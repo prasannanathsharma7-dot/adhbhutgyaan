@@ -88,6 +88,13 @@
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
+  <!-- Free Kundli Page -->
+  <url>
+    <loc>https://www.adhbhutgyaan.com/free-kundli</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
   <!-- About Page -->
   <url>
     <loc>https://www.adhbhutgyaan.com/about</loc>

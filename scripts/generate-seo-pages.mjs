@@ -145,6 +145,12 @@ const routes = [
         jsonLd: combineJsonLd(breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Book a Pooja', path: '/booking' }])),
     },
     {
+        path: '/free-kundli',
+        title: 'Free Kundli & Janam Patrika by a Real Kashi Astrologer | Adhbhut Gyaan',
+        description: 'Submit your birth details and Dr. Umang Nath Sharma personally analyzes your Kundli - no automated software, real astrologer guidance from Kashi.',
+        jsonLd: combineJsonLd(breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Free Kundli', path: '/free-kundli' }])),
+    },
+    {
         path: '/about',
         title: 'हमारे बारे में — शर्मा परिवार की विरासत | Adhbhut Gyaan',
         description: '400+ वर्षों की वैदिक परंपरा, तीन पीढ़ियों की गाथा — महामहोपाध्याय पं. अयोध्या नाथ शर्मा से डॉ. उमंग नाथ शर्मा तक।',

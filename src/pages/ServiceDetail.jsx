@@ -92,6 +92,16 @@ export default function ServiceDetail() {
                         </div>
                     </div>
 
+                    {isAstrology && (
+                        <div style={{ background: 'var(--gold-50)', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-lg)', padding: '1.5rem', textAlign: 'center', marginBottom: '2rem' }}>
+                            <h3 style={{ marginBottom: '0.5rem' }}>✦ {t('निःशुल्क कुंडली मांगें', 'Request a Free Kundli')}</h3>
+                            <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '1rem' }}>
+                                {t('कोई स्वचालित सॉफ्टवेयर नहीं — डॉ. उमंग नाथ शर्मा स्वयं आपकी कुंडली देखेंगे।', 'No automated software - Dr. Umang Nath Sharma personally reviews your birth chart.')}
+                            </p>
+                            <Link to="/free-kundli" className="btn btn-primary">✦ {t('अभी मांगें', 'Request Now')}</Link>
+                        </div>
+                    )}
+
                     <h2 style={{ textAlign: 'center', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)' }}>{t('उपलब्ध विकल्प', 'Available Options')}</h2>
                     <p style={{ textAlign: 'center', color: 'var(--text-muted)', marginBottom: '1.25rem', fontSize: '0.9rem' }}>{t('यह सेवा निम्न में से किसी भी तरीके से उपलब्ध है', 'This service is available in any of the following ways')}</p>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', justifyContent: 'center', marginBottom: '2rem' }}>

@@ -51,6 +51,59 @@ function StatusSelect({ value, options, onChange }) {
     );
 }
 
+function SankalpDispatch({ booking, adminKey }) {
+    const [mediaUrl, setMediaUrl] = useState(booking.sankalpMediaUrl || '');
+    const [mediaType, setMediaType] = useState('video');
+    const [status, setStatus] = useState('idle'); // idle | sending | sent | error
+    const [error, setError] = useState('');
+
+    const handleSend = async () => {
+        if (!mediaUrl.trim()) return;
+        setStatus('sending');
+        setError('');
+        try {
+            const res = await fetch('/api/admin/dispatch-sankalp', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'x-admin-key': adminKey },
+                body: JSON.stringify({ bookingId: booking._id, mediaUrl, mediaType }),
+            });
+            const data = await res.json();
+            if (data.ok) {
+                setStatus('sent');
+            } else {
+                setStatus('error');
+                setError(data.error || 'Failed to send');
+            }
+        } catch {
+            setStatus('error');
+            setError('Network error');
+        }
+    };
+
+    return (
+        <div style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '1px dashed var(--border-light)', display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
+            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>🎥 Sankalp proof:</span>
+            <input
+                type="url"
+                className="form-input"
+                style={{ flex: '1 1 220px', padding: '0.3rem 0.5rem', fontSize: '0.8rem' }}
+                placeholder="Video/photo link (Drive, YouTube unlisted, etc.)"
+                value={mediaUrl}
+                onChange={e => setMediaUrl(e.target.value)}
+            />
+            <select className="form-input" style={{ padding: '0.3rem 0.5rem', fontSize: '0.8rem', width: 'auto' }} value={mediaType} onChange={e => setMediaType(e.target.value)}>
+                <option value="video">Video</option>
+                <option value="image">Photo</option>
+            </select>
+            <button type="button" className="btn btn-outline-dark" style={{ padding: '0.35rem 0.8rem', fontSize: '0.8rem' }} onClick={handleSend} disabled={status === 'sending' || !mediaUrl.trim()}>
+                {status === 'sending' ? 'Sending…' : '📤 Send on WhatsApp'}
+            </button>
+            {status === 'sent' && <span style={{ fontSize: '0.78rem', color: 'var(--gold-600)' }}>✓ Sent</span>}
+            {status === 'error' && <span style={{ fontSize: '0.78rem', color: '#c0392b' }}>⚠ {error}</span>}
+        </div>
+    );
+}
+
 export default function Admin() {
     useSEO({ title: 'Admin | Adhbhut Gyaan', noindex: true });
 
@@ -237,6 +290,7 @@ export default function Admin() {
                                         </span>
                                     )}
                                 </div>
+                                {it.status === 'completed' && <SankalpDispatch booking={it} adminKey={key} />}
                             </div>
                         ))}
 
