@@ -268,7 +268,7 @@ export default function Admin() {
                                     <StatusBadge status={it.status} />
                                 </div>
                                 <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginTop: '0.35rem' }}>
-                                    📞 <a href={`tel:${it.phone}`}>{it.phone}</Link> · {it.serviceName || '—'} {it.packageName ? `(${it.packageName})` : ''}
+                                    📞 <a href={`tel:${it.phone}`}>{it.phone}</a> · {it.serviceName || '—'} {it.packageName ? `(${it.packageName})` : ''}
                                 </div>
                                 <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
                                     {it.mode ? `Mode: ${it.mode} · ` : ''}{it.preferredDate ? `Date: ${it.preferredDate} · ` : ''}{fmtDate(it.createdAt)}
@@ -310,7 +310,7 @@ export default function Admin() {
                                     </span>
                                 </div>
                                 <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginTop: '0.35rem' }}>
-                                    📞 <a href={`tel:${it.phone}`}>{it.phone}</Link>{it.email ? ` · ✉️ ${it.email}` : ''}{it.subject ? ` · ${it.subject}` : ''}
+                                    📞 <a href={`tel:${it.phone}`}>{it.phone}</a>{it.email ? ` · ✉️ ${it.email}` : ''}{it.subject ? ` · ${it.subject}` : ''}
                                 </div>
                                 <p style={{ fontSize: '0.9rem', marginTop: '0.5rem' }}>{it.message}</p>
                                 <div style={{ marginTop: '0.75rem' }}>

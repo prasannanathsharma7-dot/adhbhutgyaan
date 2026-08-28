@@ -154,29 +154,31 @@ export default function AdminAnalytics() {
         });
 
         const topRitualsText = rituals.slice(0, 4).map((r, i) => ` ${i + 1}. *${r.name}*: ${r.count} (${r.sharePercent}%)`).join('\n');
-        const topConcernsText = concerns.slice(0, 4).map(c => ` â€¢ *${c.label}*: ${c.count} (${c.sharePercent}%)`).join('\n');
+        const topConcernsText = concerns.slice(0, 4).map(c => ` \u2022 *${c.label}*: ${c.count} (${c.sharePercent}%)`).join('\n');
 
-        const briefing = `ðŸ•‰ï¸ *ADBHUT GYAAN â€” EXECUTIVE ANALYTICS BRIEFING*
-ðŸ“… _Generated: ${dateStr}_
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-ðŸ“Š *LEAD VELOCITY*
-â€¢ *30-Day Active Leads:* ${kpis.activeLeads30d ?? 0} (7-Day: ${kpis.activeLeads7d ?? 0})
-â€¢ *Total Lifetime Devotees:* ${kpis.totalLifetimeLeads ?? 0}
-
-ðŸ“œ *KUNDLI REVIEW FUNNEL*
-â€¢ *Pending Chart Reviews:* ${kpis.pendingKundliReviews ?? 0} â³
-â€¢ *Completed Reviews:* ${kpis.completedKundliReviews ?? 0} âœ…
-â€¢ *Review Completion Rate:* ${kpis.kundliReviewCompletionRate ?? 0}%
-
-ðŸ”¥ *HIGH-DEMAND RITUALS (SHARE)*
-${topRitualsText || ' (No booking volume recorded yet)'}
-
-ðŸ”® *ASTROLOGICAL CONCERNS*
-${topConcernsText || ' (No concern inquiries recorded yet)'}
-
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-ðŸ“Š *Master Sheet:* ${MASTER_SHEET_URL}
-ðŸ™ _Dr. Umang Nath Sharma | Kashi Vedic Team_`;
+        const briefing = [
+            '\u{1F549}\uFE0F *ADBHUT GYAAN \u2014 EXECUTIVE ANALYTICS BRIEFING*',
+            '\u{1F4C5} _Generated: ' + dateStr + '_',
+            '\u2500'.repeat(28),
+            '\u{1F4CA} *LEAD VELOCITY*',
+            '\u2022 *30-Day Active Leads:* ' + (kpis.activeLeads30d ?? 0) + ' (7-Day: ' + (kpis.activeLeads7d ?? 0) + ')',
+            '\u2022 *Total Lifetime Devotees:* ' + (kpis.totalLifetimeLeads ?? 0),
+            '',
+            '\u{1F4DC} *KUNDLI REVIEW FUNNEL*',
+            '\u2022 *Pending Chart Reviews:* ' + (kpis.pendingKundliReviews ?? 0) + ' \u23F3',
+            '\u2022 *Completed Reviews:* ' + (kpis.completedKundliReviews ?? 0) + ' \u2705',
+            '\u2022 *Review Completion Rate:* ' + (kpis.kundliReviewCompletionRate ?? 0) + '%',
+            '',
+            '\u{1F525} *HIGH-DEMAND RITUALS (SHARE)*',
+            topRitualsText || ' (No booking volume recorded yet)',
+            '',
+            '\u{1F52E} *ASTROLOGICAL CONCERNS*',
+            topConcernsText || ' (No concern inquiries recorded yet)',
+            '',
+            '\u2500'.repeat(28),
+            '\u{1F4CA} *Master Sheet:* ' + MASTER_SHEET_URL,
+            '\u{1F64F} _Dr. Umang Nath Sharma | Kashi Vedic Team_',
+        ].join('\n');
 
         if (navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard.writeText(briefing).then(() => {
@@ -201,7 +203,7 @@ ${topConcernsText || ' (No concern inquiries recorded yet)'}
             if (json.ok) {
                 setSyncStatus({
                     state: 'success',
-                    message: `âœ“ 2-Way Sync Webhook is Active & Ready. ${json.instructions || ''}`,
+                    message: '\u2713 2-Way Sync Webhook is Active & Ready. ' + (json.instructions || ''),
                 });
                 setTimeout(() => fetchAnalytics(adminKey), 1000);
             } else {
@@ -212,13 +214,14 @@ ${topConcernsText || ' (No concern inquiries recorded yet)'}
         }
     };
 
+    // ── Auth Gate ──────────────────────────────────────────────
     if (!adminKey) {
         return (
             <div className="section" style={{ minHeight: '65vh', display: 'flex', alignItems: 'center' }}>
                 <div className="container" style={{ maxWidth: 420, margin: '0 auto' }}>
                     <div style={{ background: 'white', borderRadius: 'var(--radius-lg)', padding: '2.25rem', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-lg)' }}>
                         <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
-                            <span style={{ fontSize: '2.5rem', display: 'block', marginBottom: '0.5rem' }}>ðŸ•‰ï¸</span>
+                            <span style={{ fontSize: '2.5rem', display: 'block', marginBottom: '0.5rem' }}>{'\u{1F549}\uFE0F'}</span>
                             <h2 style={{ fontSize: '1.4rem', fontWeight: 700, margin: 0 }}>Adhbhut Gyaan Analytics</h2>
                             <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
                                 Principal Data Analytics & Google Sheet 2-Way Sync Engine
@@ -240,9 +243,9 @@ ${topConcernsText || ' (No concern inquiries recorded yet)'}
                                     style={{ width: '100%', padding: '0.65rem 0.85rem' }}
                                 />
                             </div>
-                            {authError && <p className="form-error" style={{ marginBottom: '1rem' }}>âš  {authError}</p>}
+                            {authError && <p className="form-error" style={{ marginBottom: '1rem' }}>{'\u26A0'} {authError}</p>}
                             <button type="submit" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', padding: '0.75rem' }}>
-                                ðŸ”“ Access Analytics Dashboard
+                                {'\u{1F513}'} Access Analytics Dashboard
                             </button>
                         </form>
                     </div>
@@ -251,6 +254,7 @@ ${topConcernsText || ' (No concern inquiries recorded yet)'}
         );
     }
 
+    // ── Data display ──────────────────────────────────────────
     const kpis = data?.kpis || {};
     const rituals = data?.ritualDemand?.breakdown || [];
     const concerns = data?.concernMatrix || [];
@@ -263,7 +267,7 @@ ${topConcernsText || ' (No concern inquiries recorded yet)'}
                 <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.25rem' }}>
                     <div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.25rem' }}>
-                            <span style={{ fontSize: '1.6rem' }}>ðŸ•‰ï¸</span>
+                            <span style={{ fontSize: '1.6rem' }}>{'\u{1F549}\uFE0F'}</span>
                             <h1 style={{ margin: 0, fontSize: 'clamp(1.3rem, 3.5vw, 1.85rem)', color: 'white' }}>Data Analytics & Operations</h1>
                         </div>
                         <p style={{ margin: 0, color: 'rgba(255,255,255,0.7)', fontSize: '0.88rem' }}>
@@ -273,10 +277,10 @@ ${topConcernsText || ' (No concern inquiries recorded yet)'}
 
                     <div style={{ display: 'flex', gap: '0.6rem', alignItems: 'center', flexWrap: 'wrap' }}>
                         <Link to="/admin" className="btn btn-outline-light" style={{ fontSize: '0.85rem', padding: '0.5rem 0.9rem', color: 'white', borderColor: 'rgba(255,255,255,0.3)' }}>
-                            ðŸ“‹ Manage Bookings
+                            {'\u{1F4CB}'} Manage Bookings
                         </Link>
                         <button type="button" onClick={() => fetchAnalytics(adminKey)} className="btn btn-outline-light" style={{ fontSize: '0.85rem', padding: '0.5rem 0.9rem', color: 'white', borderColor: 'rgba(255,255,255,0.3)' }} disabled={loading}>
-                            {loading ? 'ðŸ”„ Loadingâ€¦' : 'ðŸ”„ Refresh'}
+                            {loading ? '\u{1F504} Loading\u2026' : '\u{1F504} Refresh'}
                         </button>
                         <button type="button" onClick={handleLogout} className="btn btn-outline-light" style={{ fontSize: '0.85rem', padding: '0.5rem 0.9rem', color: 'white', borderColor: 'rgba(255,255,255,0.3)' }}>
                             Logout
@@ -301,7 +305,6 @@ ${topConcernsText || ' (No concern inquiries recorded yet)'}
                     </div>
 
                     <div style={{ display: 'flex', gap: '0.6rem', alignItems: 'center', flexWrap: 'wrap' }}>
-                        {/* 1-Click "Copy WhatsApp Briefing" */}
                         <button
                             type="button"
                             onClick={handleCopyBriefing}
@@ -309,11 +312,10 @@ ${topConcernsText || ' (No concern inquiries recorded yet)'}
                             style={{ fontSize: '0.85rem', padding: '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}
                             title="Generate and copy executive summary for Dr. Umang Nath Sharma"
                         >
-                            <span>{copied ? 'âœ“' : 'ðŸ’¬'}</span>
+                            <span>{copied ? '\u2713' : '\u{1F4AC}'}</span>
                             {copied ? 'Briefing Copied to Clipboard!' : 'Copy WhatsApp Briefing'}
                         </button>
 
-                        {/* Direct Master Google Sheet Button */}
                         <a
                             href={MASTER_SHEET_URL}
                             target="_blank"
@@ -321,17 +323,16 @@ ${topConcernsText || ' (No concern inquiries recorded yet)'}
                             className="btn btn-outline-dark"
                             style={{ fontSize: '0.85rem', padding: '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}
                         >
-                            <span>ðŸ“Š</span> Open Master Google Sheet
+                            <span>{'\u{1F4CA}'}</span> Open Master Google Sheet
                         </a>
 
-                        {/* 2-Way Sync Webhook Trigger */}
                         <button
                             type="button"
                             onClick={handleTriggerSync}
                             className="btn btn-outline-dark"
                             style={{ fontSize: '0.85rem', padding: '0.5rem 0.9rem' }}
                         >
-                            âš¡ Test Sheet Sync
+                            {'\u26A1'} Test Sheet Sync
                         </button>
                     </div>
                 </div>
@@ -342,7 +343,7 @@ ${topConcernsText || ' (No concern inquiries recorded yet)'}
                 <div className="container">
                     {loadError && (
                         <div style={{ background: '#FEE2E2', border: '1px solid #F87171', color: '#991B1B', padding: '1rem', borderRadius: 'var(--radius-md)', marginBottom: '1.5rem', fontSize: '0.9rem' }}>
-                            âš  {loadError}
+                            {'\u26A0'} {loadError}
                         </div>
                     )}
 
@@ -376,8 +377,8 @@ ${topConcernsText || ' (No concern inquiries recorded yet)'}
                                 {kpis.activeLeads30d ?? 0}
                             </div>
                             <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '0.6rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                                <span style={{ color: 'var(--whatsapp)', fontWeight: 600 }}>â†‘ {kpis.activeLeads7d ?? 0} in last 7 days</span>
-                                <span>Â· {kpis.totalLifetimeLeads > 0 ? Math.round(((kpis.activeLeads30d || 0) / kpis.totalLifetimeLeads) * 100) : 0}% of lifetime</span>
+                                <span style={{ color: 'var(--whatsapp)', fontWeight: 600 }}>{'\u2191'} {kpis.activeLeads7d ?? 0} in last 7 days</span>
+                                <span>{'\u00B7'} {kpis.totalLifetimeLeads > 0 ? Math.round(((kpis.activeLeads30d || 0) / kpis.totalLifetimeLeads) * 100) : 0}% of lifetime</span>
                             </div>
                         </div>
 
@@ -395,7 +396,7 @@ ${topConcernsText || ' (No concern inquiries recorded yet)'}
                                 {kpis.pendingKundliReviews ?? 0}
                             </div>
                             <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '0.6rem' }}>
-                                â³ Requiring Dr. Umang Nath Sharma review
+                                {'\u23F3'} Requiring Dr. Umang Nath Sharma review
                             </div>
                         </div>
 
@@ -436,7 +437,7 @@ ${topConcernsText || ' (No concern inquiries recorded yet)'}
                                 {kpis.totalLifetimeLeads ?? 0}
                             </div>
                             <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '0.6rem' }}>
-                                ðŸ“¿ {kpis.totalLifetimeBookings ?? 0} Poojas Â· {kpis.totalLifetimeKundlis ?? 0} Kundlis
+                                {'\u{1F4FF}'} {kpis.totalLifetimeBookings ?? 0} Poojas {'\u00B7'} {kpis.totalLifetimeKundlis ?? 0} Kundlis
                             </div>
                         </div>
                     </div>
@@ -448,7 +449,7 @@ ${topConcernsText || ' (No concern inquiries recorded yet)'}
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', paddingBottom: '0.75rem', borderBottom: '1px solid var(--border-light)' }}>
                                 <div>
                                     <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 700, color: 'var(--navy-900)' }}>
-                                        ðŸ”¥ High-Demand Ritual Volume & Share
+                                        {'\u{1F525}'} High-Demand Ritual Volume & Share
                                     </h3>
                                     <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-muted)' }}>
                                         Vedic poojas ranked by volume & share of demand
@@ -484,7 +485,7 @@ ${topConcernsText || ' (No concern inquiries recorded yet)'}
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', paddingBottom: '0.75rem', borderBottom: '1px solid var(--border-light)' }}>
                                 <div>
                                     <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 700, color: 'var(--navy-900)' }}>
-                                        ðŸ”® Astrological Concern Matrix
+                                        {'\u{1F52E}'} Astrological Concern Matrix
                                     </h3>
                                     <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-muted)' }}>
                                         Semantic analysis of devotee questions & notes
@@ -527,29 +528,29 @@ ${topConcernsText || ' (No concern inquiries recorded yet)'}
                         {/* Touchpoint Channel Distribution */}
                         <div style={{ background: 'white', borderRadius: 'var(--radius-lg)', padding: '1.5rem', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-md)' }}>
                             <h3 style={{ margin: '0 0 1rem', fontSize: '1.1rem', fontWeight: 700, color: 'var(--navy-900)' }}>
-                                ðŸŒ Touchpoint & Lead Generation Sources
+                                {'\u{1F310}'} Touchpoint & Lead Generation Sources
                             </h3>
                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem' }}>
                                 <div style={{ background: 'var(--gold-50)', padding: '1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-gold)' }}>
-                                    <div style={{ fontSize: '0.8rem', color: 'var(--gold-800)', fontWeight: 600 }}>ðŸŒ Website Bookings</div>
+                                    <div style={{ fontSize: '0.8rem', color: 'var(--gold-800)', fontWeight: 600 }}>{'\u{1F310}'} Website Bookings</div>
                                     <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--navy-900)', marginTop: '0.25rem' }}>
                                         {touchpoints.website_booking || 0}
                                     </div>
                                 </div>
                                 <div style={{ background: 'rgba(37,211,102,0.1)', padding: '1rem', borderRadius: 'var(--radius-md)', border: '1px solid rgba(37,211,102,0.3)' }}>
-                                    <div style={{ fontSize: '0.8rem', color: 'var(--whatsapp-dark)', fontWeight: 600 }}>ðŸ“œ Free Kundli Forms</div>
+                                    <div style={{ fontSize: '0.8rem', color: 'var(--whatsapp-dark)', fontWeight: 600 }}>{'\u{1F4DC}'} Free Kundli Forms</div>
                                     <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--navy-900)', marginTop: '0.25rem' }}>
                                         {touchpoints.free_kundli || 0}
                                     </div>
                                 </div>
                                 <div style={{ background: 'rgba(33,150,243,0.1)', padding: '1rem', borderRadius: 'var(--radius-md)', border: '1px solid rgba(33,150,243,0.3)' }}>
-                                    <div style={{ fontSize: '0.8rem', color: '#1565C0', fontWeight: 600 }}>ðŸ’¬ WhatsApp AI Bot</div>
+                                    <div style={{ fontSize: '0.8rem', color: '#1565C0', fontWeight: 600 }}>{'\u{1F4AC}'} WhatsApp AI Bot</div>
                                     <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--navy-900)', marginTop: '0.25rem' }}>
                                         {touchpoints.whatsapp_bot || 0}
                                     </div>
                                 </div>
                                 <div style={{ background: 'rgba(28,33,80,0.06)', padding: '1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-light)' }}>
-                                    <div style={{ fontSize: '0.8rem', color: 'var(--navy-700)', fontWeight: 600 }}>âœ‰ï¸ Contact Messages</div>
+                                    <div style={{ fontSize: '0.8rem', color: 'var(--navy-700)', fontWeight: 600 }}>{'\u2709\uFE0F'} Contact Messages</div>
                                     <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--navy-900)', marginTop: '0.25rem' }}>
                                         {touchpoints.contact_form || 0}
                                     </div>
@@ -561,7 +562,7 @@ ${topConcernsText || ' (No concern inquiries recorded yet)'}
                         <div style={{ background: 'white', borderRadius: 'var(--radius-lg)', padding: '1.5rem', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-md)' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
                                 <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 700, color: 'var(--navy-900)' }}>
-                                    ðŸ“Š Master Google Sheet 2-Way Sync
+                                    {'\u{1F4CA}'} Master Google Sheet 2-Way Sync
                                 </h3>
                                 <span style={{ background: 'rgba(37,211,102,0.15)', color: 'var(--whatsapp-dark)', padding: '0.2rem 0.5rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 700 }}>
                                     2-Way Enabled
@@ -573,7 +574,7 @@ ${topConcernsText || ' (No concern inquiries recorded yet)'}
 
                             <div style={{ background: 'var(--warm-100)', padding: '0.85rem', borderRadius: 'var(--radius-md)', fontSize: '0.8rem', color: 'var(--navy-800)', border: '1px solid var(--border-light)', marginBottom: '1rem' }}>
                                 <div><b>Webhook Endpoint:</b> <code>https://www.adhbhutgyaan.com/api/admin/sync-from-sheets</code></div>
-                                <div style={{ marginTop: '0.25rem' }}><b>Header:</b> <code>x-admin-auth: &lt;ADMIN_SECRET_KEY&gt;</code></div>
+                                <div style={{ marginTop: '0.25rem' }}><b>Header:</b> <code>{'x-admin-auth: <ADMIN_SECRET_KEY>'}</code></div>
                             </div>
 
                             <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>

@@ -5,7 +5,6 @@
 const { ObjectId } = require('mongodb');
 const { getDb, withCors, capStr, escapeHtml } = require('../_db');
 const { sendMail } = require('../_email');
-const { notifyAdmin } = require('../_notify');
 
 function isAuthorized(req) {
     const secretKey = process.env.ADMIN_SECRET_KEY || process.env.ADMIN_KEY || process.env.SHEET_SYNC_SECRET;
@@ -77,6 +76,11 @@ module.exports = async (req, res) => {
         let errorCount = 0;
 
         for (const item of updates) {
+            if (!item || typeof item !== 'object') {
+                results.push({ item, success: false, reason: 'Invalid or null update entry.' });
+                errorCount++;
+                continue;
+            }
             const rawId = (item.id || item._id || item.bookingId || item.requestId || '').toString().trim();
             const phone = (item.phone || '').toString().replace(/[^0-9+]/g, '').trim();
             const email = (item.email || '').toString().trim().toLowerCase();

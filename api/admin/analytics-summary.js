@@ -247,11 +247,11 @@ module.exports = async (req, res) => {
 
         // 6. Booking Status Funnel
         const statusBreakdown = {
-            new: bookings.filter(b => (b.status || 'new') === 'new').length,
-            contacted: bookings.filter(b => b.status === 'contacted').length,
-            confirmed: bookings.filter(b => b.status === 'confirmed').length,
-            completed: bookings.filter(b => b.status === 'completed').length,
-            cancelled: bookings.filter(b => b.status === 'cancelled').length,
+            new: bookings.filter(b => (b.status || 'new').toLowerCase() === 'new').length,
+            contacted: bookings.filter(b => (b.status || '').toLowerCase() === 'contacted').length,
+            confirmed: bookings.filter(b => (b.status || '').toLowerCase() === 'confirmed').length,
+            completed: bookings.filter(b => (b.status || '').toLowerCase() === 'completed').length,
+            cancelled: bookings.filter(b => (b.status || '').toLowerCase() === 'cancelled').length,
         };
 
         // 7. Recent Devotee Activities (latest 10)
