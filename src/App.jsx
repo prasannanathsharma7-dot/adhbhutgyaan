@@ -8,8 +8,7 @@ import BackToTop from './components/BackToTop';
 import ScrollToTop from './components/ScrollToTop';
 import ErrorBoundary from './components/ErrorBoundary';
 
-// Route-level code splitting: each page's JS is only downloaded when the
-// visitor actually navigates to it, instead of one large bundle upfront.
+// Route-level code splitting
 const Home = lazy(() => import('./pages/Home'));
 const Services = lazy(() => import('./pages/Services'));
 const ServiceDetail = lazy(() => import('./pages/ServiceDetail'));
@@ -23,12 +22,13 @@ const Privacy = lazy(() => import('./pages/Privacy'));
 const Terms = lazy(() => import('./pages/Terms'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 const Admin = lazy(() => import('./pages/admin'));
+const AdminAnalytics = lazy(() => import('./pages/admin/analytics'));
 const LeaveReview = lazy(() => import('./pages/LeaveReview'));
 
 function PageLoader() {
     return (
         <div className="page-skeleton" role="status" aria-live="polite">
-            <span className="sr-only">Loading…</span>
+            <span className="sr-only">Loading...</span>
             <div className="skeleton skeleton-title" />
             <div className="skeleton skeleton-line" />
             <div className="skeleton skeleton-line" />
@@ -63,6 +63,7 @@ function App() {
                         <Route path="/privacy" element={<Privacy />} />
                         <Route path="/terms" element={<Terms />} />
                         <Route path="/admin" element={<Admin />} />
+                        <Route path="/admin/analytics" element={<AdminAnalytics />} />
                         <Route path="/leave-a-review" element={<LeaveReview />} />
                         <Route path="*" element={<NotFound />} />
                     </Routes>
