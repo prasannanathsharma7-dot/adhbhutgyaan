@@ -109,7 +109,23 @@ export default function Admin() {
     useSEO({ title: 'Admin | Adhbhut Gyaan', noindex: true });
 
     const [key, setKey] = useState(() => {
-        try { return sessionStorage.getItem('ag_admin_key') || ''; } catch { return ''; }
+        try {
+            if (typeof window !== 'undefined') {
+                const params = new URLSearchParams(window.location.search);
+                const urlKey = params.get('key') || params.get('auth') || params.get('secret');
+                if (urlKey && urlKey.trim()) {
+                    const cleanKey = urlKey.trim();
+                    try {
+                        sessionStorage.setItem('ag_admin_key', cleanKey);
+                        sessionStorage.setItem('ag_admin_auth', cleanKey);
+                    } catch { /* ignore */ }
+                    return cleanKey;
+                }
+            }
+            return sessionStorage.getItem('ag_admin_key') || '';
+        } catch {
+            return '';
+        }
     });
     const [keyInput, setKeyInput] = useState('');
     const [authError, setAuthError] = useState('');

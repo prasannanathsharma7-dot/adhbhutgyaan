@@ -68,6 +68,18 @@ export default function AdminAnalytics() {
 
     const [adminKey, setAdminKey] = useState(() => {
         try {
+            if (typeof window !== 'undefined') {
+                const params = new URLSearchParams(window.location.search);
+                const urlKey = params.get('key') || params.get('auth') || params.get('secret');
+                if (urlKey && urlKey.trim()) {
+                    const cleanKey = urlKey.trim();
+                    try {
+                        sessionStorage.setItem('ag_admin_key', cleanKey);
+                        sessionStorage.setItem('ag_admin_auth', cleanKey);
+                    } catch { /* ignore */ }
+                    return cleanKey;
+                }
+            }
             return sessionStorage.getItem('ag_admin_key') || sessionStorage.getItem('ag_admin_auth') || '';
         } catch {
             return '';
