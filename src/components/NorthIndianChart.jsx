@@ -4,20 +4,20 @@
 export default function NorthIndianChart({ houseData, devoteeName, lagnaName }) {
     if (!houseData) return null;
 
-    // Coordinate positions for Rashi Number and Planet Badges for all 12 houses
+    // Geometric coordinate anchors for Rashi Number and Planet Badges
     const houseCoords = {
-        1: { num: { x: 200, y: 135 }, planets: { x: 200, y: 80 } },
-        2: { num: { x: 125, y: 65 }, planets: { x: 85, y: 40 } },
-        3: { num: { x: 65, y: 125 }, planets: { x: 40, y: 85 } },
-        4: { num: { x: 135, y: 200 }, planets: { x: 80, y: 200 } },
-        5: { num: { x: 65, y: 275 }, planets: { x: 40, y: 315 } },
-        6: { num: { x: 125, y: 335 }, planets: { x: 85, y: 360 } },
-        7: { num: { x: 200, y: 265 }, planets: { x: 200, y: 320 } },
-        8: { num: { x: 275, y: 335 }, planets: { x: 315, y: 360 } },
-        9: { num: { x: 335, y: 275 }, planets: { x: 360, y: 315 } },
-        10: { num: { x: 265, y: 200 }, planets: { x: 320, y: 200 } },
-        11: { num: { x: 335, y: 125 }, planets: { x: 360, y: 85 } },
-        12: { num: { x: 275, y: 65 }, planets: { x: 315, y: 40 } },
+        1: { num: { x: 200, y: 155 }, planets: { x: 200, y: 80 } },
+        2: { num: { x: 135, y: 65 }, planets: { x: 80, y: 35 } },
+        3: { num: { x: 65, y: 135 }, planets: { x: 35, y: 80 } },
+        4: { num: { x: 155, y: 200 }, planets: { x: 80, y: 200 } },
+        5: { num: { x: 65, y: 265 }, planets: { x: 35, y: 320 } },
+        6: { num: { x: 135, y: 335 }, planets: { x: 80, y: 365 } },
+        7: { num: { x: 200, y: 245 }, planets: { x: 200, y: 320 } },
+        8: { num: { x: 265, y: 335 }, planets: { x: 320, y: 365 } },
+        9: { num: { x: 335, y: 265 }, planets: { x: 365, y: 320 } },
+        10: { num: { x: 245, y: 200 }, planets: { x: 320, y: 200 } },
+        11: { num: { x: 335, y: 135 }, planets: { x: 365, y: 80 } },
+        12: { num: { x: 265, y: 65 }, planets: { x: 320, y: 35 } },
     };
 
     return (
@@ -62,7 +62,7 @@ export default function NorthIndianChart({ houseData, devoteeName, lagnaName }) 
                                 textAnchor="middle"
                                 dominantBaseline="central"
                                 fill="#9a3412"
-                                fontSize="12"
+                                fontSize="13"
                                 fontWeight="800"
                                 fontFamily="sans-serif"
                             >
@@ -76,7 +76,6 @@ export default function NorthIndianChart({ houseData, devoteeName, lagnaName }) 
                                     y={coord.planets.y}
                                     textAnchor="middle"
                                     dominantBaseline="central"
-                                    fill="#1c2150"
                                     fontSize="11"
                                     fontWeight="700"
                                     fontFamily="sans-serif"
@@ -85,7 +84,7 @@ export default function NorthIndianChart({ houseData, devoteeName, lagnaName }) 
                                         <tspan
                                             key={idx}
                                             x={coord.planets.x}
-                                            dy={idx === 0 ? (h.planets.length > 2 ? '-0.8em' : (h.planets.length > 1 ? '-0.4em' : '0')) : '1.1em'}
+                                            dy={idx === 0 ? (h.planets.length > 2 ? '-0.8em' : (h.planets.length > 1 ? '-0.4em' : '0')) : '1.15em'}
                                             fill={p === 'Asc' ? '#c49a2c' : (['Ra', 'Ke', 'Sa', 'Ma'].includes(p) ? '#b91c1c' : '#0f172a')}
                                         >
                                             {p}
@@ -99,7 +98,7 @@ export default function NorthIndianChart({ houseData, devoteeName, lagnaName }) 
             </svg>
 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.6rem', fontSize: '0.72rem', color: 'var(--text-muted)' }}>
-                <span>✦ Red = Shani/Ketu/Rahu/Mars</span>
+                <span>✦ Red = Shani / Ketu / Rahu / Mangal</span>
                 <span>✦ Gold = Asc (Lagna)</span>
             </div>
         </div>

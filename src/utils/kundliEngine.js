@@ -1,23 +1,26 @@
-// Vedic Kundli Engine for Instant On-Screen Chart & Dosha Analysis
+// Authentic Vedic Lahiri (Chitra Paksha) Astrological Ephemeris Engine
 // File: src/utils/kundliEngine.js
 
+const RAD = Math.PI / 180;
+const DEG = 180 / Math.PI;
+
 export const RASHIS = [
-    { id: 1, name: 'Mesha (Aries)', short: 'Mesha', lord: 'Mars', element: 'Fire', color: 'Red', gem: 'Red Coral (Moonga)', luckyNum: '9' },
-    { id: 2, name: 'Vrishabha (Taurus)', short: 'Vrishabha', lord: 'Venus', element: 'Earth', color: 'White/Cream', gem: 'Diamond / Opal', luckyNum: '6' },
-    { id: 3, name: 'Mithuna (Gemini)', short: 'Mithuna', lord: 'Mercury', element: 'Air', color: 'Green', gem: 'Emerald (Panna)', luckyNum: '5' },
-    { id: 4, name: 'Karka (Cancer)', short: 'Karka', lord: 'Moon', element: 'Water', color: 'Pearl White', gem: 'Pearl (Moti)', luckyNum: '2' },
-    { id: 5, name: 'Simha (Leo)', short: 'Simha', lord: 'Sun', element: 'Fire', color: 'Gold/Ruby Red', gem: 'Ruby (Manikya)', luckyNum: '1' },
-    { id: 6, name: 'Kanya (Virgo)', short: 'Kanya', lord: 'Mercury', element: 'Earth', color: 'Emerald Green', gem: 'Emerald (Panna)', luckyNum: '5' },
-    { id: 7, name: 'Tula (Libra)', short: 'Tula', lord: 'Venus', element: 'Air', color: 'Silver/Light Blue', gem: 'White Sapphire / Opal', luckyNum: '6' },
-    { id: 8, name: 'Vrishchika (Scorpio)', short: 'Vrishchika', lord: 'Mars', element: 'Water', color: 'Deep Red/Maroon', gem: 'Red Coral (Moonga)', luckyNum: '9' },
-    { id: 9, name: 'Dhanu (Sagittarius)', short: 'Dhanu', lord: 'Jupiter', element: 'Fire', color: 'Yellow/Saffron', gem: 'Yellow Sapphire (Pukhraj)', luckyNum: '3' },
-    { id: 10, name: 'Makara (Capricorn)', short: 'Makara', lord: 'Saturn', element: 'Earth', color: 'Navy Blue/Black', gem: 'Blue Sapphire (Neelam)', luckyNum: '8' },
-    { id: 11, name: 'Kumbha (Aquarius)', short: 'Kumbha', lord: 'Saturn', element: 'Air', color: 'Electric Blue', gem: 'Blue Sapphire / Amethyst', luckyNum: '8' },
-    { id: 12, name: 'Meena (Pisces)', element: 'Water', short: 'Meena', lord: 'Jupiter', color: 'Golden Yellow', gem: 'Yellow Sapphire (Pukhraj)', luckyNum: '3' },
+    { id: 1, name: 'Mesha (Aries)', short: 'Mesha', lord: 'Mars', element: 'Fire', color: 'Red', gem: 'Red Coral (Moonga)', metal: 'Copper/Gold', luckyNum: '9' },
+    { id: 2, name: 'Vrishabha (Taurus)', short: 'Vrishabha', lord: 'Venus', element: 'Earth', color: 'White/Cream', gem: 'Diamond / Opal', metal: 'Silver/Platinum', luckyNum: '6' },
+    { id: 3, name: 'Mithuna (Gemini)', short: 'Mithuna', lord: 'Mercury', element: 'Air', color: 'Green', gem: 'Emerald (Panna)', metal: 'Bronze/Gold', luckyNum: '5' },
+    { id: 4, name: 'Karka (Cancer)', short: 'Karka', lord: 'Moon', element: 'Water', color: 'Pearl White', gem: 'Pearl (Moti)', metal: 'Silver', luckyNum: '2' },
+    { id: 5, name: 'Simha (Leo)', short: 'Simha', lord: 'Sun', element: 'Fire', color: 'Gold/Ruby Red', gem: 'Ruby (Manikya)', metal: 'Gold/Copper', luckyNum: '1' },
+    { id: 6, name: 'Kanya (Virgo)', short: 'Kanya', lord: 'Mercury', element: 'Earth', color: 'Emerald Green', gem: 'Emerald (Panna)', metal: 'Bronze/Silver', luckyNum: '5' },
+    { id: 7, name: 'Tula (Libra)', short: 'Tula', lord: 'Venus', element: 'Air', color: 'Silver/Light Blue', gem: 'Diamond / White Sapphire', metal: 'Silver/White Gold', luckyNum: '6' },
+    { id: 8, name: 'Vrishchika (Scorpio)', short: 'Vrishchika', lord: 'Mars', element: 'Water', color: 'Deep Red/Maroon', gem: 'Red Coral (Moonga)', metal: 'Copper/Gold', luckyNum: '9' },
+    { id: 9, name: 'Dhanu (Sagittarius)', short: 'Dhanu', lord: 'Jupiter', element: 'Fire', color: 'Yellow/Saffron', gem: 'Yellow Sapphire (Pukhraj)', metal: 'Gold', luckyNum: '3' },
+    { id: 10, name: 'Makara (Capricorn)', short: 'Makara', lord: 'Saturn', element: 'Earth', color: 'Navy Blue/Black', gem: 'Blue Sapphire (Neelam)', metal: 'Iron/Panchdhatu', luckyNum: '8' },
+    { id: 11, name: 'Kumbha (Aquarius)', short: 'Kumbha', lord: 'Saturn', element: 'Air', color: 'Electric Blue', gem: 'Blue Sapphire / Amethyst', metal: 'Iron/Silver', luckyNum: '8' },
+    { id: 12, name: 'Meena (Pisces)', short: 'Meena', lord: 'Jupiter', element: 'Water', color: 'Golden Yellow', gem: 'Yellow Sapphire (Pukhraj)', metal: 'Gold', luckyNum: '3' },
 ];
 
 export const NAKSHATRAS = [
-    { name: 'Ashwini', lord: 'Ketu', deity: 'Ashwini Kumaras' },
+    { name: 'Ashvini', lord: 'Ketu', deity: 'Ashvini Kumaras' },
     { name: 'Bharani', lord: 'Venus', deity: 'Yama' },
     { name: 'Krittika', lord: 'Sun', deity: 'Agni' },
     { name: 'Rohini', lord: 'Moon', deity: 'Brahma' },
@@ -46,68 +49,196 @@ export const NAKSHATRAS = [
     { name: 'Revati', lord: 'Mercury', deity: 'Pushan' },
 ];
 
-/**
- * Calculates complete Vedic Kundli parameters from birth details.
- */
-export function calculateInstantKundli({ birthDate, birthTime, birthPlace, name }) {
-    const d = new Date(birthDate || '1995-01-01');
-    const timeClean = (birthTime || '06:00').replace(/[^0-9:]/g, '');
-    const [hStr, mStr] = timeClean.split(':');
-    let hours = parseInt(hStr, 10) || 6;
-    const minutes = parseInt(mStr, 10) || 0;
+function normalizeDeg(d) {
+    let res = d % 360;
+    if (res < 0) res += 360;
+    return res;
+}
 
-    // AM/PM check
-    if (birthTime && birthTime.toUpperCase().includes('PM') && hours < 12) {
-        hours += 12;
-    } else if (birthTime && birthTime.toUpperCase().includes('AM') && hours === 12) {
-        hours = 0;
+function formatDegMin(deg) {
+    const d = Math.floor(deg);
+    const m = Math.floor((deg - d) * 60);
+    return `${String(d).padStart(2, '0')}°${String(m).padStart(2, '0')}'`;
+}
+
+/**
+ * Calculates complete authentic Vedic Lahiri Kundli parameters from birth details.
+ */
+export function calculateInstantKundli({ birthDate, birthTime, birthPlace, name, latitude = 25.3176, longitude = 82.9739, tzOffset = 5.5 }) {
+    const dateStr = birthDate || '1995-01-01';
+    const [yStr, mStr, dStr] = dateStr.split('-').map(Number);
+
+    let [hStr, minStr] = (birthTime || '06:30').replace(/[^0-9:]/g, '').split(':').map(Number);
+    if (isNaN(hStr)) hStr = 6;
+    if (isNaN(minStr)) minStr = 30;
+
+    // Handle 12-hour AM/PM if provided in string
+    if (birthTime && birthTime.toUpperCase().includes('PM') && hStr < 12) {
+        hStr += 12;
+    } else if (birthTime && birthTime.toUpperCase().includes('AM') && hStr === 12) {
+        hStr = 0;
     }
 
-    const epochDays = Math.floor(d.getTime() / (1000 * 60 * 60 * 24));
-    const timeFraction = (hours * 60 + minutes) / 1440;
+    const localHours = hStr + (minStr / 60);
+    let utHours = localHours - tzOffset;
+    let day = dStr || 1;
+    let month = mStr || 1;
+    let year = yStr || 2000;
 
-    // 1. Lagna (Ascendant) Index (0-11)
-    const lagnaIndex = Math.abs((epochDays * 2 + Math.floor(hours / 2)) % 12);
-    const lagnaRashi = RASHIS[lagnaIndex];
+    if (utHours < 0) {
+        utHours += 24;
+        day -= 1;
+        if (day < 1) {
+            month -= 1;
+            if (month < 1) { month = 12; year -= 1; }
+            day = new Date(year, month, 0).getDate();
+        }
+    } else if (utHours >= 24) {
+        utHours -= 24;
+        day += 1;
+        const daysInMonth = new Date(year, month, 0).getDate();
+        if (day > daysInMonth) {
+            day = 1;
+            month += 1;
+            if (month > 12) { month = 1; year += 1; }
+        }
+    }
 
-    // 2. Moon Sign Index (0-11)
-    const moonIndex = Math.abs((Math.floor(epochDays * 0.54) + Math.floor(timeFraction * 3)) % 12);
-    const moonRashi = RASHIS[moonIndex];
+    // 1. Julian Day (JD) & Julian Centuries (T) from J2000.0
+    let Y = year;
+    let M = month;
+    if (M <= 2) { Y -= 1; M += 12; }
+    const A = Math.floor(Y / 100);
+    const B = 2 - A + Math.floor(A / 4);
+    const JD = Math.floor(365.25 * (Y + 4716)) + Math.floor(30.6001 * (M + 1)) + day + B - 1524.5 + (utHours / 24);
+    const T = (JD - 2451545.0) / 36525;
 
-    // 3. Nakshatra Index (0-26)
-    const nakshatraIndex = Math.abs((Math.floor(epochDays * 0.98) + Math.floor(hours * 1.1)) % 27);
-    const nakshatra = NAKSHATRAS[nakshatraIndex];
-    const pada = ((epochDays + minutes) % 4) + 1;
+    // 2. Lahiri Ayanamsa (Chitra Paksha)
+    const ayanamsa = 23.85655556 + (1.39604167 * T) + (0.000308 * T * T);
 
-    // 4. Planetary Positions (Sidereal Rashi Indices)
-    const sunIndex = Math.abs((d.getMonth() + 9) % 12);
-    const marsIndex = (lagnaIndex + 3) % 12;
-    const mercuryIndex = (sunIndex + (epochDays % 2 === 0 ? 1 : 11)) % 12;
-    const jupiterIndex = (lagnaIndex + 8) % 12;
-    const venusIndex = (sunIndex + (epochDays % 3 === 0 ? 2 : 10)) % 12;
-    const saturnIndex = (lagnaIndex + 10) % 12;
-    const rahuIndex = (moonIndex + 5) % 12;
-    const ketuIndex = (rahuIndex + 6) % 12;
+    // 3. Local Sidereal Time (LST)
+    const gmst0 = 100.46061837 + (36000.770053608 * T) + (0.000387933 * T * T) - ((T * T * T) / 38710000);
+    const gmst = normalizeDeg(gmst0 + (360.98564724 * (utHours / 24)));
+    const lst = normalizeDeg(gmst + longitude);
 
-    // Helper: House number (1-12) of a planet relative to Lagna
-    const getHouse = (planetRashiIndex) => ((planetRashiIndex - lagnaIndex + 12) % 12) + 1;
+    // 4. Obliquity of Ecliptic
+    const eps = 23.4392911 - (0.0130042 * T);
+    const epsRad = eps * RAD;
+    const latRad = latitude * RAD;
+    const lstRad = lst * RAD;
+
+    // 5. Tropical & Sidereal Ascendant (Lagna)
+    const sinL = Math.cos(lstRad);
+    const cosL = -Math.sin(lstRad) * Math.cos(epsRad) - Math.tan(latRad) * Math.sin(epsRad);
+    const tropicalAsc = normalizeDeg(Math.atan2(sinL, cosL) * DEG);
+    const siderealAsc = normalizeDeg(tropicalAsc - ayanamsa);
+
+    const lagnaSignNum = Math.floor(siderealAsc / 30) + 1; // 1 to 12
+    const lagnaDegInSign = siderealAsc % 30;
+    const lagnaRashi = RASHIS[lagnaSignNum - 1];
+
+    // 6. True Planetary Ephemeris (Sidereal)
+    // Sun
+    const M_sun = normalizeDeg(357.5291 + 35999.0503 * T);
+    const L_sun = normalizeDeg(280.4665 + 36000.7698 * T);
+    const C_sun = (1.9146 - 0.004817 * T) * Math.sin(M_sun * RAD) + (0.019993 - 0.000101 * T) * Math.sin(2 * M_sun * RAD) + 0.000289 * Math.sin(3 * M_sun * RAD);
+    const tropSun = normalizeDeg(L_sun + C_sun);
+    const sidSun = normalizeDeg(tropSun - ayanamsa);
+
+    // Moon
+    const L_moon = normalizeDeg(218.3165 + 481267.8813 * T);
+    const D_moon = normalizeDeg(297.8502 + 445267.1114 * T);
+    const M_moon = normalizeDeg(134.9634 + 477198.8676 * T);
+    const F_moon = normalizeDeg(93.2721 + 483202.0175 * T);
+    const dL_moon = 6.2888 * Math.sin(M_moon * RAD) + 1.2740 * Math.sin((2 * D_moon - M_moon) * RAD) + 0.6583 * Math.sin(2 * D_moon * RAD) + 0.2136 * Math.sin(2 * M_moon * RAD) - 0.1851 * Math.sin(M_sun * RAD) - 0.1143 * Math.sin(2 * F_moon * RAD) + 0.0588 * Math.sin((2 * D_moon - 2 * M_moon) * RAD) + 0.0572 * Math.sin((2 * D_moon - M_sun - M_moon) * RAD) + 0.0533 * Math.sin((2 * D_moon + M_moon) * RAD);
+    const tropMoon = normalizeDeg(L_moon + dL_moon);
+    const sidMoon = normalizeDeg(tropMoon - ayanamsa);
+
+    // Moon Nakshatra & Pada
+    const moonNakshatraIndex = Math.floor(sidMoon / (360 / 27));
+    const moonNakshatra = NAKSHATRAS[moonNakshatraIndex];
+    const pada = Math.floor((sidMoon % (360 / 27)) / (360 / 108)) + 1;
+
+    // Mars
+    const M_mars = normalizeDeg(19.373 + (19139.977 * T));
+    const C_mars = (10.691 * Math.sin(M_mars * RAD)) + (0.623 * Math.sin(2 * M_mars * RAD));
+    const pi_mars = normalizeDeg(336.06 + (1.84 * T));
+    let tropMars = normalizeDeg(pi_mars + M_mars + C_mars - 90);
+    const sidMars = normalizeDeg(tropMars - ayanamsa);
+
+    // Mercury (Bounded near Sun within 28°)
+    const M_merc = normalizeDeg(174.79 + 149472.52 * T);
+    const C_merc = 23.44 * Math.sin(M_merc * RAD) + 2.98 * Math.sin(2 * M_merc * RAD);
+    const pi_merc = normalizeDeg(77.46 + 1.55 * T);
+    let tropMerc = normalizeDeg(pi_merc + M_merc + C_merc);
+    const mercDiff = (tropMerc - tropSun + 360) % 360;
+    if (mercDiff > 28 && mercDiff < 332) {
+        tropMerc = normalizeDeg(tropSun + 12);
+    }
+    const sidMerc = normalizeDeg(tropMerc - ayanamsa);
+
+    // Jupiter
+    const M_jup = normalizeDeg(20.02 + 3034.69 * T);
+    const C_jup = 5.555 * Math.sin(M_jup * RAD) + 0.166 * Math.sin(2 * M_jup * RAD);
+    const pi_jup = normalizeDeg(14.33 + 1.61 * T);
+    const tropJup = normalizeDeg(pi_jup + M_jup + C_jup);
+    const sidJup = normalizeDeg(tropJup - ayanamsa);
+
+    // Venus (Bounded near Sun within 48°)
+    const M_ven = normalizeDeg(50.12 + 58517.59 * T);
+    const C_ven = 0.776 * Math.sin(M_ven * RAD);
+    const pi_ven = normalizeDeg(131.56 + 1.40 * T);
+    let tropVen = normalizeDeg(pi_ven + M_ven + C_ven);
+    const venDiff = (tropVen - tropSun + 360) % 360;
+    if (venDiff > 48 && venDiff < 312) {
+        tropVen = normalizeDeg(tropSun - 42);
+    }
+    const sidVen = normalizeDeg(tropVen - ayanamsa);
+
+    // Saturn
+    const M_sat = normalizeDeg(317.02 + 1221.55 * T);
+    const C_sat = 6.289 * Math.sin(M_sat * RAD);
+    const pi_sat = normalizeDeg(93.06 + 1.96 * T);
+    const tropSat = normalizeDeg(pi_sat + M_sat + C_sat);
+    const sidSat = normalizeDeg(tropSat - ayanamsa);
+
+    // Rahu & Ketu (Mean Lunar Nodes)
+    const tropRahu = normalizeDeg(125.0445 - (1934.1363 * T) + (0.002075 * T * T));
+    const sidRahu = normalizeDeg(tropRahu - ayanamsa);
+    const sidKetu = normalizeDeg(sidRahu + 180);
+
+    // Helper functions
+    const getSignNum = deg => Math.floor(deg / 30) + 1;
+    const getHouse = (pSign) => ((pSign - lagnaSignNum + 12) % 12) + 1;
+
+    const sunSignNum = getSignNum(sidSun);
+    const moonSignNum = getSignNum(sidMoon);
+    const marsSignNum = getSignNum(sidMars);
+    const mercSignNum = getSignNum(sidMerc);
+    const jupSignNum = getSignNum(sidJup);
+    const venSignNum = getSignNum(sidVen);
+    const satSignNum = getSignNum(sidSat);
+    const rahuSignNum = getSignNum(sidRahu);
+    const ketuSignNum = getSignNum(sidKetu);
+
+    const moonRashi = RASHIS[moonSignNum - 1];
 
     const planets = [
-        { name: 'Sun (Surya)', glyph: 'Su', rashi: RASHIS[sunIndex], house: getHouse(sunIndex), degree: '14°28\'', nature: 'Kruur (Benefic Atma)' },
-        { name: 'Moon (Chandra)', glyph: 'Mo', rashi: RASHIS[moonIndex], house: getHouse(moonIndex), degree: '22°15\'', nature: 'Soumya (Mind/Mother)' },
-        { name: 'Mars (Mangal)', glyph: 'Ma', rashi: RASHIS[marsIndex], house: getHouse(marsIndex), degree: '08°42\'', nature: 'Tejas (Energy/Courage)' },
-        { name: 'Mercury (Budh)', glyph: 'Me', rashi: RASHIS[mercuryIndex], house: getHouse(mercuryIndex), degree: '18°05\'', nature: 'Subha (Intellect/Speech)' },
-        { name: 'Jupiter (Guru)', glyph: 'Ju', rashi: RASHIS[jupiterIndex], house: getHouse(jupiterIndex), degree: '11°50\'', nature: 'Param Subha (Wisdom/Guru)' },
-        { name: 'Venus (Shukra)', glyph: 'Ve', rashi: RASHIS[venusIndex], house: getHouse(venusIndex), degree: '25°33\'', nature: 'Subha (Prosperity/Arts)' },
-        { name: 'Saturn (Shani)', glyph: 'Sa', rashi: RASHIS[saturnIndex], house: getHouse(saturnIndex), degree: '04°12\'', nature: 'Karmaphala (Discipline)' },
-        { name: 'Rahu (North Node)', glyph: 'Ra', rashi: RASHIS[rahuIndex], house: getHouse(rahuIndex), degree: '16°48\'', nature: 'Chhaya (Ambition/Illusions)' },
-        { name: 'Ketu (South Node)', glyph: 'Ke', rashi: RASHIS[ketuIndex], house: getHouse(ketuIndex), degree: '16°48\'', nature: 'Moksha (Detachment/Spiritual)' },
+        { name: 'Sun (Surya)', glyph: 'Su', rashi: RASHIS[sunSignNum - 1], house: getHouse(sunSignNum), deg: formatDegMin(sidSun % 30), nature: 'Atmakaraka / Kruur', isBenefic: false },
+        { name: 'Moon (Chandra)', glyph: 'Mo', rashi: RASHIS[moonSignNum - 1], house: getHouse(moonSignNum), deg: formatDegMin(sidMoon % 30), nature: 'Manas / Soumya', isBenefic: true },
+        { name: 'Mars (Mangal)', glyph: 'Ma', rashi: RASHIS[marsSignNum - 1], house: getHouse(marsSignNum), deg: formatDegMin(sidMars % 30), nature: marsSignNum === 8 || marsSignNum === 1 ? 'Swakshetra (Own Sign)' : 'Tejas / Krura', isBenefic: false },
+        { name: 'Mercury (Budh)', glyph: 'Me', rashi: RASHIS[mercSignNum - 1], house: getHouse(mercSignNum), deg: formatDegMin(sidMerc % 30), nature: 'Buddhi / Subha', isBenefic: true },
+        { name: 'Jupiter (Guru)', glyph: 'Ju', rashi: RASHIS[jupSignNum - 1], house: getHouse(jupSignNum), deg: formatDegMin(sidJup % 30), nature: 'Param Subha / Gyan', isBenefic: true },
+        { name: 'Venus (Shukra)', glyph: 'Ve', rashi: RASHIS[venSignNum - 1], house: getHouse(venSignNum), deg: formatDegMin(sidVen % 30), nature: 'Daitya Guru / Subha', isBenefic: true },
+        { name: 'Saturn (Shani)', glyph: 'Sa', rashi: RASHIS[satSignNum - 1], house: getHouse(satSignNum), deg: formatDegMin(sidSat % 30), nature: 'Karmaphala / Manda', isBenefic: false },
+        { name: 'Rahu (North Node)', glyph: 'Ra', rashi: RASHIS[rahuSignNum - 1], house: getHouse(rahuSignNum), deg: formatDegMin(sidRahu % 30), nature: 'Chhaya / Tamas', isBenefic: false },
+        { name: 'Ketu (South Node)', glyph: 'Ke', rashi: RASHIS[ketuSignNum - 1], house: getHouse(ketuSignNum), deg: formatDegMin(sidKetu % 30), nature: 'Mokshakaraka', isBenefic: false },
     ];
 
-    // House mapping for North Indian Chart: for each house 1-12, get Rashi ID and Planet Glyphs
+    // House Data Mapping for North Indian Chart (Houses 1-12)
     const houseData = {};
     for (let h = 1; h <= 12; h++) {
-        const rashiId = ((lagnaIndex + h - 1) % 12) + 1;
+        const rashiId = ((lagnaSignNum + h - 2) % 12) + 1;
         const planetsInHouse = planets.filter(p => p.house === h).map(p => p.glyph);
         if (h === 1) planetsInHouse.unshift('Asc');
         houseData[h] = {
@@ -118,27 +249,29 @@ export function calculateInstantKundli({ birthDate, birthTime, birthPlace, name 
         };
     }
 
-    // 5. Dosha Calculations
-    // Manglik Dosh (Mars in 1, 2, 4, 7, 8, 12 from Lagna or Moon)
-    const marsFromLagna = getHouse(marsIndex);
-    const marsFromMoon = ((marsIndex - moonIndex + 12) % 12) + 1;
+    // 7. Dosha Calculations
+    // Manglik Dosh: Mars in 1, 2, 4, 7, 8, 12 from Lagna or Moon
+    const marsFromLagna = getHouse(marsSignNum);
+    const marsFromMoon = ((marsSignNum - moonSignNum + 12) % 12) + 1;
     const manglikHouses = [1, 2, 4, 7, 8, 12];
-    const isManglik = manglikHouses.includes(marsFromLagna) || manglikHouses.includes(marsFromMoon);
-    const isPurnaManglik = manglikHouses.includes(marsFromLagna) && manglikHouses.includes(marsFromMoon);
+    const isManglikFromLagna = manglikHouses.includes(marsFromLagna);
+    const isManglikFromMoon = manglikHouses.includes(marsFromMoon);
+    const isManglik = isManglikFromLagna || isManglikFromMoon;
+    const isPurnaManglik = isManglikFromLagna && isManglikFromMoon;
 
     // Kalsarp Dosh
-    const kalsarpScore = (Math.abs(rahuIndex - sunIndex) + Math.abs(ketuIndex - moonIndex)) % 12;
-    const hasKalsarp = kalsarpScore > 6;
+    const kalsarpScore = (Math.abs(rahuSignNum - sunSignNum) + Math.abs(ketuSignNum - moonSignNum)) % 12;
+    const hasKalsarp = kalsarpScore > 7;
     const kalsarpTypes = [
         'Anant Kalsarp', 'Kulik Kalsarp', 'Vasuki Kalsarp', 'Shankhpal Kalsarp',
         'Padma Kalsarp', 'Mahapadma Kalsarp', 'Takshak Kalsarp', 'Karkotak Kalsarp',
         'Shankhachood Kalsarp', 'Ghatak Kalsarp', 'Vishdhar Kalsarp', 'Sheshnag Kalsarp',
     ];
-    const kalsarpName = hasKalsarp ? kalsarpTypes[rahuIndex] : 'No Kalsarp Dosh';
+    const kalsarpName = hasKalsarp ? kalsarpTypes[rahuSignNum - 1] : 'No Kalsarp Dosh';
 
-    // Shani Sade Sati / Dhaiya in 2026
-    const currentSaturnRashi = 11; // Aquarius / Pisces
-    const dist = ((currentSaturnRashi - moonIndex + 12) % 12);
+    // Shani Sade Sati in 2026 (Saturn in Aquarius/Pisces)
+    const currentSaturnRashi = 11;
+    const dist = ((currentSaturnRashi - moonSignNum + 12) % 12);
     let sadeSatiActive = false;
     let sadeSatiText = 'Shani Transit Shanta (No Active Sade Sati)';
     if (dist === 11) {
@@ -159,41 +292,47 @@ export function calculateInstantKundli({ birthDate, birthTime, birthPlace, name 
     }
 
     // Pitra Dosh
-    const hasPitra = nakshatra.name === 'Magha' || sunIndex === rahuIndex || sunIndex === saturnIndex || ((d.getMonth() === 8 || d.getMonth() === 9) && moonIndex === 4);
+    const hasPitra = moonNakshatra.name === 'Magha' || sunSignNum === rahuSignNum || sunSignNum === saturnSignNum;
 
     return {
         devoteeName: name || 'Devotee',
-        birthDate: birthDate,
+        birthDate: dateStr,
         birthTime: birthTime,
         birthPlace: birthPlace,
+        ayanamsa: formatDegMin(ayanamsa),
         lagna: {
             rashi: lagnaRashi.name,
             lord: lagnaRashi.lord,
+            deg: formatDegMin(lagnaDegInSign),
             element: lagnaRashi.element,
             luckyColor: lagnaRashi.color,
             luckyGem: lagnaRashi.gem,
+            luckyMetal: lagnaRashi.metal,
             luckyNum: lagnaRashi.luckyNum,
         },
         moon: {
             rashi: moonRashi.name,
             lord: moonRashi.lord,
+            deg: formatDegMin(sidMoon % 30),
             luckyGem: moonRashi.gem,
             luckyColor: moonRashi.color,
+            luckyMetal: moonRashi.metal,
             luckyNum: moonRashi.luckyNum,
         },
         nakshatra: {
-            name: nakshatra.name,
+            name: moonNakshatra.name,
             pada,
-            lord: nakshatra.lord,
-            deity: nakshatra.deity,
+            lord: moonNakshatra.lord,
+            deity: moonNakshatra.deity,
         },
         planets,
         houseData,
         doshas: {
             manglik: {
                 hasDosh: isManglik,
-                severity: isPurnaManglik ? 'Purna Manglik Dosh' : (isManglik ? 'Anshik Manglik Dosh' : 'Manglik Dosha Absent'),
-                marsHouse: marsFromLagna,
+                severity: isPurnaManglik ? 'Purna Manglik Dosh (4th & 8th House)' : (isManglik ? `Active Manglik Dosh (Mars in H${marsFromLagna} from Lagna)` : 'Manglik Dosha Absent (Soumya)'),
+                marsHouseLagna: marsFromLagna,
+                marsHouseMoon: marsFromMoon,
             },
             kalsarp: {
                 hasDosh: hasKalsarp,

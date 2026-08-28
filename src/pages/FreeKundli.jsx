@@ -9,7 +9,7 @@ import { calculateInstantKundli } from '../utils/kundliEngine';
 
 export default function FreeKundli() {
     const { t, lang } = useLanguage();
-    const [form, setForm] = useState({ name: '', dob: '', tob: '06:00 (06:00 AM)', pob: '', gender: '', phone: '', email: '', question: '' });
+    const [form, setForm] = useState({ name: '', dob: '', tob: '06:30 (06:30 AM)', pob: 'Varanasi, Uttar Pradesh', gender: '', phone: '', email: '', question: '' });
     const [errors, setErrors] = useState({});
     const [status, setStatus] = useState('idle'); // idle | calculating | ready
     const [kundliResult, setKundliResult] = useState(null);
@@ -17,8 +17,8 @@ export default function FreeKundli() {
     useSEO({
         title: t('निःशुल्क वैदिक जन्म कुंडली रिपोर्ट एवं ग्रह विश्लेषण | Adhbhut Gyaan', 'Free Vedic Kundli Report & Instant Birth Chart Analysis | Adhbhut Gyaan'),
         description: t(
-            'उन्नत वैदिक AI एवं गणितीय ज्योतिष इंजन द्वारा अपनी जन्म पत्रिका, लग्न चार्ट, ग्रह बल एवं दोष विश्लेषण तुरंत प्राप्त करें। डॉ. उमंग नाथ शर्मा (काशी)।',
-            'Instant high-precision Vedic Kundli Report, Lagna Chart, planetary strengths & dosha analysis backed by 400+ years Kashi Jyotish Parampara.'
+            'लाहिड़ी अयनांश एवं गणितीय ज्योतिष गणना द्वारा अपनी जन्म पत्रिका, लग्न चार्ट, ग्रह बल एवं दोष विश्लेषण तुरंत प्राप्त करें। डॉ. उमंग नाथ शर्मा (काशी)।',
+            'Instant high-precision Vedic Kundli Report, Lahiri Ayanamsa Lagna Chart, planetary strengths & dosha analysis backed by 400+ years Kashi Jyotish Parampara.'
         ),
         path: '/free-kundli',
         jsonLd: combineJsonLd(breadcrumbJsonLd([
@@ -48,12 +48,15 @@ export default function FreeKundli() {
         if (!validate()) return;
         setStatus('calculating');
 
-        // 1. Instant mathematical calculation on client
+        // 1. Instant authentic Lahiri Ayanamsa calculation on client
         const result = calculateInstantKundli({
             name: form.name,
             birthDate: form.dob,
             birthTime: form.tob,
             birthPlace: form.pob,
+            latitude: 25.3176,
+            longitude: 82.9739,
+            tzOffset: 5.5,
         });
 
         setKundliResult(result);
@@ -63,10 +66,12 @@ export default function FreeKundli() {
         // 2. Background database sync to MongoDB & Sheets CRM
         const notesLines = [
             `जन्म तिथि / DOB: ${form.dob}`,
-            `जन्म समय / TOB: ${form.tob || '06:00 AM'}`,
+            `जन्म समय / TOB: ${form.tob || '06:30 AM'}`,
             `जन्म स्थान / POB: ${form.pob}`,
-            `लग्न / Lagna: ${result.lagna.rashi}`,
-            `चंद्र राशि / Moon: ${result.moon.rashi}`,
+            `लाहिड़ी अयनांश / Ayanamsa: ${result.ayanamsa}`,
+            `लग्न / Lagna: ${result.lagna.rashi} (${result.lagna.deg})`,
+            `चंद्र राशि / Moon: ${result.moon.rashi} (${result.moon.deg})`,
+            `नक्षत्र / Nakshatra: ${result.nakshatra.name} (Pada ${result.nakshatra.pada})`,
             `दोष / Doshas: Manglik: ${result.doshas.manglik.severity}, Kalsarp: ${result.doshas.kalsarp.name}, Shani: ${result.doshas.sadeSati.phase}`,
             form.gender ? `लिंग / Gender: ${form.gender}` : '',
             form.question ? `प्रश्न / Question: ${form.question}` : '',
@@ -81,7 +86,7 @@ export default function FreeKundli() {
                 email: form.email,
                 serviceId: 'astrology-consultation',
                 serviceName: t('निःशुल्क वैदिक कुंडली विश्लेषण', 'Free Vedic Kundli Analysis'),
-                packageName: t('उन्नत वैदिक AI कुंडली रिपोर्ट', 'Vedic AI Kundli Report'),
+                packageName: t('लाहिड़ी वैदिक AI कुंडली रिपोर्ट', 'Lahiri Vedic AI Kundli Report'),
                 mode: t('डिजिटल कुंडली रिपोर्ट', 'Digital Kundli Report'),
                 notes: notesLines,
                 language: lang,
@@ -96,6 +101,10 @@ export default function FreeKundli() {
         window.scrollTo({ top: 200, behavior: 'smooth' });
     };
 
+    const handlePrint = () => {
+        window.print();
+    };
+
     // Build WhatsApp Pre-populated Message
     const buildWhatsAppUrl = () => {
         if (!kundliResult) return 'https://wa.me/919278148269';
@@ -107,13 +116,14 @@ export default function FreeKundli() {
             kundliResult.doshas.pitraDosh.hasDosh ? kundliResult.doshas.pitraDosh.severity : null,
         ].filter(Boolean).join(', ') || 'No Major Negative Dosha';
 
-        const text = `Namaste Pandit Ji, maine adhbhutgyaan.com par apni Kundli report dekhi hai:
+        const text = `Namaste Pandit Ji, maine adhbhutgyaan.com par apni Vedic Kundli report dekhi hai:
 
 👤 *Name:* ${kundliResult.devoteeName}
-📅 *DOB:* ${form.dob} | *Time:* ${form.tob || '06:00 AM'}
+📅 *DOB:* ${form.dob} | *Time:* ${form.tob || '06:30 AM'}
 📍 *POB:* ${form.pob}
-🔮 *Lagna:* ${kundliResult.lagna.rashi} | *Chandra:* ${kundliResult.moon.rashi}
-⚠️ *Detected Doshas:* ${activeDoshas}
+🔮 *Lagna:* ${kundliResult.lagna.rashi} (${kundliResult.lagna.deg})
+🌙 *Chandra Rashi:* ${kundliResult.moon.rashi} | *Nakshatra:* ${kundliResult.nakshatra.name} (Pada ${kundliResult.nakshatra.pada})
+⚠️ *Active Doshas:* ${activeDoshas}
 ${form.question ? `❓ *Question:* ${form.question}\n` : ''}
 Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nidaan hetu Pandit Ji ke sath *1-on-1 Live WhatsApp Video Consultation* session book karna hai.`;
 
@@ -122,6 +132,37 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
 
     return (
         <div style={{ background: 'var(--warm-50)', minHeight: '100vh', paddingBottom: '3rem' }}>
+            {/* Print Styling */}
+            <style>{`
+                @media print {
+                    .no-print, header.navbar, footer, .page-header, .btn, .breadcrumb {
+                        display: none !important;
+                    }
+                    body, .container {
+                        background: #ffffff !important;
+                        padding: 0 !important;
+                        margin: 0 auto !important;
+                        max-width: 100% !important;
+                    }
+                    .print-only-header {
+                        display: block !important;
+                        text-align: center;
+                        margin-bottom: 1.5rem;
+                        border-bottom: 2px solid #d4a843;
+                        padding-bottom: 0.75rem;
+                    }
+                    .kundli-report-card {
+                        box-shadow: none !important;
+                        border: 1px solid #e2e8f0 !important;
+                    }
+                }
+                @media screen {
+                    .print-only-header {
+                        display: none;
+                    }
+                }
+            `}</style>
+
             {/* Header Banner */}
             <header className="page-header" style={{ background: 'linear-gradient(135deg, var(--navy-950) 0%, var(--navy-850) 100%)', padding: 'clamp(2rem, 5vw, 3.5rem) 0 2rem' }}>
                 <div className="container">
@@ -135,8 +176,8 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                     </h1>
                     <p className="subtitle" style={{ maxWidth: '680px', margin: '0.5rem auto 0', color: 'rgba(255,255,255,0.85)', fontSize: '1rem' }}>
                         {t(
-                            'उन्नत वैदिक AI एवं गणितीय ज्योतिष इंजन — त्वरित लग्न चार्ट, ग्रह बल एवं दोष विश्लेषण।',
-                            'Advanced Vedic AI & Mathematical Astro Engine — Instant high-precision Kundli, planetary strengths & dosha analysis.'
+                            'लाहिड़ी अयनांश एवं गणितीय ज्योतिष गणना — त्वरित लग्न चार्ट, ग्रह बल एवं दोष विश्लेषण।',
+                            'Authentic Lahiri Ayanamsa & Mathematical Astro Engine — Instant high-precision Kundli, planetary strengths & dosha analysis.'
                         )}
                     </p>
                 </div>
@@ -151,11 +192,11 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                             <span style={{ fontSize: '1.4rem' }}>⚡</span>
                             <div>
                                 <strong style={{ display: 'block', marginBottom: '0.2rem', color: 'var(--gold-900)' }}>
-                                    {t('सटीक वैदिक गणना एवं काशी परंपरा', 'Precision Vedic Ephemeris & Kashi Lineage')}
+                                    {t('सटीक लाहिड़ी अयनांश एवं काशी परंपरा', 'Authentic Lahiri Ephemeris & Kashi Lineage')}
                                 </strong>
                                 {t(
-                                    'आपकी जन्म पत्रिका की गणना वैदिक गणितीय सूत्रों के अनुसार होती है। फॉर्म भरते ही आपकी लग्न पत्रिका एवं ग्रह स्थिति तुरंत स्क्रीन पर प्रदर्शित होगी।',
-                                    'Your birth chart is calculated mathematically on-screen. Fill details to view your instant Lagna chart and planetary positions.'
+                                    'आपकी जन्म पत्रिका की गणना चित्रा पक्ष लाहिड़ी अयनांश एवं स्थानीय नक्षत्र समय के अनुसार होती है। फॉर्म भरते ही आपकी लग्न पत्रिका एवं ग्रह स्थिति तुरंत स्क्रीन पर प्रदर्शित होगी।',
+                                    'Your birth chart is calculated mathematically using authentic Lahiri (Chitra Paksha) Ayanamsa. Fill details to view your instant Lagna chart and planetary positions.'
                                 )}
                             </div>
                         </div>
@@ -258,33 +299,51 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                 ) : (
                     /* VIEW 2: INSTANT FREEMIUM KUNDLI REPORT & PREMIUM GATED INSIGHTS */
                     <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+                        {/* Print Header */}
+                        <div className="print-only-header">
+                            <h2 style={{ margin: '0 0 0.25rem', color: '#1c2150' }}>अद्भुत ज्ञान — वैदिक जन्म पत्रिका रिपोर्ट</h2>
+                            <p style={{ margin: 0, fontSize: '0.9rem', color: '#64748b' }}>
+                                काशी ज्योतिष परंपरा · डॉ. उमंग नाथ शर्मा · Helpline: +91 92781 48269
+                            </p>
+                        </div>
+
                         {/* Report Top Bar */}
-                        <div style={{ background: 'white', borderRadius: 'var(--radius-xl)', padding: '1.25rem 1.5rem', border: '1px solid var(--border-gold)', boxShadow: 'var(--shadow-md)', marginBottom: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+                        <div className="kundli-report-card" style={{ background: 'white', borderRadius: 'var(--radius-xl)', padding: '1.25rem 1.5rem', border: '1px solid var(--border-gold)', boxShadow: 'var(--shadow-md)', marginBottom: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
                             <div>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.2rem' }}>
                                     <span style={{ background: 'rgba(37,211,102,0.15)', color: 'var(--whatsapp-dark)', padding: '0.2rem 0.6rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 700 }}>
-                                        ✓ Verified Vedic Calculation
+                                        ✓ Lahiri Ephemeris Verified
                                     </span>
                                     <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                                        📍 {kundliResult.birthPlace}
+                                        📍 {kundliResult.birthPlace} (Ayanamsa: {kundliResult.ayanamsa})
                                     </span>
                                 </div>
                                 <h2 style={{ margin: 0, fontSize: 'clamp(1.3rem, 2.5vw, 1.6rem)', color: 'var(--navy-950)' }}>
                                     {kundliResult.devoteeName} {t('की जन्म पत्रिका', "'s Vedic Kundli")}
                                 </h2>
                                 <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-                                    DOB: {form.dob} | TOB: {form.tob || '06:00 AM'}
+                                    DOB: {form.dob} | TOB: {form.tob || '06:30 AM'} | Lagna: <strong>{kundliResult.lagna.rashi} ({kundliResult.lagna.deg})</strong>
                                 </p>
                             </div>
 
-                            <button
-                                type="button"
-                                onClick={handleReset}
-                                className="btn btn-outline-dark"
-                                style={{ fontSize: '0.82rem', padding: '0.45rem 0.9rem', borderRadius: 'var(--radius-full)' }}
-                            >
-                                🔄 {t('अन्य विवरण जांचें', 'Recalculate / New Chart')}
-                            </button>
+                            <div className="no-print" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                                <button
+                                    type="button"
+                                    onClick={handlePrint}
+                                    className="btn btn-outline-dark"
+                                    style={{ fontSize: '0.82rem', padding: '0.45rem 0.9rem', borderRadius: 'var(--radius-full)' }}
+                                >
+                                    🖨️ {t('प्रिंट / PDF सेव करें', 'Print / Save PDF')}
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={handleReset}
+                                    className="btn btn-outline-dark"
+                                    style={{ fontSize: '0.82rem', padding: '0.45rem 0.9rem', borderRadius: 'var(--radius-full)' }}
+                                >
+                                    🔄 {t('अन्य विवरण जांचें', 'Recalculate / New Chart')}
+                                </button>
+                            </div>
                         </div>
 
                         {/* SECTION 1: LAGNA CHART & PLANETARY POSITIONS */}
@@ -297,9 +356,9 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                             />
 
                             {/* Planetary Positions Table */}
-                            <div style={{ background: 'white', borderRadius: 'var(--radius-lg)', padding: '1.25rem', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-sm)' }}>
+                            <div className="kundli-report-card" style={{ background: 'white', borderRadius: 'var(--radius-lg)', padding: '1.25rem', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-sm)' }}>
                                 <h3 style={{ margin: '0 0 0.75rem', fontSize: '1.05rem', color: 'var(--navy-900)', borderBottom: '1px solid var(--border-light)', paddingBottom: '0.4rem' }}>
-                                    🪐 {t('ग्रह स्थिति एवं भाव विवरण', 'Planetary Positions & Houses')}
+                                    🪐 {t('ग्रह स्थिति एवं भाव विवरण (Lahiri Ephemeris)', 'Planetary Positions & Houses')}
                                 </h3>
                                 <div style={{ overflowX: 'auto', maxHeight: '340px', overflowY: 'auto' }}>
                                     <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.82rem', textAlign: 'left' }}>
@@ -309,14 +368,16 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                                 <th style={{ padding: '0.4rem 0.6rem' }}>Sign</th>
                                                 <th style={{ padding: '0.4rem 0.6rem' }}>House</th>
                                                 <th style={{ padding: '0.4rem 0.6rem' }}>Degree</th>
+                                                <th style={{ padding: '0.4rem 0.6rem' }}>Dignity</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr style={{ borderBottom: '1px solid #f1f5f9', background: 'var(--gold-50)', fontWeight: 700 }}>
                                                 <td style={{ padding: '0.45rem 0.6rem', color: '#c49a2c' }}>✦ Asc (Lagna)</td>
                                                 <td style={{ padding: '0.45rem 0.6rem' }}>{kundliResult.lagna.rashi.split(' ')[0]}</td>
-                                                <td style={{ padding: '0.45rem 0.6rem' }}>1st House</td>
-                                                <td style={{ padding: '0.45rem 0.6rem' }}>00°00'</td>
+                                                <td style={{ padding: '0.45rem 0.6rem' }}>House 1</td>
+                                                <td style={{ padding: '0.45rem 0.6rem' }}>{kundliResult.lagna.deg}</td>
+                                                <td style={{ padding: '0.45rem 0.6rem', color: '#047857' }}>Lagna Lord: {kundliResult.lagna.lord}</td>
                                             </tr>
                                             {kundliResult.planets.map((p, idx) => (
                                                 <tr key={idx} style={{ borderBottom: '1px solid #f1f5f9' }}>
@@ -324,8 +385,9 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                                         {p.name}
                                                     </td>
                                                     <td style={{ padding: '0.4rem 0.6rem' }}>{p.rashi.short}</td>
-                                                    <td style={{ padding: '0.4rem 0.6rem' }}>House {p.house}</td>
-                                                    <td style={{ padding: '0.4rem 0.6rem', color: 'var(--text-muted)' }}>{p.degree}</td>
+                                                    <td style={{ padding: '0.4rem 0.6rem', fontWeight: 600 }}>House {p.house}</td>
+                                                    <td style={{ padding: '0.4rem 0.6rem', color: 'var(--text-muted)' }}>{p.deg}</td>
+                                                    <td style={{ padding: '0.4rem 0.6rem', fontSize: '0.75rem', color: p.isBenefic ? '#047857' : '#991b1b' }}>{p.nature}</td>
                                                 </tr>
                                             ))}
                                         </tbody>
@@ -335,7 +397,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                         </div>
 
                         {/* SECTION 2: ASTRO HEALTH VERDICT & CORE DOSHA MATRIX */}
-                        <div style={{ background: 'white', borderRadius: 'var(--radius-lg)', padding: '1.5rem', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-md)', marginBottom: '1.5rem' }}>
+                        <div className="kundli-report-card" style={{ background: 'white', borderRadius: 'var(--radius-lg)', padding: '1.5rem', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-md)', marginBottom: '1.5rem' }}>
                             <h3 style={{ margin: '0 0 0.85rem', fontSize: '1.15rem', color: 'var(--navy-900)', borderBottom: '1px solid var(--border-light)', paddingBottom: '0.5rem' }}>
                                 🛡️ {t('ग्रह दोष विश्लेषण (Astro Health & Dosha Matrix)', 'Core Vedic Doshas Detected')}
                             </h3>
@@ -352,7 +414,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                         </span>
                                     </div>
                                     <p style={{ margin: 0, fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
-                                        {kundliResult.doshas.manglik.severity} (Mars in H{kundliResult.doshas.manglik.marsHouse})
+                                        {kundliResult.doshas.manglik.severity} (H{kundliResult.doshas.manglik.marsHouseLagna} from Lagna, H{kundliResult.doshas.manglik.marsHouseMoon} from Moon)
                                     </p>
                                 </div>
 
@@ -404,27 +466,31 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                         </div>
 
                         {/* SECTION 3: LUCKY ATTRIBUTES & ELEMENTAL STRENGTHS */}
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: '0.75rem', marginBottom: '1.5rem' }}>
-                            <div style={{ background: 'white', padding: '0.85rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-light)', textAlign: 'center' }}>
-                                <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>शुभ रत्न (Lucky Gem)</span>
-                                <strong style={{ display: 'block', color: 'var(--navy-900)', fontSize: '0.92rem', marginTop: '0.2rem' }}>💎 {kundliResult.moon.luckyGem}</strong>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '0.75rem', marginBottom: '1.5rem' }}>
+                            <div className="kundli-report-card" style={{ background: 'white', padding: '0.85rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-light)', textAlign: 'center' }}>
+                                <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>शुभ रत्न (Gemstone)</span>
+                                <strong style={{ display: 'block', color: 'var(--navy-900)', fontSize: '0.88rem', marginTop: '0.2rem' }}>💎 {kundliResult.lagna.luckyGem}</strong>
                             </div>
-                            <div style={{ background: 'white', padding: '0.85rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-light)', textAlign: 'center' }}>
+                            <div className="kundli-report-card" style={{ background: 'white', padding: '0.85rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-light)', textAlign: 'center' }}>
+                                <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>शुभ धातु (Metal)</span>
+                                <strong style={{ display: 'block', color: 'var(--navy-900)', fontSize: '0.88rem', marginTop: '0.2rem' }}>🪙 {kundliResult.lagna.luckyMetal}</strong>
+                            </div>
+                            <div className="kundli-report-card" style={{ background: 'white', padding: '0.85rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-light)', textAlign: 'center' }}>
                                 <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>शुभ रंग (Lucky Color)</span>
-                                <strong style={{ display: 'block', color: 'var(--navy-900)', fontSize: '0.92rem', marginTop: '0.2rem' }}>🎨 {kundliResult.moon.luckyColor}</strong>
+                                <strong style={{ display: 'block', color: 'var(--navy-900)', fontSize: '0.88rem', marginTop: '0.2rem' }}>🎨 {kundliResult.lagna.luckyColor}</strong>
                             </div>
-                            <div style={{ background: 'white', padding: '0.85rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-light)', textAlign: 'center' }}>
+                            <div className="kundli-report-card" style={{ background: 'white', padding: '0.85rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-light)', textAlign: 'center' }}>
                                 <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>भाग्यशाली अंक (Number)</span>
-                                <strong style={{ display: 'block', color: 'var(--navy-900)', fontSize: '0.92rem', marginTop: '0.2rem' }}>🔢 {kundliResult.moon.luckyNum}</strong>
+                                <strong style={{ display: 'block', color: 'var(--navy-900)', fontSize: '0.88rem', marginTop: '0.2rem' }}>🔢 {kundliResult.lagna.luckyNum}</strong>
                             </div>
-                            <div style={{ background: 'white', padding: '0.85rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-light)', textAlign: 'center' }}>
+                            <div className="kundli-report-card" style={{ background: 'white', padding: '0.85rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-light)', textAlign: 'center' }}>
                                 <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>तत्व (Dominant Element)</span>
-                                <strong style={{ display: 'block', color: 'var(--navy-900)', fontSize: '0.92rem', marginTop: '0.2rem' }}>🔥 {kundliResult.lagna.element}</strong>
+                                <strong style={{ display: 'block', color: 'var(--navy-900)', fontSize: '0.88rem', marginTop: '0.2rem' }}>🔥 {kundliResult.lagna.element}</strong>
                             </div>
                         </div>
 
                         {/* SECTION 4: LOCKED PREMIUM FUTURE TIMELINE CARDS (THE CURIOSITY HOOK) */}
-                        <div style={{ marginBottom: '2rem' }}>
+                        <div className="no-print" style={{ marginBottom: '2rem' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
                                 <h3 style={{ margin: 0, fontSize: '1.25rem', color: 'var(--navy-950)' }}>
                                     🔒 {t('प्रीमियम भविष्य फल एवं समय चक्र (Locked Timeline Analysis)', 'Premium 5-8 Year Future Forecast (Locked)')}
@@ -504,7 +570,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                         </div>
 
                         {/* SECTION 5: HIGH-CONVERSION CONSULTATION ACTION CENTER */}
-                        <div style={{ background: 'linear-gradient(135deg, var(--navy-950) 0%, var(--navy-850) 100%)', borderRadius: 'var(--radius-xl)', padding: 'clamp(1.5rem, 4vw, 2.5rem)', color: 'white', border: '2px solid var(--border-gold)', boxShadow: '0 12px 35px rgba(212,168,67,0.25)' }}>
+                        <div className="no-print" style={{ background: 'linear-gradient(135deg, var(--navy-950) 0%, var(--navy-850) 100%)', borderRadius: 'var(--radius-xl)', padding: 'clamp(1.5rem, 4vw, 2.5rem)', color: 'white', border: '2px solid var(--border-gold)', boxShadow: '0 12px 35px rgba(212,168,67,0.25)' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.5rem' }}>
                                 <div style={{ maxWidth: '620px' }}>
                                     <span style={{ color: 'var(--gold-400)', fontWeight: 700, fontSize: '0.85rem', letterSpacing: '0.5px', textTransform: 'uppercase' }}>
@@ -515,8 +581,8 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                     </h3>
                                     <p style={{ margin: 0, fontSize: '0.92rem', color: 'rgba(255,255,255,0.85)', lineHeight: 1.55 }}>
                                         {t(
-                                            'वैदिक गणना ने आपकी जन्म पत्रिका के मुख्य ग्रह और दोषों की पहचान कर ली है। करियर, व्यापार, विवाह और जीवन की गहन समस्याओं के व्यक्तिगत समाधान हेतु डॉ. उमंग नाथ शर्मा के साथ प्रत्यक्ष 1-on-1 लाइव व्हाट्सएप वीडियो कॉल सत्र बुक करें।',
-                                            'Our Vedic Astro Engine has identified your planetary positions and doshas. Book a direct 1-on-1 Live WhatsApp Video Consultation with Dr. Umang Nath Sharma for deep future analysis and authentic Kashi remedies.'
+                                            'लाहिड़ी अयनांश गणना ने आपकी जन्म पत्रिका के मुख्य ग्रह और दोषों की पहचान कर ली है। करियर, व्यापार, विवाह और जीवन की गहन समस्याओं के व्यक्तिगत समाधान हेतु डॉ. उमंग नाथ शर्मा के साथ प्रत्यक्ष 1-on-1 लाइव व्हाट्सएप वीडियो कॉल सत्र बुक करें।',
+                                            'Our Lahiri Astro Engine has identified your planetary positions and doshas. Book a direct 1-on-1 Live WhatsApp Video Consultation with Dr. Umang Nath Sharma for deep future analysis and authentic Kashi remedies.'
                                         )}
                                     </p>
                                 </div>

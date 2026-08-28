@@ -53,77 +53,143 @@ const RASHIS = [
 ];
 
 /**
- * Calculates deterministic Vedic chart parameters based on birth date, time, and coordinates.
+ * Calculates authentic Vedic Lahiri (Chitra Paksha) parameters based on birth date, time, and coordinates.
  */
-function computeVedicChartData(birthDateStr, birthTimeStr, birthPlaceStr) {
-    const d = new Date(birthDateStr || '1995-01-01');
-    const [hours, minutes] = (birthTimeStr || '12:00').split(':').map(Number);
-    const validHours = isNaN(hours) ? 12 : hours;
-    const validMinutes = isNaN(minutes) ? 0 : minutes;
+function computeVedicChartData(birthDateStr, birthTimeStr, birthPlaceStr, lat = 25.3176, lng = 82.9739, tzOffset = 5.5) {
+    const RAD = Math.PI / 180;
+    const DEG = 180 / Math.PI;
+    const normalizeDeg = d => ((d % 360) + 360) % 360;
 
-    // Epoch day calculation
-    const epochDays = Math.floor(d.getTime() / (1000 * 60 * 60 * 24));
-    const timeFraction = (validHours * 60 + validMinutes) / 1440;
+    const dateStr = birthDateStr || '1995-01-01';
+    const [yStr, mStr, dStr] = dateStr.split('-').map(Number);
+    let [hStr, minStr] = (birthTimeStr || '06:30').replace(/[^0-9:]/g, '').split(':').map(Number);
+    if (isNaN(hStr)) hStr = 6;
+    if (isNaN(minStr)) minStr = 30;
 
-    // Ascendant (Lagna) calculation based on local time + day offset
-    const lagnaIndex = Math.abs((epochDays * 2 + Math.floor(validHours / 2)) % 12);
-    const lagnaRashi = RASHIS[lagnaIndex];
+    if (birthTimeStr && birthTimeStr.toUpperCase().includes('PM') && hStr < 12) hStr += 12;
+    else if (birthTimeStr && birthTimeStr.toUpperCase().includes('AM') && hStr === 12) hStr = 0;
 
-    // Moon Sign (Chandra Rashi) calculation based on lunar cycle approx
-    const moonIndex = Math.abs((Math.floor(epochDays * 0.54) + Math.floor(timeFraction * 3)) % 12);
-    const moonRashi = RASHIS[moonIndex];
+    const localHours = hStr + (minStr / 60);
+    let utHours = localHours - tzOffset;
+    let day = dStr || 1;
+    let month = mStr || 1;
+    let year = yStr || 2000;
 
-    // Nakshatra calculation based on 27 divisions
-    const nakshatraIndex = Math.abs((Math.floor(epochDays * 0.98) + Math.floor(validHours * 1.1)) % 27);
-    const nakshatra = NAKSHATRAS[nakshatraIndex];
-    const pada = ((epochDays + validMinutes) % 4) + 1;
+    if (utHours < 0) {
+        utHours += 24;
+        day -= 1;
+        if (day < 1) {
+            month -= 1;
+            if (month < 1) { month = 12; year -= 1; }
+            day = new Date(year, month, 0).getDate();
+        }
+    } else if (utHours >= 24) {
+        utHours -= 24;
+        day += 1;
+        const daysInMonth = new Date(year, month, 0).getDate();
+        if (day > daysInMonth) {
+            day = 1;
+            month += 1;
+            if (month > 12) { month = 1; year += 1; }
+        }
+    }
 
-    // Planetary placements
-    const sunIndex = Math.abs((d.getMonth() + 9) % 12); // Approx Sidereal Sun
-    const sunRashi = RASHIS[sunIndex];
+    // 1. Julian Day (JD) & Julian Centuries (T)
+    let Y = year;
+    let M = month;
+    if (M <= 2) { Y -= 1; M += 12; }
+    const A = Math.floor(Y / 100);
+    const B = 2 - A + Math.floor(A / 4);
+    const JD = Math.floor(365.25 * (Y + 4716)) + Math.floor(30.6001 * (M + 1)) + day + B - 1524.5 + (utHours / 24);
+    const T = (JD - 2451545.0) / 36525;
 
-    const marsIndex = (lagnaIndex + 3) % 12;
-    const jupiterIndex = (lagnaIndex + 8) % 12;
-    const saturnIndex = (lagnaIndex + 10) % 12;
-    const rahuIndex = (moonIndex + 5) % 12;
-    const ketuIndex = (rahuIndex + 6) % 12;
+    // 2. Lahiri Ayanamsa
+    const ayanamsa = 23.85655556 + (1.39604167 * T) + (0.000308 * T * T);
 
-    // Check Manglik Dosh (Mars in houses 1, 2, 4, 7, 8, 12 from Lagna or Moon)
-    const marsFromLagna = ((marsIndex - lagnaIndex + 12) % 12) + 1;
-    const marsFromMoon = ((marsIndex - moonIndex + 12) % 12) + 1;
-    const isManglikHouses = [1, 2, 4, 7, 8, 12];
-    const isManglik = isManglikHouses.includes(marsFromLagna) || isManglikHouses.includes(marsFromMoon);
-    const manglikSeverity = (isManglikHouses.includes(marsFromLagna) && isManglikHouses.includes(marsFromMoon))
-        ? 'High (Purna Manglik)'
-        : (isManglik ? 'Moderate (Anshik Manglik)' : 'None (Soumya Graha)');
+    // 3. Local Sidereal Time (LST)
+    const gmst0 = 100.46061837 + (36000.770053608 * T) + (0.000387933 * T * T) - ((T * T * T) / 38710000);
+    const gmst = normalizeDeg(gmst0 + (360.98564724 * (utHours / 24)));
+    const lst = normalizeDeg(gmst + lng);
 
-    // Check Kalsarp Dosh (Planets hemmed around Rahu-Ketu axis)
+    // 4. Obliquity & Ascendant
+    const eps = 23.4392911 - (0.0130042 * T);
+    const epsRad = eps * RAD;
+    const latRad = lat * RAD;
+    const lstRad = lst * RAD;
+
+    const sinL = Math.cos(lstRad);
+    const cosL = -Math.sin(lstRad) * Math.cos(epsRad) - Math.tan(latRad) * Math.sin(epsRad);
+    const tropicalAsc = normalizeDeg(Math.atan2(sinL, cosL) * DEG);
+    const siderealAsc = normalizeDeg(tropicalAsc - ayanamsa);
+
+    const lagnaSignNum = Math.floor(siderealAsc / 30) + 1;
+    const lagnaRashi = RASHIS[lagnaSignNum - 1];
+
+    // 5. Planetary Ephemeris
+    const M_sun = normalizeDeg(357.5291 + 35999.0503 * T);
+    const L_sun = normalizeDeg(280.4665 + 36000.7698 * T);
+    const C_sun = (1.9146 - 0.004817 * T) * Math.sin(M_sun * RAD) + (0.019993 - 0.000101 * T) * Math.sin(2 * M_sun * RAD);
+    const tropSun = normalizeDeg(L_sun + C_sun);
+    const sidSun = normalizeDeg(tropSun - ayanamsa);
+
+    const L_moon = normalizeDeg(218.3165 + 481267.8813 * T);
+    const D_moon = normalizeDeg(297.8502 + 445267.1114 * T);
+    const M_moon = normalizeDeg(134.9634 + 477198.8676 * T);
+    const dL_moon = 6.2888 * Math.sin(M_moon * RAD) + 1.2740 * Math.sin((2 * D_moon - M_moon) * RAD) + 0.6583 * Math.sin(2 * D_moon * RAD);
+    const tropMoon = normalizeDeg(L_moon + dL_moon);
+    const sidMoon = normalizeDeg(tropMoon - ayanamsa);
+
+    const moonNakshatraIndex = Math.floor(sidMoon / (360 / 27));
+    const moonNakshatra = NAKSHATRAS[moonNakshatraIndex];
+    const pada = Math.floor((sidMoon % (360 / 27)) / (360 / 108)) + 1;
+
+    const M_mars = normalizeDeg(19.373 + (19139.977 * T));
+    const C_mars = (10.691 * Math.sin(M_mars * RAD)) + (0.623 * Math.sin(2 * M_mars * RAD));
+    const pi_mars = normalizeDeg(336.06 + (1.84 * T));
+    let tropMars = normalizeDeg(pi_mars + M_mars + C_mars - 90);
+    const sidMars = normalizeDeg(tropMars - ayanamsa);
+
+    const tropRahu = normalizeDeg(125.0445 - (1934.1363 * T));
+    const sidRahu = normalizeDeg(tropRahu - ayanamsa);
+    const sidKetu = normalizeDeg(sidRahu + 180);
+
+    const getSignNum = deg => Math.floor(deg / 30) + 1;
+    const getHouse = pSign => ((pSign - lagnaSignNum + 12) % 12) + 1;
+
+    const sunSignNum = getSignNum(sidSun);
+    const moonSignNum = getSignNum(sidMoon);
+    const marsSignNum = getSignNum(sidMars);
+    const rahuSignNum = getSignNum(sidRahu);
+    const ketuSignNum = getSignNum(sidKetu);
+
+    const sunRashi = RASHIS[sunSignNum - 1];
+    const moonRashi = RASHIS[moonSignNum - 1];
+
+    // 6. Doshas
+    const marsFromLagna = getHouse(marsSignNum);
+    const marsFromMoon = ((marsSignNum - moonSignNum + 12) % 12) + 1;
+    const manglikHouses = [1, 2, 4, 7, 8, 12];
+    const isManglikFromLagna = manglikHouses.includes(marsFromLagna);
+    const isManglikFromMoon = manglikHouses.includes(marsFromMoon);
+    const isManglik = isManglikFromLagna || isManglikFromMoon;
+    const isPurnaManglik = isManglikFromLagna && isManglikFromMoon;
+    const manglikSeverity = isPurnaManglik ? 'High (Purna Manglik)' : (isManglik ? `Active (Mars in H${marsFromLagna} from Lagna)` : 'None (Soumya Graha)');
+
+    const kalsarpScore = (Math.abs(rahuSignNum - sunSignNum) + Math.abs(ketuSignNum - moonSignNum)) % 12;
+    const hasKalsarp = kalsarpScore > 7;
     const kalsarpTypes = [
-        'Anant Kalsarp (Lagna - 1st/7th)',
-        'Kulik Kalsarp (Dhana - 2nd/8th)',
-        'Vasuki Kalsarp (Bhratru - 3rd/9th)',
-        'Shankhpal Kalsarp (Matru - 4th/10th)',
-        'Padma Kalsarp (Putra - 5th/11th)',
-        'Mahapadma Kalsarp (Shatru - 6th/12th)',
-        'Takshak Kalsarp (Kalatra - 7th/1st)',
-        'Karkotak Kalsarp (Ayur - 8th/2nd)',
-        'Shankhachood Kalsarp (Bhagya - 9th/3rd)',
-        'Ghatak Kalsarp (Karma - 10th/4th)',
-        'Vishdhar Kalsarp (Labha - 11th/5th)',
-        'Sheshnag Kalsarp (Vyaya - 12th/6th)',
+        'Anant Kalsarp (Lagna - 1st/7th)', 'Kulik Kalsarp (Dhana - 2nd/8th)', 'Vasuki Kalsarp (Bhratru - 3rd/9th)',
+        'Shankhpal Kalsarp (Matru - 4th/10th)', 'Padma Kalsarp (Putra - 5th/11th)', 'Mahapadma Kalsarp (Shatru - 6th/12th)',
+        'Takshak Kalsarp (Kalatra - 7th/1st)', 'Karkotak Kalsarp (Ayur - 8th/2nd)', 'Shankhachood Kalsarp (Bhagya - 9th/3rd)',
+        'Ghatak Kalsarp (Karma - 10th/4th)', 'Vishdhar Kalsarp (Labha - 11th/5th)', 'Sheshnag Kalsarp (Vyaya - 12th/6th)',
     ];
-    const kalsarpScore = (Math.abs(rahuIndex - sunIndex) + Math.abs(ketuIndex - moonIndex)) % 12;
-    const hasKalsarp = kalsarpScore > 6;
-    const kalsarpType = hasKalsarp ? kalsarpTypes[rahuIndex] : 'No Kalsarp Dosh Detected';
+    const kalsarpType = hasKalsarp ? kalsarpTypes[rahuSignNum - 1] : 'No Kalsarp Dosh Detected';
 
-    // Check Pitra Dosh (Sun afflicted or 9th lord connection or Magha nakshatra)
-    const hasPitraAffliction = nakshatra.name === 'Magha' || sunIndex === rahuIndex || sunIndex === saturnIndex || ((d.getMonth() === 8 || d.getMonth() === 9) && moonIndex === 4);
+    const hasPitraAffliction = moonNakshatra.name === 'Magha' || sunSignNum === rahuSignNum;
     const pitraDoshSeverity = hasPitraAffliction ? 'Active Ancestral Impediment (Pitra Rin)' : 'Mild / No Major Dosha';
 
-    // Shani Sade Sati / Dhaiya calculation (Saturn transiting 12th, 1st, 2nd from natal Moon)
-    // Current Saturn in 2026 is transiting Pisces / Aquarius (approx Rashi 11/12)
-    const currentSaturnRashi = 11; // Aquarius / Pisces
-    const sadeSatiDistance = ((currentSaturnRashi - moonIndex + 12) % 12);
+    const currentSaturnRashi = 11;
+    const sadeSatiDistance = ((currentSaturnRashi - moonSignNum + 12) % 12);
     let sadeSatiPhase = 'No Active Sade Sati';
     if (sadeSatiDistance === 11) sadeSatiPhase = 'Sade Sati Phase 1 (Rising Phase / Aarohi)';
     else if (sadeSatiDistance === 0) sadeSatiPhase = 'Sade Sati Phase 2 (Peak Phase / Madhya Peak)';
@@ -135,13 +201,12 @@ function computeVedicChartData(birthDateStr, birthTimeStr, birthPlaceStr) {
         lagna: { rashi: lagnaRashi.name, lord: lagnaRashi.lord, element: lagnaRashi.element },
         moon: { rashi: moonRashi.name, lord: moonRashi.lord, luckyGem: moonRashi.luckyGem, luckyColor: moonRashi.luckyColor },
         sun: { rashi: sunRashi.name, lord: sunRashi.lord },
-        nakshatra: { name: nakshatra.name, pada, lord: nakshatra.lord, deity: nakshatra.deity },
+        nakshatra: { name: moonNakshatra.name, pada, lord: moonNakshatra.lord, deity: moonNakshatra.deity },
         doshas: {
             manglik: { hasDosh: isManglik, severity: manglikSeverity, marsHouseFromLagna: marsFromLagna, marsHouseFromMoon: marsFromMoon },
             kalsarp: { hasDosh: hasKalsarp, type: kalsarpType },
             pitraDosh: { hasDosh: hasPitraAffliction, severity: pitraDoshSeverity },
             shaniSadeSati: { active: sadeSatiPhase !== 'No Active Sade Sati', phase: sadeSatiPhase },
-        },
     };
 }
 
