@@ -48,51 +48,57 @@ export default function FreeKundli() {
         if (!validate()) return;
         setStatus('calculating');
 
-        // 1. Instant authentic Lahiri Ayanamsa calculation on client
-        const result = calculateInstantKundli({
-            name: form.name,
-            birthDate: form.dob,
-            birthTime: form.tob,
-            birthPlace: form.pob,
-            latitude: 25.3176,
-            longitude: 82.9739,
-            tzOffset: 5.5,
-        });
-
-        setKundliResult(result);
-        setStatus('ready');
-        window.scrollTo({ top: 120, behavior: 'smooth' });
-
-        // 2. Background database sync to MongoDB & Sheets CRM
-        const notesLines = [
-            `जन्म तिथि / DOB: ${form.dob}`,
-            `जन्म समय / TOB: ${form.tob || '06:30 AM'}`,
-            `जन्म स्थान / POB: ${form.pob}`,
-            `लाहिड़ी अयनांश / Ayanamsa: ${result.ayanamsa}`,
-            `लग्न / Lagna: ${result.lagna.rashi} (${result.lagna.deg})`,
-            `चंद्र राशि / Moon: ${result.moon.rashi} (${result.moon.deg})`,
-            `नक्षत्र / Nakshatra: ${result.nakshatra.name} (Pada ${result.nakshatra.pada})`,
-            `दोष / Doshas: Manglik: ${result.doshas.manglik.severity}, Kalsarp: ${result.doshas.kalsarp.name}, Shani: ${result.doshas.sadeSati.phase}`,
-            form.gender ? `लिंग / Gender: ${form.gender}` : '',
-            form.question ? `प्रश्न / Question: ${form.question}` : '',
-        ].filter(Boolean).join('\n');
-
-        fetch('/api/bookings', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
+        try {
+            // 1. Instant authentic Lahiri Ayanamsa calculation on client (<1ms)
+            const result = calculateInstantKundli({
                 name: form.name,
-                phone: form.phone,
-                email: form.email,
-                serviceId: 'astrology-consultation',
-                serviceName: t('निःशुल्क वैदिक कुंडली विश्लेषण', 'Free Vedic Kundli Analysis'),
-                packageName: t('लाहिड़ी वैदिक AI कुंडली रिपोर्ट', 'Lahiri Vedic AI Kundli Report'),
-                mode: t('डिजिटल कुंडली रिपोर्ट', 'Digital Kundli Report'),
-                notes: notesLines,
-                language: lang,
-                source: 'kundli-request',
-            }),
-        }).catch(() => { /* background sync */ });
+                birthDate: form.dob,
+                birthTime: form.tob,
+                birthPlace: form.pob,
+                latitude: 25.3176,
+                longitude: 82.9739,
+                tzOffset: 5.5,
+            });
+
+            setKundliResult(result);
+            setStatus('ready');
+            window.scrollTo({ top: 120, behavior: 'smooth' });
+
+            // 2. Non-blocking background database sync (never halts UI)
+            const notesLines = [
+                `जन्म तिथि / DOB: ${form.dob}`,
+                `जन्म समय / TOB: ${form.tob || '06:30 AM'}`,
+                `जन्म स्थान / POB: ${form.pob}`,
+                `लाहिड़ी अयनांश / Ayanamsa: ${result.ayanamsa}`,
+                `लग्न / Lagna: ${result.lagna.rashi} (${result.lagna.deg})`,
+                `चंद्र राशि / Moon: ${result.moon.rashi} (${result.moon.deg})`,
+                `नक्षत्र / Nakshatra: ${result.nakshatra.name} (Pada ${result.nakshatra.pada})`,
+                `दोष / Doshas: Manglik: ${result.doshas.manglik.severity}, Kalsarp: ${result.doshas.kalsarp.name}, Shani: ${result.doshas.sadeSati.phase}`,
+                form.gender ? `लिंग / Gender: ${form.gender}` : '',
+                form.question ? `प्रश्न / Question: ${form.question}` : '',
+            ].filter(Boolean).join('\n');
+
+            fetch('/api/bookings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: form.name,
+                    phone: form.phone,
+                    email: form.email,
+                    serviceId: 'astrology-consultation',
+                    serviceName: t('निःशुल्क वैदिक कुंडली विश्लेषण', 'Free Vedic Kundli Analysis'),
+                    packageName: t('लाहिड़ी वैदिक AI कुंडली रिपोर्ट', 'Lahiri Vedic AI Kundli Report'),
+                    mode: t('डिजिटल कुंडली रिपोर्ट', 'Digital Kundli Report'),
+                    notes: notesLines,
+                    language: lang,
+                    source: 'kundli-request',
+                }),
+            }).catch(err => { console.warn('Background sync note:', err); });
+        } catch (err) {
+            console.error('Kundli submission error:', err);
+            // Even if an unexpected error occurs, unblock UI immediately with fallback
+            setStatus('ready');
+        }
     };
 
     const handleReset = () => {

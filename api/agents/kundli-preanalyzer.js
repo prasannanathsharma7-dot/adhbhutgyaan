@@ -207,6 +207,7 @@ function computeVedicChartData(birthDateStr, birthTimeStr, birthPlaceStr, lat = 
             kalsarp: { hasDosh: hasKalsarp, type: kalsarpType },
             pitraDosh: { hasDosh: hasPitraAffliction, severity: pitraDoshSeverity },
             shaniSadeSati: { active: sadeSatiPhase !== 'No Active Sade Sati', phase: sadeSatiPhase },
+        },
     };
 }
 
