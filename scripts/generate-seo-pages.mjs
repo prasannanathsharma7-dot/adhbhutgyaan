@@ -151,6 +151,12 @@ const routes = [
         jsonLd: combineJsonLd(breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Free Kundli', path: '/free-kundli' }])),
     },
     {
+        path: '/panchang',
+        title: 'दैनिक वैदिक पंचांग एवं शुभ मुहूर्त — Universal Dynamic Ephemeris | Adhbhut Gyaan',
+        description: 'विश्व के किसी भी नगर हेतु सटीक वैदिक पंचांग: तिथि, नक्षत्र, चौघड़िया, अभिजित मुहूर्त, एवं राहु काल की वास्तविक समय गणना।',
+        jsonLd: combineJsonLd(breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Daily Panchang', path: '/panchang' }])),
+    },
+    {
         path: '/about',
         title: 'हमारे बारे में — शर्मा परिवार की विरासत | Adhbhut Gyaan',
         description: '400+ वर्षों की वैदिक परंपरा, तीन पीढ़ियों की गाथा — महामहोपाध्याय पं. अयोध्या नाथ शर्मा से डॉ. उमंग नाथ शर्मा तक।',

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 
 export default function DailyPanchangCard() {
@@ -134,6 +135,15 @@ export default function DailyPanchangCard() {
                         <div><b>यमगण्ड (Yamaganda):</b> {yamaganda}</div>
                     </div>
                 </div>
+            </div>
+
+            <div style={{ marginTop: '1.25rem', paddingTop: '0.85rem', borderTop: '1px solid var(--border-light)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
+                <span style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
+                    {t('विश्व के किसी भी नगर का सटीक पंचांग व चौघड़िया देखें', 'Calculate Panchang & Choghadiya for any city worldwide')}
+                </span>
+                <Link to="/panchang" style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--gold-800)', textDecoration: 'none' }}>
+                    {t('संपूर्ण पंचांग एवं विश्व नगर खोजें →', 'Full Universal Panchang & City Search →')}
+                </Link>
             </div>
         </div>
     );

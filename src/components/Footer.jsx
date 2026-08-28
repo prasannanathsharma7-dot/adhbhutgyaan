@@ -68,6 +68,7 @@ export default function Footer() {
                         <div className="footer-links">
                             <Link to="/">🏠 {t('होम', 'Home')}</Link>
                             <Link to="/services"><img src="/images/logo.png" alt="" className="inline-logo" /> {t('सेवाएं', 'Services')}</Link>
+                            <Link to="/panchang">☀️ {t('दैनिक पंचांग', 'Daily Panchang')}</Link>
                             <Link to="/booking">📅 {t('पूजा बुक करें', 'Book Pooja')}</Link>
                             <Link to="/free-kundli">✦ {t('निःशुल्क कुंडली', 'Free Kundli')}</Link>
                             <Link to="/about">👤 {t('हमारे बारे में', 'About')}</Link>

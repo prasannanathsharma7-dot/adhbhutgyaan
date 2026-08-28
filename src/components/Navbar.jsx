@@ -43,6 +43,7 @@ export default function Navbar() {
     const links = [
         { to: '/', label: t('होम', 'Home') },
         { to: '/services', label: t('सेवाएं', 'Services') },
+        { to: '/panchang', label: t('पंचांग', 'Panchang') },
         { to: '/free-kundli', label: t('फ्री कुंडली', 'Free Kundli') },
         { to: '/booking', label: t('पूजा बुक करें', 'Book Pooja') },
         { to: '/about', label: t('हमारे बारे में', 'About Us') },
