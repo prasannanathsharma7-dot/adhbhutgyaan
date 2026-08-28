@@ -23,6 +23,7 @@ const Terms = lazy(() => import('./pages/Terms'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 const Admin = lazy(() => import('./pages/admin'));
 const AdminAnalytics = lazy(() => import('./pages/AdminAnalytics'));
+const AdminAgents = lazy(() => import('./pages/AdminAgents'));
 const LeaveReview = lazy(() => import('./pages/LeaveReview'));
 
 function PageLoader() {
@@ -64,6 +65,7 @@ function App() {
                         <Route path="/terms" element={<Terms />} />
                         <Route path="/admin" element={<Admin />} />
                         <Route path="/admin/analytics" element={<AdminAnalytics />} />
+                        <Route path="/admin/agents" element={<AdminAgents />} />
                         <Route path="/leave-a-review" element={<LeaveReview />} />
                         <Route path="*" element={<NotFound />} />
                     </Routes>

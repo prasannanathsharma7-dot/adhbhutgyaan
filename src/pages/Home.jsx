@@ -103,6 +103,85 @@ export default function Home() {
                 </div>
             </section>
 
+            {/* VEDIC TRUST & AUTHENTICITY BADGES */}
+            <section className="section" style={{ paddingTop: '2.5rem', paddingBottom: '1rem' }}>
+                <div className="container">
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem' }}>
+                        <div style={{ background: 'white', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-lg)', padding: '1.4rem', boxShadow: 'var(--shadow-sm)', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+                            <span style={{ fontSize: '2rem', flexShrink: 0 }}>🏛️</span>
+                            <div>
+                                <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: 'var(--navy-900)' }}>
+                                    {t('४००+ वर्षों की वैदिक परम्परा', '400+ Years Vedic Lineage')}
+                                </h3>
+                                <p style={{ margin: '0.35rem 0 0', fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
+                                    {t('महामहोपाध्याय पं. अयोध्या नाथ शर्मा से डॉ. उमंग नाथ शर्मा तक तीन पीढ़ियों की विरासत।', 'Authentic hereditary Sharma tradition continuing across generations in Varanasi.')}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div style={{ background: 'white', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-lg)', padding: '1.4rem', boxShadow: 'var(--shadow-sm)', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+                            <span style={{ fontSize: '2rem', flexShrink: 0 }}>🌊</span>
+                            <div>
+                                <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: 'var(--navy-900)' }}>
+                                    {t('१००% प्रामाणिक गंगा घाट पूजन', '100% Authentic Ganga Rituals')}
+                                </h3>
+                                <p style={{ margin: '0.35rem 0 0', fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
+                                    {t('दशाश्वमेध एवं मणिकर्णिका घाट पर शुद्ध वैदिक ब्राह्मणों द्वारा विधिपूर्वक संकल्प।', 'Solemnized on sacred Kashi Ghats with pure Gangajal, Bhasma & sacred samagri.')}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div style={{ background: 'white', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-lg)', padding: '1.4rem', boxShadow: 'var(--shadow-sm)', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+                            <span style={{ fontSize: '2rem', flexShrink: 0 }}>📹</span>
+                            <div>
+                                <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: 'var(--navy-900)' }}>
+                                    {t('लाइव संकल्प एवं वीडियो प्रमाण', 'Live Sankalp & Video Proof')}
+                                </h3>
+                                <p style={{ margin: '0.35rem 0 0', fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
+                                    {t('आपके नाम व गोत्र से पूजन के उपरांत वीडियो प्रमाण सीधे WhatsApp पर प्रेषित।', 'Personalized HD video proof with your Name & Gotra dispatched directly to WhatsApp.')}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div style={{ background: 'white', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-lg)', padding: '1.4rem', boxShadow: 'var(--shadow-sm)', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+                            <span style={{ fontSize: '2rem', flexShrink: 0 }}>📜</span>
+                            <div>
+                                <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: 'var(--navy-900)' }}>
+                                    {t('वास्तविक ज्योतिषी विश्लेषण', 'Real Astrologer Analysis')}
+                                </h3>
+                                <p style={{ margin: '0.35rem 0 0', fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
+                                    {t('कोई ऑटोमेटेड सॉफ्टवेयर नहीं — डॉ. उमang नाथ शर्मा द्वारा व्यक्तिगत कुंडली परीक्षण।', 'Zero generic computer bot readings. Hand-analyzed Janam Patrika from Kashi.')}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* FREE KUNDLI HIGHLIGHT CALLOUT */}
+            <section className="section" style={{ padding: '1.5rem 0' }}>
+                <div className="container">
+                    <div style={{ background: 'linear-gradient(135deg, var(--navy-950) 0%, var(--navy-850) 100%)', borderRadius: 'var(--radius-xl)', padding: 'clamp(1.5rem, 4vw, 2.5rem)', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.5rem', border: '1px solid rgba(212,168,67,0.3)', boxShadow: 'var(--shadow-lg)' }}>
+                        <div style={{ maxWidth: '650px' }}>
+                            <span style={{ background: 'rgba(212,168,67,0.2)', color: 'var(--gold-400)', padding: '0.25rem 0.75rem', borderRadius: '999px', fontSize: '0.8rem', fontWeight: 700, display: 'inline-block', marginBottom: '0.6rem' }}>
+                                🔮 {t('विशेष सेवा — निःशुल्क जन्म कुंडली', 'Special Service — Free Janam Kundli')}
+                            </span>
+                            <h2 style={{ margin: '0 0 0.5rem', fontSize: 'clamp(1.3rem, 3vw, 1.8rem)', color: 'white', fontFamily: 'var(--font-heading)' }}>
+                                {t('अपनी कुंडली का निःशुल्क परीक्षण करवाएं', 'Get Your Free Kundli Analysis by a Real Kashi Astrologer')}
+                            </h2>
+                            <p style={{ margin: 0, fontSize: '0.9rem', color: 'rgba(255,255,255,0.8)', lineHeight: 1.5 }}>
+                                {t('विवाह विलंब, करियर, कालसर्प अथवा पितृ दोष? डॉ. उमंग नाथ शर्मा स्वयं आपकी जन्म पत्रिका का विश्लेषण करेंगे।', 'Facing career obstacles, marriage delay, or planetary doshas? Submit birth details for personalized Vedic guidance.')}
+                            </p>
+                        </div>
+                        <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+                            <Link to="/free-kundli" className="btn btn-primary btn-lg" style={{ boxShadow: '0 4px 15px rgba(212,168,67,0.4)' }}>
+                                📜 {t('फ्री कुंडली फॉर्म भरें', 'Check Free Kundli Now')}
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* ASTROLOGY CONSULTATION */}
             <section className="section section-warm" id="astrology-consultation">
                 <div className="container">

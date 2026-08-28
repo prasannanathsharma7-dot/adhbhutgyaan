@@ -245,9 +245,12 @@ export default function Admin() {
             <header className="page-header">
                 <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
                     <h1 style={{ margin: 0 }}>Admin Dashboard</h1>
-                    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                        <Link to="/admin/analytics" className="btn btn-primary" style={{ textDecoration: 'none' }}>
-                            📊 Analytics Dashboard
+                    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                        <Link to="/admin/analytics" className="btn btn-outline-dark" style={{ textDecoration: 'none' }}>
+                            📊 Analytics
+                        </Link>
+                        <Link to="/admin/agents" className="btn btn-primary" style={{ textDecoration: 'none' }}>
+                            🤖 AI Agents
                         </Link>
                         <button type="button" className="btn btn-outline-dark" onClick={handleLogout}>Logout</button>
                     </div>

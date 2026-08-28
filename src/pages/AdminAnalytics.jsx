@@ -289,7 +289,10 @@ export default function AdminAnalytics() {
 
                     <div style={{ display: 'flex', gap: '0.6rem', alignItems: 'center', flexWrap: 'wrap' }}>
                         <Link to="/admin" className="btn btn-outline-light" style={{ fontSize: '0.85rem', padding: '0.5rem 0.9rem', color: 'white', borderColor: 'rgba(255,255,255,0.3)' }}>
-                            {'\u{1F4CB}'} Manage Bookings
+                            {'\u{1F4CB}'} Bookings
+                        </Link>
+                        <Link to="/admin/agents" className="btn btn-outline-light" style={{ fontSize: '0.85rem', padding: '0.5rem 0.9rem', color: 'var(--gold-400)', borderColor: 'var(--gold-500)', fontWeight: 600 }}>
+                            🤖 AI Agents
                         </Link>
                         <button type="button" onClick={() => fetchAnalytics(adminKey)} className="btn btn-outline-light" style={{ fontSize: '0.85rem', padding: '0.5rem 0.9rem', color: 'white', borderColor: 'rgba(255,255,255,0.3)' }} disabled={loading}>
                             {loading ? '\u{1F504} Loading\u2026' : '\u{1F504} Refresh'}
