@@ -22,7 +22,7 @@ const Privacy = lazy(() => import('./pages/Privacy'));
 const Terms = lazy(() => import('./pages/Terms'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 const Admin = lazy(() => import('./pages/admin'));
-const AdminAnalytics = lazy(() => import('./pages/admin/analytics'));
+const AdminAnalytics = lazy(() => import('./pages/AdminAnalytics'));
 const LeaveReview = lazy(() => import('./pages/LeaveReview'));
 
 function PageLoader() {
