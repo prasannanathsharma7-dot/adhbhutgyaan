@@ -2,6 +2,8 @@
 // File: src/utils/astroEngine.js
 // 100% mathematical, coordinate-based Vedic Panchang, Solar Geometry, Ashtama Bhaga, Muhurats, and Choghadiya.
 
+import { getSiderealLongitudes } from './vedic-ephemeris.js';
+
 const RAD = Math.PI / 180;
 const DEG = 180 / Math.PI;
 
@@ -284,27 +286,43 @@ export function calculateGlobalPanchang({
             };
         });
 
-        // 5. Vedic 5 Limbs Calculation
-        const epochDays = Math.floor(targetDate.getTime() / (1000 * 60 * 60 * 24)) || 20000;
-        const tithiIndex = Math.abs((epochDays + 14) % 30);
+        // 5. Vedic 5 Limbs Calculation - real Sun/Moon sidereal (Lahiri) positions,
+        // evaluated at local noon of the target date at the given location's
+        // timezone offset (the previous version used a fake epochDays%30-style
+        // formula with no actual connection to the Sun/Moon's real positions).
+        const localNoonUTC = new Date(Date.UTC(
+            targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate(), 12, 0, 0
+        ) - (validTz * 3600000));
+        const sid = getSiderealLongitudes(localNoonUTC);
+
+        const tithiDiff = ((sid.moon - sid.sun) % 360 + 360) % 360;
+        const tithiIndex = Math.min(29, Math.floor(tithiDiff / 12));
         const tithiName = TITHIS[tithiIndex] || TITHIS[0];
         const isShukla = tithiIndex < 15;
         const paksha = isShukla ? 'Shukla Paksha' : 'Krishna Paksha';
 
-        const nakshatraIndex = Math.abs((epochDays * 7 + 11) % 27);
+        const nakshatraSpan = 360 / 27;
+        const nakshatraIndex = Math.min(26, Math.floor(sid.moon / nakshatraSpan));
         const nakshatra = NAKSHATRAS[nakshatraIndex] || NAKSHATRAS[0];
-        const pada = Math.max(1, Math.min(4, ((epochDays + dayOfWeek) % 4) + 1));
+        const pada = Math.min(4, Math.floor((sid.moon % nakshatraSpan) / (nakshatraSpan / 4)) + 1);
 
-        const yogaIndex = Math.abs((epochDays * 3 + tithiIndex) % 27);
+        const yogaSum = ((sid.sun + sid.moon) % 360 + 360) % 360;
+        const yogaIndex = Math.min(26, Math.floor(yogaSum / nakshatraSpan));
         const yogaName = YOGAS[yogaIndex] || YOGAS[0];
 
-        const karanaIndex = (tithiIndex < 29) ? ((tithiIndex * 2) % 7) : (7 + (tithiIndex - 29));
-        const karanaName = KARANAS[Math.max(0, Math.min(10, karanaIndex))] || KARANAS[0];
+        // Karana = half-tithi (60 per lunar month). Index 0 is always the fixed
+        // Karana "Kimstughna"; the last 3 (57-59) are the fixed Shakuni,
+        // Chatushpada, Naga; the 56 in between cycle through the 7 movable Karanas.
+        const halfTithi = Math.min(59, Math.floor(tithiDiff / 6));
+        let karanaIdx;
+        if (halfTithi === 0) karanaIdx = 10; // Kimstughna
+        else if (halfTithi >= 57) karanaIdx = 7 + (halfTithi - 57); // Shakuni/Chatushpada/Naga
+        else karanaIdx = (halfTithi - 1) % 7; // Bava..Vishti cycle
+        const karanaName = KARANAS[karanaIdx] || KARANAS[0];
 
-        const sunRashiIndex = Math.abs((targetDate.getMonth() + 9) % 12);
         const rashiNames = ['Aries (Mesha)', 'Taurus (Vrishabha)', 'Gemini (Mithuna)', 'Cancer (Karka)', 'Leo (Simha)', 'Virgo (Kanya)', 'Libra (Tula)', 'Scorpio (Vrishchika)', 'Sagittarius (Dhanu)', 'Capricorn (Makara)', 'Aquarius (Kumbha)', 'Pisces (Meena)'];
-        const suryaRashi = rashiNames[sunRashiIndex] || 'Leo (Simha)';
-        const chandraRashi = rashiNames[(nakshatraIndex * 2) % 12] || 'Aries (Mesha)';
+        const suryaRashi = rashiNames[Math.min(11, Math.floor(sid.sun / 30))] || rashiNames[0];
+        const chandraRashi = rashiNames[Math.min(11, Math.floor(sid.moon / 30))] || rashiNames[0];
 
         return {
             dateFormatted: targetDate.toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),

@@ -38,3 +38,29 @@ export function getTropicalLongitudes(utcDate) {
     }
     return result;
 }
+
+/**
+ * Lahiri (Chitra Paksha) Ayanamsa in degrees, for a given UTC date.
+ * Same formula used by kundliEngine.js, exported here so any module that
+ * needs sidereal (Vedic) positions - not just the Kundli engine - can
+ * compute them consistently from one source of truth.
+ */
+export function getLahiriAyanamsa(utcDate) {
+    const JD = utcDate.getTime() / 86400000 + 2440587.5; // Unix epoch -> Julian Day
+    const T = (JD - 2451545.0) / 36525; // Julian centuries from J2000.0
+    return 23.85655556 + (1.39604167 * T) + (0.000308 * T * T);
+}
+
+/**
+ * Convenience helper: sidereal (Vedic) Sun/Moon/planet longitudes for a UTC date,
+ * i.e. tropical longitudes with the Lahiri ayanamsa already subtracted.
+ */
+export function getSiderealLongitudes(utcDate) {
+    const ayanamsa = getLahiriAyanamsa(utcDate);
+    const trop = getTropicalLongitudes(utcDate);
+    const sidereal = {};
+    for (const [key, val] of Object.entries(trop)) {
+        sidereal[key] = norm360(val - ayanamsa);
+    }
+    return { ...sidereal, ayanamsa };
+}
