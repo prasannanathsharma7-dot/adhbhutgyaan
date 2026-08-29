@@ -7,6 +7,16 @@ import BirthDetailsInput from '../components/BirthDetailsInput';
 import NorthIndianChart from '../components/NorthIndianChart';
 import { calculateInstantKundli } from '../utils/kundliEngine';
 
+function getElementIcon(element = '') {
+    const el = String(element).toLowerCase();
+    if (el.includes('water') || el.includes('जल')) return '💧';
+    if (el.includes('fire') || el.includes('अग्नि')) return '🔥';
+    if (el.includes('earth') || el.includes('पृथ्वी')) return '🌍';
+    if (el.includes('air') || el.includes('वायु')) return '💨';
+    if (el.includes('space') || el.includes('ether') || el.includes('आकाश')) return '🌌';
+    return '✨';
+}
+
 export default function FreeKundli() {
     const { t, lang } = useLanguage();
     const [form, setForm] = useState({ name: '', dob: '', tob: '06:30 (06:30 AM)', pob: 'Varanasi, Uttar Pradesh', gender: '', phone: '', email: '', question: '' });
@@ -154,7 +164,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                         display: block !important;
                         text-align: center;
                         margin-bottom: 1.5rem;
-                        border-bottom: 2px solid var(--gold-500);
+                        border-bottom: 2px solid #d4a843;
                         padding-bottom: 0.75rem;
                     }
                     .kundli-report-card {
@@ -307,8 +317,8 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                     <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
                         {/* Print Header */}
                         <div className="print-only-header">
-                            <h2 style={{ margin: '0 0 0.25rem', color: 'var(--navy-700)' }}>अद्भुत ज्ञान — वैदिक जन्म पत्रिका रिपोर्ट</h2>
-                            <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--text-muted)' }}>
+                            <h2 style={{ margin: '0 0 0.25rem', color: '#1c2150' }}>अद्भुत ज्ञान — वैदिक जन्म पत्रिका रिपोर्ट</h2>
+                            <p style={{ margin: 0, fontSize: '0.9rem', color: '#64748b' }}>
                                 काशी ज्योतिष परंपरा · डॉ. उमंग नाथ शर्मा · Helpline: +91 92781 48269
                             </p>
                         </div>
@@ -353,7 +363,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                         </div>
 
                         {/* SECTION 1: LAGNA CHART & PLANETARY POSITIONS */}
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '1.5rem', marginBottom: '1.5rem' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '1.5rem', marginBottom: '2rem', alignItems: 'start' }}>
                             {/* North Indian SVG Chart */}
                             <NorthIndianChart
                                 houseData={kundliResult.houseData}
@@ -379,7 +389,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                         </thead>
                                         <tbody>
                                             <tr style={{ borderBottom: '1px solid #f1f5f9', background: 'var(--gold-50)', fontWeight: 700 }}>
-                                                <td style={{ padding: '0.45rem 0.6rem', color: 'var(--gold-500)' }}>✦ Asc (Lagna)</td>
+                                                <td style={{ padding: '0.45rem 0.6rem', color: '#c49a2c' }}>✦ Asc (Lagna)</td>
                                                 <td style={{ padding: '0.45rem 0.6rem' }}>{kundliResult.lagna.rashi.split(' ')[0]}</td>
                                                 <td style={{ padding: '0.45rem 0.6rem' }}>House 1</td>
                                                 <td style={{ padding: '0.45rem 0.6rem' }}>{kundliResult.lagna.deg}</td>
@@ -404,9 +414,15 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
 
                         {/* SECTION 2: ASTRO HEALTH VERDICT & CORE DOSHA MATRIX */}
                         <div className="kundli-report-card" style={{ background: 'white', borderRadius: 'var(--radius-lg)', padding: '1.5rem', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-md)', marginBottom: '1.5rem' }}>
-                            <h3 style={{ margin: '0 0 0.85rem', fontSize: '1.15rem', color: 'var(--navy-900)', borderBottom: '1px solid var(--border-light)', paddingBottom: '0.5rem' }}>
-                                🛡️ {t('ग्रह दोष विश्लेषण (Astro Health & Dosha Matrix)', 'Core Vedic Doshas Detected')}
-                            </h3>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '1.25rem', borderBottom: '1px solid var(--border-light)', paddingBottom: '0.75rem' }}>
+                                <h3 style={{ margin: 0, fontSize: '1.15rem', color: 'var(--navy-900)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                                    🛡️ {t('ग्रह दोष विश्लेषण (Astro Health & Dosha Matrix)', 'Core Vedic Doshas Detected')}
+                                </h3>
+                                <div style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                                    <span><strong style={{ color: '#b91c1c' }}>✓ Red</strong> = Shani / Ketu / Rahu / Mangal</span>
+                                    <span><strong style={{ color: '#c49a2c' }}>✓ Gold</strong> = Asc (Lagna)</span>
+                                </div>
+                            </div>
 
                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.75rem' }}>
                                 {/* Manglik */}
@@ -420,7 +436,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                         </span>
                                     </div>
                                     <p style={{ margin: 0, fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
-                                        {kundliResult.doshas.manglik.severity} (H{kundliResult.doshas.manglik.marsHouseLagna} from Lagna, H{kundliResult.doshas.manglik.marsHouseMoon} from Moon)
+                                        {kundliResult.doshas.manglik.severity}
                                     </p>
                                 </div>
 
@@ -472,26 +488,50 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                         </div>
 
                         {/* SECTION 3: LUCKY ATTRIBUTES & ELEMENTAL STRENGTHS */}
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '0.75rem', marginBottom: '1.5rem' }}>
-                            <div className="kundli-report-card" style={{ background: 'white', padding: '0.85rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-light)', textAlign: 'center' }}>
-                                <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>शुभ रत्न (Gemstone)</span>
-                                <strong style={{ display: 'block', color: 'var(--navy-900)', fontSize: '0.88rem', marginTop: '0.2rem' }}>💎 {kundliResult.lagna.luckyGem}</strong>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '0.85rem', marginBottom: '1.5rem' }}>
+                            <div className="kundli-report-card" style={{ background: 'white', padding: '0.9rem 0.75rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-sm)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', gap: '0.4rem', minHeight: '85px' }}>
+                                <span style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--navy-900)', background: 'var(--warm-100)', padding: '0.2rem 0.6rem', borderRadius: 'var(--radius-full)', letterSpacing: '0.5px' }}>
+                                    {t('शुभ रत्न (GEMSTONE)', 'LUCKY GEMSTONE')}
+                                </span>
+                                <strong style={{ color: 'var(--navy-950)', fontSize: '0.92rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                                    💎 {kundliResult.lagna.luckyGem || kundliResult.moon.luckyGem || 'Ruby (Manikya)'}
+                                </strong>
                             </div>
-                            <div className="kundli-report-card" style={{ background: 'white', padding: '0.85rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-light)', textAlign: 'center' }}>
-                                <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>शुभ धातु (Metal)</span>
-                                <strong style={{ display: 'block', color: 'var(--navy-900)', fontSize: '0.88rem', marginTop: '0.2rem' }}>🪙 {kundliResult.lagna.luckyMetal}</strong>
+
+                            <div className="kundli-report-card" style={{ background: 'white', padding: '0.9rem 0.75rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-sm)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', gap: '0.4rem', minHeight: '85px' }}>
+                                <span style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--navy-900)', background: 'var(--warm-100)', padding: '0.2rem 0.6rem', borderRadius: 'var(--radius-full)', letterSpacing: '0.5px' }}>
+                                    {t('शुभ धातु (METAL)', 'LUCKY METAL')}
+                                </span>
+                                <strong style={{ color: 'var(--navy-950)', fontSize: '0.92rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                                    🪙 {kundliResult.lagna.luckyMetal || 'Silver/Gold'}
+                                </strong>
                             </div>
-                            <div className="kundli-report-card" style={{ background: 'white', padding: '0.85rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-light)', textAlign: 'center' }}>
-                                <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>शुभ रंग (Lucky Color)</span>
-                                <strong style={{ display: 'block', color: 'var(--navy-900)', fontSize: '0.88rem', marginTop: '0.2rem' }}>🎨 {kundliResult.lagna.luckyColor}</strong>
+
+                            <div className="kundli-report-card" style={{ background: 'white', padding: '0.9rem 0.75rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-sm)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', gap: '0.4rem', minHeight: '85px' }}>
+                                <span style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--navy-900)', background: 'var(--warm-100)', padding: '0.2rem 0.6rem', borderRadius: 'var(--radius-full)', letterSpacing: '0.5px' }}>
+                                    {t('शुभ रंग (LUCKY COLOR)', 'LUCKY COLOR')}
+                                </span>
+                                <strong style={{ color: 'var(--navy-950)', fontSize: '0.92rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                                    🎨 {kundliResult.lagna.luckyColor || 'White/Gold'}
+                                </strong>
                             </div>
-                            <div className="kundli-report-card" style={{ background: 'white', padding: '0.85rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-light)', textAlign: 'center' }}>
-                                <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>भाग्यशाली अंक (Number)</span>
-                                <strong style={{ display: 'block', color: 'var(--navy-900)', fontSize: '0.88rem', marginTop: '0.2rem' }}>🔢 {kundliResult.lagna.luckyNum}</strong>
+
+                            <div className="kundli-report-card" style={{ background: 'white', padding: '0.9rem 0.75rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-sm)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', gap: '0.4rem', minHeight: '85px' }}>
+                                <span style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--navy-900)', background: 'var(--warm-100)', padding: '0.2rem 0.6rem', borderRadius: 'var(--radius-full)', letterSpacing: '0.5px' }}>
+                                    {t('भाग्यशाली अंक (NUMBER)', 'LUCKY NUMBER')}
+                                </span>
+                                <strong style={{ color: 'var(--navy-950)', fontSize: '0.92rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                                    🔢 {kundliResult.lagna.luckyNum || '1'}
+                                </strong>
                             </div>
-                            <div className="kundli-report-card" style={{ background: 'white', padding: '0.85rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-light)', textAlign: 'center' }}>
-                                <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>तत्व (Dominant Element)</span>
-                                <strong style={{ display: 'block', color: 'var(--navy-900)', fontSize: '0.88rem', marginTop: '0.2rem' }}>🔥 {kundliResult.lagna.element}</strong>
+
+                            <div className="kundli-report-card" style={{ background: 'white', padding: '0.9rem 0.75rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-sm)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', gap: '0.4rem', minHeight: '85px' }}>
+                                <span style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--navy-900)', background: 'var(--warm-100)', padding: '0.2rem 0.6rem', borderRadius: 'var(--radius-full)', letterSpacing: '0.5px' }}>
+                                    {t('तत्व (DOMINANT ELEMENT)', 'DOMINANT ELEMENT')}
+                                </span>
+                                <strong style={{ color: 'var(--navy-950)', fontSize: '0.92rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                                    {getElementIcon(kundliResult.lagna.element)} {kundliResult.lagna.element || 'Fire'}
+                                </strong>
                             </div>
                         </div>
 
@@ -575,38 +615,90 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                             </div>
                         </div>
 
-                        {/* SECTION 5: HIGH-CONVERSION CONSULTATION ACTION CENTER */}
-                        <div className="no-print" style={{ background: 'linear-gradient(135deg, var(--navy-950) 0%, var(--navy-850) 100%)', borderRadius: 'var(--radius-xl)', padding: 'clamp(1.5rem, 4vw, 2.5rem)', color: 'white', border: '2px solid var(--border-gold)', boxShadow: '0 12px 35px rgba(212,168,67,0.25)' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.5rem' }}>
+                        {/* SECTION 5: LUXURY HIGH-CONVERSION CONSULTATION ACTION CENTER */}
+                        <div
+                            className="no-print"
+                            style={{
+                                background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
+                                borderRadius: 'var(--radius-xl)',
+                                padding: 'clamp(1.75rem, 4vw, 2.75rem)',
+                                color: '#f8fafc',
+                                border: '1px solid rgba(251, 191, 36, 0.35)',
+                                boxShadow: '0 20px 45px rgba(15, 23, 42, 0.45)',
+                                position: 'relative',
+                                overflow: 'hidden',
+                            }}
+                        >
+                            {/* Decorative Lightweight SVG Mandala Watermark */}
+                            <svg
+                                width="300"
+                                height="300"
+                                viewBox="0 0 100 100"
+                                style={{
+                                    position: 'absolute',
+                                    right: '-50px',
+                                    top: '-50px',
+                                    opacity: 0.07,
+                                    pointerEvents: 'none',
+                                }}
+                            >
+                                <circle cx="50" cy="50" r="45" fill="none" stroke="#fbbf24" strokeWidth="1.5" />
+                                <circle cx="50" cy="50" r="35" fill="none" stroke="#fbbf24" strokeWidth="1" strokeDasharray="3,3" />
+                                <circle cx="50" cy="50" r="25" fill="none" stroke="#fbbf24" strokeWidth="1" />
+                                <polygon points="50,5 95,50 50,95 5,50" fill="none" stroke="#fbbf24" strokeWidth="1" />
+                                <polygon points="50,15 85,50 50,85 15,50" fill="none" stroke="#fbbf24" strokeWidth="1" />
+                            </svg>
+
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '2rem', position: 'relative', zIndex: 1 }}>
                                 <div style={{ maxWidth: '620px' }}>
-                                    <span style={{ color: 'var(--gold-400)', fontWeight: 700, fontSize: '0.85rem', letterSpacing: '0.5px', textTransform: 'uppercase' }}>
-                                        🔮 {t('काशी के ज्योतिषाचार्य से प्रत्यक्ष मार्गदर्शन', 'Direct Video Consultation with Kashi Astrologer')}
-                                    </span>
-                                    <h3 style={{ margin: '0.4rem 0 0.6rem', fontSize: 'clamp(1.25rem, 2.5vw, 1.75rem)', color: 'white' }}>
-                                        {t('अपने आने वाले 5-8 वर्ष का सटीक निदान और ग्रह उपाय जानें', 'Get Accurate 5-8 Year Future Guidance & Remedial Action')}
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.6rem', flexWrap: 'wrap' }}>
+                                        <span style={{ color: '#fbbf24', fontWeight: 700, fontSize: '0.85rem', letterSpacing: '0.5px', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                                            🔮 {t('काशी के ज्योतिषाचार्य से प्रत्यक्ष 1-on-1 परामर्श', 'Direct 1-on-1 Video Call with Kashi Astrologer')}
+                                        </span>
+                                        <span style={{ background: 'rgba(251, 191, 36, 0.15)', color: '#fbbf24', fontSize: '0.72rem', fontWeight: 700, padding: '0.2rem 0.6rem', borderRadius: '999px', border: '1px solid rgba(251, 191, 36, 0.3)' }}>
+                                            400+ Years Kashi Tradition
+                                        </span>
+                                    </div>
+
+                                    <h3 style={{ margin: '0 0 0.75rem', fontSize: 'clamp(1.3rem, 2.5vw, 1.85rem)', color: '#f8fafc', lineHeight: 1.3 }}>
+                                        {t('अपने आने वाले 5-8 वर्ष का सटीक भविष्य-फल एवं ग्रह निवारण जानें', 'Get Accurate 5-8 Year Future Roadmap & Custom Vedic Upay')}
                                     </h3>
-                                    <p style={{ margin: 0, fontSize: '0.92rem', color: 'rgba(255,255,255,0.85)', lineHeight: 1.55 }}>
+
+                                    <p style={{ margin: '0 0 1.25rem', fontSize: '0.92rem', color: '#cbd5e1', lineHeight: 1.6 }}>
                                         {t(
-                                            'लाहिड़ी अयनांश गणना ने आपकी जन्म पत्रिका के मुख्य ग्रह और दोषों की पहचान कर ली है। करियर, व्यापार, विवाह और जीवन की गहन समस्याओं के व्यक्तिगत समाधान हेतु डॉ. उमंग नाथ शर्मा के साथ प्रत्यक्ष 1-on-1 लाइव व्हाट्सएप वीडियो कॉल सत्र बुक करें।',
-                                            'Our Lahiri Astro Engine has identified your planetary positions and doshas. Book a direct 1-on-1 Live WhatsApp Video Consultation with Dr. Umang Nath Sharma for deep future analysis and authentic Kashi remedies.'
+                                            'लाहिड़ी अयनांश ephemeris गणना द्वारा आपकी जन्म कुंडली का विश्लेषण पूर्ण हो चुका है। करियर में प्रगति, व्यापार वृद्धि, विवाह एवं पारिवारिक सुख हेतु डॉ. उमंग नाथ शर्मा के साथ आमने-सामने लाइव वीडियो परामर्श सत्र बुक करें।',
+                                            'Your Lahiri Ephemeris chart has been generated. Connect face-to-face with Dr. Umang Nath Sharma on a private WhatsApp video call for tailored astrological predictions, timing of life events, and authentic Vedic remedies.'
                                         )}
                                     </p>
+
+                                    {/* Feature Pills */}
+                                    <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                                        <span style={{ background: 'rgba(255,255,255,0.08)', color: '#f1f5f9', padding: '0.35rem 0.75rem', borderRadius: 'var(--radius-full)', fontSize: '0.78rem', border: '1px solid rgba(255,255,255,0.12)' }}>
+                                            📈 5-Year Career & Wealth Timeline
+                                        </span>
+                                        <span style={{ background: 'rgba(255,255,255,0.08)', color: '#f1f5f9', padding: '0.35rem 0.75rem', borderRadius: 'var(--radius-full)', fontSize: '0.78rem', border: '1px solid rgba(255,255,255,0.12)' }}>
+                                            💍 Vivah Yog & Partner Match
+                                        </span>
+                                        <span style={{ background: 'rgba(255,255,255,0.08)', color: '#f1f5f9', padding: '0.35rem 0.75rem', borderRadius: 'var(--radius-full)', fontSize: '0.78rem', border: '1px solid rgba(255,255,255,0.12)' }}>
+                                            📿 Authentic Kashi Grah Shanti
+                                        </span>
+                                    </div>
                                 </div>
 
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', width: '100%', maxWidth: '340px' }}>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', width: '100%', maxWidth: '340px' }}>
                                     <a
                                         href={buildWhatsAppUrl()}
                                         target="_blank"
                                         rel="noreferrer"
                                         className="btn btn-whatsapp"
-                                        style={{ padding: '0.85rem 1.25rem', fontSize: '0.95rem', fontWeight: 700, justifyContent: 'center', textAlign: 'center', boxShadow: '0 4px 15px rgba(37,211,102,0.35)' }}
+                                        style={{ padding: '0.9rem 1.25rem', fontSize: '0.95rem', fontWeight: 700, justifyContent: 'center', textAlign: 'center', boxShadow: '0 6px 20px rgba(37,211,102,0.4)', borderRadius: 'var(--radius-md)' }}
                                     >
-                                        💬 {t('WhatsApp पर 1-on-1 वीडियो परामर्श बुक करें', 'Book 1-on-1 Video Call on WhatsApp')}
+                                        💬 {t('WhatsApp पर 1-on-1 वीडियो कॉल बुक करें', 'Book 1-on-1 Video Call on WhatsApp')}
                                     </a>
                                     <Link
                                         to="/booking?service=astrology-consultation"
                                         className="btn btn-outline"
-                                        style={{ padding: '0.7rem 1.25rem', fontSize: '0.88rem', justifyContent: 'center', textAlign: 'center', borderColor: 'rgba(255,255,255,0.4)', color: 'white' }}
+                                        style={{ padding: '0.75rem 1.25rem', fontSize: '0.88rem', justifyContent: 'center', textAlign: 'center', borderColor: 'rgba(255,255,255,0.3)', color: '#f8fafc', background: 'rgba(255,255,255,0.05)', borderRadius: 'var(--radius-md)' }}
                                     >
                                         📅 {t('वेबसाइट पर अपॉइंटमेंट बुक करें', 'Book Appointment Online')}
                                     </Link>

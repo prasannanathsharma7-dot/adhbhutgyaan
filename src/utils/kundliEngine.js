@@ -231,11 +231,31 @@ export function calculateInstantKundli({ birthDate, birthTime, birthPlace, name,
         // 6. Dosha Calculations
         const marsFromLagna = getHouse(marsSignNum);
         const marsFromMoon = ((marsSignNum - moonSignNum + 12) % 12) + 1;
+        const marsFromVenus = ((marsSignNum - venSignNum + 12) % 12) + 1;
+
         const manglikHouses = [1, 2, 4, 7, 8, 12];
         const isManglikFromLagna = manglikHouses.includes(marsFromLagna);
         const isManglikFromMoon = manglikHouses.includes(marsFromMoon);
+        const isManglikFromVenus = manglikHouses.includes(marsFromVenus);
         const isManglik = isManglikFromLagna || isManglikFromMoon;
         const isPurnaManglik = isManglikFromLagna && isManglikFromMoon;
+
+        let manglikSeverity = 'Manglik Dosha Absent (Soumya)';
+        let manglikDetails = 'Mars is peacefully placed in non-manglik houses.';
+
+        if (isPurnaManglik) {
+            manglikSeverity = `Purna Manglik Dosh (H${marsFromLagna} from Lagna, H${marsFromMoon} from Moon)`;
+            manglikDetails = `Active from both Lagna (House ${marsFromLagna}) and Moon (House ${marsFromMoon}).`;
+        } else if (isManglikFromLagna) {
+            manglikSeverity = `Lagna Manglik Dosh (Mars in H${marsFromLagna} from Lagna)`;
+            manglikDetails = `Mars placed in House ${marsFromLagna} from Ascendant (Lagna).`;
+        } else if (isManglikFromMoon) {
+            manglikSeverity = `Chandra Manglik Dosh (Mars in H${marsFromMoon} from Moon)`;
+            manglikDetails = `Mars placed in House ${marsFromMoon} from Natal Moon (Chandra Lagna).`;
+        } else if (isManglikFromVenus) {
+            manglikSeverity = `Shukra Manglik (Mars in H${marsFromVenus} from Venus)`;
+            manglikDetails = `Mars placed in House ${marsFromVenus} from Venus.`;
+        }
 
         // Authentic Vedic Kalsarp Dosh calculation (Hemming of all 7 planets on one side of Rahu-Ketu axis)
         const planetSigns = [sunSignNum, moonSignNum, marsSignNum, mercSignNum, jupSignNum, venSignNum, satSignNum];
@@ -308,9 +328,13 @@ export function calculateInstantKundli({ birthDate, birthTime, birthPlace, name,
             doshas: {
                 manglik: {
                     hasDosh: isManglik,
-                    severity: isPurnaManglik ? 'Purna Manglik Dosh (4th & 8th House)' : (isManglik ? `Active Manglik Dosh (Mars in H${marsFromLagna} from Lagna)` : 'Manglik Dosha Absent (Soumya)'),
+                    severity: manglikSeverity,
+                    details: manglikDetails,
                     marsHouseLagna: marsFromLagna,
                     marsHouseMoon: marsFromMoon,
+                    marsHouseVenus: marsFromVenus,
+                    isFromLagna: isManglikFromLagna,
+                    isFromMoon: isManglikFromMoon,
                 },
                 kalsarp: {
                     hasDosh: hasKalsarp,
