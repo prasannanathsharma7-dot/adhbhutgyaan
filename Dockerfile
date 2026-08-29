@@ -13,6 +13,7 @@ RUN npm ci --omit=dev
 # Copy the actual backend code.
 COPY api ./api
 COPY server ./server
+COPY src/data ./src/data
 
 ENV NODE_ENV=production
 EXPOSE 8080
