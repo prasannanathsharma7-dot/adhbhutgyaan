@@ -53,11 +53,22 @@ app.all('/api/agents/whatsapp-concierge', whatsappConcierge);
 
 // Simple root route so visiting the Cloud Run URL directly shows something
 // sensible instead of "Cannot GET /" - the actual site stays on Vercel.
+// Cloud Run's health check also hits this, so it must always return 200.
 app.get('/', (req, res) => {
     res.status(200).json({ ok: true, service: 'adhbhutgyaan-backend', message: 'Backend is running. The website itself is at https://www.adhbhutgyaan.com' });
 });
 
+// Never let one bad request or a missing env var take the whole container down -
+// log it clearly (visible in Cloud Run / Cloud Logging) instead of crash-looping.
+process.on('uncaughtException', (err) => {
+    console.error('UNCAUGHT EXCEPTION - server continues running:', err);
+});
+process.on('unhandledRejection', (reason) => {
+    console.error('UNHANDLED REJECTION - server continues running:', reason);
+});
+
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-    console.log(`Adhbhut Gyaan backend listening on port ${PORT}`);
+// Cloud Run requires binding to 0.0.0.0 (not just localhost/127.0.0.1).
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Adhbhut Gyaan backend listening on 0.0.0.0:${PORT}`);
 });

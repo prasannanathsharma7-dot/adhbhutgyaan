@@ -2,11 +2,15 @@
 // File: api/agents/system-health-agent.js
 // Runs comprehensive real-time end-to-end diagnostics across mathematical engines, DB, APIs, and CRM.
 
-const { getDb, handleCors } = require('../_db');
-const { sendNotification } = require('../_notify');
+const { getDb, withCors } = require('../_db');
+const { notifyAdmin } = require('../_notify');
 
 module.exports = async function handler(req, res) {
-    if (handleCors(req, res)) return;
+    withCors(req, res);
+    if (req.method === 'OPTIONS') {
+        res.status(200).end();
+        return;
+    }
 
     const startTime = Date.now();
     const probeResults = [];
@@ -274,11 +278,10 @@ module.exports = async function handler(req, res) {
     let alertTriggered = false;
     if (criticalErrorsCount > 0) {
         try {
-            await sendNotification({
-                type: 'system_health_alert',
-                title: '🚨 CRITICAL SYSTEM HEALTH FAILURE ALERT',
-                message: `Adhbhut Gyaan Automated Diagnostic Agent detected ${criticalErrorsCount} critical failure(s):\n` +
-                    probeResults.filter(p => p.status === 'FAIL').map(p => `• [${p.name}]: ${p.details}`).join('\n'),
+            await notifyAdmin({
+                emailSubject: '🚨 CRITICAL SYSTEM HEALTH FAILURE ALERT',
+                emailHtml: `<p>Adhbhut Gyaan Automated Diagnostic Agent detected ${criticalErrorsCount} critical failure(s):</p><ul>${probeResults.filter(p => p.status === 'FAIL').map(p => `<li><b>${p.name}</b>: ${p.details}</li>`).join('')}</ul>`,
+                whatsappText: `🚨 CRITICAL SYSTEM HEALTH FAILURE\n\n${probeResults.filter(p => p.status === 'FAIL').map(p => `• ${p.name}: ${p.details}`).join('\n')}`,
             });
             alertTriggered = true;
         } catch { /* ignore */ }
