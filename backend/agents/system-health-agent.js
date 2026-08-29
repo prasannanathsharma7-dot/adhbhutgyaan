@@ -4,11 +4,15 @@
 
 const { getDb, withCors } = require('../_db');
 const { notifyAdmin } = require('../_notify');
+const { requireAgentAuth } = require('../utils/agent-auth');
 
 module.exports = async function handler(req, res) {
     withCors(req, res);
     if (req.method === 'OPTIONS') {
         res.status(200).end();
+        return;
+    }
+    if (!requireAgentAuth(req, res)) {
         return;
     }
 

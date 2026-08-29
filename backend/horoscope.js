@@ -10,7 +10,7 @@
 // content is served instantly to everyone else asking that day - keeps AI
 // cost low and responses fast.
 
-const { getDb, withCors } = require('./_db');
+const { getDb, withCors, checkRateLimit } = require('./_db');
 const { callGemini } = require('./_gemini');
 
 const RASHIS = [
@@ -84,6 +84,16 @@ module.exports = async (req, res) => {
 
     try {
         const db = await getDb();
+
+        // Generous limit (browsing multiple rashis/daily+monthly is normal),
+        // but still stops scripted abuse from repeatedly forcing AI generation
+        // on uncached slots.
+        const allowed = await checkRateLimit(db, req, 'horoscope', { limit: 30, windowMs: 10 * 60 * 1000 });
+        if (!allowed) {
+            res.status(429).json({ ok: false, error: 'Too many requests. Please try again in a few minutes.' });
+            return;
+        }
+
         const col = db.collection('horoscopes');
 
         const cached = await col.findOne({ _id: cacheId });
