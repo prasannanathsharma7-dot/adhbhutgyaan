@@ -9,6 +9,7 @@ const AGENTS = [
     { id: 'agent3', name: 'Agent 3: Daily Panchang Cron', icon: '☀️', desc: 'Varanasi ephemeris & subscriber broadcast' },
     { id: 'agent4', name: 'Agent 4: Post-Pooja Delivery', icon: '📹', desc: 'Video proof, sankalp letter & feedback' },
     { id: 'agent5', name: 'Agent 5: Vedic SEO Studio', icon: '📝', desc: 'Schema-ready Markdown article generator' },
+    { id: 'agent6', name: 'Agent 6: System Health & Auto-Test', icon: '🤖', desc: 'Real-time diagnostic probes & failure detector' },
 ];
 
 export default function AdminAgents() {
@@ -87,6 +88,11 @@ export default function AdminAgents() {
     const [a5Result, setA5Result] = useState(null);
     const [a5Loading, setA5Loading] = useState(false);
     const [a5Error, setA5Error] = useState('');
+
+    // Agent 6 State (System Health & Auto-Test Agent)
+    const [a6Result, setA6Result] = useState(null);
+    const [a6Loading, setA6Loading] = useState(false);
+    const [a6Error, setA6Error] = useState('');
 
     const handleLogin = (e) => {
         e.preventDefault();
@@ -288,6 +294,32 @@ export default function AdminAgents() {
             setA5Error('Network error connecting to Agent 5 endpoint.');
         } finally {
             setA5Loading(false);
+        }
+    };
+
+    // Agent 6 Execution (System Health & Diagnostic Test Agent)
+    const runAgent6 = async () => {
+        setA6Loading(true);
+        setA6Error('');
+        setA6Result(null);
+        try {
+            const res = await fetch('/api/agents/system-health-agent', {
+                method: 'GET',
+                headers: {
+                    'x-admin-auth': adminKey,
+                },
+            });
+            const data = await res.json();
+            if (res.status === 401) {
+                setAuthError('Authentication failed.');
+                setAdminKey('');
+                return;
+            }
+            setA6Result(data);
+        } catch (err) {
+            setA6Error('Network error executing System Health Diagnostic Agent.');
+        } finally {
+            setA6Loading(false);
         }
     };
 
@@ -1106,6 +1138,165 @@ export default function AdminAgents() {
                                     </div>
                                 )}
                             </div>
+                        </div>
+                    )}
+
+                    {/* ========================================================================= */}
+                    {/* AGENT 6: AUTONOMOUS SYSTEM HEALTH & DIAGNOSTIC AGENT                      */}
+                    {/* ========================================================================= */}
+                    {activeTab === 'agent6' && (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                            {/* Control Bar */}
+                            <div style={{ background: 'white', borderRadius: 'var(--radius-lg)', padding: '1.75rem', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-md)' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.25rem' }}>
+                                    <div>
+                                        <h3 style={{ margin: '0 0 0.35rem', fontSize: '1.25rem', color: 'var(--navy-900)' }}>
+                                            🤖 {AGENTS[5].name}
+                                        </h3>
+                                        <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                                            Real-time end-to-end self-diagnostic test suite probing Vedic math engines, MongoDB Atlas, Google Sheets CRM sync, WhatsApp API, and email gateways.
+                                        </p>
+                                    </div>
+
+                                    <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                                        {a6Result && (
+                                            <button
+                                                type="button"
+                                                onClick={() => copyToClipboard(JSON.stringify(a6Result, null, 2), 'a6')}
+                                                className="btn btn-outline-dark"
+                                                style={{ fontSize: '0.82rem', padding: '0.5rem 0.9rem' }}
+                                            >
+                                                {copiedKey === 'a6' ? '✓ Copied' : '📋 Copy Report JSON'}
+                                            </button>
+                                        )}
+                                        <button
+                                            type="button"
+                                            onClick={runAgent6}
+                                            disabled={a6Loading}
+                                            className="btn btn-primary"
+                                            style={{ fontSize: '0.88rem', padding: '0.5rem 1.25rem' }}
+                                        >
+                                            {a6Loading ? '⏳ Running Diagnostic Probes…' : '⚡ Run Full System Health Check'}
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {a6Error && (
+                                    <div style={{ padding: '0.75rem 1rem', background: '#fef2f2', border: '1px solid #fca5a5', borderRadius: 'var(--radius-md)', color: '#991b1b', fontSize: '0.85rem' }}>
+                                        ⚠ {a6Error}
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Diagnostic Results View */}
+                            {a6Result && (
+                                <>
+                                    {/* Top Telemetry Summary Cards */}
+                                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
+                                        <div style={{ background: 'white', padding: '1.25rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-sm)', textAlign: 'center' }}>
+                                            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', display: 'block' }}>System Status</span>
+                                            <strong style={{ fontSize: '1.4rem', color: a6Result.systemStatus === 'HEALTHY' ? '#059669' : (a6Result.systemStatus === 'DEGRADED' ? '#d97706' : '#dc2626'), display: 'block', marginTop: '0.25rem' }}>
+                                                {a6Result.systemStatus === 'HEALTHY' ? '✓ HEALTHY' : (a6Result.systemStatus === 'DEGRADED' ? '⚠ DEGRADED' : '🚨 CRITICAL')}
+                                            </strong>
+                                            <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Score: {a6Result.healthScore}</span>
+                                        </div>
+
+                                        <div style={{ background: 'white', padding: '1.25rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-sm)', textAlign: 'center' }}>
+                                            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', display: 'block' }}>Probes Passed</span>
+                                            <strong style={{ fontSize: '1.4rem', color: '#059669', display: 'block', marginTop: '0.25rem' }}>
+                                                {a6Result.summary?.passed} / {a6Result.summary?.totalProbes}
+                                            </strong>
+                                            <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Failures: {a6Result.summary?.failed || 0}</span>
+                                        </div>
+
+                                        <div style={{ background: 'white', padding: '1.25rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-sm)', textAlign: 'center' }}>
+                                            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', display: 'block' }}>Diagnostics Latency</span>
+                                            <strong style={{ fontSize: '1.4rem', color: 'var(--navy-900)', display: 'block', marginTop: '0.25rem' }}>
+                                                {a6Result.totalDurationMs} ms
+                                            </strong>
+                                            <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Sub-second execution</span>
+                                        </div>
+
+                                        <div style={{ background: 'white', padding: '1.25rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-sm)', textAlign: 'center' }}>
+                                            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', display: 'block' }}>Automated Alerting</span>
+                                            <strong style={{ fontSize: '1.15rem', color: a6Result.alertTriggered ? '#dc2626' : '#059669', display: 'block', marginTop: '0.35rem' }}>
+                                                {a6Result.alertTriggered ? '🚨 Alert Sent' : '✓ Normal'}
+                                            </strong>
+                                            <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Instant Admin Notification</span>
+                                        </div>
+                                    </div>
+
+                                    {/* Probe Detail Cards Grid */}
+                                    <div style={{ background: 'white', borderRadius: 'var(--radius-lg)', padding: '1.75rem', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-md)' }}>
+                                        <h4 style={{ margin: '0 0 1rem', fontSize: '1.1rem', color: 'var(--navy-900)', borderBottom: '1px solid var(--border-light)', paddingBottom: '0.5rem' }}>
+                                            🔬 Real-Time Diagnostic Probes Matrix
+                                        </h4>
+
+                                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1rem' }}>
+                                            {(a6Result.probes || []).map((probe, idx) => (
+                                                <div
+                                                    key={idx}
+                                                    style={{
+                                                        padding: '1rem',
+                                                        borderRadius: 'var(--radius-md)',
+                                                        border: probe.status === 'PASS' ? '1px solid #86efac' : (probe.status === 'WARN' ? '1px solid #fde68a' : '1px solid #fca5a5'),
+                                                        background: probe.status === 'PASS' ? '#f0fdf4' : (probe.status === 'WARN' ? '#fffbeb' : '#fef2f2'),
+                                                        display: 'flex',
+                                                        flexDirection: 'column',
+                                                        gap: '0.4rem',
+                                                    }}
+                                                >
+                                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                        <strong style={{ fontSize: '0.92rem', color: 'var(--navy-900)' }}>
+                                                            {probe.name}
+                                                        </strong>
+                                                        <span
+                                                            style={{
+                                                                fontSize: '0.72rem',
+                                                                fontWeight: 700,
+                                                                padding: '0.2rem 0.55rem',
+                                                                borderRadius: '999px',
+                                                                background: probe.status === 'PASS' ? '#dcfce7' : (probe.status === 'WARN' ? '#fef3c7' : '#fee2e2'),
+                                                                color: probe.status === 'PASS' ? '#15803d' : (probe.status === 'WARN' ? '#b45309' : '#b91c1c'),
+                                                            }}
+                                                        >
+                                                            {probe.status === 'PASS' ? '✓ PASS' : (probe.status === 'WARN' ? '⚠ WARN' : '✗ FAIL')}
+                                                        </span>
+                                                    </div>
+
+                                                    <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
+                                                        {probe.details}
+                                                    </p>
+
+                                                    <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>
+                                                        ⏱ Latency: {probe.latencyMs}ms | Severity: {probe.severity}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+
+                            {!a6Result && !a6Loading && (
+                                <div style={{ background: 'white', borderRadius: 'var(--radius-lg)', padding: '3.5rem 1rem', textAlign: 'center', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-sm)' }}>
+                                    <span style={{ fontSize: '3rem', display: 'block', marginBottom: '0.75rem' }}>🤖</span>
+                                    <h4 style={{ margin: '0 0 0.4rem', fontSize: '1.2rem', color: 'var(--navy-900)' }}>
+                                        Ready to Probe Full Platform Health
+                                    </h4>
+                                    <p style={{ maxWidth: 500, margin: '0 auto 1.25rem', fontSize: '0.88rem', color: 'var(--text-secondary)' }}>
+                                        Click below to trigger automated end-to-end tests for Kundli math, Panchang ephemeris, MongoDB Atlas collections, Google Sheets CRM 2-way sync, and WhatsApp bot status.
+                                    </p>
+                                    <button
+                                        type="button"
+                                        onClick={runAgent6}
+                                        className="btn btn-primary"
+                                        style={{ padding: '0.65rem 1.5rem', fontSize: '0.95rem' }}
+                                    >
+                                        ⚡ Run Full Diagnostic Test Suite (संपूर्ण सिस्टम जांच)
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     )}
 

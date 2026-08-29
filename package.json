@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build && node scripts/generate-seo-pages.mjs",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "node scripts/test-system-health.mjs",
+    "test:health": "node scripts/test-system-health.mjs"
   },
   "dependencies": {
     "mongodb": "^6.10.0",

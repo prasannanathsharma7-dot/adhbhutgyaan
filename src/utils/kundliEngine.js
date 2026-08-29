@@ -277,8 +277,11 @@ export function calculateInstantKundli({ birthDate, birthTime, birthPlace, name,
         const isManglik = isManglikFromLagna || isManglikFromMoon;
         const isPurnaManglik = isManglikFromLagna && isManglikFromMoon;
 
-        const kalsarpScore = (Math.abs(rahuSignNum - sunSignNum) + Math.abs(ketuSignNum - moonSignNum)) % 12;
-        const hasKalsarp = kalsarpScore > 7;
+        // Authentic Vedic Kalsarp Dosh calculation (Hemming of all 7 planets on one side of Rahu-Ketu axis)
+        const planetSigns = [sunSignNum, moonSignNum, marsSignNum, mercSignNum, jupSignNum, venSignNum, satSignNum];
+        const allSide1 = planetSigns.every(s => ((s - rahuSignNum + 12) % 12) <= 6);
+        const allSide2 = planetSigns.every(s => ((s - ketuSignNum + 12) % 12) <= 6);
+        const hasKalsarp = allSide1 || allSide2;
         const kalsarpTypes = [
             'Anant Kalsarp', 'Kulik Kalsarp', 'Vasuki Kalsarp', 'Shankhpal Kalsarp',
             'Padma Kalsarp', 'Mahapadma Kalsarp', 'Takshak Kalsarp', 'Karkotak Kalsarp',
