@@ -151,18 +151,18 @@ for (const compPath of criticalComponents) {
 console.log('\n\x1b[1m\x1b[33m[4/5] Testing Backend API Microservices & Agent Routes...\x1b[0m');
 
 const apiRoutes = [
-    'api/agents/kundli-preanalyzer.js',
-    'api/agents/daily-panchang-cron.js',
-    'api/agents/whatsapp-concierge.js',
-    'api/agents/seo-content-drafter.js',
-    'api/admin/analytics-summary.js',
-    'api/admin/sync-from-sheets.js',
-    'api/bookings.js',
-    'api/contact.js',
-    'api/reviews.js',
-    'api/newsletter.js',
-    'api/horoscope.js',
-    'api/health.js',
+    'backend/agents/kundli-preanalyzer.js',
+    'backend/agents/daily-panchang-cron.js',
+    'backend/agents/whatsapp-concierge.js',
+    'backend/agents/seo-content-drafter.js',
+    'backend/admin/analytics-summary.js',
+    'backend/admin/sync-from-sheets.js',
+    'backend/bookings.js',
+    'backend/contact.js',
+    'backend/reviews.js',
+    'backend/newsletter.js',
+    'backend/horoscope.js',
+    'backend/health.js',
 ];
 
 for (const routePath of apiRoutes) {

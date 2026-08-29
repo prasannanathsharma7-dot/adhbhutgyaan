@@ -10,8 +10,12 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
 
-# Copy the actual backend code.
-COPY api ./api
+# Copy the actual backend code. Source folder is named "backend" in the repo
+# (Vercel only auto-detects a top-level "api" folder as its own serverless
+# functions, so it's renamed here to let Vercel's rewrite hand off to this
+# Cloud Run service instead - but inside the container it's placed back at
+# ./api so every internal require('./_db') etc. path stays unchanged.)
+COPY backend ./api
 COPY server ./server
 COPY src/data ./src/data
 
