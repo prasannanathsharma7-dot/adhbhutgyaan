@@ -6,6 +6,7 @@ import { triptych, videoClips, youtubeUploadsPlaylistId, youtubeChannelId } from
 import useSEO from '../hooks/useSEO';
 import { localBusinessJsonLd, combineJsonLd } from '../utils/seo';
 import DailyPanchangCard from '../components/DailyPanchangCard';
+import { heritageSummary, testimonials } from '../data/heritage';
 
 function useInView() {
     const ref = useRef();
@@ -157,6 +158,50 @@ export default function Home() {
                                 </p>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* LEGACY & GLOBAL RECOGNITION — our strongest differentiator (a
+                400-year, three-generation lineage trusted by heads of state
+                and covered by international media) lives on the About page;
+                this teaser surfaces it here so visitors see it without
+                having to scroll deep into About Us. */}
+            <section className="section section-dark">
+                <div className="container">
+                    <div className="text-center">
+                        <span className="section-label" style={{ justifyContent: 'center' }}>{t('विरासत', 'Our Legacy')}</span>
+                        <h2 className="section-title" style={{ color: 'var(--gold-300)' }}>{t('चार शताब्दियों की विरासत, विश्व स्तर पर सम्मानित', 'Four Centuries of Legacy, Recognized on the World Stage')}</h2>
+                        <p className="section-subtitle">{t('महामहोपाध्याय पं. अयोध्या नाथ शर्मा से डॉ. उमंग नाथ शर्मा तक — तीन पीढ़ियाँ, एक अखंड परम्परा', 'From Mahamahopadhyaya Pt. Ayodhya Nath Sharma to Dr. Umang Nath Sharma — three generations, one unbroken tradition')}</p>
+                    </div>
+                    <div className="stats-grid" style={{ marginTop: '2rem' }}>
+                        {heritageSummary.map(h => (
+                            <div className="stat-card" key={h.labelEn}>
+                                <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>{h.icon}</div>
+                                <div className="stat-label" style={{ fontWeight: 700, color: 'var(--gold-300)', marginBottom: '0.35rem' }}>{t(h.label, h.labelEn)}</div>
+                                <div className="stat-label" style={{ fontSize: '0.8rem' }}>{t(h.desc, h.descEn)}</div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', marginTop: '2.5rem' }}>
+                        {testimonials.filter(tst => tst.notable).map(tst => (
+                            <div key={tst.name} style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(212,168,67,0.3)', borderRadius: 'var(--radius-lg)', padding: '1.5rem' }}>
+                                <p style={{ color: 'white', fontStyle: 'italic', lineHeight: 1.7, marginBottom: '0.85rem' }}>
+                                    "{t(tst.quoteHi, tst.quoteEn)}"
+                                </p>
+                                <div style={{ fontSize: '0.85rem', color: 'var(--gold-400)', fontWeight: 700 }}>
+                                    {tst.flag} {t(tst.notableHi, tst.notableEn)}
+                                </div>
+                                <div style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.6)' }}>{tst.name} — {tst.place}</div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="text-center" style={{ marginTop: '2rem' }}>
+                        <Link to="/about" className="btn btn-primary">
+                            {t('हमारी पूरी गाथा पढ़ें →', 'Read Our Full Legacy →')}
+                        </Link>
                     </div>
                 </div>
             </section>

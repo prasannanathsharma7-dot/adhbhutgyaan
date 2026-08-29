@@ -1,12 +1,11 @@
-import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import servicesData from '../data/services.json';
 import { useLanguage } from '../context/LanguageContext';
 import useSEO from '../hooks/useSEO';
 import { breadcrumbJsonLd, faqJsonLd, combineJsonLd } from '../utils/seo';
 
 export default function Services() {
-    const { hash } = useLocation();
     const { t, lang } = useLanguage();
     const [selectedConcern, setSelectedConcern] = useState(null);
 
@@ -49,15 +48,6 @@ export default function Services() {
             ])
         ),
     });
-
-    useEffect(() => {
-        if (hash) {
-            setTimeout(() => {
-                const el = document.querySelector(hash);
-                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 200);
-        }
-    }, [hash]);
 
     const overseasItems = [
         t('डॉ. उमंग नाथ शर्मा से ज्योतिष परामर्श — ऑनलाइन पूछताछ करें या अपॉइंटमेंट बुक करें', 'Astrology consultation with Dr. Umang Nath Sharma — enquire online or book an appointment'),
@@ -198,102 +188,29 @@ export default function Services() {
                 </div>
             </section>
 
-            {/* All Services */}
+            {/* All Services — tap any card to see full details, packages & pricing */}
             <section className="section">
                 <div className="container">
-                    {servicesData.map((service, index) => (
-                        <div key={service.id} id={service.id} style={{ marginBottom: 'clamp(3rem, 8vw, 5rem)', scrollMarginTop: '100px' }}>
-                            <div className="about-story" style={{ marginBottom: '2rem' }}>
-                                {index % 2 === 0 ? (
-                                    <>
-                                        <div className="about-image">
-                                            <img src={`/images/${service.image}`} alt={service.nameEn} width="640" height="640" loading="lazy" />
-                                        </div>
-                                        <ServiceInfo service={service} t={t} lang={lang} />
-                                    </>
-                                ) : (
-                                    <>
-                                        <ServiceInfo service={service} t={t} lang={lang} />
-                                        <div className="about-image">
-                                            <img src={`/images/${service.image}`} alt={service.nameEn} width="640" height="640" loading="lazy" />
-                                        </div>
-                                    </>
-                                )}
-                            </div>
-
-                            <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                                <Link to={`/services/${service.id}`} className="btn btn-outline">
-                                    {t('पूरी जानकारी देखें', 'View Full Details')} →
-                                </Link>
-                            </div>
-
-                            <h3 style={{ textAlign: 'center', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)' }}>{t('उपलब्ध विकल्प', 'Available Options')}</h3>
-                            <p style={{ textAlign: 'center', color: 'var(--text-muted)', marginBottom: '1.25rem', fontSize: '0.9rem' }}>{t('यह सेवा निम्न में से किसी भी तरीके से उपलब्ध है', 'This service is available in any of the following ways')}</p>
-                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', justifyContent: 'center', marginBottom: '2rem' }}>
-                                {[
-                                    { icon: '🌐', label: t('ऑनलाइन', 'Online') },
-                                    { icon: '🏠', label: t('ऑफलाइन (आपके स्थान पर)', 'Offline (at your location)') },
-                                    { icon: '📍', label: t('किसी भी अन्य स्थान पर', 'At any other location') },
-                                    { icon: '🛕', label: t('मंदिर में', 'At a Temple') },
-                                ].map((m, i) => (
-                                    <span key={i} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', background: 'var(--gold-50)', border: '1px solid var(--border-gold)', color: 'var(--gold-700)', fontWeight: 600, fontSize: '0.85rem', padding: '0.45rem 0.9rem', borderRadius: 'var(--radius-xl)' }}>
-                                        <span>{m.icon}</span>{m.label}
-                                    </span>
-                                ))}
-                            </div>
-
-                            <h3 style={{ textAlign: 'center', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)' }}>{t('पैकेज चुनें', 'Choose Your Package')}</h3>
-
-                            <div className="package-cards">
-                                {service.packages.map(pkg => (
-                                    <div className={`package-card ${pkg.popular ? 'popular' : ''}`} key={pkg.nameEn}>
-                                        {pkg.popular && <div className="package-popular-badge">⭐ {t('लोकप्रिय', 'Popular')}</div>}
-                                        <div className="package-name">{lang === 'hi' ? pkg.name : pkg.nameEn}</div>
-                                        {lang === 'hi' && <div className="package-name-en">{pkg.nameEn}</div>}
-                                        <div className="package-count">{pkg.paathCount}</div>
-                                        <div className="package-includes">{t('शामिल', 'Includes')}: {pkg.includes}</div>
-                                        <a
-                                            href={`https://wa.me/919278148269?text=${encodeURIComponent(t(
-                                                `नमस्कार! मुझे "${service.name} — ${pkg.name}" के बारे में पूछताछ करनी है। कृपया अधिक जानकारी दें।`,
-                                                `Hello! I would like to inquire about "${service.nameEn} — ${pkg.nameEn}". Please share more details.`
-                                            ))}`}
-                                            target="_blank" rel="noreferrer"
-                                            className="btn btn-primary"
-                                            style={{ width: '100%', justifyContent: 'center' }}
-                                        >
-                                            💬 {t('पूछताछ करें', 'Enquire Now')}
-                                        </a>
-                                    </div>
-                                ))}
-                            </div>
-
-                            <div className="om-divider" style={{ marginTop: '3rem' }}>ॐ</div>
-                        </div>
-                    ))}
+                    <div className="text-center">
+                        <span className="section-label">{t('सभी सेवाएं', 'All Services')}</span>
+                        <h2 className="section-title">{t('एक नज़र में हमारी सभी पूजा सेवाएं', 'All Our Pooja Services, At a Glance')}</h2>
+                        <p className="section-subtitle">{t('किसी भी सेवा पर टैप करें — पूर्ण विवरण, पैकेज व मूल्य वहां मिलेंगे', 'Tap any service to see its full details, packages & pricing')}</p>
+                    </div>
+                    <div className="service-browse-grid">
+                        {servicesData.map(service => (
+                            <Link key={service.id} to={`/services/${service.id}`} className="service-browse-card">
+                                <img src={`/images/${service.image}`} alt={service.nameEn} width="80" height="80" loading="lazy" className="service-browse-img" />
+                                <div className="service-browse-body">
+                                    <div className="service-browse-name">{lang === 'hi' ? service.name : service.nameEn}</div>
+                                    {lang === 'hi' && <div className="service-browse-name-en">{service.nameEn}</div>}
+                                    <p className="service-browse-desc">{lang === 'hi' ? service.shortDesc : service.descriptionEn}</p>
+                                </div>
+                                <span className="service-browse-arrow">→</span>
+                            </Link>
+                        ))}
+                    </div>
                 </div>
             </section>
-        </div>
-    );
-}
-
-function ServiceInfo({ service, t, lang }) {
-    return (
-        <div>
-            <h2 style={{ fontFamily: 'var(--font-hindi)', marginBottom: '0.25rem' }}>{lang === 'hi' ? service.name : service.nameEn}</h2>
-            {lang === 'hi' && <p style={{ color: 'var(--text-muted)', marginBottom: '1.25rem' }}>{service.nameEn}</p>}
-            <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '1rem' }}>{lang === 'hi' ? service.description : service.descriptionEn}</p>
-            <div style={{ background: 'var(--gold-50)', padding: '0.75rem 1.25rem', borderRadius: 'var(--radius-md)', borderLeft: '4px solid var(--gold-500)', marginBottom: '1.25rem' }}>
-                <strong>🕐 {t('सर्वोत्तम समय', 'Best Time')}:</strong> {lang === 'hi' ? service.bestTime : service.bestTimeEn}
-            </div>
-            <h4 style={{ marginBottom: '0.75rem', color: 'var(--dark-100)' }}>{t('लाभ', 'Benefits')}:</h4>
-            <ul style={{ fontSize: '0.95rem', color: 'var(--text-secondary)' }}>
-                {service.benefits.map((b, i) => (
-                    <li key={i} style={{ display: 'flex', gap: '0.5rem', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
-                        <span style={{ color: 'var(--gold-600)', fontSize: '1.1rem' }}>✓</span>
-                        <span>{lang === 'hi' ? b : service.benefitsEn[i]}</span>
-                    </li>
-                ))}
-            </ul>
         </div>
     );
 }
