@@ -7,6 +7,7 @@ import useSEO from '../hooks/useSEO';
 import { localBusinessJsonLd, combineJsonLd } from '../utils/seo';
 import DailyPanchangCard from '../components/DailyPanchangCard';
 import { heritageSummary, testimonials } from '../data/heritage';
+import FlagIcon from '../components/FlagIcon';
 
 function useInView() {
     const ref = useRef();
@@ -190,8 +191,8 @@ export default function Home() {
                                 <p style={{ color: 'white', fontStyle: 'italic', lineHeight: 1.7, marginBottom: '0.85rem' }}>
                                     "{t(tst.quoteHi, tst.quoteEn)}"
                                 </p>
-                                <div style={{ fontSize: '0.85rem', color: 'var(--gold-400)', fontWeight: 700 }}>
-                                    {tst.flag} {t(tst.notableHi, tst.notableEn)}
+                                <div style={{ fontSize: '0.85rem', color: 'var(--gold-400)', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                                    <FlagIcon flag={tst.flag} /> {t(tst.notableHi, tst.notableEn)}
                                 </div>
                                 <div style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.6)' }}>{tst.name} — {tst.place}</div>
                             </div>

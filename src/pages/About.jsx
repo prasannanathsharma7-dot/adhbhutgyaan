@@ -5,6 +5,7 @@ import useSEO from '../hooks/useSEO';
 import { breadcrumbJsonLd, combineJsonLd } from '../utils/seo';
 
 import { generations, heritageSummary, testimonials, testimonialFlags, moreTestimonials, moreTestimonialFlags } from '../data/heritage';
+import FlagIcon from '../components/FlagIcon';
 
 const values = [
     { icon: '📖', title: 'शास्त्रोक्त विधि', titleEn: 'Authentic Vedic Methods', desc: 'प्रत्येक पूजा शुद्ध एवं शास्त्रोक्त विधि से सम्पन्न', descEn: 'Every pooja performed with impeccable, time-honored precision' },
@@ -245,7 +246,7 @@ export default function About() {
                             ✉️ {testimonials.length} {t('पत्र', 'Letters')}
                         </span>
                         <span style={{ background: 'var(--gold-50)', border: '1px solid var(--border-gold)', color: 'var(--gold-700)', fontWeight: 700, fontSize: '0.85rem', padding: '0.4rem 1rem', borderRadius: 'var(--radius-xl)', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
-                            <span style={{ fontSize: '1.1rem', letterSpacing: '0.1em' }}>{testimonialFlags.join(' ')}</span>
+                            <span style={{ display: 'inline-flex', gap: '0.25rem' }}>{testimonialFlags.map(f => <FlagIcon key={f} flag={f} />)}</span>
                             {testimonialFlags.length}+ {t('देश', 'Countries')}
                         </span>
                         <span style={{ background: 'var(--gold-50)', border: '1px solid var(--border-gold)', color: 'var(--gold-700)', fontWeight: 700, fontSize: '0.85rem', padding: '0.4rem 1rem', borderRadius: 'var(--radius-xl)' }}>
@@ -280,7 +281,7 @@ export default function About() {
                                 <span style={{ fontSize: '1.8rem', color: 'var(--gold-400)', lineHeight: 1, fontFamily: 'var(--font-heading)' }}>&ldquo;</span>
                                 <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', lineHeight: 1.7, flex: 1, fontStyle: 'italic' }}>{t(tst.quoteHi, tst.quoteEn)}</p>
                                 <div style={{ borderTop: '1px dashed var(--border-gold)', paddingTop: '0.7rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                    <span style={{ fontSize: '1.4rem' }}>{tst.flag || '🌐'}</span>
+                                    <FlagIcon flag={tst.flag || '🌐'} style={{ width: '22px', height: '17px' }} />
                                     <div>
                                         <div style={{ fontWeight: 700, color: 'var(--gold-700)', fontSize: '0.9rem' }}>{tst.name}</div>
                                         <div style={{ color: 'var(--text-muted)', fontSize: '0.78rem' }}>{tst.place}</div>
@@ -313,7 +314,7 @@ export default function About() {
                             ✉️ {moreTestimonials.length} {t('पत्र', 'Letters')}
                         </span>
                         <span style={{ background: 'white', border: '1px solid var(--border-gold)', color: 'var(--gold-700)', fontWeight: 700, fontSize: '0.85rem', padding: '0.4rem 1rem', borderRadius: 'var(--radius-xl)', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
-                            <span style={{ fontSize: '1.1rem', letterSpacing: '0.1em' }}>{moreTestimonialFlags.join(' ')}</span>
+                            <span style={{ display: 'inline-flex', gap: '0.25rem' }}>{moreTestimonialFlags.map(f => <FlagIcon key={f} flag={f} />)}</span>
                             {moreTestimonialFlags.length}+ {t('देश', 'Countries')}
                         </span>
                         <span style={{ background: 'white', border: '1px solid var(--border-gold)', color: 'var(--gold-700)', fontWeight: 700, fontSize: '0.85rem', padding: '0.4rem 1rem', borderRadius: 'var(--radius-xl)' }}>
@@ -342,7 +343,7 @@ export default function About() {
                                 <span style={{ fontSize: '1.8rem', color: 'var(--gold-400)', lineHeight: 1, fontFamily: 'var(--font-heading)' }}>&ldquo;</span>
                                 <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', lineHeight: 1.7, flex: 1, fontStyle: 'italic' }}>{t(tst.quoteHi, tst.quoteEn)}</p>
                                 <div style={{ borderTop: '1px dashed var(--border-gold)', paddingTop: '0.7rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                    <span style={{ fontSize: '1.4rem' }}>{tst.flag}</span>
+                                    <FlagIcon flag={tst.flag} style={{ width: '22px', height: '17px' }} />
                                     <div>
                                         <div style={{ fontWeight: 700, color: 'var(--gold-700)', fontSize: '0.9rem' }}>{tst.name}</div>
                                         <div style={{ color: 'var(--text-muted)', fontSize: '0.78rem' }}>{tst.place}</div>
