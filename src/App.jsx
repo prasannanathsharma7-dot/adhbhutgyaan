@@ -15,6 +15,7 @@ const ServiceDetail = lazy(() => import('./pages/ServiceDetail'));
 const Booking = lazy(() => import('./pages/Booking'));
 const FreeKundli = lazy(() => import('./pages/FreeKundli'));
 const Panchang = lazy(() => import('./pages/Panchang'));
+const Horoscope = lazy(() => import('./pages/Horoscope'));
 const About = lazy(() => import('./pages/About'));
 const Contact = lazy(() => import('./pages/Contact'));
 const Blog = lazy(() => import('./pages/Blog'));
@@ -59,6 +60,7 @@ function App() {
                         <Route path="/booking" element={<Booking />} />
                         <Route path="/free-kundli" element={<FreeKundli />} />
                         <Route path="/panchang" element={<Panchang />} />
+                        <Route path="/horoscope" element={<Horoscope />} />
                         <Route path="/about" element={<About />} />
                         <Route path="/contact" element={<Contact />} />
                         <Route path="/blog" element={<Blog />} />

@@ -45,6 +45,7 @@ export default function Navbar() {
         { to: '/services', label: t('सेवाएं', 'Services') },
         { to: '/panchang', label: t('पंचांग', 'Panchang') },
         { to: '/free-kundli', label: t('फ्री कुंडली', 'Free Kundli') },
+        { to: '/horoscope', label: t('राशिफल', 'Horoscope') },
         { to: '/booking', label: t('पूजा बुक करें', 'Book Pooja') },
         { to: '/about', label: t('हमारे बारे में', 'About Us') },
         { to: '/blog', label: t('ब्लॉग', 'Blog') },

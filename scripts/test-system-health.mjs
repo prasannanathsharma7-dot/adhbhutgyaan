@@ -161,6 +161,7 @@ const apiRoutes = [
     'api/contact.js',
     'api/reviews.js',
     'api/newsletter.js',
+    'api/horoscope.js',
     'api/health.js',
 ];
 

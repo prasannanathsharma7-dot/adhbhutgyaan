@@ -157,6 +157,12 @@ const routes = [
         jsonLd: combineJsonLd(breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Daily Panchang', path: '/panchang' }])),
     },
     {
+        path: '/horoscope',
+        title: 'राशिफल — दैनिक एवं मासिक राशिफल | Adhbhut Gyaan',
+        description: 'अपनी राशि चुनें और आज या इस महीने का राशिफल पढ़ें - करियर, धन, स्वास्थ्य एवं रिश्तों पर मार्गदर्शन।',
+        jsonLd: combineJsonLd(breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Horoscope', path: '/horoscope' }])),
+    },
+    {
         path: '/about',
         title: 'हमारे बारे में — शर्मा परिवार की विरासत | Adhbhut Gyaan',
         description: '400+ वर्षों की वैदिक परंपरा, तीन पीढ़ियों की गाथा — महामहोपाध्याय पं. अयोध्या नाथ शर्मा से डॉ. उमंग नाथ शर्मा तक।',
