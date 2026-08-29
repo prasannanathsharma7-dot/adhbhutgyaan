@@ -233,14 +233,14 @@ module.exports = async function handler(req, res) {
 
     // 6. PROBE: NOTIFICATION GATEWAY (EMAIL / TELEGRAM)
     try {
-        const hasEmail = Boolean(process.env.SMTP_HOST && process.env.SMTP_USER);
+        const hasEmail = Boolean(process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD);
         if (hasEmail) {
             probeResults.push({
                 id: 'email_gateway',
                 name: 'Email SMTP & Booking Notification Gateway',
                 status: 'PASS',
                 latencyMs: 1,
-                details: 'SMTP host and authentication credentials configured.',
+                details: 'Gmail account and app password configured.',
                 severity: 'INFO',
             });
         } else {
@@ -250,7 +250,7 @@ module.exports = async function handler(req, res) {
                 name: 'Email SMTP & Booking Notification Gateway',
                 status: 'WARN',
                 latencyMs: 0,
-                details: 'SMTP_HOST or SMTP_USER not set in environment.',
+                details: 'GMAIL_USER or GMAIL_APP_PASSWORD not set in environment.',
                 severity: 'WARNING',
             });
         }

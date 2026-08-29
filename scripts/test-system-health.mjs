@@ -154,7 +154,6 @@ const apiRoutes = [
     'api/agents/kundli-preanalyzer.js',
     'api/agents/daily-panchang-cron.js',
     'api/agents/whatsapp-concierge.js',
-    'api/agents/post-pooja-delivery.js',
     'api/agents/seo-content-drafter.js',
     'api/admin/analytics-summary.js',
     'api/admin/sync-from-sheets.js',

@@ -7,7 +7,6 @@ const AGENTS = [
     { id: 'agent1', name: 'Agent 1: Kundli Pre-Analyzer', icon: '🔮', desc: 'Vedic chart, doshas & Pandit dossier' },
     { id: 'agent2', name: 'Agent 2: WhatsApp Concierge', icon: '💬', desc: 'Intent classification & response simulator' },
     { id: 'agent3', name: 'Agent 3: Daily Panchang Cron', icon: '☀️', desc: 'Varanasi ephemeris & subscriber broadcast' },
-    { id: 'agent4', name: 'Agent 4: Post-Pooja Delivery', icon: '📹', desc: 'Video proof, sankalp letter & feedback' },
     { id: 'agent5', name: 'Agent 5: Vedic SEO Studio', icon: '📝', desc: 'Schema-ready Markdown article generator' },
     { id: 'agent6', name: 'Agent 6: System Health & Auto-Test', icon: '🤖', desc: 'Real-time diagnostic probes & failure detector' },
 ];
@@ -67,20 +66,6 @@ export default function AdminAgents() {
     const [a3Result, setA3Result] = useState(null);
     const [a3Loading, setA3Loading] = useState(false);
     const [a3Error, setA3Error] = useState('');
-
-    // Agent 4 State (Post-Pooja Delivery)
-    const [a4Form, setA4Form] = useState({
-        name: 'Vikramaditya Roy',
-        gotra: 'Bharadwaj',
-        serviceName: 'Kashi Rudrabhishek with Namakam-Chamakam',
-        phone: '919876543210',
-        email: 'devotee.sample@example.com',
-        mediaUrl: 'https://drive.google.com/file/d/1SampleKashiSankalpProofVideo/view?usp=sharing',
-        notes: 'Pooja completed at Dashashwamedh Ghat with milk, belpatra, and bhasma.',
-    });
-    const [a4Result, setA4Result] = useState(null);
-    const [a4Loading, setA4Loading] = useState(false);
-    const [a4Error, setA4Error] = useState('');
 
     // Agent 5 State (Vedic SEO Studio)
     const [a5Topic, setA5Topic] = useState('rudrabhishek');
@@ -227,38 +212,6 @@ export default function AdminAgents() {
             setA3Error('Network error connecting to Agent 3 endpoint.');
         } finally {
             setA3Loading(false);
-        }
-    };
-
-    // Agent 4 Execution
-    const runAgent4 = async () => {
-        setA4Loading(true);
-        setA4Error('');
-        setA4Result(null);
-        try {
-            const res = await fetch('/api/agents/post-pooja-delivery', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-admin-auth': adminKey,
-                },
-                body: JSON.stringify(a4Form),
-            });
-            const data = await res.json();
-            if (res.status === 401) {
-                setAuthError('Authentication failed.');
-                setAdminKey('');
-                return;
-            }
-            if (data.ok) {
-                setA4Result(data);
-            } else {
-                setA4Error(data.error || 'Failed to dispatch post-pooja proof.');
-            }
-        } catch (err) {
-            setA4Error('Network error connecting to Agent 4 endpoint.');
-        } finally {
-            setA4Loading(false);
         }
     };
 
@@ -838,131 +791,6 @@ export default function AdminAgents() {
                                                 </div>
                                             </div>
                                         )}
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    )}
-
-                    {/* ========================================================================= */}
-                    {/* AGENT 4: POST-POOJA CRM & VIDEO DELIVERY */}
-                    {/* ========================================================================= */}
-                    {activeTab === 'agent4' && (
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: '1.75rem' }}>
-                            {/* Input Form */}
-                            <div style={{ background: 'white', borderRadius: 'var(--radius-lg)', padding: '1.75rem', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-md)' }}>
-                                <div style={{ marginBottom: '1.25rem', paddingBottom: '0.75rem', borderBottom: '1px solid var(--border-light)' }}>
-                                    <h2 style={{ margin: 0, fontSize: '1.2rem', color: 'var(--navy-900)' }}>📹 Agent 4: Post-Pooja Delivery</h2>
-                                    <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-muted)' }}>Sankalp Video Proof & Devotee Letter Dispatch</p>
-                                </div>
-
-                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
-                                    <div>
-                                        <label className="form-label" style={{ fontSize: '0.82rem', fontWeight: 600 }}>Devotee Name</label>
-                                        <input
-                                            type="text"
-                                            className="form-input"
-                                            value={a4Form.name}
-                                            onChange={e => setA4Form({ ...a4Form, name: e.target.value })}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="form-label" style={{ fontSize: '0.82rem', fontWeight: 600 }}>Gotra</label>
-                                        <input
-                                            type="text"
-                                            className="form-input"
-                                            value={a4Form.gotra}
-                                            onChange={e => setA4Form({ ...a4Form, gotra: e.target.value })}
-                                        />
-                                    </div>
-                                </div>
-
-                                <div style={{ marginBottom: '0.75rem' }}>
-                                    <label className="form-label" style={{ fontSize: '0.82rem', fontWeight: 600 }}>Service Name</label>
-                                    <input
-                                        type="text"
-                                        className="form-input"
-                                        value={a4Form.serviceName}
-                                        onChange={e => setA4Form({ ...a4Form, serviceName: e.target.value })}
-                                    />
-                                </div>
-
-                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
-                                    <div>
-                                        <label className="form-label" style={{ fontSize: '0.82rem', fontWeight: 600 }}>Phone (WhatsApp)</label>
-                                        <input
-                                            type="text"
-                                            className="form-input"
-                                            value={a4Form.phone}
-                                            onChange={e => setA4Form({ ...a4Form, phone: e.target.value })}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="form-label" style={{ fontSize: '0.82rem', fontWeight: 600 }}>Email Address</label>
-                                        <input
-                                            type="email"
-                                            className="form-input"
-                                            value={a4Form.email}
-                                            onChange={e => setA4Form({ ...a4Form, email: e.target.value })}
-                                        />
-                                    </div>
-                                </div>
-
-                                <div style={{ marginBottom: '1.25rem' }}>
-                                    <label className="form-label" style={{ fontSize: '0.82rem', fontWeight: 600 }}>Video Proof Link (Drive / YouTube)</label>
-                                    <input
-                                        type="url"
-                                        className="form-input"
-                                        value={a4Form.mediaUrl}
-                                        onChange={e => setA4Form({ ...a4Form, mediaUrl: e.target.value })}
-                                    />
-                                </div>
-
-                                <button
-                                    type="button"
-                                    onClick={runAgent4}
-                                    disabled={a4Loading}
-                                    className="btn btn-primary"
-                                    style={{ width: '100%', justifyContent: 'center', padding: '0.75rem' }}
-                                >
-                                    {a4Loading ? '⚡ Dispatching Proof & Blessing…' : '📹 Dispatch Post-Pooja Proof & Review Link'}
-                                </button>
-                                {a4Error && <p style={{ color: '#dc2626', fontSize: '0.85rem', marginTop: '0.75rem' }}>⚠ {a4Error}</p>}
-                            </div>
-
-                            {/* Preview */}
-                            <div style={{ background: 'white', borderRadius: 'var(--radius-lg)', padding: '1.75rem', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-md)' }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', paddingBottom: '0.75rem', borderBottom: '1px solid var(--border-light)' }}>
-                                    <h3 style={{ margin: 0, fontSize: '1.1rem', color: 'var(--navy-900)' }}>Delivery Dispatch Confirmation</h3>
-                                    {a4Result && (
-                                        <span style={{ background: 'rgba(37,211,102,0.15)', color: 'var(--whatsapp-dark)', padding: '0.2rem 0.6rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 700 }}>
-                                            ✓ {a4Result.deliveryStatus}
-                                        </span>
-                                    )}
-                                </div>
-
-                                {!a4Result ? (
-                                    <div style={{ textAlign: 'center', padding: '3.5rem 1rem', color: 'var(--text-muted)' }}>
-                                        <span style={{ fontSize: '2.5rem', display: 'block', marginBottom: '0.5rem' }}>📹</span>
-                                        <p style={{ margin: 0, fontSize: '0.9rem' }}>Fill devotee media proof and trigger Agent 4 to test automated WhatsApp and email dispatch.</p>
-                                    </div>
-                                ) : (
-                                    <div>
-                                        <div style={{ background: '#f8fafc', padding: '1rem', borderRadius: '6px', border: '1px solid var(--border-light)', marginBottom: '1rem', fontSize: '0.85rem' }}>
-                                            <div><b>Devotee:</b> {a4Result.devoteeName}</div>
-                                            <div><b>Service:</b> {a4Result.serviceName}</div>
-                                            <div style={{ wordBreak: 'break-all', marginTop: '0.35rem' }}>
-                                                <b>Media Proof:</b> <a href={a4Result.mediaUrl} target="_blank" rel="noreferrer">{a4Result.mediaUrl}</a>
-                                            </div>
-                                            <div style={{ marginTop: '0.5rem', display: 'flex', gap: '0.75rem' }}>
-                                                <span style={{ color: a4Result.emailDispatched ? '#10b981' : '#f59e0b' }}>
-                                                    Email: {a4Result.emailDispatched ? '✓ Sent' : 'Skipped/No Auth'}
-                                                </span>
-                                                <span style={{ color: a4Result.whatsappDispatched ? '#10b981' : '#64748b' }}>
-                                                    WhatsApp: {a4Result.whatsappDispatched ? '✓ Sent' : 'Queued'}
-                                                </span>
-                                            </div>
-                                        </div>
                                     </div>
                                 )}
                             </div>
