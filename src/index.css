@@ -1239,6 +1239,12 @@ h3 {
     .hero-stat {
         text-align: center;
     }
+    /* Reserve space below the stats row so the fixed WhatsApp + AI-chat
+       buttons (bottom-right corner) never overlap the last stat on first
+       paint, before the user has scrolled at all. */
+    .hero-stats {
+        padding-bottom: clamp(90px, 22vw, 120px);
+    }
 }
 
 .hero-stat-number {
