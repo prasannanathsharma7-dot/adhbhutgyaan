@@ -154,7 +154,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                         display: block !important;
                         text-align: center;
                         margin-bottom: 1.5rem;
-                        border-bottom: 2px solid #d4a843;
+                        border-bottom: 2px solid var(--gold-500);
                         padding-bottom: 0.75rem;
                     }
                     .kundli-report-card {
@@ -307,8 +307,8 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                     <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
                         {/* Print Header */}
                         <div className="print-only-header">
-                            <h2 style={{ margin: '0 0 0.25rem', color: '#1c2150' }}>अद्भुत ज्ञान — वैदिक जन्म पत्रिका रिपोर्ट</h2>
-                            <p style={{ margin: 0, fontSize: '0.9rem', color: '#64748b' }}>
+                            <h2 style={{ margin: '0 0 0.25rem', color: 'var(--navy-700)' }}>अद्भुत ज्ञान — वैदिक जन्म पत्रिका रिपोर्ट</h2>
+                            <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--text-muted)' }}>
                                 काशी ज्योतिष परंपरा · डॉ. उमंग नाथ शर्मा · Helpline: +91 92781 48269
                             </p>
                         </div>
@@ -379,7 +379,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                         </thead>
                                         <tbody>
                                             <tr style={{ borderBottom: '1px solid #f1f5f9', background: 'var(--gold-50)', fontWeight: 700 }}>
-                                                <td style={{ padding: '0.45rem 0.6rem', color: '#c49a2c' }}>✦ Asc (Lagna)</td>
+                                                <td style={{ padding: '0.45rem 0.6rem', color: 'var(--gold-500)' }}>✦ Asc (Lagna)</td>
                                                 <td style={{ padding: '0.45rem 0.6rem' }}>{kundliResult.lagna.rashi.split(' ')[0]}</td>
                                                 <td style={{ padding: '0.45rem 0.6rem' }}>House 1</td>
                                                 <td style={{ padding: '0.45rem 0.6rem' }}>{kundliResult.lagna.deg}</td>

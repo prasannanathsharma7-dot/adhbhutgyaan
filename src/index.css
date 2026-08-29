@@ -195,7 +195,6 @@ button:focus-visible,
     --shadow-md: 0 4px 12px rgba(26, 15, 5, 0.12);
     --shadow-lg: 0 8px 30px rgba(26, 15, 5, 0.16);
     --shadow-xl: 0 16px 50px rgba(26, 15, 5, 0.2);
-    --shadow-gold: 0 4px 20px rgba(196, 154, 44, 0.3);
     --shadow-gold: 0 4px 20px rgba(255, 152, 0, 0.3);
 
     --font-heading: 'Playfair Display', serif;

@@ -491,19 +491,19 @@ export default function Panchang() {
                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.6rem', fontSize: '0.85rem' }}>
                                 <div style={{ background: 'white', padding: '0.6rem', borderRadius: 'var(--radius-md)', border: '1px solid #bbf7d0' }}>
                                     <div style={{ fontSize: '0.72rem', color: '#15803d', fontWeight: 700 }}>अभिजित मुहूर्त (Abhijit)</div>
-                                    <div style={{ fontWeight: 700, color: '#0f172a', marginTop: '0.15rem' }}>{panchangData?.muhurats?.abhijit || '11:45 AM - 12:35 PM'}</div>
+                                    <div style={{ fontWeight: 700, color: 'var(--navy-900)', marginTop: '0.15rem' }}>{panchangData?.muhurats?.abhijit || '11:45 AM - 12:35 PM'}</div>
                                 </div>
                                 <div style={{ background: 'white', padding: '0.6rem', borderRadius: 'var(--radius-md)', border: '1px solid #bbf7d0' }}>
                                     <div style={{ fontSize: '0.72rem', color: '#15803d', fontWeight: 700 }}>ब्रह्म मुहूर्त (Brahma)</div>
-                                    <div style={{ fontWeight: 700, color: '#0f172a', marginTop: '0.15rem' }}>{panchangData?.muhurats?.brahma || '04:15 AM - 05:00 AM'}</div>
+                                    <div style={{ fontWeight: 700, color: 'var(--navy-900)', marginTop: '0.15rem' }}>{panchangData?.muhurats?.brahma || '04:15 AM - 05:00 AM'}</div>
                                 </div>
                                 <div style={{ background: 'white', padding: '0.6rem', borderRadius: 'var(--radius-md)', border: '1px solid #bbf7d0' }}>
                                     <div style={{ fontSize: '0.72rem', color: '#15803d', fontWeight: 700 }}>अमृत काल (Amrit Kaal)</div>
-                                    <div style={{ fontWeight: 700, color: '#0f172a', marginTop: '0.15rem' }}>{panchangData?.muhurats?.amritKaal || '08:30 AM - 09:50 AM'}</div>
+                                    <div style={{ fontWeight: 700, color: 'var(--navy-900)', marginTop: '0.15rem' }}>{panchangData?.muhurats?.amritKaal || '08:30 AM - 09:50 AM'}</div>
                                 </div>
                                 <div style={{ background: 'white', padding: '0.6rem', borderRadius: 'var(--radius-md)', border: '1px solid #bbf7d0' }}>
                                     <div style={{ fontSize: '0.72rem', color: '#15803d', fontWeight: 700 }}>गोधूलि मुहूर्त (Godhuli)</div>
-                                    <div style={{ fontWeight: 700, color: '#0f172a', marginTop: '0.15rem' }}>{panchangData?.muhurats?.godhuli || '06:18 PM - 06:42 PM'}</div>
+                                    <div style={{ fontWeight: 700, color: 'var(--navy-900)', marginTop: '0.15rem' }}>{panchangData?.muhurats?.godhuli || '06:18 PM - 06:42 PM'}</div>
                                 </div>
                             </div>
                         </div>
@@ -516,15 +516,15 @@ export default function Panchang() {
                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.5rem', fontSize: '0.8rem' }}>
                                 <div style={{ background: 'white', padding: '0.6rem 0.5rem', borderRadius: 'var(--radius-md)', border: '1px solid #fecaca', textAlign: 'center' }}>
                                     <div style={{ fontSize: '0.7rem', color: '#b91c1c', fontWeight: 700 }}>राहु काल</div>
-                                    <div style={{ fontWeight: 700, color: '#0f172a', marginTop: '0.15rem', fontSize: '0.78rem' }}>{panchangData?.inauspicious?.rahuKaal || '04:30 PM - 06:00 PM'}</div>
+                                    <div style={{ fontWeight: 700, color: 'var(--navy-900)', marginTop: '0.15rem', fontSize: '0.78rem' }}>{panchangData?.inauspicious?.rahuKaal || '04:30 PM - 06:00 PM'}</div>
                                 </div>
                                 <div style={{ background: 'white', padding: '0.6rem 0.5rem', borderRadius: 'var(--radius-md)', border: '1px solid #fecaca', textAlign: 'center' }}>
                                     <div style={{ fontSize: '0.7rem', color: '#b91c1c', fontWeight: 700 }}>यमगण्ड</div>
-                                    <div style={{ fontWeight: 700, color: '#0f172a', marginTop: '0.15rem', fontSize: '0.78rem' }}>{panchangData?.inauspicious?.yamaganda || '09:00 AM - 10:30 AM'}</div>
+                                    <div style={{ fontWeight: 700, color: 'var(--navy-900)', marginTop: '0.15rem', fontSize: '0.78rem' }}>{panchangData?.inauspicious?.yamaganda || '09:00 AM - 10:30 AM'}</div>
                                 </div>
                                 <div style={{ background: 'white', padding: '0.6rem 0.5rem', borderRadius: 'var(--radius-md)', border: '1px solid #fecaca', textAlign: 'center' }}>
                                     <div style={{ fontSize: '0.7rem', color: '#b91c1c', fontWeight: 700 }}>गुलिक काल</div>
-                                    <div style={{ fontWeight: 700, color: '#0f172a', marginTop: '0.15rem', fontSize: '0.78rem' }}>{panchangData?.inauspicious?.gulikaKaal || '01:30 PM - 03:00 PM'}</div>
+                                    <div style={{ fontWeight: 700, color: 'var(--navy-900)', marginTop: '0.15rem', fontSize: '0.78rem' }}>{panchangData?.inauspicious?.gulikaKaal || '01:30 PM - 03:00 PM'}</div>
                                 </div>
                             </div>
                         </div>
