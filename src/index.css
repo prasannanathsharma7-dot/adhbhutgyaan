@@ -496,6 +496,104 @@ h3 {
     width: 100%;
 }
 
+.nav-dropdown {
+    position: relative;
+}
+
+.nav-dropdown-trigger {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--cream);
+    padding: 0.25rem 0;
+    transition: color var(--dur-fast) var(--ease-out);
+}
+
+.nav-dropdown-trigger:hover,
+.nav-dropdown-trigger.active {
+    color: var(--gold-300);
+}
+
+.nav-dropdown-caret {
+    font-size: 0.7rem;
+    transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.nav-dropdown-caret.open {
+    transform: rotate(180deg);
+}
+
+.nav-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 1rem);
+    left: 50%;
+    transform: translateX(-50%) translateY(-8px);
+    background: var(--navy-900, #14110f);
+    border: 1px solid var(--border-gold);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg, 0 12px 32px rgba(0,0,0,0.35));
+    padding: 0.5rem;
+    min-width: 180px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--dur-fast) var(--ease-out);
+    z-index: 50;
+}
+
+.nav-dropdown-menu.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+.nav-dropdown-menu a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 0.75rem;
+    border-radius: var(--radius-md, 8px);
+    font-size: 0.85rem;
+    white-space: nowrap;
+    color: var(--cream);
+}
+
+.nav-dropdown-menu a:hover,
+.nav-dropdown-menu a.active {
+    background: rgba(255,255,255,0.08);
+    color: var(--gold-300);
+}
+
+.nav-dropdown-icon {
+    font-size: 0.95rem;
+}
+
+@media (max-width: 768px) {
+    .nav-dropdown-menu {
+        position: static;
+        transform: none;
+        opacity: 1;
+        visibility: visible;
+        display: none;
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        padding: 0 0 0 1.25rem;
+        min-width: 0;
+    }
+    .nav-dropdown-menu.open {
+        display: flex;
+    }
+}
+
 .lang-toggle {
     display: flex;
     align-items: center;

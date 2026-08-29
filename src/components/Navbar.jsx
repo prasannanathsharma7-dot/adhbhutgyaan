@@ -5,10 +5,12 @@ import { useLanguage } from '../context/LanguageContext';
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
+    const [toolsOpen, setToolsOpen] = useState(false);
     const location = useLocation();
     const isHome = location.pathname === '/';
     const { lang, toggleLang, t } = useLanguage();
     const menuButtonRef = useRef(null);
+    const toolsRef = useRef(null);
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -18,7 +20,20 @@ export default function Navbar() {
 
     useEffect(() => {
         setMenuOpen(false);
+        setToolsOpen(false);
     }, [location]);
+
+    // Close the "Astrology Tools" dropdown when clicking anywhere outside it.
+    useEffect(() => {
+        if (!toolsOpen) return;
+        const handleClick = (e) => {
+            if (toolsRef.current && !toolsRef.current.contains(e.target)) {
+                setToolsOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClick);
+        return () => document.removeEventListener('mousedown', handleClick);
+    }, [toolsOpen]);
 
     // Close the mobile menu on Escape and send focus back to the toggle button,
     // so keyboard users are never left stranded inside a closed menu.
@@ -43,14 +58,22 @@ export default function Navbar() {
     const links = [
         { to: '/', label: t('होम', 'Home') },
         { to: '/services', label: t('सेवाएं', 'Services') },
-        { to: '/panchang', label: t('पंचांग', 'Panchang') },
-        { to: '/free-kundli', label: t('फ्री कुंडली', 'Free Kundli') },
-        { to: '/horoscope', label: t('राशिफल', 'Horoscope') },
+    ];
+
+    const toolLinks = [
+        { to: '/panchang', label: t('पंचांग', 'Panchang'), icon: '📅' },
+        { to: '/free-kundli', label: t('फ्री कुंडली', 'Free Kundli'), icon: '🔮' },
+        { to: '/horoscope', label: t('राशिफल', 'Horoscope'), icon: '♈' },
+    ];
+
+    const restLinks = [
         { to: '/booking', label: t('पूजा बुक करें', 'Book Pooja') },
         { to: '/about', label: t('हमारे बारे में', 'About Us') },
         { to: '/blog', label: t('ब्लॉग', 'Blog') },
         { to: '/contact', label: t('संपर्क करें', 'Contact') },
     ];
+
+    const isToolActive = toolLinks.some(l => l.to === location.pathname);
 
     return (
         <nav className={navClass} id="navbar">
@@ -65,6 +88,41 @@ export default function Navbar() {
 
                 <div className={`nav-links ${menuOpen ? 'open' : ''}`} id="primary-navigation">
                     {links.map(link => (
+                        <Link
+                            key={link.to}
+                            to={link.to}
+                            className={location.pathname === link.to ? 'active' : ''}
+                            aria-current={location.pathname === link.to ? 'page' : undefined}
+                        >
+                            {link.label}
+                        </Link>
+                    ))}
+
+                    <div className="nav-dropdown" ref={toolsRef}>
+                        <button
+                            type="button"
+                            className={`nav-dropdown-trigger ${isToolActive ? 'active' : ''}`}
+                            onClick={() => setToolsOpen(prev => !prev)}
+                            aria-expanded={toolsOpen}
+                            aria-haspopup="true"
+                        >
+                            {t('ज्योतिष टूल्स', 'Astrology Tools')} <span className={`nav-dropdown-caret ${toolsOpen ? 'open' : ''}`}>▾</span>
+                        </button>
+                        <div className={`nav-dropdown-menu ${toolsOpen ? 'open' : ''}`}>
+                            {toolLinks.map(link => (
+                                <Link
+                                    key={link.to}
+                                    to={link.to}
+                                    className={location.pathname === link.to ? 'active' : ''}
+                                    aria-current={location.pathname === link.to ? 'page' : undefined}
+                                >
+                                    <span className="nav-dropdown-icon">{link.icon}</span> {link.label}
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+
+                    {restLinks.map(link => (
                         <Link
                             key={link.to}
                             to={link.to}
