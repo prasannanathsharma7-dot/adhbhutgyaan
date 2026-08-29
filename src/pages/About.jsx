@@ -8,10 +8,10 @@ import { generations, heritageSummary, testimonials, testimonialFlags, moreTesti
 import FlagIcon from '../components/FlagIcon';
 
 const values = [
-    { icon: '📖', title: 'शास्त्रोक्त विधि', titleEn: 'Authentic Vedic Methods', desc: 'प्रत्येक पूजा शुद्ध एवं शास्त्रोक्त विधि से सम्पन्न', descEn: 'Every pooja performed with impeccable, time-honored precision' },
-    { icon: '🤝', title: 'विश्वास एवं पारदर्शिता', titleEn: 'Trust & Transparency', desc: 'कोई छिपा हुआ शुल्क नहीं', descEn: 'No concealed costs, ever' },
-    { icon: '❤️', title: 'भक्त सेवा', titleEn: 'Devotee First', desc: 'भक्तों का कल्याण ही हमारी सर्वोच्च प्राथमिकता', descEn: "Devotees' wellbeing remains our foremost priority" },
-    { icon: '🌍', title: 'वैश्विक पहुँच', titleEn: 'Global Reach', desc: 'देश-विदेश में कहीं भी, काशी की सेवा आपके निकट', descEn: "Kashi's service, delivered wherever you may be in the world" },
+    { img: 'vedic-manuscript', title: 'शास्त्रोक्त विधि', titleEn: 'Authentic Vedic Methods', desc: 'प्रत्येक पूजा शुद्ध एवं शास्त्रोक्त विधि से सम्पन्न', descEn: 'Every pooja performed with impeccable, time-honored precision' },
+    { img: 'handshake-trust', title: 'विश्वास एवं पारदर्शिता', titleEn: 'Trust & Transparency', desc: 'कोई छिपा हुआ शुल्क नहीं', descEn: 'No concealed costs, ever' },
+    { img: 'devotee-heart', title: 'भक्त सेवा', titleEn: 'Devotee First', desc: 'भक्तों का कल्याण ही हमारी सर्वोच्च प्राथमिकता', descEn: "Devotees' wellbeing remains our foremost priority" },
+    { img: 'global-reach', title: 'वैश्विक पहुँच', titleEn: 'Global Reach', desc: 'देश-विदेश में कहीं भी, काशी की सेवा आपके निकट', descEn: "Kashi's service, delivered wherever you may be in the world" },
 ];
 
 export default function About() {
@@ -106,7 +106,7 @@ export default function About() {
                     <div className="stats-grid">
                         {heritageSummary.map(h => (
                             <div className="stat-card" key={h.labelEn}>
-                                <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>{h.icon}</div>
+                                <img src={`/images/icons/${h.img}.jpg`} alt="" width="52" height="52" loading="lazy" style={{ width: '52px', height: '52px', borderRadius: '50%', objectFit: 'cover', margin: '0 auto 0.5rem' }} />
                                 <div className="stat-label" style={{ fontWeight: 700, color: 'var(--gold-300)', marginBottom: '0.35rem' }}>{t(h.label, h.labelEn)}</div>
                                 <div className="stat-label" style={{ fontSize: '0.8rem' }}>{t(h.desc, h.descEn)}</div>
                             </div>
@@ -432,7 +432,7 @@ export default function About() {
                     <div className="features-grid">
                         {values.map((v, i) => (
                             <div className="feature-card" key={i}>
-                                <span className="feature-icon">{v.icon}</span>
+                                <img src={`/images/icons/${v.img}.jpg`} alt="" width="56" height="56" loading="lazy" className="feature-icon-img" />
                                 <h3 className="feature-title">{t(v.title, v.titleEn)}</h3>
                                 <p className="feature-desc">{t(v.desc, v.descEn)}</p>
                             </div>

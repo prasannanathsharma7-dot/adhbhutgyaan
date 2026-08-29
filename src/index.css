@@ -1359,6 +1359,22 @@ h3 {
     transition: all var(--dur-normal) var(--ease-out);
 }
 
+.feature-icon-img {
+    margin: 0 auto 1.1rem;
+    display: block;
+    width: clamp(56px, 8vw, 72px);
+    height: clamp(56px, 8vw, 72px);
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1.5px solid var(--border-gold);
+    transition: all var(--dur-normal) var(--ease-out);
+}
+
+.feature-card:hover .feature-icon-img {
+    box-shadow: 0 0 0 6px rgba(212, 168, 67, 0.12), 0 8px 25px rgba(212, 168, 67, 0.25);
+    border-color: var(--gold-400);
+}
+
 .feature-title {
     font-family: var(--font-heading);
     font-size: 1.1rem;

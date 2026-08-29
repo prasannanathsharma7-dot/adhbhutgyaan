@@ -37,10 +37,10 @@ export const generations = [
 ];
 
 export const heritageSummary = [
-    { icon: '📜', label: 'चतुःशताब्दी विरासत', labelEn: 'Four Centuries of Legacy', desc: '400 वर्षों से अधिक की अखंड वैदिक परम्परा', descEn: 'An unbroken Vedic tradition spanning over 400 years' },
-    { icon: '🏛️', label: 'संस्थागत मान्यता', labelEn: 'Institutional Recognition', desc: 'BHU की स्थापना से लेकर अमेरिकी डॉक्टरेट तक', descEn: 'From the founding of BHU to an American doctorate' },
-    { icon: '🤝', label: 'राजनयिक प्रभाव', labelEn: 'Diplomatic & Political Influence', desc: 'भारतीय प्रधानमंत्रियों व अंतरराष्ट्रीय राजनयिकों का विश्वास', descEn: 'Trusted by Indian Prime Ministers and international diplomats' },
-    { icon: '🌏', label: 'वैश्विक मीडिया उपस्थिति', labelEn: 'Global Media Presence', desc: 'जापानी मीडिया द्वारा प्रामाणिक विशेषज्ञ के रूप में दस्तावेज़ीकृत', descEn: 'Documented by Japanese media as an authoritative expert' },
+    { img: 'vedic-manuscript', label: 'चतुःशताब्दी विरासत', labelEn: 'Four Centuries of Legacy', desc: '400 वर्षों से अधिक की अखंड वैदिक परम्परा', descEn: 'An unbroken Vedic tradition spanning over 400 years' },
+    { img: 'institutional-recognition', label: 'संस्थागत मान्यता', labelEn: 'Institutional Recognition', desc: 'BHU की स्थापना से लेकर अमेरिकी डॉक्टरेट तक', descEn: 'From the founding of BHU to an American doctorate' },
+    { img: 'handshake-trust', label: 'राजनयिक प्रभाव', labelEn: 'Diplomatic & Political Influence', desc: 'भारतीय प्रधानमंत्रियों व अंतरराष्ट्रीय राजनयिकों का विश्वास', descEn: 'Trusted by Indian Prime Ministers and international diplomats' },
+    { img: 'global-reach', label: 'वैश्विक मीडिया उपस्थिति', labelEn: 'Global Media Presence', desc: 'जापानी मीडिया द्वारा प्रामाणिक विशेषज्ञ के रूप में दस्तावेज़ीकृत', descEn: 'Documented by Japanese media as an authoritative expert' },
 ];
 
 export const testimonials = [

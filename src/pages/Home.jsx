@@ -113,7 +113,7 @@ export default function Home() {
                 <div className="container">
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem' }}>
                         <div style={{ background: 'white', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-lg)', padding: '1.4rem', boxShadow: 'var(--shadow-sm)', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                            <span style={{ fontSize: '2rem', flexShrink: 0 }}>🏛️</span>
+                            <img src="/images/icons/vedic-manuscript.jpg" alt="" width="48" height="48" loading="lazy" style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-md)', objectFit: 'cover', flexShrink: 0 }} />
                             <div>
                                 <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: 'var(--navy-900)' }}>
                                     {t('४००+ वर्षों की वैदिक परम्परा', '400+ Years Vedic Lineage')}
@@ -125,7 +125,7 @@ export default function Home() {
                         </div>
 
                         <div style={{ background: 'white', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-lg)', padding: '1.4rem', boxShadow: 'var(--shadow-sm)', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                            <span style={{ fontSize: '2rem', flexShrink: 0 }}>🌊</span>
+                            <img src="/images/icons/ganga-rituals.jpg" alt="" width="48" height="48" loading="lazy" style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-md)', objectFit: 'cover', flexShrink: 0 }} />
                             <div>
                                 <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: 'var(--navy-900)' }}>
                                     {t('१००% प्रामाणिक गंगा घाट पूजन', '100% Authentic Ganga Rituals')}
@@ -137,7 +137,7 @@ export default function Home() {
                         </div>
 
                         <div style={{ background: 'white', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-lg)', padding: '1.4rem', boxShadow: 'var(--shadow-sm)', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                            <span style={{ fontSize: '2rem', flexShrink: 0 }}>📹</span>
+                            <img src="/images/icons/live-video-pooja.jpg" alt="" width="48" height="48" loading="lazy" style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-md)', objectFit: 'cover', flexShrink: 0 }} />
                             <div>
                                 <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: 'var(--navy-900)' }}>
                                     {t('लाइव संकल्प एवं वीडियो प्रमाण', 'Live Sankalp & Video Proof')}
@@ -149,7 +149,7 @@ export default function Home() {
                         </div>
 
                         <div style={{ background: 'white', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-lg)', padding: '1.4rem', boxShadow: 'var(--shadow-sm)', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                            <span style={{ fontSize: '2rem', flexShrink: 0 }}>📜</span>
+                            <img src="/images/icons/astrologer-analysis.jpg" alt="" width="48" height="48" loading="lazy" style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-md)', objectFit: 'cover', flexShrink: 0 }} />
                             <div>
                                 <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: 'var(--navy-900)' }}>
                                     {t('वास्तविक ज्योतिषी विश्लेषण', 'Real Astrologer Analysis')}
@@ -178,7 +178,7 @@ export default function Home() {
                     <div className="stats-grid" style={{ marginTop: '2rem' }}>
                         {heritageSummary.map(h => (
                             <div className="stat-card" key={h.labelEn}>
-                                <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>{h.icon}</div>
+                                <img src={`/images/icons/${h.img}.jpg`} alt="" width="52" height="52" loading="lazy" style={{ width: '52px', height: '52px', borderRadius: '50%', objectFit: 'cover', margin: '0 auto 0.5rem' }} />
                                 <div className="stat-label" style={{ fontWeight: 700, color: 'var(--gold-300)', marginBottom: '0.35rem' }}>{t(h.label, h.labelEn)}</div>
                                 <div className="stat-label" style={{ fontSize: '0.8rem' }}>{t(h.desc, h.descEn)}</div>
                             </div>
@@ -338,15 +338,15 @@ export default function Home() {
                     <div className="om-divider"><img src="/images/logo.png" alt="" className="inline-logo-md" width="512" height="512" /></div>
                     <div className="features-grid">
                         {[
-                            { icon: '🏛️', title: t('काशी के विद्वत्तापूर्ण पंडित', 'Erudite Pandits of Kashi'), desc: t('बनारस हिंदू विश्वविद्यालय और संस्कृत विद्यापीठ से शिक्षित, अनुभवसम्पन्न एवं प्रमाणित पंडितगण।', 'Accomplished, certified Pandits, educated at Banaras Hindu University and Sanskrit Vidyapeeth.') },
-                            { icon: '📖', title: t('शास्त्रोक्त विधि-विधान', 'Authentic Vedic Methods'), desc: t('वेद एवं शास्त्रों के अनुसार शुद्ध विधि-विधान से सम्पूर्ण पूजन कार्य सम्पन्न।', 'Every ritual performed with precision, exactly as prescribed by the Vedas and scriptures.') },
-                            { icon: '🌐', title: t('ऑनलाइन बुकिंग', 'Online Booking'), desc: t('गृह बैठे सुगमता से पूजा बुक करें। WhatsApp अथवा वेबसाइट से त्वरित बुकिंग।', 'Book a pooja with ease, from the comfort of home. Swift booking via WhatsApp or our website.') },
-                            { icon: '📹', title: t('लाइव पूजा विकल्प', 'Live Pooja Option'), desc: t('वीडियो कॉल के माध्यम से पूजा में सम्मिलित हों — देश-विदेश में कहीं से भी।', 'Join your pooja live via video call — from anywhere across the globe.') },
-                            { icon: '📦', title: t('पूजा सामग्री डिलीवरी', 'Pooja Samagri Delivery'), desc: t('पूजा हेतु आवश्यक समस्त सामग्री — सम्पूर्ण भारत में डिलीवरी उपलब्ध।', 'Every material essential to your pooja — delivered anywhere across India.') },
-                            { icon: '💰', title: t('उचित दक्षिणा', 'Fair Pricing'), desc: t('समस्त पूजा सेवाओं का मूल्य पारदर्शी एवं उचित। कोई छुपी हुई लागत नहीं।', 'Transparent, equitable pricing on every service. No hidden costs, ever.') },
+                            { img: 'institutional-recognition', title: t('काशी के विद्वत्तापूर्ण पंडित', 'Erudite Pandits of Kashi'), desc: t('बनारस हिंदू विश्वविद्यालय और संस्कृत विद्यापीठ से शिक्षित, अनुभवसम्पन्न एवं प्रमाणित पंडितगण।', 'Accomplished, certified Pandits, educated at Banaras Hindu University and Sanskrit Vidyapeeth.') },
+                            { img: 'vedic-manuscript', title: t('शास्त्रोक्त विधि-विधान', 'Authentic Vedic Methods'), desc: t('वेद एवं शास्त्रों के अनुसार शुद्ध विधि-विधान से सम्पूर्ण पूजन कार्य सम्पन्न।', 'Every ritual performed with precision, exactly as prescribed by the Vedas and scriptures.') },
+                            { img: 'online-booking', title: t('ऑनलाइन बुकिंग', 'Online Booking'), desc: t('गृह बैठे सुगमता से पूजा बुक करें। WhatsApp अथवा वेबसाइट से त्वरित बुकिंग।', 'Book a pooja with ease, from the comfort of home. Swift booking via WhatsApp or our website.') },
+                            { img: 'live-video-pooja', title: t('लाइव पूजा विकल्प', 'Live Pooja Option'), desc: t('वीडियो कॉल के माध्यम से पूजा में सम्मिलित हों — देश-विदेश में कहीं से भी।', 'Join your pooja live via video call — from anywhere across the globe.') },
+                            { img: 'samagri-delivery', title: t('पूजा सामग्री डिलीवरी', 'Pooja Samagri Delivery'), desc: t('पूजा हेतु आवश्यक समस्त सामग्री — सम्पूर्ण भारत में डिलीवरी उपलब्ध।', 'Every material essential to your pooja — delivered anywhere across India.') },
+                            { img: 'fair-pricing', title: t('उचित दक्षिणा', 'Fair Pricing'), desc: t('समस्त पूजा सेवाओं का मूल्य पारदर्शी एवं उचित। कोई छुपी हुई लागत नहीं।', 'Transparent, equitable pricing on every service. No hidden costs, ever.') },
                         ].map((f, i) => (
                             <div className={`feature-card fade-up stagger-${i + 1}`} key={i}>
-                                <span className="feature-icon">{f.icon}</span>
+                                <img src={`/images/icons/${f.img}.jpg`} alt="" width="56" height="56" loading="lazy" className="feature-icon-img" />
                                 <h3 className="feature-title">{f.title}</h3>
                                 <p className="feature-desc">{f.desc}</p>
                             </div>
@@ -365,13 +365,13 @@ export default function Home() {
                     <div className="om-divider">ॐ</div>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem' }}>
                         {[
-                            { icon: '🙏', title: t('व्यक्तिगत भक्त', 'Individuals'), desc: t('स्वयं की मनोकामना पूर्ति, दोष निवारण अथवा नियमित पूजा-पाठ हेतु।', 'For your own wishes, dosh remedies, or regular pooja-paath.') },
-                            { icon: '👨‍👩‍👧‍👦', title: t('परिवार', 'Families'), desc: t('पितृ श्राद्ध, वंश-वृद्धि, विवाह में बाधा निवारण जैसे पारिवारिक अनुष्ठान।', 'Family rituals like ancestral rites, lineage blessings, and marriage-obstacle remedies.') },
-                            { icon: '✈️', title: t('प्रवासी भारतीय (NRI)', 'NRIs Abroad'), desc: t('विदेश में रहते हुए भी लाइव वीडियो के साथ अपने नाम व गोत्र से पूजा करवाएं।', 'Have a pooja performed in your name and gotra, live on video, from anywhere in the world.') },
-                            { icon: '🏢', title: t('व्यवसायी', 'Businesses'), desc: t('व्यापार वृद्धि, वास्तु दोष निवारण एवं कार्यालय हेतु शुभ पूजा।', 'Business growth, vastu dosh remedies, and auspicious poojas for your office.') },
+                            { img: 'individuals-praying', title: t('व्यक्तिगत भक्त', 'Individuals'), desc: t('स्वयं की मनोकामना पूर्ति, दोष निवारण अथवा नियमित पूजा-पाठ हेतु।', 'For your own wishes, dosh remedies, or regular pooja-paath.') },
+                            { img: 'families-pooja', title: t('परिवार', 'Families'), desc: t('पितृ श्राद्ध, वंश-वृद्धि, विवाह में बाधा निवारण जैसे पारिवारिक अनुष्ठान।', 'Family rituals like ancestral rites, lineage blessings, and marriage-obstacle remedies.') },
+                            { img: 'nri-abroad', title: t('प्रवासी भारतीय (NRI)', 'NRIs Abroad'), desc: t('विदेश में रहते हुए भी लाइव वीडियो के साथ अपने नाम व गोत्र से पूजा करवाएं।', 'Have a pooja performed in your name and gotra, live on video, from anywhere in the world.') },
+                            { img: 'business-pooja', title: t('व्यवसायी', 'Businesses'), desc: t('व्यापार वृद्धि, वास्तु दोष निवारण एवं कार्यालय हेतु शुभ पूजा।', 'Business growth, vastu dosh remedies, and auspicious poojas for your office.') },
                         ].map((seg, i) => (
                             <div className={`feature-card fade-up stagger-${i + 1}`} key={i}>
-                                <span className="feature-icon">{seg.icon}</span>
+                                <img src={`/images/icons/${seg.img}.jpg`} alt="" width="56" height="56" loading="lazy" className="feature-icon-img" />
                                 <h3 className="feature-title">{seg.title}</h3>
                                 <p className="feature-desc">{seg.desc}</p>
                             </div>
@@ -388,13 +388,13 @@ export default function Home() {
                     </p>
                     <Link to="/about#press" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 'clamp(1rem, 4vw, 2.5rem)', textDecoration: 'none' }}>
                         {[
-                            { icon: '📻', label: 'BBC London' },
-                            { icon: '📰', label: 'दैनिक जागरण' },
-                            { icon: '🎓', label: t('अमेरिकी डॉक्टरेट', 'US Doctorate') },
-                            { icon: '🤝', label: t('भूतपूर्व उपराष्ट्रपति', 'Former Vice President') },
+                            { img: 'press-bbc', label: 'BBC London' },
+                            { img: 'press-newspaper', label: 'दैनिक जागरण' },
+                            { img: 'us-doctorate', label: t('अमेरिकी डॉक्टरेट', 'US Doctorate') },
+                            { img: 'handshake-trust', label: t('भूतपूर्व उपराष्ट्रपति', 'Former Vice President') },
                         ].map((m, i) => (
                             <span key={i} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-secondary)', fontWeight: 600, fontSize: '0.95rem' }}>
-                                <span style={{ fontSize: '1.3rem' }}>{m.icon}</span> {m.label}
+                                <img src={`/images/icons/${m.img}.jpg`} alt="" width="28" height="28" loading="lazy" style={{ width: '28px', height: '28px', borderRadius: '50%', objectFit: 'cover' }} /> {m.label}
                             </span>
                         ))}
                     </Link>
