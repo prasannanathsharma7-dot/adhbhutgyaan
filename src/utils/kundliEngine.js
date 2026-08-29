@@ -1,6 +1,8 @@
 // Authentic Vedic Lahiri (Chitra Paksha) Astrological Ephemeris Engine
 // File: src/utils/kundliEngine.js
 
+import { getTropicalLongitudes } from './vedic-ephemeris.js';
+
 const RAD = Math.PI / 180;
 const DEG = 180 / Math.PI;
 
@@ -156,21 +158,16 @@ export function calculateInstantKundli({ birthDate, birthTime, birthPlace, name,
         const lagnaDegInSign = siderealAsc % 30;
         const lagnaRashi = RASHIS[(lagnaSignNum - 1 + 12) % 12] || RASHIS[0];
 
-        // 5. True Planetary Ephemeris (Sidereal)
-        // Sun
-        const M_sun = normalizeDeg(357.5291 + 35999.0503 * T);
-        const L_sun = normalizeDeg(280.4665 + 36000.7698 * T);
-        const C_sun = (1.9146 - 0.004817 * T) * Math.sin(M_sun * RAD) + (0.019993 - 0.000101 * T) * Math.sin(2 * M_sun * RAD) + 0.000289 * Math.sin(3 * M_sun * RAD);
-        const tropSun = normalizeDeg(L_sun + C_sun);
+        // 5. True Planetary Ephemeris (Sidereal) — accurate tropical longitudes via
+        // astronomy-engine (VSOP87/ELP2000-derived), then rotated to sidereal by
+        // subtracting the Lahiri ayanamsa computed above.
+        const utcDateObj = new Date(Date.UTC(cYear, cMonth - 1, cDay, Math.floor(utHours), Math.round((utHours % 1) * 60)));
+        const trop = getTropicalLongitudes(utcDateObj);
+
+        const tropSun = trop.sun;
         const sidSun = normalizeDeg(tropSun - ayanamsa);
 
-        // Moon
-        const L_moon = normalizeDeg(218.3165 + 481267.8813 * T);
-        const D_moon = normalizeDeg(297.8502 + 445267.1114 * T);
-        const M_moon = normalizeDeg(134.9634 + 477198.8676 * T);
-        const F_moon = normalizeDeg(93.2721 + 483202.0175 * T);
-        const dL_moon = 6.2888 * Math.sin(M_moon * RAD) + 1.2740 * Math.sin((2 * D_moon - M_moon) * RAD) + 0.6583 * Math.sin(2 * D_moon * RAD) + 0.2136 * Math.sin(2 * M_moon * RAD) - 0.1851 * Math.sin(M_sun * RAD) - 0.1143 * Math.sin(2 * F_moon * RAD) + 0.0588 * Math.sin((2 * D_moon - 2 * M_moon) * RAD) + 0.0572 * Math.sin((2 * D_moon - M_sun - M_moon) * RAD) + 0.0533 * Math.sin((2 * D_moon + M_moon) * RAD);
-        const tropMoon = normalizeDeg(L_moon + dL_moon);
+        const tropMoon = trop.moon;
         const sidMoon = normalizeDeg(tropMoon - ayanamsa);
 
         // Moon Nakshatra & Pada
@@ -178,48 +175,11 @@ export function calculateInstantKundli({ birthDate, birthTime, birthPlace, name,
         const moonNakshatra = NAKSHATRAS[moonNakshatraIndex] || NAKSHATRAS[0];
         const pada = Math.max(1, Math.min(4, Math.floor((sidMoon % (360 / 27)) / (360 / 108)) + 1));
 
-        // Mars (Geocentric reduction)
-        const M_mars = normalizeDeg(19.373 + (19139.977 * T));
-        const C_mars = (10.691 * Math.sin(M_mars * RAD)) + (0.623 * Math.sin(2 * M_mars * RAD));
-        const pi_mars = normalizeDeg(336.06 + (1.84 * T));
-        let tropMars = normalizeDeg(pi_mars + M_mars + C_mars - 60);
-        const sidMars = normalizeDeg(tropMars - ayanamsa);
-
-        // Mercury (Bounded near Sun within 28°)
-        const M_merc = normalizeDeg(174.79 + 149472.52 * T);
-        const C_merc = 23.44 * Math.sin(M_merc * RAD) + 2.98 * Math.sin(2 * M_merc * RAD);
-        const pi_merc = normalizeDeg(77.46 + 1.55 * T);
-        let tropMerc = normalizeDeg(pi_merc + M_merc + C_merc);
-        const mercDiff = (tropMerc - tropSun + 360) % 360;
-        if (mercDiff > 28 && mercDiff < 332) {
-            tropMerc = normalizeDeg(tropSun + 12);
-        }
-        const sidMerc = normalizeDeg(tropMerc - ayanamsa);
-
-        // Jupiter
-        const M_jup = normalizeDeg(20.02 + 3034.69 * T);
-        const C_jup = 5.555 * Math.sin(M_jup * RAD) + 0.166 * Math.sin(2 * M_jup * RAD);
-        const pi_jup = normalizeDeg(14.33 + 1.61 * T);
-        const tropJup = normalizeDeg(pi_jup + M_jup + C_jup);
-        const sidJup = normalizeDeg(tropJup - ayanamsa);
-
-        // Venus (Bounded near Sun within 48°)
-        const M_ven = normalizeDeg(50.12 + 58517.59 * T);
-        const C_ven = 0.776 * Math.sin(M_ven * RAD);
-        const pi_ven = normalizeDeg(131.56 + 1.40 * T);
-        let tropVen = normalizeDeg(pi_ven + M_ven + C_ven);
-        const venDiff = (tropVen - tropSun + 360) % 360;
-        if (venDiff > 48 && venDiff < 312) {
-            tropVen = normalizeDeg(tropSun - 42);
-        }
-        const sidVen = normalizeDeg(tropVen - ayanamsa);
-
-        // Saturn
-        const M_sat = normalizeDeg(317.02 + 1221.55 * T);
-        const C_sat = 6.289 * Math.sin(M_sat * RAD);
-        const pi_sat = normalizeDeg(93.06 + 1.96 * T);
-        const tropSat = normalizeDeg(pi_sat + M_sat + C_sat);
-        const sidSat = normalizeDeg(tropSat - ayanamsa);
+        const sidMars = normalizeDeg(trop.mars - ayanamsa);
+        const sidMerc = normalizeDeg(trop.mercury - ayanamsa);
+        const sidJup = normalizeDeg(trop.jupiter - ayanamsa);
+        const sidVen = normalizeDeg(trop.venus - ayanamsa);
+        const sidSat = normalizeDeg(trop.saturn - ayanamsa);
 
         // Rahu & Ketu (Mean Lunar Nodes)
         const tropRahu = normalizeDeg(125.0445 - (1934.1363 * T) + (0.002075 * T * T));

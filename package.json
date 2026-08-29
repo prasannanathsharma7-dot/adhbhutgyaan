@@ -11,6 +11,7 @@
     "test:health": "node scripts/test-system-health.mjs"
   },
   "dependencies": {
+    "astronomy-engine": "^2.1.19",
     "mongodb": "^6.10.0",
     "nodemailer": "^9.0.5",
     "react": "^19.0.0",
