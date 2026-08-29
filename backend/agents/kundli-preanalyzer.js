@@ -6,6 +6,7 @@
 const { ObjectId } = require('mongodb');
 const { getDb, withCors, capStr, escapeHtml } = require('../_db');
 const { requireAgentAuth } = require('../utils/agent-auth');
+const { getSiderealLongitudes } = require('../utils/vedic-ephemeris');
 
 const NAKSHATRAS = [
     { name: 'Ashwini', lord: 'Ketu', deity: 'Ashwini Kumaras', sign: 'Aries' },
@@ -125,33 +126,26 @@ function computeVedicChartData(birthDateStr, birthTimeStr, birthPlaceStr, lat = 
     const lagnaSignNum = Math.floor(siderealAsc / 30) + 1;
     const lagnaRashi = RASHIS[lagnaSignNum - 1];
 
-    // 5. Planetary Ephemeris
-    const M_sun = normalizeDeg(357.5291 + 35999.0503 * T);
-    const L_sun = normalizeDeg(280.4665 + 36000.7698 * T);
-    const C_sun = (1.9146 - 0.004817 * T) * Math.sin(M_sun * RAD) + (0.019993 - 0.000101 * T) * Math.sin(2 * M_sun * RAD);
-    const tropSun = normalizeDeg(L_sun + C_sun);
-    const sidSun = normalizeDeg(tropSun - ayanamsa);
+    // 5. Planetary Ephemeris — accurate positions (VSOP87/ELP2000 via astronomy-engine)
+    // for all seven grahas plus Rahu/Ketu, instead of the previous hand-rolled
+    // low-order approximations (which only covered Sun/Moon/Mars/Rahu and left
+    // Mercury/Jupiter/Venus/Saturn undefined, crashing the Kalsarp check below).
+    const utcDate = new Date(Date.UTC(year, month - 1, day, 0, 0, 0) + utHours * 3600 * 1000);
+    const sidereal = getSiderealLongitudes(utcDate);
 
-    const L_moon = normalizeDeg(218.3165 + 481267.8813 * T);
-    const D_moon = normalizeDeg(297.8502 + 445267.1114 * T);
-    const M_moon = normalizeDeg(134.9634 + 477198.8676 * T);
-    const dL_moon = 6.2888 * Math.sin(M_moon * RAD) + 1.2740 * Math.sin((2 * D_moon - M_moon) * RAD) + 0.6583 * Math.sin(2 * D_moon * RAD);
-    const tropMoon = normalizeDeg(L_moon + dL_moon);
-    const sidMoon = normalizeDeg(tropMoon - ayanamsa);
+    const sidSun = sidereal.sun;
+    const sidMoon = sidereal.moon;
+    const sidMars = sidereal.mars;
+    const sidMercury = sidereal.mercury;
+    const sidJupiter = sidereal.jupiter;
+    const sidVenus = sidereal.venus;
+    const sidSaturn = sidereal.saturn;
+    const sidRahu = sidereal.rahu;
+    const sidKetu = sidereal.ketu;
 
     const moonNakshatraIndex = Math.floor(sidMoon / (360 / 27));
     const moonNakshatra = NAKSHATRAS[moonNakshatraIndex];
     const pada = Math.floor((sidMoon % (360 / 27)) / (360 / 108)) + 1;
-
-    const M_mars = normalizeDeg(19.373 + (19139.977 * T));
-    const C_mars = (10.691 * Math.sin(M_mars * RAD)) + (0.623 * Math.sin(2 * M_mars * RAD));
-    const pi_mars = normalizeDeg(336.06 + (1.84 * T));
-    let tropMars = normalizeDeg(pi_mars + M_mars + C_mars - 90);
-    const sidMars = normalizeDeg(tropMars - ayanamsa);
-
-    const tropRahu = normalizeDeg(125.0445 - (1934.1363 * T));
-    const sidRahu = normalizeDeg(tropRahu - ayanamsa);
-    const sidKetu = normalizeDeg(sidRahu + 180);
 
     const getSignNum = deg => Math.floor(deg / 30) + 1;
     const getHouse = pSign => ((pSign - lagnaSignNum + 12) % 12) + 1;
@@ -159,6 +153,10 @@ function computeVedicChartData(birthDateStr, birthTimeStr, birthPlaceStr, lat = 
     const sunSignNum = getSignNum(sidSun);
     const moonSignNum = getSignNum(sidMoon);
     const marsSignNum = getSignNum(sidMars);
+    const mercSignNum = getSignNum(sidMercury);
+    const jupSignNum = getSignNum(sidJupiter);
+    const venSignNum = getSignNum(sidVenus);
+    const satSignNum = getSignNum(sidSaturn);
     const rahuSignNum = getSignNum(sidRahu);
     const ketuSignNum = getSignNum(sidKetu);
 
@@ -191,7 +189,10 @@ function computeVedicChartData(birthDateStr, birthTimeStr, birthPlaceStr, lat = 
     const hasPitraAffliction = moonNakshatra.name === 'Magha' || sunSignNum === rahuSignNum;
     const pitraDoshSeverity = hasPitraAffliction ? 'Active Ancestral Impediment (Pitra Rin)' : 'Mild / No Major Dosha';
 
-    const currentSaturnRashi = 11;
+    // Real current Saturn transit position (was previously hardcoded to Rashi 11 /
+    // Aquarius regardless of date, which made Sade Sati results wrong for anyone
+    // analyzed after Saturn moved signs).
+    const currentSaturnRashi = getSignNum(getSiderealLongitudes(new Date()).saturn);
     const sadeSatiDistance = ((currentSaturnRashi - moonSignNum + 12) % 12);
     let sadeSatiPhase = 'No Active Sade Sati';
     if (sadeSatiDistance === 11) sadeSatiPhase = 'Sade Sati Phase 1 (Rising Phase / Aarohi)';
@@ -303,6 +304,15 @@ Recommended Action: Finalize customized Janam Patrika and confirm auspicious san
 }
 
 module.exports = async (req, res) => {
+    return handleRequest(req, res);
+};
+
+module.exports.computeVedicChartData = computeVedicChartData;
+module.exports.generateVedicDossier = generateVedicDossier;
+module.exports.RASHIS = RASHIS;
+module.exports.NAKSHATRAS = NAKSHATRAS;
+
+async function handleRequest(req, res) {
     withCors(req, res);
 
     if (req.method === 'OPTIONS') {
@@ -406,4 +416,4 @@ module.exports = async (req, res) => {
             details: err.message || String(err),
         });
     }
-};
+}
