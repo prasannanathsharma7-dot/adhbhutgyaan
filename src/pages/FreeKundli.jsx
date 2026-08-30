@@ -6,15 +6,16 @@ import { breadcrumbJsonLd, combineJsonLd } from '../utils/seo';
 import BirthDetailsInput from '../components/BirthDetailsInput';
 import NorthIndianChart from '../components/NorthIndianChart';
 import { calculateInstantKundli } from '../utils/kundliEngine';
+import { Droplet, Flame, Mountain, Wind, Sparkles, Zap, MapPin, Printer, RefreshCw, Orbit, Shield, Gem, Coins, Palette, Hash, TrendingUp, Heart, Wand2, MessageCircle, CalendarDays, AlertTriangle, CheckCircle2, Hourglass, Lock, Star } from 'lucide-react';
 
 function getElementIcon(element = '') {
     const el = String(element).toLowerCase();
-    if (el.includes('water') || el.includes('जल')) return '💧';
-    if (el.includes('fire') || el.includes('अग्नि')) return '🔥';
-    if (el.includes('earth') || el.includes('पृथ्वी')) return '🌍';
-    if (el.includes('air') || el.includes('वायु')) return '💨';
-    if (el.includes('space') || el.includes('ether') || el.includes('आकाश')) return '🌌';
-    return '✨';
+    if (el.includes('water') || el.includes('जल')) return <Droplet size={15} style={{ color: '#0284c7' }} />;
+    if (el.includes('fire') || el.includes('अग्नि')) return <Flame size={15} style={{ color: '#ea580c' }} />;
+    if (el.includes('earth') || el.includes('पृथ्वी')) return <Mountain size={15} style={{ color: '#65a30d' }} />;
+    if (el.includes('air') || el.includes('वायु')) return <Wind size={15} style={{ color: '#0891b2' }} />;
+    if (el.includes('space') || el.includes('ether') || el.includes('आकाश')) return <Sparkles size={15} style={{ color: '#7c3aed' }} />;
+    return <Sparkles size={15} style={{ color: '#7c3aed' }} />;
 }
 
 export default function FreeKundli() {
@@ -205,7 +206,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                     <div style={{ maxWidth: 660, margin: '0 auto' }}>
                         {/* Trust banner */}
                         <div style={{ background: 'var(--gold-50)', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-lg)', padding: '1rem 1.25rem', marginBottom: '1.25rem', fontSize: '0.88rem', color: 'var(--navy-900)', display: 'flex', gap: '0.75rem', alignItems: 'flex-start', boxShadow: 'var(--shadow-sm)' }}>
-                            <span style={{ fontSize: '1.4rem' }}>⚡</span>
+                            <Zap size={22} style={{ color: 'var(--gold-600)' }} />
                             <div>
                                 <strong style={{ display: 'block', marginBottom: '0.2rem', color: 'var(--gold-900)' }}>
                                     {t('सटीक लाहिड़ी अयनांश एवं काशी परंपरा', 'Authentic Lahiri Ephemeris & Kashi Lineage')}
@@ -229,7 +230,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                         value={form.name}
                                         onChange={e => { setForm({ ...form, name: e.target.value }); setErrors({ ...errors, name: undefined }); }}
                                     />
-                                    {errors.name && <p className="form-error">⚠ {errors.name}</p>}
+                                    {errors.name && <p className="form-error" style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}><AlertTriangle size={13} />{errors.name}</p>}
                                 </div>
 
                                 {/* Friction-free DOB / TOB Direct Selectors */}
@@ -252,7 +253,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                         value={form.pob}
                                         onChange={e => { setForm({ ...form, pob: e.target.value }); setErrors({ ...errors, pob: undefined }); }}
                                     />
-                                    {errors.pob && <p className="form-error">⚠ {errors.pob}</p>}
+                                    {errors.pob && <p className="form-error" style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}><AlertTriangle size={13} />{errors.pob}</p>}
                                 </div>
 
                                 <div className="form-group" style={{ marginBottom: '1.25rem' }}>
@@ -277,7 +278,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                         value={form.phone}
                                         onChange={e => { setForm({ ...form, phone: e.target.value }); setErrors({ ...errors, phone: undefined }); }}
                                     />
-                                    {errors.phone && <p className="form-error">⚠ {errors.phone}</p>}
+                                    {errors.phone && <p className="form-error" style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}><AlertTriangle size={13} />{errors.phone}</p>}
                                 </div>
 
                                 <div className="form-group" style={{ marginBottom: '1.25rem' }}>
@@ -307,7 +308,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                 </div>
 
                                 <button type="submit" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', padding: '0.85rem', fontSize: '1rem' }} disabled={status === 'calculating'}>
-                                    {status === 'calculating' ? t('वैदिक गणना की जा रही है...', 'Calculating Vedic Chart...') : `⚡ ${t('निःशुल्क कुंडली रिपोर्ट तुरंत देखें', 'Generate Free Kundli Analysis')}`}
+                                    {status === 'calculating' ? t('वैदिक गणना की जा रही है...', 'Calculating Vedic Chart...') : <><Zap size={16} style={{ verticalAlign: '-3px', marginRight: '0.3rem' }} />{t('निःशुल्क कुंडली रिपोर्ट तुरंत देखें', 'Generate Free Kundli Analysis')}</>}
                                 </button>
                             </form>
                         </div>
@@ -327,11 +328,11 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                         <div className="kundli-report-card" style={{ background: 'white', borderRadius: 'var(--radius-xl)', padding: '1.25rem 1.5rem', border: '1px solid var(--border-gold)', boxShadow: 'var(--shadow-md)', marginBottom: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
                             <div>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.2rem' }}>
-                                    <span style={{ background: 'rgba(37,211,102,0.15)', color: 'var(--whatsapp-dark)', padding: '0.2rem 0.6rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 700 }}>
-                                        ✓ Lahiri Ephemeris Verified
+                                    <span style={{ background: 'rgba(37,211,102,0.15)', color: 'var(--whatsapp-dark)', padding: '0.2rem 0.6rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+                                        <CheckCircle2 size={13} /> Lahiri Ephemeris Verified
                                     </span>
                                     <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                                        📍 {kundliResult.birthPlace} (Ayanamsa: {kundliResult.ayanamsa})
+                                        <MapPin size={13} style={{ verticalAlign: '-2px', marginRight: '0.25rem' }} />{kundliResult.birthPlace} (Ayanamsa: {kundliResult.ayanamsa})
                                     </span>
                                 </div>
                                 <h2 style={{ margin: 0, fontSize: 'clamp(1.3rem, 2.5vw, 1.6rem)', color: 'var(--navy-950)' }}>
@@ -349,7 +350,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                     className="btn btn-outline-dark"
                                     style={{ fontSize: '0.82rem', padding: '0.45rem 0.9rem', borderRadius: 'var(--radius-full)' }}
                                 >
-                                    🖨️ {t('प्रिंट / PDF सेव करें', 'Print / Save PDF')}
+                                    <Printer size={15} style={{ verticalAlign: '-3px', marginRight: '0.3rem' }} />{t('प्रिंट / PDF सेव करें', 'Print / Save PDF')}
                                 </button>
                                 <button
                                     type="button"
@@ -357,7 +358,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                     className="btn btn-outline-dark"
                                     style={{ fontSize: '0.82rem', padding: '0.45rem 0.9rem', borderRadius: 'var(--radius-full)' }}
                                 >
-                                    🔄 {t('अन्य विवरण जांचें', 'Recalculate / New Chart')}
+                                    <RefreshCw size={15} style={{ verticalAlign: '-3px', marginRight: '0.3rem' }} />{t('अन्य विवरण जांचें', 'Recalculate / New Chart')}
                                 </button>
                             </div>
                         </div>
@@ -374,7 +375,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                             {/* Planetary Positions Table */}
                             <div className="kundli-report-card" style={{ background: 'white', borderRadius: 'var(--radius-lg)', padding: '1.25rem', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-sm)' }}>
                                 <h3 style={{ margin: '0 0 0.75rem', fontSize: '1.05rem', color: 'var(--navy-900)', borderBottom: '1px solid var(--border-light)', paddingBottom: '0.4rem' }}>
-                                    🪐 {t('ग्रह स्थिति एवं भाव विवरण (Lahiri Ephemeris)', 'Planetary Positions & Houses')}
+                                    <Orbit size={17} style={{ verticalAlign: '-3px', marginRight: '0.35rem' }} />{t('ग्रह स्थिति एवं भाव विवरण (Lahiri Ephemeris)', 'Planetary Positions & Houses')}
                                 </h3>
                                 <div style={{ overflowX: 'auto', maxHeight: '340px', overflowY: 'auto' }}>
                                     <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.82rem', textAlign: 'left' }}>
@@ -389,7 +390,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                         </thead>
                                         <tbody>
                                             <tr style={{ borderBottom: '1px solid #f1f5f9', background: 'var(--gold-50)', fontWeight: 700 }}>
-                                                <td style={{ padding: '0.45rem 0.6rem', color: '#c49a2c' }}>✦ Asc (Lagna)</td>
+                                                <td style={{ padding: '0.45rem 0.6rem', color: '#c49a2c' }}><Star size={12} style={{ verticalAlign: '-2px', marginRight: '0.2rem' }} />Asc (Lagna)</td>
                                                 <td style={{ padding: '0.45rem 0.6rem' }}>{kundliResult.lagna.rashi.split(' ')[0]}</td>
                                                 <td style={{ padding: '0.45rem 0.6rem' }}>House 1</td>
                                                 <td style={{ padding: '0.45rem 0.6rem' }}>{kundliResult.lagna.deg}</td>
@@ -416,11 +417,11 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                         <div className="kundli-report-card" style={{ background: 'white', borderRadius: 'var(--radius-lg)', padding: '1.5rem', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-md)', marginBottom: '1.5rem' }}>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '1.25rem', borderBottom: '1px solid var(--border-light)', paddingBottom: '0.75rem' }}>
                                 <h3 style={{ margin: 0, fontSize: '1.15rem', color: 'var(--navy-900)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                                    🛡️ {t('ग्रह दोष विश्लेषण (Astro Health & Dosha Matrix)', 'Core Vedic Doshas Detected')}
+                                    <Shield size={17} style={{ verticalAlign: '-3px', marginRight: '0.35rem' }} />{t('ग्रह दोष विश्लेषण (Astro Health & Dosha Matrix)', 'Core Vedic Doshas Detected')}
                                 </h3>
                                 <div style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                                    <span><strong style={{ color: '#b91c1c' }}>✓ Red</strong> = Shani / Ketu / Rahu / Mangal</span>
-                                    <span><strong style={{ color: '#c49a2c' }}>✓ Gold</strong> = Asc (Lagna)</span>
+                                    <span><strong style={{ color: '#b91c1c' }}>Red</strong> = Shani / Ketu / Rahu / Mangal</span>
+                                    <span><strong style={{ color: '#c49a2c' }}>Gold</strong> = Asc (Lagna)</span>
                                 </div>
                             </div>
 
@@ -432,7 +433,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                             मांगलिक दोष (Manglik)
                                         </strong>
                                         <span style={{ fontSize: '0.72rem', fontWeight: 700, color: kundliResult.doshas.manglik.hasDosh ? '#b91c1c' : '#15803d' }}>
-                                            {kundliResult.doshas.manglik.hasDosh ? '⚠ Active' : '✓ Shanta'}
+                                            {kundliResult.doshas.manglik.hasDosh ? <><AlertTriangle size={13} style={{ verticalAlign: '-2px', marginRight: '0.25rem', color: '#dc2626' }} />Active</> : <><CheckCircle2 size={13} style={{ verticalAlign: '-2px', marginRight: '0.25rem', color: '#16a34a' }} />Shanta</>}
                                         </span>
                                     </div>
                                     <p style={{ margin: 0, fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
@@ -447,7 +448,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                             कालसर्प दोष (Kalsarp)
                                         </strong>
                                         <span style={{ fontSize: '0.72rem', fontWeight: 700, color: kundliResult.doshas.kalsarp.hasDosh ? '#b91c1c' : '#15803d' }}>
-                                            {kundliResult.doshas.kalsarp.hasDosh ? '⚠ Detected' : '✓ Absent'}
+                                            {kundliResult.doshas.kalsarp.hasDosh ? <><AlertTriangle size={13} style={{ verticalAlign: '-2px', marginRight: '0.25rem', color: '#dc2626' }} />Detected</> : <><CheckCircle2 size={13} style={{ verticalAlign: '-2px', marginRight: '0.25rem', color: '#16a34a' }} />Absent</>}
                                         </span>
                                     </div>
                                     <p style={{ margin: 0, fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
@@ -462,7 +463,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                             शनि साढ़े साती / ढैय्या
                                         </strong>
                                         <span style={{ fontSize: '0.72rem', fontWeight: 700, color: kundliResult.doshas.sadeSati.active ? '#d97706' : '#15803d' }}>
-                                            {kundliResult.doshas.sadeSati.active ? '⏳ Active Phase' : '✓ Shanta'}
+                                            {kundliResult.doshas.sadeSati.active ? <><Hourglass size={13} style={{ verticalAlign: '-2px', marginRight: '0.25rem', color: '#d97706' }} />Active Phase</> : <><CheckCircle2 size={13} style={{ verticalAlign: '-2px', marginRight: '0.25rem', color: '#16a34a' }} />Shanta</>}
                                         </span>
                                     </div>
                                     <p style={{ margin: 0, fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
@@ -477,7 +478,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                             पितृ दोष (Ancestral)
                                         </strong>
                                         <span style={{ fontSize: '0.72rem', fontWeight: 700, color: kundliResult.doshas.pitraDosh.hasDosh ? '#b91c1c' : '#15803d' }}>
-                                            {kundliResult.doshas.pitraDosh.hasDosh ? '⚠ Impeded' : '✓ Kripa'}
+                                            {kundliResult.doshas.pitraDosh.hasDosh ? <><AlertTriangle size={13} style={{ verticalAlign: '-2px', marginRight: '0.25rem', color: '#dc2626' }} />Impeded</> : <><CheckCircle2 size={13} style={{ verticalAlign: '-2px', marginRight: '0.25rem', color: '#16a34a' }} />Kripa</>}
                                         </span>
                                     </div>
                                     <p style={{ margin: 0, fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
@@ -494,7 +495,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                     {t('शुभ रत्न (GEMSTONE)', 'LUCKY GEMSTONE')}
                                 </span>
                                 <strong style={{ color: 'var(--navy-950)', fontSize: '0.92rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                                    💎 {kundliResult.lagna.luckyGem || kundliResult.moon.luckyGem || 'Ruby (Manikya)'}
+                                    <Gem size={15} style={{ verticalAlign: '-3px', marginRight: '0.3rem' }} />{kundliResult.lagna.luckyGem || kundliResult.moon.luckyGem || 'Ruby (Manikya)'}
                                 </strong>
                             </div>
 
@@ -503,7 +504,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                     {t('शुभ धातु (METAL)', 'LUCKY METAL')}
                                 </span>
                                 <strong style={{ color: 'var(--navy-950)', fontSize: '0.92rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                                    🪙 {kundliResult.lagna.luckyMetal || 'Silver/Gold'}
+                                    <Coins size={15} style={{ verticalAlign: '-3px', marginRight: '0.3rem' }} />{kundliResult.lagna.luckyMetal || 'Silver/Gold'}
                                 </strong>
                             </div>
 
@@ -512,7 +513,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                     {t('शुभ रंग (LUCKY COLOR)', 'LUCKY COLOR')}
                                 </span>
                                 <strong style={{ color: 'var(--navy-950)', fontSize: '0.92rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                                    🎨 {kundliResult.lagna.luckyColor || 'White/Gold'}
+                                    <Palette size={15} style={{ verticalAlign: '-3px', marginRight: '0.3rem' }} />{kundliResult.lagna.luckyColor || 'White/Gold'}
                                 </strong>
                             </div>
 
@@ -521,7 +522,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                     {t('भाग्यशाली अंक (NUMBER)', 'LUCKY NUMBER')}
                                 </span>
                                 <strong style={{ color: 'var(--navy-950)', fontSize: '0.92rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                                    🔢 {kundliResult.lagna.luckyNum || '1'}
+                                    <Hash size={15} style={{ verticalAlign: '-3px', marginRight: '0.3rem' }} />{kundliResult.lagna.luckyNum || '1'}
                                 </strong>
                             </div>
 
@@ -539,7 +540,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                         <div className="no-print" style={{ marginBottom: '2rem' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
                                 <h3 style={{ margin: 0, fontSize: '1.25rem', color: 'var(--navy-950)' }}>
-                                    🔒 {t('प्रीमियम भविष्य फल एवं समय चक्र (Locked Timeline Analysis)', 'Premium 5-8 Year Future Forecast (Locked)')}
+                                    <Lock size={17} style={{ verticalAlign: '-3px', marginRight: '0.35rem' }} />{t('प्रीमियम भविष्य फल एवं समय चक्र (Locked Timeline Analysis)', 'Premium 5-8 Year Future Forecast (Locked)')}
                                 </h3>
                                 <span style={{ background: 'var(--gold-100)', color: 'var(--gold-900)', fontSize: '0.72rem', fontWeight: 700, padding: '0.2rem 0.6rem', borderRadius: '999px' }}>
                                     Pandit Ji Exclusive
@@ -551,15 +552,15 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                 <div style={{ background: 'white', borderRadius: 'var(--radius-lg)', padding: '1.25rem', border: '1px solid var(--border-gold)', position: 'relative', overflow: 'hidden', boxShadow: 'var(--shadow-sm)' }}>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
                                         <strong style={{ fontSize: '0.95rem', color: 'var(--navy-900)' }}>
-                                            📈 आगामी 5-8 वर्ष: करियर, व्यापार एवं धन लाभ
+                                            <TrendingUp size={14} style={{ verticalAlign: '-2px', marginRight: '0.3rem' }} />आगामी 5-8 वर्ष: करियर, व्यापार एवं धन लाभ
                                         </strong>
-                                        <span style={{ fontSize: '1.1rem' }}>🔒</span>
+                                        <Lock size={16} style={{ color: 'var(--gold-700)' }} />
                                     </div>
                                     <div style={{ filter: 'blur(4px)', userSelect: 'none', fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: 1.6 }}>
                                         वर्ष 2026 से 2031 के मध्य गुरु की दृष्टि दशम भाव पर होने से कार्यक्षेत्र में बड़ा पदोन्नति योग बनता है। व्यापार में अचानक आर्थिक उछाल और नए अनुबंध प्राप्त होंगे।
                                     </div>
                                     <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.75)', backdropFilter: 'blur(2px)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1rem', textAlign: 'center' }}>
-                                        <span style={{ fontSize: '1.5rem', marginBottom: '0.2rem' }}>🔒</span>
+                                        <Lock size={22} style={{ color: 'var(--gold-700)', marginBottom: '0.2rem' }} />
                                         <strong style={{ fontSize: '0.85rem', color: 'var(--navy-900)', marginBottom: '0.4rem' }}>
                                             {t('करियर व धन समय-चक्र अनलॉक करें', 'Unlock Career & Wealth Timeline')}
                                         </strong>
@@ -573,15 +574,15 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                 <div style={{ background: 'white', borderRadius: 'var(--radius-lg)', padding: '1.25rem', border: '1px solid var(--border-gold)', position: 'relative', overflow: 'hidden', boxShadow: 'var(--shadow-sm)' }}>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
                                         <strong style={{ fontSize: '0.95rem', color: 'var(--navy-900)' }}>
-                                            💍 विवाह योग, वैवाहिक सामंजस्य एवं जीवनसाथी
+                                            <Heart size={14} style={{ verticalAlign: '-2px', marginRight: '0.3rem' }} />विवाह योग, वैवाहिक सामंजस्य एवं जीवनसाथी
                                         </strong>
-                                        <span style={{ fontSize: '1.1rem' }}>🔒</span>
+                                        <Lock size={16} style={{ color: 'var(--gold-700)' }} />
                                     </div>
                                     <div style={{ filter: 'blur(4px)', userSelect: 'none', fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: 1.6 }}>
                                         सप्तम भाव के स्वामी पर शुभ ग्रहों के गोचर से विवाह में आ रही अड़चनों का अंत होगा। जीवनसाथी का स्वभाव, दिशा एवं अनुकूल समय अवधि का विस्तृत विवरण।
                                     </div>
                                     <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.75)', backdropFilter: 'blur(2px)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1rem', textAlign: 'center' }}>
-                                        <span style={{ fontSize: '1.5rem', marginBottom: '0.2rem' }}>🔒</span>
+                                        <Lock size={22} style={{ color: 'var(--gold-700)', marginBottom: '0.2rem' }} />
                                         <strong style={{ fontSize: '0.85rem', color: 'var(--navy-900)', marginBottom: '0.4rem' }}>
                                             {t('विवाह एवं संबंध योग अनलॉक करें', 'Unlock Relationship Timing')}
                                         </strong>
@@ -595,15 +596,15 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                 <div style={{ background: 'white', borderRadius: 'var(--radius-lg)', padding: '1.25rem', border: '1px solid var(--border-gold)', position: 'relative', overflow: 'hidden', boxShadow: 'var(--shadow-sm)' }}>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
                                         <strong style={{ fontSize: '0.95rem', color: 'var(--navy-900)' }}>
-                                            📿 विशिष्ट ग्रह शांति एवं काशी शास्त्रोक्त उपाय
+                                            <Wand2 size={14} style={{ verticalAlign: '-2px', marginRight: '0.3rem' }} />विशिष्ट ग्रह शांति एवं काशी शास्त्रोक्त उपाय
                                         </strong>
-                                        <span style={{ fontSize: '1.1rem' }}>🔒</span>
+                                        <Lock size={16} style={{ color: 'var(--gold-700)' }} />
                                     </div>
                                     <div style={{ filter: 'blur(4px)', userSelect: 'none', fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: 1.6 }}>
                                         जन्म कुंडली के दूषित ग्रहों की शांति हेतु काशी में विशेष रुद्राभिषेक, महामृत्युंजय मंत्र जप एवं व्यक्तिगत रत्न निर्धारण की संपूर्ण विधि।
                                     </div>
                                     <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.75)', backdropFilter: 'blur(2px)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1rem', textAlign: 'center' }}>
-                                        <span style={{ fontSize: '1.5rem', marginBottom: '0.2rem' }}>🔒</span>
+                                        <Lock size={22} style={{ color: 'var(--gold-700)', marginBottom: '0.2rem' }} />
                                         <strong style={{ fontSize: '0.85rem', color: 'var(--navy-900)', marginBottom: '0.4rem' }}>
                                             {t('व्यक्तिगत वैदिक उपाय अनलॉक करें', 'Unlock Vedic Remedies')}
                                         </strong>
@@ -653,7 +654,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                 <div style={{ maxWidth: '620px' }}>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.6rem', flexWrap: 'wrap' }}>
                                         <span style={{ color: '#fbbf24', fontWeight: 700, fontSize: '0.85rem', letterSpacing: '0.5px', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                                            🔮 {t('काशी के ज्योतिषाचार्य से प्रत्यक्ष 1-on-1 परामर्श', 'Direct 1-on-1 Video Call with Kashi Astrologer')}
+                                            <Sparkles size={15} style={{ verticalAlign: '-3px', marginRight: '0.3rem' }} />{t('काशी के ज्योतिषाचार्य से प्रत्यक्ष 1-on-1 परामर्श', 'Direct 1-on-1 Video Call with Kashi Astrologer')}
                                         </span>
                                         <span style={{ background: 'rgba(251, 191, 36, 0.15)', color: '#fbbf24', fontSize: '0.72rem', fontWeight: 700, padding: '0.2rem 0.6rem', borderRadius: '999px', border: '1px solid rgba(251, 191, 36, 0.3)' }}>
                                             400+ Years Kashi Tradition
@@ -674,13 +675,13 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                     {/* Feature Pills */}
                                     <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                                         <span style={{ background: 'rgba(255,255,255,0.08)', color: '#f1f5f9', padding: '0.35rem 0.75rem', borderRadius: 'var(--radius-full)', fontSize: '0.78rem', border: '1px solid rgba(255,255,255,0.12)' }}>
-                                            📈 5-Year Career & Wealth Timeline
+                                            <TrendingUp size={13} style={{ verticalAlign: '-2px', marginRight: '0.25rem' }} />5-Year Career & Wealth Timeline
                                         </span>
                                         <span style={{ background: 'rgba(255,255,255,0.08)', color: '#f1f5f9', padding: '0.35rem 0.75rem', borderRadius: 'var(--radius-full)', fontSize: '0.78rem', border: '1px solid rgba(255,255,255,0.12)' }}>
-                                            💍 Vivah Yog & Partner Match
+                                            <Heart size={13} style={{ verticalAlign: '-2px', marginRight: '0.25rem' }} />Vivah Yog & Partner Match
                                         </span>
                                         <span style={{ background: 'rgba(255,255,255,0.08)', color: '#f1f5f9', padding: '0.35rem 0.75rem', borderRadius: 'var(--radius-full)', fontSize: '0.78rem', border: '1px solid rgba(255,255,255,0.12)' }}>
-                                            📿 Authentic Kashi Grah Shanti
+                                            <Wand2 size={13} style={{ verticalAlign: '-2px', marginRight: '0.25rem' }} />Authentic Kashi Grah Shanti
                                         </span>
                                     </div>
                                 </div>
@@ -693,14 +694,14 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                         className="btn btn-whatsapp"
                                         style={{ padding: '0.9rem 1.25rem', fontSize: '0.95rem', fontWeight: 700, justifyContent: 'center', textAlign: 'center', boxShadow: '0 6px 20px rgba(37,211,102,0.4)', borderRadius: 'var(--radius-md)' }}
                                     >
-                                        💬 {t('WhatsApp पर 1-on-1 वीडियो कॉल बुक करें', 'Book 1-on-1 Video Call on WhatsApp')}
+                                        <MessageCircle size={15} style={{ verticalAlign: '-3px', marginRight: '0.3rem' }} />{t('WhatsApp पर 1-on-1 वीडियो कॉल बुक करें', 'Book 1-on-1 Video Call on WhatsApp')}
                                     </a>
                                     <Link
                                         to="/booking?service=astrology-consultation"
                                         className="btn btn-outline"
                                         style={{ padding: '0.75rem 1.25rem', fontSize: '0.88rem', justifyContent: 'center', textAlign: 'center', borderColor: 'rgba(255,255,255,0.3)', color: '#f8fafc', background: 'rgba(255,255,255,0.05)', borderRadius: 'var(--radius-md)' }}
                                     >
-                                        📅 {t('वेबसाइट पर अपॉइंटमेंट बुक करें', 'Book Appointment Online')}
+                                        <CalendarDays size={15} style={{ verticalAlign: '-3px', marginRight: '0.3rem' }} />{t('वेबसाइट पर अपॉइंटमेंट बुक करें', 'Book Appointment Online')}
                                     </Link>
                                 </div>
                             </div>

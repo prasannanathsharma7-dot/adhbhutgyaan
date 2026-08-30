@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
+import { Sunrise, Sparkles, Star } from 'lucide-react';
 
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
@@ -61,9 +62,9 @@ export default function Navbar() {
     ];
 
     const toolLinks = [
-        { to: '/panchang', label: t('पंचांग', 'Panchang'), icon: '📅' },
-        { to: '/free-kundli', label: t('फ्री कुंडली', 'Free Kundli'), icon: '🔮' },
-        { to: '/horoscope', label: t('राशिफल', 'Horoscope'), icon: '♈' },
+        { to: '/panchang', label: t('पंचांग', 'Panchang'), Icon: Sunrise },
+        { to: '/free-kundli', label: t('फ्री कुंडली', 'Free Kundli'), Icon: Sparkles },
+        { to: '/horoscope', label: t('राशिफल', 'Horoscope'), Icon: Star },
     ];
 
     const restLinks = [
@@ -116,7 +117,7 @@ export default function Navbar() {
                                     className={location.pathname === link.to ? 'active' : ''}
                                     aria-current={location.pathname === link.to ? 'page' : undefined}
                                 >
-                                    <span className="nav-dropdown-icon">{link.icon}</span> {link.label}
+                                    <span className="nav-dropdown-icon"><link.Icon size={15} /></span> {link.label}
                                 </Link>
                             ))}
                         </div>

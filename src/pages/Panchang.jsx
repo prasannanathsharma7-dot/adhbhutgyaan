@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import useSEO from '../hooks/useSEO';
 import { breadcrumbJsonLd, combineJsonLd } from '../utils/seo';
+import { Search, MapPin, CalendarDays, CheckCircle2, XCircle, Globe, Sunrise, Sunset, Sun, Moon, ScrollText, Star, Sparkles, Flower2, Share2, Copy, MessageCircle, CalendarCheck, Clock } from 'lucide-react';
 import { calculateGlobalPanchang } from '../utils/astroEngine';
 
 // Default Kashi Anchor (Guaranteed Fallback)
@@ -328,7 +329,7 @@ export default function Panchang() {
                         {/* Search Input */}
                         <div ref={searchRef} style={{ position: 'relative' }}>
                             <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: 'var(--navy-900)', marginBottom: '0.35rem' }}>
-                                🔍 {t('विश्व का कोई भी शहर / गांव खोजें (Any City Worldwide)', 'Search Any City, Town or Zipcode Worldwide')}
+                                <Search size={14} style={{ verticalAlign: '-2px', marginRight: '0.3rem' }} />{t('विश्व का कोई भी शहर / गांव खोजें (Any City Worldwide)', 'Search Any City, Town or Zipcode Worldwide')}
                             </label>
                             <div style={{ position: 'relative' }}>
                                 <input
@@ -358,7 +359,7 @@ export default function Panchang() {
                                             onMouseEnter={e => e.currentTarget.style.background = 'var(--gold-50)'}
                                             onMouseLeave={e => e.currentTarget.style.background = 'white'}
                                         >
-                                            📍 <b>{item?.display_name || item?.name}</b>
+                                            <MapPin size={13} style={{ verticalAlign: '-2px', marginRight: '0.25rem' }} /><b>{item?.display_name || item?.name}</b>
                                         </div>
                                     ))}
                                 </div>
@@ -368,7 +369,7 @@ export default function Panchang() {
                         {/* Date Navigation Strip */}
                         <div>
                             <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: 'var(--navy-900)', marginBottom: '0.35rem' }}>
-                                📅 {t('पंचांग तिथि चुनें (Select Date)', 'Select Date')}
+                                <CalendarDays size={14} style={{ verticalAlign: '-2px', marginRight: '0.3rem' }} />{t('पंचांग तिथि चुनें (Select Date)', 'Select Date')}
                             </label>
                             <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center', flexWrap: 'wrap' }}>
                                 <button type="button" onClick={() => shiftDate(-1)} className="btn btn-outline-dark" style={{ padding: '0.45rem 0.75rem', fontSize: '0.8rem' }}>
@@ -395,11 +396,11 @@ export default function Panchang() {
                     {gpsNotice && (
                         <div style={{ marginTop: '0.75rem', paddingTop: '0.65rem', borderTop: '1px solid var(--border-light)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem', fontSize: '0.82rem', color: location?.source === 'gps' ? '#065f46' : 'var(--text-secondary)' }}>
                             <div>
-                                {location?.source === 'gps' && <span style={{ background: '#ecfdf5', color: '#065f46', padding: '0.2rem 0.5rem', borderRadius: '4px', fontWeight: 700, marginRight: '0.4rem' }}>✓ GPS Active</span>}
+                                {location?.source === 'gps' && <span style={{ background: '#ecfdf5', color: '#065f46', padding: '0.2rem 0.5rem', borderRadius: '4px', fontWeight: 700, marginRight: '0.4rem', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}><CheckCircle2 size={13} /> GPS Active</span>}
                                 {gpsNotice}
                             </div>
                             <div style={{ color: 'var(--gold-800)', fontWeight: 600 }}>
-                                🌐 Lat: {panchangData?.location?.latitude ?? '25.3176'}° | Lon: {panchangData?.location?.longitude ?? '82.9739'}° | {panchangData?.location?.timezoneOffset ?? 'UTC+5.5'}
+                                <Globe size={13} style={{ verticalAlign: '-2px', marginRight: '0.3rem' }} />Lat: {panchangData?.location?.latitude ?? '25.3176'}° | Lon: {panchangData?.location?.longitude ?? '82.9739'}° | {panchangData?.location?.timezoneOffset ?? 'UTC+5.5'}
                             </div>
                         </div>
                     )}
@@ -409,13 +410,13 @@ export default function Panchang() {
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.75rem', marginBottom: '1.5rem' }}>
                     <div style={{ background: 'white', padding: '1rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-sm)', textAlign: 'center' }}>
                         <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', display: 'block' }}>{t('सूर्योदय', 'Local Sunrise')}</span>
-                        <strong style={{ fontSize: '1.25rem', color: '#ea580c', display: 'block', marginTop: '0.2rem' }}>☀️ {panchangData?.solar?.sunrise || '05:45 AM'}</strong>
+                        <strong style={{ fontSize: '1.25rem', color: '#ea580c', display: 'block', marginTop: '0.2rem' }}><Sunrise size={17} style={{ verticalAlign: '-3px', marginRight: '0.3rem' }} />{panchangData?.solar?.sunrise || '05:45 AM'}</strong>
                         <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Day Length: {panchangData?.solar?.dayLength || '12h 45m'}</span>
                     </div>
 
                     <div style={{ background: 'white', padding: '1rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-sm)', textAlign: 'center' }}>
                         <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', display: 'block' }}>{t('सूर्यास्त', 'Local Sunset')}</span>
-                        <strong style={{ fontSize: '1.25rem', color: '#7c2d12', display: 'block', marginTop: '0.2rem' }}>🌅 {panchangData?.solar?.sunset || '06:30 PM'}</strong>
+                        <strong style={{ fontSize: '1.25rem', color: '#7c2d12', display: 'block', marginTop: '0.2rem' }}><Sunset size={17} style={{ verticalAlign: '-3px', marginRight: '0.3rem' }} />{panchangData?.solar?.sunset || '06:30 PM'}</strong>
                         <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Solar Noon: {panchangData?.solar?.solarNoon || '12:07 PM'}</span>
                     </div>
 
@@ -427,8 +428,8 @@ export default function Panchang() {
 
                     <div style={{ background: 'white', padding: '1rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-sm)', textAlign: 'center' }}>
                         <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', display: 'block' }}>{t('सूर्य / चंद्र राशि', 'Sun & Moon Signs')}</span>
-                        <strong style={{ fontSize: '0.95rem', color: 'var(--navy-900)', display: 'block', marginTop: '0.2rem' }}>☀️ {(panchangData?.transits?.suryaRashi || 'Leo (Simha)').split(' ')[0]}</strong>
-                        <span style={{ fontSize: '0.75rem', color: 'var(--gold-800)', fontWeight: 600 }}>🌙 {(panchangData?.transits?.chandraRashi || 'Aries (Mesha)').split(' ')[0]}</span>
+                        <strong style={{ fontSize: '0.95rem', color: 'var(--navy-900)', display: 'block', marginTop: '0.2rem' }}><Sun size={14} style={{ verticalAlign: '-2px', marginRight: '0.25rem' }} />{(panchangData?.transits?.suryaRashi || 'Leo (Simha)').split(' ')[0]}</strong>
+                        <span style={{ fontSize: '0.75rem', color: 'var(--gold-800)', fontWeight: 600 }}><Moon size={12} style={{ verticalAlign: '-2px', marginRight: '0.2rem' }} />{(panchangData?.transits?.chandraRashi || 'Aries (Mesha)').split(' ')[0]}</span>
                     </div>
                 </div>
 
@@ -438,7 +439,7 @@ export default function Panchang() {
                     <div style={{ background: 'white', borderRadius: 'var(--radius-lg)', padding: '1.5rem', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-md)' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', paddingBottom: '0.6rem', borderBottom: '1px solid var(--border-light)' }}>
                             <h3 style={{ margin: 0, fontSize: '1.15rem', color: 'var(--navy-900)' }}>
-                                📜 {t('पंचांग के पांच अंग', 'Five Vedic Limbs (Panchang)')}
+                                <ScrollText size={16} style={{ verticalAlign: '-3px', marginRight: '0.35rem' }} />{t('पंचांग के पांच अंग', 'Five Vedic Limbs (Panchang)')}
                             </h3>
                             <span style={{ fontSize: '0.75rem', background: 'var(--warm-100)', padding: '0.2rem 0.5rem', borderRadius: '4px', color: 'var(--navy-800)', fontWeight: 600 }}>
                                 {cityName}
@@ -447,22 +448,22 @@ export default function Panchang() {
 
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.65rem 0.85rem', background: 'var(--warm-50)', borderRadius: 'var(--radius-md)' }}>
-                                <span style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}><b>📜 {t('तिथि', 'Tithi')}:</b></span>
+                                <span style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}><b><ScrollText size={13} style={{ verticalAlign: '-2px', marginRight: '0.2rem' }} />{t('तिथि', 'Tithi')}:</b></span>
                                 <span style={{ fontWeight: 700, color: 'var(--navy-900)', fontSize: '0.9rem' }}>{panchangData?.tithi?.name || 'Shukla Pratipada'} ({panchangData?.tithi?.paksha || 'Shukla Paksha'})</span>
                             </div>
 
                             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.65rem 0.85rem', background: 'var(--warm-50)', borderRadius: 'var(--radius-md)' }}>
-                                <span style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}><b>⭐ {t('नक्षत्र', 'Nakshatra')}:</b></span>
+                                <span style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}><b><Star size={13} style={{ verticalAlign: '-2px', marginRight: '0.2rem' }} />{t('नक्षत्र', 'Nakshatra')}:</b></span>
                                 <span style={{ fontWeight: 700, color: 'var(--navy-900)', fontSize: '0.9rem' }}>{panchangData?.nakshatra?.name || 'Ashwini'} (Pada {panchangData?.nakshatra?.pada || 1}) · {panchangData?.nakshatra?.lord || 'Ketu'}</span>
                             </div>
 
                             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.65rem 0.85rem', background: 'var(--warm-50)', borderRadius: 'var(--radius-md)' }}>
-                                <span style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}><b>✨ {t('योग', 'Yoga')}:</b></span>
+                                <span style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}><b><Sparkles size={13} style={{ verticalAlign: '-2px', marginRight: '0.2rem' }} />{t('योग', 'Yoga')}:</b></span>
                                 <span style={{ fontWeight: 700, color: 'var(--navy-900)', fontSize: '0.9rem' }}>{panchangData?.yoga?.name || 'Siddhi'}</span>
                             </div>
 
                             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.65rem 0.85rem', background: 'var(--warm-50)', borderRadius: 'var(--radius-md)' }}>
-                                <span style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}><b>🪷 {t('करण', 'Karana')}:</b></span>
+                                <span style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}><b><Flower2 size={13} style={{ verticalAlign: '-2px', marginRight: '0.2rem' }} />{t('करण', 'Karana')}:</b></span>
                                 <span style={{ fontWeight: 700, color: 'var(--navy-900)', fontSize: '0.9rem' }}>{panchangData?.karana?.name || 'Bava'}</span>
                             </div>
 
@@ -486,7 +487,7 @@ export default function Panchang() {
                         {/* Shubh Muhurats (Green Card) */}
                         <div style={{ background: '#f0fdf4', border: '1px solid #86efac', borderRadius: 'var(--radius-lg)', padding: '1.25rem', boxShadow: 'var(--shadow-sm)' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#166534', fontWeight: 700, fontSize: '1rem', marginBottom: '0.75rem' }}>
-                                <span>🟢</span> {t('शुभ मुहूर्त (Auspicious Muhurat Windows)', 'Auspicious Muhurat Windows')}
+                                <CheckCircle2 size={17} style={{ color: '#16a34a' }} /> {t('शुभ मुहूर्त (Auspicious Muhurat Windows)', 'Auspicious Muhurat Windows')}
                             </div>
                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.6rem', fontSize: '0.85rem' }}>
                                 <div style={{ background: 'white', padding: '0.6rem', borderRadius: 'var(--radius-md)', border: '1px solid #bbf7d0' }}>
@@ -511,7 +512,7 @@ export default function Panchang() {
                         {/* Inauspicious Kaal (Red Card) */}
                         <div style={{ background: '#fef2f2', border: '1px solid #fca5a5', borderRadius: 'var(--radius-lg)', padding: '1.25rem', boxShadow: 'var(--shadow-sm)' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#991b1b', fontWeight: 700, fontSize: '1rem', marginBottom: '0.75rem' }}>
-                                <span>🔴</span> {t('अशुभ काल (वर्जित समय / Inauspicious Kaal)', 'Inauspicious Period (Varjit)')}
+                                <XCircle size={17} style={{ color: '#dc2626' }} /> {t('अशुभ काल (वर्जित समय / Inauspicious Kaal)', 'Inauspicious Period (Varjit)')}
                             </div>
                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.5rem', fontSize: '0.8rem' }}>
                                 <div style={{ background: 'white', padding: '0.6rem 0.5rem', borderRadius: 'var(--radius-md)', border: '1px solid #fecaca', textAlign: 'center' }}>
@@ -535,9 +536,12 @@ export default function Panchang() {
                 <div style={{ background: 'white', borderRadius: 'var(--radius-lg)', padding: '1.5rem', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-md)', marginBottom: '1.5rem' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem', marginBottom: '1.25rem', paddingBottom: '0.75rem', borderBottom: '1px solid var(--border-light)' }}>
                         <div>
-                            <h3 style={{ margin: 0, fontSize: '1.2rem', color: 'var(--navy-900)' }}>
-                                🌟 {t('आज का चौघड़िया (Day & Night Choghadiya)', 'Dynamic Choghadiya Timings')}
-                            </h3>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                                <Clock size={18} style={{ color: 'var(--gold-600)' }} />
+                                <h3 style={{ margin: 0, fontSize: '1.2rem', color: 'var(--navy-900)' }}>
+                                    {t('आज का चौघड़िया (Day & Night Choghadiya)', 'Dynamic Choghadiya Timings')}
+                                </h3>
+                            </div>
                             <p style={{ margin: 0, fontSize: '0.82rem', color: 'var(--text-muted)' }}>
                                 {t('शुभ कार्यों हेतु अमृत, शुभ, एवं लाभ चौघड़िया का चयन करें।', 'Choose Amrit, Shubh or Labh Choghadiya slots for auspicious tasks.')}
                             </p>
@@ -560,7 +564,7 @@ export default function Panchang() {
                                     cursor: 'pointer',
                                 }}
                             >
-                                ☀️ {t('दिन का चौघड़िया', 'Day Choghadiya')}
+                                <Sun size={14} style={{ verticalAlign: '-2px', marginRight: '0.25rem' }} />{t('दिन का चौघड़िया', 'Day Choghadiya')}
                             </button>
                             <button
                                 type="button"
@@ -577,7 +581,7 @@ export default function Panchang() {
                                     cursor: 'pointer',
                                 }}
                             >
-                                🌙 {t('रात का चौघड़िया', 'Night Choghadiya')}
+                                <Moon size={14} style={{ verticalAlign: '-2px', marginRight: '0.25rem' }} />{t('रात का चौघड़िया', 'Night Choghadiya')}
                             </button>
                         </div>
                     </div>
@@ -598,15 +602,16 @@ export default function Panchang() {
                                 }}
                             >
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    <strong style={{ fontSize: '0.95rem', color: 'var(--navy-900)' }}>
-                                        {slot?.badge || '🔵'} {slot?.name || 'Slot'}
+                                    <strong style={{ fontSize: '0.95rem', color: 'var(--navy-900)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                                        <span style={{ width: '9px', height: '9px', borderRadius: '50%', display: 'inline-block', background: slot?.isAuspicious ? '#16a34a' : (slot?.type === 'Inauspicious' ? '#dc2626' : '#2563eb') }} />
+                                        {slot?.name || 'Slot'}
                                     </strong>
                                     <span style={{ fontSize: '0.72rem', fontWeight: 700, color: slot?.isAuspicious ? '#15803d' : (slot?.type === 'Inauspicious' ? '#b91c1c' : '#1e40af') }}>
                                         {slot?.quality || 'Neutral'}
                                     </span>
                                 </div>
-                                <div style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', fontWeight: 600 }}>
-                                    ⏰ {slot?.timeRange || ''}
+                                <div style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                                    <Clock size={13} /> {slot?.timeRange || ''}
                                 </div>
                             </div>
                         ))}
@@ -617,7 +622,7 @@ export default function Panchang() {
                 <div style={{ background: 'linear-gradient(135deg, var(--navy-950) 0%, var(--navy-850) 100%)', borderRadius: 'var(--radius-xl)', padding: 'clamp(1.5rem, 4vw, 2.5rem)', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.5rem', boxShadow: 'var(--shadow-lg)' }}>
                     <div style={{ maxWidth: '600px' }}>
                         <span style={{ color: 'var(--gold-400)', fontWeight: 700, fontSize: '0.85rem', letterSpacing: '0.5px', textTransform: 'uppercase' }}>
-                            💬 {t('शेयर करें अथवा संकल्प बुक करें', 'Share Today’s Panchang & Book Sankalp')}
+                            <Share2 size={13} style={{ verticalAlign: '-2px', marginRight: '0.3rem' }} />{t('शेयर करें अथवा संकल्प बुक करें', 'Share Today’s Panchang & Book Sankalp')}
                         </span>
                         <h3 style={{ margin: '0.35rem 0 0.5rem', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)', color: 'white' }}>
                             {t('शुभ मुहूर्त में प्रत्यक्ष लाइव वीडियो संकल्प पूजा करवाएं', 'Book Direct 1-on-1 Live WhatsApp Video Sankalp in Kashi')}
@@ -635,9 +640,9 @@ export default function Panchang() {
                             type="button"
                             onClick={handleCopy}
                             className="btn btn-outline"
-                            style={{ borderColor: 'rgba(255,255,255,0.4)', color: 'white' }}
+                            style={{ borderColor: 'rgba(255,255,255,0.4)', color: 'white', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
                         >
-                            {copied ? '✓ Copied' : '📋 Copy Digest'}
+                            {copied ? <><CheckCircle2 size={15} /> Copied</> : <><Copy size={15} /> Copy Digest</>}
                         </button>
                         <a
                             href={whatsappShareUrl}
@@ -646,10 +651,10 @@ export default function Panchang() {
                             className="btn btn-whatsapp"
                             style={{ padding: '0.75rem 1.25rem' }}
                         >
-                            💬 {t('WhatsApp पर शेयर करें', 'Share on WhatsApp')}
+                            <MessageCircle size={15} style={{ verticalAlign: '-3px', marginRight: '0.35rem' }} />{t('WhatsApp पर शेयर करें', 'Share on WhatsApp')}
                         </a>
                         <Link to="/booking" className="btn btn-primary" style={{ padding: '0.75rem 1.25rem' }}>
-                            📿 {t('पूजा बुक करें', 'Book Pooja Now')}
+                            <CalendarCheck size={15} style={{ verticalAlign: '-3px', marginRight: '0.35rem' }} />{t('पूजा बुक करें', 'Book Pooja Now')}
                         </Link>
                     </div>
                 </div>

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import useSEO from '../hooks/useSEO';
 import { breadcrumbJsonLd, combineJsonLd } from '../utils/seo';
+import { AlertTriangle, MessageCircle } from 'lucide-react';
 
 const RASHIS = [
     { id: 'mesha', name: 'मेष', nameEn: 'Aries', symbol: '♈' },
@@ -117,7 +118,7 @@ export default function Horoscope() {
 
                     {error && (
                         <div className="text-center" style={{ padding: '1rem', color: '#dc2626' }}>
-                            <p>⚠ {error}</p>
+                            <p style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}><AlertTriangle size={15} />{error}</p>
                         </div>
                     )}
 
@@ -140,7 +141,7 @@ export default function Horoscope() {
                                     rel="noreferrer"
                                     className="btn btn-whatsapp"
                                 >
-                                    💬 {t('सटीक परामर्श के लिए WhatsApp करें', 'WhatsApp for a Personalized Reading')}
+                                    <MessageCircle size={14} style={{ verticalAlign: '-2px', marginRight: '0.3rem' }} />{t('सटीक परामर्श के लिए WhatsApp करें', 'WhatsApp for a Personalized Reading')}
                                 </a>
                             </div>
                         </div>

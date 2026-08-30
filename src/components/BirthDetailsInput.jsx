@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import { AlertTriangle, Sunrise } from 'lucide-react';
 
 const MONTHS = [
     { value: '01', en: 'January', hi: 'जनवरी', short: 'Jan' },
@@ -205,7 +206,7 @@ export default function BirthDetailsInput({
                         />
                     </div>
                 </div>
-                {errors.dob && <p className="form-error" style={{ marginTop: '0.35rem' }}>⚠ {errors.dob}</p>}
+                {errors.dob && <p className="form-error" style={{ marginTop: '0.35rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }}><AlertTriangle size={13} />{errors.dob}</p>}
             </div>
 
             {/* Time of Birth Selector (12-hour format + AM/PM) */}
@@ -301,7 +302,7 @@ export default function BirthDetailsInput({
                         </div>
                     ) : (
                         <div style={{ background: 'var(--warm-100)', padding: '0.6rem 0.9rem', borderRadius: 'var(--radius-md)', fontSize: '0.82rem', color: 'var(--navy-800)', border: '1px solid var(--border-light)' }}>
-                            🌅 {t('सूर्योदय काल (प्रातः 06:00 AM) के आधार पर गणना की जाएगी।', 'Vedic planetary chart will be calculated assuming standard sunrise (06:00 AM).')}
+                            <Sunrise size={13} style={{ verticalAlign: '-2px', marginRight: '0.3rem' }} />{t('सूर्योदय काल (प्रातः 06:00 AM) के आधार पर गणना की जाएगी।', 'Vedic planetary chart will be calculated assuming standard sunrise (06:00 AM).')}
                         </div>
                     )}
                 </div>
