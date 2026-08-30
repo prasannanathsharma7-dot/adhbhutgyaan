@@ -829,6 +829,22 @@ h3 {
     transform: scale(1.06);
 }
 
+.icon-service-icon-img {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 1.1rem;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1.5px solid var(--border-gold);
+    display: block;
+    transition: all var(--dur-normal) var(--ease-out);
+}
+
+.icon-service-card:hover .icon-service-icon-img {
+    box-shadow: 0 0 0 6px rgba(212, 168, 67, 0.12);
+    transform: scale(1.06);
+}
+
 .icon-service-title {
     font-family: var(--font-hindi);
     font-size: clamp(0.95rem, 2vw, 1.05rem);

@@ -298,22 +298,22 @@ export default function Home() {
                     <div className="om-divider">ॐ</div>
                     <div className="icon-service-grid">
                         {servicesData.map((service, i) => {
-                            const icons = {
-                                'vipreet-pratyangira': '🔥',
-                                'mahavidya-paath': '🕉️',
-                                'tripindi-shradh': '🙏',
-                                'kalsarp-dosh': '🔯',
-                                'rudrabhishek': '🔱',
-                                'shree-suktam': '🪷',
-                                'kanakdhara-stotra': '✨',
-                                'ganesh-atharvashirsha': '🐘',
-                                'purush-suktam': '📿',
-                                'kumbh-vivah': '💍',
-                                'astrology-consultation': '🔮',
+                            const images = {
+                                'vipreet-pratyangira': 'service-vipreet-pratyangira',
+                                'mahavidya-paath': 'service-mahavidya-paath',
+                                'tripindi-shradh': 'service-tripindi-shradh',
+                                'kalsarp-dosh': 'service-kalsarp-dosh',
+                                'rudrabhishek': 'service-rudrabhishek',
+                                'shree-suktam': 'service-shree-suktam',
+                                'kanakdhara-stotra': 'service-kanakdhara-stotra',
+                                'ganesh-atharvashirsha': 'service-ganesh-atharvashirsha',
+                                'purush-suktam': 'service-purush-suktam',
+                                'kumbh-vivah': 'service-kumbh-vivah',
+                                'astrology-consultation': 'service-astrology-consultation',
                             };
                             return (
                                 <div className={`icon-service-card fade-up stagger-${(i % 5) + 1}`} key={service.id}>
-                                    <div className="icon-service-icon">{icons[service.id] || '🕉️'}</div>
+                                    <img src={`/images/icons/${images[service.id] || 'service-astrology-consultation'}.jpg`} alt="" width="64" height="64" loading="lazy" className="icon-service-icon-img" />
                                     <h3 className="icon-service-title">{lang === 'hi' ? service.name : service.nameEn}</h3>
                                     <p className="icon-service-desc">{service.shortDesc}</p>
                                     <Link to={`/services/${service.id}`} className="icon-service-link">{t('विवरण देखें', 'Know More')} →</Link>

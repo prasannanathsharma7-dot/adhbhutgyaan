@@ -10,13 +10,13 @@ export default function Services() {
     const [selectedConcern, setSelectedConcern] = useState(null);
 
     const concerns = [
-        { id: 'health', icon: '🩺', label: t('स्वास्थ्य संबंधी समस्या', 'Health Issues'), serviceIds: ['rudrabhishek', 'purush-suktam'] },
-        { id: 'marriage', icon: '💍', label: t('विवाह में देरी / मांगलिक दोष', 'Marriage Delay / Manglik Dosh'), serviceIds: ['kumbh-vivah', 'kalsarp-dosh'] },
-        { id: 'money', icon: '💰', label: t('आर्थिक तंगी', 'Financial Struggles'), serviceIds: ['kanakdhara-stotra', 'shree-suktam'] },
-        { id: 'ancestral', icon: '🕯️', label: t('पितृ दोष / पूर्वजों से जुड़ी समस्या', 'Pitru Dosh / Ancestral Issues'), serviceIds: ['tripindi-shradh'] },
-        { id: 'career', icon: '💼', label: t('करियर / व्यापार में रुकावट', 'Career / Business Obstacles'), serviceIds: ['ganesh-atharvashirsha', 'kalsarp-dosh'] },
-        { id: 'negativity', icon: '🛡️', label: t('नकारात्मक शक्ति / शत्रु बाधा', 'Negative Energy / Enemies'), serviceIds: ['vipreet-pratyangira', 'mahavidya-paath'] },
-        { id: 'unsure', icon: '🔮', label: t('पता नहीं, सलाह चाहिए', 'Not Sure, Need Guidance'), serviceIds: ['astrology-consultation'] },
+        { id: 'health', img: 'concern-health', label: t('स्वास्थ्य संबंधी समस्या', 'Health Issues'), serviceIds: ['rudrabhishek', 'purush-suktam'] },
+        { id: 'marriage', img: 'concern-marriage', label: t('विवाह में देरी / मांगलिक दोष', 'Marriage Delay / Manglik Dosh'), serviceIds: ['kumbh-vivah', 'kalsarp-dosh'] },
+        { id: 'money', img: 'concern-money', label: t('आर्थिक तंगी', 'Financial Struggles'), serviceIds: ['kanakdhara-stotra', 'shree-suktam'] },
+        { id: 'ancestral', img: 'concern-ancestral', label: t('पितृ दोष / पूर्वजों से जुड़ी समस्या', 'Pitru Dosh / Ancestral Issues'), serviceIds: ['tripindi-shradh'] },
+        { id: 'career', img: 'concern-career', label: t('करियर / व्यापार में रुकावट', 'Career / Business Obstacles'), serviceIds: ['ganesh-atharvashirsha', 'kalsarp-dosh'] },
+        { id: 'negativity', img: 'concern-negativity', label: t('नकारात्मक शक्ति / शत्रु बाधा', 'Negative Energy / Enemies'), serviceIds: ['vipreet-pratyangira', 'mahavidya-paath'] },
+        { id: 'unsure', img: 'concern-unsure', label: t('पता नहीं, सलाह चाहिए', 'Not Sure, Need Guidance'), serviceIds: ['astrology-consultation'] },
     ];
 
     const recommended = selectedConcern
@@ -100,7 +100,7 @@ export default function Services() {
                                     fontWeight: 600, fontSize: '0.9rem', cursor: 'pointer',
                                 }}
                             >
-                                <span>{c.icon}</span> {c.label}
+                                <img src={`/images/icons/${c.img}.jpg`} alt="" width="22" height="22" loading="lazy" style={{ width: '22px', height: '22px', borderRadius: '50%', objectFit: 'cover' }} /> {c.label}
                             </button>
                         ))}
                     </div>
