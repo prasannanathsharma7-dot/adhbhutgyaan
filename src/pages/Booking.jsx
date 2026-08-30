@@ -361,7 +361,7 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                                         type="tel"
                                         inputMode="tel"
                                         autoComplete="tel"
-                                        placeholder="+91 92781 48269"
+                                        placeholder="+91 98182 27189"
                                         value={form.phone}
                                         aria-invalid={errors.phone ? 'true' : 'false'}
                                         onChange={e => { setForm({ ...form, phone: e.target.value }); setErrors({ ...errors, phone: undefined }); }}
@@ -455,8 +455,8 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                             </div>
                             <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginTop: '2rem', flexWrap: 'wrap' }}>
                                 <button className="btn btn-outline-dark btn-lg" onClick={() => goToStep(3)}>{t('← वापस', '← Back')}</button>
-                                <a href={`https://wa.me/919278148269?text=${encodeURIComponent(whatsAppMsg)}`} target="_blank" rel="noreferrer" className="btn btn-whatsapp btn-lg">💬 {t('WhatsApp पर पूछताछ करें', 'Enquire on WhatsApp')}</a>
-                                <a href="tel:+919278148269" className="btn btn-primary btn-lg">📞 {t('कॉल करें', 'Call Us')}</a>
+                                <a href={`https://wa.me/919818227189?text=${encodeURIComponent(whatsAppMsg)}`} target="_blank" rel="noreferrer" className="btn btn-whatsapp btn-lg">💬 {t('WhatsApp पर पूछताछ करें', 'Enquire on WhatsApp')}</a>
+                                <a href="tel:+919818227189" className="btn btn-primary btn-lg">📞 {t('कॉल करें', 'Call Us')}</a>
                             </div>
                             <div className="text-center" style={{ marginTop: '1rem' }}>
                                 <a href={`mailto:astrokashi369@gmail.com?subject=${encodeURIComponent(isAstrology ? t('नई ज्योतिष परामर्श पूछताछ', 'New Astrology Consultation Enquiry') : t('नई पूजा पूछताछ', 'New Pooja Enquiry'))}&body=${encodeURIComponent(emailMsg)}`} style={{ fontSize: '0.85rem', color: 'var(--gold-700)', fontWeight: 600 }}>

@@ -192,7 +192,7 @@ export default function ChatWidget() {
 
                         <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
                             <a
-                                href="https://wa.me/919278148269"
+                                href="https://wa.me/919818227189"
                                 target="_blank"
                                 rel="noreferrer"
                                 title={t('पंडित जी से WhatsApp पर बात करें', 'Direct WhatsApp Consultation')}

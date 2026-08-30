@@ -82,7 +82,7 @@ export default function Terms() {
                         </h2>
                         <p>
                             {t('इन शर्तों संबंधी किसी भी प्रश्न के लिए हमसे संपर्क करें:', 'For any questions about these terms, contact us at:')}<br />
-                            <strong>WhatsApp:</strong> +91 92781 48269<br />
+                            <strong>WhatsApp:</strong> +91 98182 27189<br />
                             <strong>Email:</strong> astrokashi369@gmail.com
                         </p>
                     </div>

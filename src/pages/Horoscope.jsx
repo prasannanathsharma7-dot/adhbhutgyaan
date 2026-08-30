@@ -136,7 +136,7 @@ export default function Horoscope() {
                             </p>
                             <div className="text-center" style={{ marginTop: '1.5rem' }}>
                                 <a
-                                    href={`https://wa.me/919278148269?text=${encodeURIComponent(t('नमस्कार! मुझे अपनी सटीक जन्म-कुंडली के अनुसार परामर्श चाहिए।', 'Hello! I would like a consultation based on my exact birth chart.'))}`}
+                                    href={`https://wa.me/919818227189?text=${encodeURIComponent(t('नमस्कार! मुझे अपनी सटीक जन्म-कुंडली के अनुसार परामर्श चाहिए।', 'Hello! I would like a consultation based on my exact birth chart.'))}`}
                                     target="_blank"
                                     rel="noreferrer"
                                     className="btn btn-whatsapp"

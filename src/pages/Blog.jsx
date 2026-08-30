@@ -134,7 +134,7 @@ export default function Blog() {
                     </p>
                     <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
                         <Link to="/booking" className="btn btn-primary btn-lg"><img src="/images/logo.png" alt="" className="inline-logo" /> {t('पूजा बुक करें', 'Book a Pooja')}</Link>
-                        <a href={`https://wa.me/919278148269?text=${encodeURIComponent(t('नमस्कार! मैं ब्लॉग पढ़कर आया हूँ, पूजा के बारे में जानना चाहता हूँ।', 'Hello! I read your blog and would like to know more about pooja services.'))}`} target="_blank" rel="noreferrer" className="btn btn-whatsapp btn-lg">💬 {t('WhatsApp करें', 'WhatsApp Us')}</a>
+                        <a href={`https://wa.me/919818227189?text=${encodeURIComponent(t('नमस्कार! मैं ब्लॉग पढ़कर आया हूँ, पूजा के बारे में जानना चाहता हूँ।', 'Hello! I read your blog and would like to know more about pooja services.'))}`} target="_blank" rel="noreferrer" className="btn btn-whatsapp btn-lg">💬 {t('WhatsApp करें', 'WhatsApp Us')}</a>
                     </div>
                 </div>
             </section>

@@ -68,7 +68,7 @@ export default function Home() {
                         </p>
                         <div className="hero-actions">
                             <Link to="/services" className="btn btn-primary btn-lg"><img src="/images/logo.png" alt="" className="inline-logo" width="512" height="512" /> {t('सेवाएं देखें', 'View Services')}</Link>
-                            <a href={`https://wa.me/919278148269?text=${encodeURIComponent(t('नमस्कार! मैं पूजा बुक करना चाहता हूँ।', 'Hello! I would like to book a pooja.'))}`} target="_blank" rel="noreferrer" className="btn btn-outline btn-lg">💬 {t('WhatsApp करें', 'WhatsApp Us')}</a>
+                            <a href={`https://wa.me/919818227189?text=${encodeURIComponent(t('नमस्कार! मैं पूजा बुक करना चाहता हूँ।', 'Hello! I would like to book a pooja.'))}`} target="_blank" rel="noreferrer" className="btn btn-outline btn-lg">💬 {t('WhatsApp करें', 'WhatsApp Us')}</a>
                         </div>
                         <div className="hero-stats">
                             {[
@@ -281,7 +281,7 @@ export default function Home() {
                     </div>
                     <div className="text-center fade-up" style={{ marginTop: '2rem', display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
                         <Link to="/free-kundli" className="btn btn-gold btn-lg">✦ {t('निःशुल्क कुंडली मांगें', 'Request Free Kundli')}</Link>
-                        <a href={`https://wa.me/919278148269?text=${encodeURIComponent(t('नमस्कार! मुझे ज्योतिष परामर्श के लिए अपॉइंटमेंट चाहिए।', 'Hello! I would like to book an astrology consultation appointment.'))}`} target="_blank" rel="noreferrer" className="btn btn-whatsapp btn-lg">💬 {t('अपॉइंटमेंट के लिए पूछें', 'Enquire for Appointment')}</a>
+                        <a href={`https://wa.me/919818227189?text=${encodeURIComponent(t('नमस्कार! मुझे ज्योतिष परामर्श के लिए अपॉइंटमेंट चाहिए।', 'Hello! I would like to book an astrology consultation appointment.'))}`} target="_blank" rel="noreferrer" className="btn btn-whatsapp btn-lg">💬 {t('अपॉइंटमेंट के लिए पूछें', 'Enquire for Appointment')}</a>
                         <Link to="/contact" className="btn btn-outline btn-lg">📅 {t('अपॉइंटमेंट बुक करें', 'Book Appointment')}</Link>
                     </div>
                 </div>
@@ -505,7 +505,7 @@ export default function Home() {
                     </p>
                     <div className="cta-actions fade-up">
                         <Link to="/booking" className="btn btn-primary btn-lg">📅 {t('अभी बुक करें', 'Book Now')}</Link>
-                        <a href={`https://wa.me/919278148269?text=${encodeURIComponent(t('नमस्कार!', 'Hello!'))}`} target="_blank" rel="noreferrer" className="btn btn-whatsapp btn-lg">💬 {t('WhatsApp पर बात करें', 'Chat on WhatsApp')}</a>
+                        <a href={`https://wa.me/919818227189?text=${encodeURIComponent(t('नमस्कार!', 'Hello!'))}`} target="_blank" rel="noreferrer" className="btn btn-whatsapp btn-lg">💬 {t('WhatsApp पर बात करें', 'Chat on WhatsApp')}</a>
                     </div>
                 </div>
             </section>

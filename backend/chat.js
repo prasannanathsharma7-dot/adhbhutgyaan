@@ -30,7 +30,7 @@ module.exports = async (req, res) => {
         if (db) {
             const allowed = await checkRateLimit(db, req, 'chat', { limit: 30, windowMs: 10 * 60 * 1000 });
             if (!allowed) {
-                res.status(429).json({ ok: false, error: 'Too many messages. Please wait a few minutes, or WhatsApp Dr. Umang Nath Sharma directly: +91 92781 48269' });
+                res.status(429).json({ ok: false, error: 'Too many messages. Please wait a few minutes, or WhatsApp Dr. Umang Nath Sharma directly: +91 98182 27189' });
                 return;
             }
         }

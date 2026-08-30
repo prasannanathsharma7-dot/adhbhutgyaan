@@ -25,7 +25,7 @@ function buildSystemPrompt(pageContext) {
 Your role is limited to: answering general questions about services/timing/process, and helping book appointments. You are NOT the source for pricing - Pandit ji personally confirms exact prices with each devotee.
 
 Business facts (use only these - never invent prices, dates, or details not given here):
-- Phone/WhatsApp: +91 92781 48269
+- Phone/WhatsApp: +91 98182 27189
 - Address: J11/19, Nati Imli Rd, Ishwargangi, Varanasi, UP 221001
 - Hours: 7 AM - 9 PM, every day
 - Poojas can be performed online (live video) or offline (in Varanasi, at the devotee's location, at any temple, or in person)
@@ -39,7 +39,7 @@ Your job:
 2. Do not state exact rupee prices (not provided here) - pricing is confirmed personally by Pandit ji on WhatsApp or call, so tell the person Pandit ji will share the exact price once they connect. Offer to help book an appointment or connect them on WhatsApp for that.
 3. If the person wants to book, collect: their name, a phone number, which service/pooja, which package (if relevant), and preferred mode (online/offline/at their location/at a temple) and preferred date. Ask for whatever is still missing, one or two questions at a time - don't interrogate them all at once.
 4. Once you have at least name + phone + service, call the create_booking tool. You do not need every field - a preferred date of "flexible" or a mode of "to be discussed" is fine if the person doesn't specify.
-5. After booking is created, tell them the team will confirm within 24 hours on WhatsApp/call, and mention they can also reach +91 92781 48269 directly for anything urgent.
+5. After booking is created, tell them the team will confirm within 24 hours on WhatsApp/call, and mention they can also reach +91 98182 27189 directly for anything urgent.
 6. Keep replies short and warm (2-4 sentences) - this matters even more on WhatsApp, where long messages are awkward to read.
 7. Reply in the same language the person writes in (Hindi, Hinglish, or English).
 8. For anything you're unsure about or that isn't in the facts above (exact pricing, availability on a specific date, custom requests), say the team will confirm this directly and offer the WhatsApp number - never guess.`;
@@ -141,7 +141,7 @@ async function createBookingFromTool(db, input, source) {
                 <h2>Namaste ${escapeHtml(doc.name)} 🙏</h2>
                 <p>We have received your booking enquiry for <b>${escapeHtml(doc.serviceName) || 'a pooja'}</b>.</p>
                 <p>Our team will contact you on WhatsApp or phone at <b>${escapeHtml(doc.phone)}</b> within 24 hours to confirm the date, pricing, and further details.</p>
-                <p>If you need to reach us urgently, WhatsApp us at <a href="https://wa.me/919278148269">+91 92781 48269</a>.</p>
+                <p>If you need to reach us urgently, WhatsApp us at <a href="https://wa.me/919818227189">+91 98182 27189</a>.</p>
                 <br/>
                 <p>🙏 Adhbhut Gyaan<br/>Varanasi, Kashi</p>
             `,
@@ -186,7 +186,7 @@ async function runAssistantTurn(db, messages, apiKey, source, pageContext) {
         .filter(b => b.type === 'text')
         .map(b => b.text)
         .join('\n')
-        .trim() || 'Sorry, I had trouble responding - please WhatsApp us at +91 92781 48269.';
+        .trim() || 'Sorry, I had trouble responding - please WhatsApp us at +91 98182 27189.';
 
     return { replyText, bookingCreated: Boolean(bookingCreated) };
 }

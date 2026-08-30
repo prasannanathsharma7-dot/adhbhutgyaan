@@ -133,7 +133,7 @@ export default function ServiceDetail() {
                                 <div className="package-count">{pkg.paathCount}</div>
                                 <div className="package-includes">{t('शामिल', 'Includes')}: {pkg.includes}</div>
                                 <a
-                                    href={`https://wa.me/919278148269?text=${encodeURIComponent(t(
+                                    href={`https://wa.me/919818227189?text=${encodeURIComponent(t(
                                         `नमस्कार! मुझे "${service.name} — ${pkg.name}" के बारे में पूछताछ करनी है। कृपया अधिक जानकारी दें।`,
                                         `Hello! I would like to inquire about "${service.nameEn} — ${pkg.nameEn}". Please share more details.`
                                     ))}`}

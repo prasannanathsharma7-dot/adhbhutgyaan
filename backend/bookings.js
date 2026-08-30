@@ -88,7 +88,7 @@ module.exports = async (req, res) => {
                         <p>We have received your booking enquiry for <b>${escapeHtml(doc.serviceName) || 'a pooja'}</b>.</p>
                         <p>Our team will contact you on WhatsApp or phone at <b>${escapeHtml(doc.phone)}</b> within 24 hours to confirm the date, pricing, and further details.</p>
                         <p><b>Preferred Date:</b> ${escapeHtml(doc.preferredDate) || 'To be decided with the Pandit'}</p>
-                        <p>If you need to reach us urgently, WhatsApp us at <a href="https://wa.me/919278148269">+91 92781 48269</a>.</p>
+                        <p>If you need to reach us urgently, WhatsApp us at <a href="https://wa.me/919818227189">+91 98182 27189</a>.</p>
                         <br/>
                         <p>🙏 Adhbhut Gyaan<br/>Varanasi, Kashi</p>
                     `,

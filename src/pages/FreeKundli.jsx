@@ -124,7 +124,7 @@ export default function FreeKundli() {
 
     // Build WhatsApp Pre-populated Message
     const buildWhatsAppUrl = () => {
-        if (!kundliResult) return 'https://wa.me/919278148269';
+        if (!kundliResult) return 'https://wa.me/919818227189';
 
         const activeDoshas = [
             kundliResult.doshas.manglik.hasDosh ? kundliResult.doshas.manglik.severity : null,
@@ -144,7 +144,7 @@ export default function FreeKundli() {
 ${form.question ? `❓ *Question:* ${form.question}\n` : ''}
 Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nidaan hetu Pandit Ji ke sath *1-on-1 Live WhatsApp Video Consultation* session book karna hai.`;
 
-        return `https://wa.me/919278148269?text=${encodeURIComponent(text)}`;
+        return `https://wa.me/919818227189?text=${encodeURIComponent(text)}`;
     };
 
     return (
@@ -274,7 +274,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                         inputMode="tel"
                                         autoComplete="tel"
                                         className={`form-input ${errors.phone ? 'has-error' : ''}`}
-                                        placeholder="+91 92781 48269"
+                                        placeholder="+91 98182 27189"
                                         value={form.phone}
                                         onChange={e => { setForm({ ...form, phone: e.target.value }); setErrors({ ...errors, phone: undefined }); }}
                                     />
@@ -320,7 +320,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                         <div className="print-only-header">
                             <h2 style={{ margin: '0 0 0.25rem', color: '#1c2150' }}>अद्भुत ज्ञान — वैदिक जन्म पत्रिका रिपोर्ट</h2>
                             <p style={{ margin: 0, fontSize: '0.9rem', color: '#64748b' }}>
-                                काशी ज्योतिष परंपरा · डॉ. उमंग नाथ शर्मा · Helpline: +91 92781 48269
+                                काशी ज्योतिष परंपरा · डॉ. उमंग नाथ शर्मा · Helpline: +91 98182 27189
                             </p>
                         </div>
 

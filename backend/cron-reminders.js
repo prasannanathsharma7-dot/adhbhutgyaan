@@ -43,7 +43,7 @@ module.exports = async (req, res) => {
                         <h2>Namaste ${escapeHtml(doc.name)} 🙏</h2>
                         <p>This is a reminder that your <b>${escapeHtml(doc.serviceName) || 'pooja'}</b> is scheduled for tomorrow, <b>${targetDate}</b>.</p>
                         ${doc.mode ? `<p><b>Mode:</b> ${escapeHtml(doc.mode)}</p>` : ''}
-                        <p>If you have any questions before then, WhatsApp us at <a href="https://wa.me/919278148269">+91 92781 48269</a>.</p>
+                        <p>If you have any questions before then, WhatsApp us at <a href="https://wa.me/919818227189">+91 98182 27189</a>.</p>
                         <br/>
                         <p>🙏 Adhbhut Gyaan<br/>Varanasi, Kashi</p>
                     `,
