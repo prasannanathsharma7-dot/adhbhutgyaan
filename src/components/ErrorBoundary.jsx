@@ -78,7 +78,7 @@ export default class ErrorBoundary extends Component {
                             होम पर जाएं
                         </button>
                         <a
-                            href="https://wa.me/919818227189"
+                            href="https://wa.me/919278148269"
                             target="_blank" rel="noreferrer"
                             style={{
                                 background: '#25D366', color: 'white', textDecoration: 'none',

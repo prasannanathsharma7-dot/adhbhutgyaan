@@ -123,7 +123,7 @@ export default function LeaveReview() {
                                         id="review-phone"
                                         className="form-input"
                                         type="tel"
-                                        placeholder="+91 98182 27189"
+                                        placeholder="+91 92781 48269"
                                         value={form.phone}
                                         onChange={e => setForm({ ...form, phone: e.target.value })}
                                     />

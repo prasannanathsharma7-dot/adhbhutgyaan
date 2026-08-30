@@ -154,7 +154,7 @@ export default function Services() {
                                 ))}
                             </ul>
                             <a
-                                href={`https://wa.me/919818227189?text=${encodeURIComponent(t('नमस्कार! मैं विदेश से हूँ और सेवाओं के बारे में पूछताछ करना चाहता हूँ।', 'Hello! I am overseas and would like to inquire about your services.'))}`}
+                                href={`https://wa.me/919278148269?text=${encodeURIComponent(t('नमस्कार! मैं विदेश से हूँ और सेवाओं के बारे में पूछताछ करना चाहता हूँ।', 'Hello! I am overseas and would like to inquire about your services.'))}`}
                                 target="_blank" rel="noreferrer"
                                 className="btn btn-primary"
                                 style={{ width: '100%', justifyContent: 'center' }}
@@ -176,7 +176,7 @@ export default function Services() {
                                 ))}
                             </ul>
                             <a
-                                href={`https://wa.me/919818227189?text=${encodeURIComponent(t('नमस्कार! मैं वाराणसी आ रहा/रही हूँ और सेवाओं के बारे में पूछताछ करना चाहता/चाहती हूँ।', 'Hello! I am visiting Varanasi and would like to inquire about your services.'))}`}
+                                href={`https://wa.me/919278148269?text=${encodeURIComponent(t('नमस्कार! मैं वाराणसी आ रहा/रही हूँ और सेवाओं के बारे में पूछताछ करना चाहता/चाहती हूँ।', 'Hello! I am visiting Varanasi and would like to inquire about your services.'))}`}
                                 target="_blank" rel="noreferrer"
                                 className="btn btn-primary"
                                 style={{ width: '100%', justifyContent: 'center' }}

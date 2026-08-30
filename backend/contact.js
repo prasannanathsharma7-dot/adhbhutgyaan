@@ -75,7 +75,7 @@ module.exports = async (req, res) => {
                         <h2>Namaste ${escapeHtml(doc.name)} 🙏</h2>
                         <p>Thank you for reaching out. We have received your message and will get back to you on <b>${escapeHtml(doc.phone)}</b> shortly.</p>
                         <p><b>Your message:</b><br/>${escapeHtml(doc.message).replace(/\n/g, '<br/>')}</p>
-                        <p>Need an urgent response? WhatsApp us at <a href="https://wa.me/919818227189">+91 98182 27189</a>.</p>
+                        <p>Need an urgent response? WhatsApp us at <a href="https://wa.me/919278148269">+91 92781 48269</a>.</p>
                         <br/>
                         <p>🙏 Adhbhut Gyaan<br/>Varanasi, Kashi</p>
                     `,

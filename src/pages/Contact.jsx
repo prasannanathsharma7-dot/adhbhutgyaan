@@ -77,7 +77,7 @@ export default function Contact() {
 ${form.email ? `*${t('ईमेल', 'Email')}:* ${form.email}` : ''}
 ${form.subject ? `*${t('विषय', 'Subject')}:* ${form.subject}` : ''}
 *${t('संदेश', 'Message')}:* ${form.message}`;
-        window.open(`https://wa.me/919818227189?text=${encodeURIComponent(msg)}`, '_blank');
+        window.open(`https://wa.me/919278148269?text=${encodeURIComponent(msg)}`, '_blank');
         saveMessageToServer();
     };
 
@@ -93,8 +93,8 @@ ${form.message}`;
     };
 
     const contactCards = [
-        { icon: '💬', label: 'WhatsApp', value: '+91 98182 27189', sub: t('तुरंत जवाब', 'Instant Reply'), href: 'https://wa.me/919818227189', color: 'var(--whatsapp)', bgColor: 'rgba(37,211,102,0.08)', borderColor: 'rgba(37,211,102,0.2)' },
-        { icon: '📞', label: t('फ़ोन', 'Phone'), value: '+91 98182 27189', sub: t('सुबह 7 बजे - रात 9 बजे', '7 AM - 9 PM'), href: 'tel:+919818227189', color: 'var(--gold-500)', bgColor: 'rgba(255,152,0,0.08)', borderColor: 'rgba(255,152,0,0.2)' },
+        { icon: '💬', label: 'WhatsApp', value: '+91 92781 48269', sub: t('तुरंत जवाब', 'Instant Reply'), href: 'https://wa.me/919278148269', color: 'var(--whatsapp)', bgColor: 'rgba(37,211,102,0.08)', borderColor: 'rgba(37,211,102,0.2)' },
+        { icon: '📞', label: t('फ़ोन', 'Phone'), value: '+91 92781 48269', sub: t('सुबह 7 बजे - रात 9 बजे', '7 AM - 9 PM'), href: 'tel:+919278148269', color: 'var(--gold-500)', bgColor: 'rgba(255,152,0,0.08)', borderColor: 'rgba(255,152,0,0.2)' },
         { icon: '✉️', label: t('ईमेल', 'Email'), value: 'astrokashi369@gmail.com', sub: t('क्लिक करके ईमेल भेजें', 'Click to send an email'), href: 'mailto:astrokashi369@gmail.com', color: 'var(--gold-500)', bgColor: 'rgba(196,154,44,0.08)', borderColor: 'rgba(196,154,44,0.2)' },
         { icon: '📍', label: t('कार्यालय का पता', 'Office Address'), value: 'J11/19, Pt Umang Nath Sharma,\nNati Imli Rd, Ishwargangi,\nVaranasi, UP 221001', sub: t('दिशा-निर्देश के लिए क्लिक करें', 'Click for directions'), href: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent('J11/19, Pt Umang Nath Sharma, Nati Imli Rd, Ishwargangi, Varanasi, UP 221001'), color: 'var(--red-400)', bgColor: 'rgba(183,28,28,0.05)', borderColor: 'rgba(183,28,28,0.15)' },
     ];
@@ -192,7 +192,7 @@ ${form.message}`;
                                             type="tel"
                                             inputMode="tel"
                                             autoComplete="tel"
-                                            placeholder="+91 98182 27189"
+                                            placeholder="+91 92781 48269"
                                             value={form.phone}
                                             aria-invalid={errors.phone ? 'true' : 'false'}
                                             onChange={e => { setForm({ ...form, phone: e.target.value }); setErrors({ ...errors, phone: undefined }); }}

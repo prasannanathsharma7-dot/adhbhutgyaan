@@ -70,7 +70,7 @@ export function localBusinessJsonLd() {
         image: `${SITE_URL}/images/logo.png`,
         '@id': `${SITE_URL}/#business`,
         url: `${SITE_URL}/`,
-        telephone: '+919818227189',
+        telephone: '+919278148269',
         priceRange: '₹₹',
         address: {
             '@type': 'PostalAddress',

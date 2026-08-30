@@ -1,7 +1,7 @@
 // Sends the admin a WhatsApp message via CallMeBot (https://www.callmebot.com/blog/free-api-whatsapp-messages/) -
 // a free personal-use WhatsApp API. No Meta Business account or payment needed.
 // Requires two env vars in Vercel:
-//   CALLMEBOT_PHONE   -> admin's WhatsApp number with country code, no + or spaces (e.g. 919818227189)
+//   CALLMEBOT_PHONE   -> admin's WhatsApp number with country code, no + or spaces (e.g. 919278148269)
 //   CALLMEBOT_APIKEY  -> the API key CallMeBot's bot sends back after you message it
 //
 // One-time setup (do this from the phone that should receive alerts):

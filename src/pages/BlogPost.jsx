@@ -156,7 +156,7 @@ export default function BlogPost() {
                                             <img src="/images/logo.png" alt="" className="inline-logo" /> {t('यह पूजा बुक करें', 'Book This Pooja')}
                                         </Link>
                                     )}
-                                    <a href={`https://wa.me/919818227189?text=${encodeURIComponent(t('नमस्कार! मैं ब्लॉग पढ़कर आया हूँ।', 'Hello! I read your blog article.'))}`} target="_blank" rel="noreferrer" className="btn btn-whatsapp">
+                                    <a href={`https://wa.me/919278148269?text=${encodeURIComponent(t('नमस्कार! मैं ब्लॉग पढ़कर आया हूँ।', 'Hello! I read your blog article.'))}`} target="_blank" rel="noreferrer" className="btn btn-whatsapp">
                                         💬 {t('WhatsApp करें', 'WhatsApp Us')}
                                     </a>
                                 </div>

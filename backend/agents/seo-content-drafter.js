@@ -129,7 +129,7 @@ Experience the divine bliss of authentic Vedic rituals from anywhere in the worl
 
 - 📿 **Direct Online Booking:** [Book on Adhbhut Gyaan](${SITE_URL}/booking)
 - 📜 **Free Janam Kundli Consultation:** [Check Free Kundli](${SITE_URL}/free-kundli)
-- 💬 **WhatsApp Vedic Helpline:** [+91 98182 27189](https://wa.me/919818227189)
+- 💬 **WhatsApp Vedic Helpline:** [+91 92781 48269](https://wa.me/919278148269)
 `;
 
     const jsonLd = {

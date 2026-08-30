@@ -8,7 +8,7 @@ const { sendWhatsAppText } = require('../_whatsapp');
 const { requireAgentAuth } = require('../utils/agent-auth');
 
 const SITE_URL = 'https://www.adhbhutgyaan.com';
-const WHATSAPP_DIRECT_NUMBER = '919818227189';
+const WHATSAPP_DIRECT_NUMBER = '919278148269';
 
 /**
  * Classifies devotee intent based on natural language keywords.
@@ -165,7 +165,7 @@ Hamare yahan Kashi (Varanasi) me sabhi prakaar ke Vedic anushthan, Ganga Ghat po
 Hum aapki kya sahayata kar sakte hain?
 1. 📿 **Pooja Booking** (${SITE_URL}/booking)
 2. 📜 **Free Kundli Check** (${SITE_URL}/free-kundli)
-3. 💬 **Chat with Pandit Ji** (WhatsApp: +91 98182 27189)
+3. 💬 **Chat with Pandit Ji** (WhatsApp: +91 92781 48269)
 
 Kripya apna prashna batayein, hum jald hi aapko poori jankari pradan karenge.`,
                 quickLinks: [
