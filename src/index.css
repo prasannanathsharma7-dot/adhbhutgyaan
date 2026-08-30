@@ -1620,7 +1620,9 @@ h3 {
 }
 
 .footer-links a {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     font-size: 0.9rem;
     color: var(--warm-400);
     padding: 0.25rem 0;

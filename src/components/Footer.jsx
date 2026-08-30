@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
+import { Home, Sunrise, CalendarDays, Sparkles, User, FileText, Phone, MapPin, MessageCircle, Mail } from 'lucide-react';
 
 export default function Footer() {
     const { t } = useLanguage();
@@ -66,14 +67,14 @@ export default function Footer() {
                     <div>
                         <h4 className="footer-heading">{t('त्वरित लिंक', 'Quick Links')}</h4>
                         <div className="footer-links">
-                            <Link to="/">🏠 {t('होम', 'Home')}</Link>
+                            <Link to="/"><Home size={15} /> {t('होम', 'Home')}</Link>
                             <Link to="/services"><img src="/images/logo.png" alt="" className="inline-logo" /> {t('सेवाएं', 'Services')}</Link>
-                            <Link to="/panchang">☀️ {t('दैनिक पंचांग', 'Daily Panchang')}</Link>
-                            <Link to="/booking">📅 {t('पूजा बुक करें', 'Book Pooja')}</Link>
-                            <Link to="/free-kundli">✦ {t('निःशुल्क कुंडली', 'Free Kundli')}</Link>
-                            <Link to="/about">👤 {t('हमारे बारे में', 'About')}</Link>
-                            <Link to="/blog">📝 {t('ब्लॉग', 'Blog')}</Link>
-                            <Link to="/contact">📞 {t('संपर्क करें', 'Contact')}</Link>
+                            <Link to="/panchang"><Sunrise size={15} /> {t('दैनिक पंचांग', 'Daily Panchang')}</Link>
+                            <Link to="/booking"><CalendarDays size={15} /> {t('पूजा बुक करें', 'Book Pooja')}</Link>
+                            <Link to="/free-kundli"><Sparkles size={15} /> {t('निःशुल्क कुंडली', 'Free Kundli')}</Link>
+                            <Link to="/about"><User size={15} /> {t('हमारे बारे में', 'About')}</Link>
+                            <Link to="/blog"><FileText size={15} /> {t('ब्लॉग', 'Blog')}</Link>
+                            <Link to="/contact"><Phone size={15} /> {t('संपर्क करें', 'Contact')}</Link>
                         </div>
                     </div>
 
@@ -123,19 +124,19 @@ export default function Footer() {
                     <div>
                         <h4 className="footer-heading">{t('संपर्क करें', 'Contact Us')}</h4>
                         <div className="footer-contact-item">
-                            <span className="footer-contact-icon">📍</span>
+                            <span className="footer-contact-icon"><MapPin size={16} /></span>
                             <span>J11/19, Pt Umang Nath Sharma, Nati Imli Rd<br/>Ishwargangi, Varanasi, UP 221001</span>
                         </div>
                         <div className="footer-contact-item">
-                            <span className="footer-contact-icon">📞</span>
+                            <span className="footer-contact-icon"><Phone size={16} /></span>
                             <span>+91 92781 48269</span>
                         </div>
                         <div className="footer-contact-item">
-                            <span className="footer-contact-icon">💬</span>
+                            <span className="footer-contact-icon"><MessageCircle size={16} /></span>
                             <span>WhatsApp: +91 92781 48269</span>
                         </div>
                         <div className="footer-contact-item">
-                            <span className="footer-contact-icon">✉️</span>
+                            <span className="footer-contact-icon"><Mail size={16} /></span>
                             <span>astrokashi369@gmail.com</span>
                         </div>
                     </div>
