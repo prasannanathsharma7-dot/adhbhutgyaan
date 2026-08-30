@@ -87,7 +87,10 @@ module.exports = async (req, res) => {
         const [bookings, kundliDocs, contactCount, reviewCount, subscriberCount] = await Promise.all([
             bookingsCol.find({}).sort({ createdAt: -1 }).toArray().catch(() => []),
             db.collection('kundli_requests').find({}).sort({ createdAt: -1 }).toArray().catch(() => []),
-            db.collection('contacts').countDocuments().catch(() => 0),
+            // contact.js (the website Contact page) writes into 'messages', not
+            // 'contacts' - this was counting the wrong collection and always
+            // showed near-zero for the 'Contact Form' touchpoint below.
+            db.collection('messages').countDocuments().catch(() => 0),
             db.collection('reviews').countDocuments().catch(() => 0),
             db.collection('subscribers').countDocuments().catch(() => 0),
         ]);
@@ -115,8 +118,13 @@ module.exports = async (req, res) => {
         const totalLifetimeLeads = totalLifetimeBookings + (kundliDocs.length > 0 ? kundliDocs.length : 0);
 
         const bookings30d = bookings.filter(b => b.createdAt && new Date(b.createdAt) >= thirtyDaysAgo);
-        const kundlis30d = deduplicatedKundlis.filter(k => k.createdAt && new Date(k.createdAt) >= thirtyDaysAgo);
-        const activeLeads30d = bookings30d.length + (kundliDocs.length > 0 ? kundlis30d.length : 0);
+        // Use the raw kundli_requests collection (not the deduplicated set) here, the
+        // same way totalLifetimeLeads does above - deduplicatedKundlis also contains
+        // bookings with source==='kundli-request'/serviceId==='astrology-consultation',
+        // which are ALREADY inside bookings30d. Adding kundlis30d (deduplicated) on top
+        // of bookings30d was double-counting those same leads in the 30-day KPI.
+        const kundliDocs30d = kundliDocs.filter(k => k.createdAt && new Date(k.createdAt) >= thirtyDaysAgo);
+        const activeLeads30d = bookings30d.length + kundliDocs30d.length;
 
         const bookings7d = bookings.filter(b => b.createdAt && new Date(b.createdAt) >= sevenDaysAgo);
         const activeLeads7d = bookings7d.length;

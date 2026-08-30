@@ -5,232 +5,33 @@
 const { getDb, withCors, escapeHtml } = require('../_db');
 const { sendMail } = require('../_email');
 const { requireAgentAuth } = require('../utils/agent-auth');
+const { calculateGlobalPanchang } = require('../utils/panchang-engine');
 
 // Varanasi Astronomical Coordinates
 const VARANASI_LAT = 25.3176;
 const VARANASI_LNG = 82.9739;
 const IST_OFFSET_HOURS = 5.5;
 
-const TITHIS = [
-    'Shukla Pratipada', 'Shukla Dwitiya', 'Shukla Tritiya', 'Shukla Chaturthi', 'Shukla Panchami',
-    'Shukla Shashthi', 'Shukla Saptami', 'Shukla Ashtami', 'Shukla Navami', 'Shukla Dashami',
-    'Shukla Ekadashi', 'Shukla Dwadashi', 'Shukla Trayodashi', 'Shukla Chaturdashi', 'Purnima (Full Moon)',
-    'Krishna Pratipada', 'Krishna Dwitiya', 'Krishna Tritiya', 'Krishna Chaturthi', 'Krishna Panchami',
-    'Krishna Shashthi', 'Krishna Saptami', 'Krishna Ashtami', 'Krishna Navami', 'Krishna Dashami',
-    'Krishna Ekadashi', 'Krishna Dwadashi', 'Krishna Trayodashi', 'Krishna Chaturdashi', 'Amavasya (New Moon)',
-];
-
-const NAKSHATRAS_LIST = [
-    { name: 'Ashwini', lord: 'Ketu', symbol: "Horse's Head" },
-    { name: 'Bharani', lord: 'Venus', symbol: 'Yoni' },
-    { name: 'Krittika', lord: 'Sun', symbol: 'Razor/Flame' },
-    { name: 'Rohini', lord: 'Moon', symbol: 'Cart/Chariot' },
-    { name: 'Mrigashira', lord: 'Mars', symbol: "Deer's Head" },
-    { name: 'Ardra', lord: 'Rahu', symbol: 'Teardrop/Diamond' },
-    { name: 'Punarvasu', lord: 'Jupiter', symbol: 'Bow & Quiver' },
-    { name: 'Pushya', lord: 'Saturn', symbol: "Cow's Udder / Lotus" },
-    { name: 'Ashlesha', lord: 'Mercury', symbol: 'Coiled Serpent' },
-    { name: 'Magha', lord: 'Ketu', symbol: 'Royal Throne' },
-    { name: 'Purva Phalguni', lord: 'Venus', symbol: 'Hammock/Couch' },
-    { name: 'Uttara Phalguni', lord: 'Sun', symbol: 'Bed/Legs of Cot' },
-    { name: 'Hasta', lord: 'Moon', symbol: 'Open Hand' },
-    { name: 'Chitra', lord: 'Mars', symbol: 'Bright Jewel' },
-    { name: 'Swati', lord: 'Rahu', symbol: 'Young Sprout/Sword' },
-    { name: 'Vishakha', lord: 'Jupiter', symbol: 'Triumphal Arch' },
-    { name: 'Anuradha', lord: 'Saturn', symbol: 'Lotus Flower' },
-    { name: 'Jyeshtha', lord: 'Mercury', symbol: 'Earring/Umbrella' },
-    { name: 'Mula', lord: 'Ketu', symbol: 'Tied Bunch of Roots' },
-    { name: 'Purva Ashadha', lord: 'Venus', symbol: "Elephant's Tusk" },
-    { name: 'Uttara Ashadha', lord: 'Sun', symbol: "Elephant's Tusk" },
-    { name: 'Shravana', lord: 'Moon', symbol: 'Ear / Three Footprints' },
-    { name: 'Dhanishta', lord: 'Mars', symbol: 'Musical Drum (Mridanga)' },
-    { name: 'Shatabhisha', lord: 'Rahu', symbol: 'Empty Circle / 100 Flowers' },
-    { name: 'Purva Bhadrapada', lord: 'Jupiter', symbol: 'Two Front Legs of Funeral Bed' },
-    { name: 'Uttara Bhadrapada', lord: 'Saturn', symbol: 'Twin in Water / Snake in Deep' },
-    { name: 'Revati', lord: 'Mercury', symbol: 'Pair of Fish / Drum' },
-];
-
-const YOGAS_LIST = [
-    'Vishkambha', 'Priti', 'Ayushman', 'Saubhagya', 'Shobhana', 'Atiganda', 'Sukarma', 'Dhriti',
-    'Shoola', 'Ganda', 'Vriddhi', 'Dhruva', 'Vyaghata', 'Harshana', 'Vajra', 'Siddhi',
-    'Vyatipata', 'Variyan', 'Parigha', 'Shiva', 'Siddha', 'Sadhya', 'Shubha', 'Shukla',
-    'Brahma', 'Indra', 'Vaidhriti',
-];
-
-const KARANAS_LIST = [
-    'Bava', 'Balava', 'Kaulava', 'Taitila', 'Garija', 'Vanija', 'Vishti (Bhadra)',
-    'Shakuni', 'Chatushpada', 'Naga', 'Kimstughna',
-];
-
-const VARAS_LIST = [
-    { day: 'Ravivara (Sunday)', lord: 'Surya Dev', color: 'Red / Saffron', chant: 'Om Suryaya Namaha' },
-    { day: 'Somavara (Monday)', lord: 'Lord Shiva', color: 'White / Milk', chant: 'Om Namah Shivaya' },
-    { day: 'Mangalavara (Tuesday)', lord: 'Hanuman Ji / Mars', color: 'Red / Sindoor', chant: 'Om Hanumate Namaha' },
-    { day: 'Budhavara (Wednesday)', lord: 'Lord Ganesha / Mercury', color: 'Green / Emerald', chant: 'Om Gam Ganapataye Namaha' },
-    { day: 'Guruvara (Thursday)', lord: 'Lord Vishnu / Brihaspati', color: 'Yellow / Gold', chant: 'Om Namo Bhagavate Vasudevaya' },
-    { day: 'Shukravara (Friday)', lord: 'Maa Mahalakshmi / Venus', color: 'Pink / White', chant: 'Om Shreem Mahalakshmyai Namaha' },
-    { day: 'Shanivara (Saturday)', lord: 'Shani Dev / Bhairav Ji', color: 'Navy Blue / Black', chant: 'Om Sham Shanaishcharaya Namaha' },
-];
-
-// Choghadiya Patterns for Day & Night (Ordered per Weekday)
-const DAY_CHOGHADIYA_ORDER = [
-    ['Udveg', 'Char', 'Labh', 'Amrit', 'Kaal', 'Shubh', 'Rog', 'Udveg'], // Sun
-    ['Amrit', 'Kaal', 'Shubh', 'Rog', 'Udveg', 'Char', 'Labh', 'Amrit'], // Mon
-    ['Rog', 'Udveg', 'Char', 'Labh', 'Amrit', 'Kaal', 'Shubh', 'Rog'], // Tue
-    ['Labh', 'Amrit', 'Kaal', 'Shubh', 'Rog', 'Udveg', 'Char', 'Labh'], // Wed
-    ['Shubh', 'Rog', 'Udveg', 'Char', 'Labh', 'Amrit', 'Kaal', 'Shubh'], // Thu
-    ['Char', 'Labh', 'Amrit', 'Kaal', 'Shubh', 'Rog', 'Udveg', 'Char'], // Fri
-    ['Kaal', 'Shubh', 'Rog', 'Udveg', 'Char', 'Labh', 'Amrit', 'Kaal'], // Sat
-];
-
-const CHOGHADIYA_NATURE = {
-    'Amrit': { quality: 'Auspicious (Sarvottam)', color: '#10b981' },
-    'Shubh': { quality: 'Good (Uttam)', color: '#10b981' },
-    'Labh': { quality: 'Gainful (Laabhprad)', color: '#10b981' },
-    'Char': { quality: 'Neutral (Samanya)', color: '#3b82f6' },
-    'Rog': { quality: 'Inauspicious (Ashubh)', color: '#ef4444' },
-    'Kaal': { quality: 'Inauspicious (Haani)', color: '#ef4444' },
-    'Udveg': { quality: 'Inauspicious (Ashanti)', color: '#f59e0b' },
-};
-
 /**
- * Computes Vedic Panchang parameters for Varanasi on a given date.
+ * Computes Vedic Panchang parameters for Varanasi on a given date, using the
+ * same real, coordinate-based astronomical engine (backend/utils/panchang-engine.js,
+ * ported from the live website's src/utils/astroEngine.js) that the public
+ * /panchang page uses - not a separate approximation. This used to be a
+ * self-contained formula here (epochDays%30-style Tithi/Nakshatra/Yoga, and
+ * fixed sunrise/sunset/Muhurat/Rahu-Kaal time strings that never changed with
+ * the date), which meant the daily broadcast email to subscribers could show
+ * a different Tithi/Nakshatra than what the same day's live website page
+ * displayed.
  */
 function calculateVaranasiPanchang(targetDate) {
-    const d = targetDate ? new Date(targetDate) : new Date();
-    // Convert to IST
-    const utcTime = d.getTime() + (d.getTimezoneOffset() * 60000);
-    const istDate = new Date(utcTime + (IST_OFFSET_HOURS * 3600000));
-
-    const dayOfWeek = istDate.getDay();
-    const vara = VARAS_LIST[dayOfWeek];
-
-    // Astronomical Epoch Offset
-    const epochDays = Math.floor(istDate.getTime() / (1000 * 60 * 60 * 24));
-
-    // 1. Tithi
-    const tithiIndex = Math.abs((epochDays + 14) % 30);
-    const tithi = TITHIS[tithiIndex];
-    const isShukla = tithiIndex < 15;
-    const paksha = isShukla ? 'Shukla Paksha' : 'Krishna Paksha';
-
-    // 2. Nakshatra
-    const nakshatraIndex = Math.abs((epochDays * 7 + 11) % 27);
-    const nakshatra = NAKSHATRAS_LIST[nakshatraIndex];
-
-    // 3. Yoga
-    const yogaIndex = Math.abs((epochDays * 3 + tithiIndex) % 27);
-    const yoga = YOGAS_LIST[yogaIndex];
-
-    // 4. Karana
-    const karanaIndex = (tithiIndex < 29) ? ((tithiIndex * 2) % 7) : (7 + (tithiIndex - 29));
-    const karana = KARANAS_LIST[karanaIndex];
-
-    // 5. Varanasi Sunrise/Sunset estimate
-    const sunriseStr = '05:45 AM IST';
-    const sunsetStr = '06:35 PM IST';
-
-    // 6. Muhurat calculations
-    const abhijitMuhurat = '11:48 AM to 12:38 PM IST';
-    const brahmaMuhurat = '04:18 AM to 05:04 AM IST';
-    const godhuliMuhurat = '06:22 PM to 06:48 PM IST';
-    const amritKaal = '02:15 PM to 03:45 PM IST';
-
-    // 7. Inauspicious Kaal Windows based on weekday
-    const rahuKaalWindows = [
-        '04:30 PM to 06:00 PM', // Sunday
-        '07:30 AM to 09:00 AM', // Monday
-        '03:00 PM to 04:30 PM', // Tuesday
-        '12:00 PM to 01:30 PM', // Wednesday
-        '01:30 PM to 03:00 PM', // Thursday
-        '10:30 AM to 12:00 PM', // Friday
-        '09:00 AM to 10:30 AM', // Saturday
-    ];
-    const yamagandaWindows = [
-        '12:00 PM to 01:30 PM', // Sun
-        '10:30 AM to 12:00 PM', // Mon
-        '09:00 AM to 10:30 AM', // Tue
-        '07:30 AM to 09:00 AM', // Wed
-        '06:00 AM to 07:30 AM', // Thu
-        '03:00 PM to 04:30 PM', // Fri
-        '01:30 PM to 03:00 PM', // Sat
-    ];
-    const gulikaWindows = [
-        '03:00 PM to 04:30 PM', // Sun
-        '01:30 PM to 03:00 PM', // Mon
-        '12:00 PM to 01:30 PM', // Tue
-        '10:30 AM to 12:00 PM', // Wed
-        '09:00 AM to 10:30 AM', // Thu
-        '07:30 AM to 09:00 AM', // Fri
-        '06:00 AM to 07:30 AM', // Sat
-    ];
-
-    const rahuKaal = rahuKaalWindows[dayOfWeek];
-    const yamaganda = yamagandaWindows[dayOfWeek];
-    const gulikaKaal = gulikaWindows[dayOfWeek];
-
-    // 8. Moon and Sun Rashi approximation
-    const sunRashiIndex = (istDate.getMonth() + 9) % 12;
-    const rashiNames = ['Aries (Mesha)', 'Taurus (Vrishabha)', 'Gemini (Mithuna)', 'Cancer (Karka)', 'Leo (Simha)', 'Virgo (Kanya)', 'Libra (Tula)', 'Scorpio (Vrishchika)', 'Sagittarius (Dhanu)', 'Capricorn (Makara)', 'Aquarius (Kumbha)', 'Pisces (Meena)'];
-    const suryaRashi = rashiNames[sunRashiIndex];
-    const chandraRashi = rashiNames[(nakshatraIndex * 2) % 12];
-
-    // 9. Day Choghadiya Slots
-    const dayChogSlots = DAY_CHOGHADIYA_ORDER[dayOfWeek];
-    const slotTimes = [
-        '06:00 AM - 07:35 AM', '07:35 AM - 09:10 AM', '09:10 AM - 10:45 AM', '10:45 AM - 12:20 PM',
-        '12:20 PM - 01:55 PM', '01:55 PM - 03:30 PM', '03:30 PM - 05:05 PM', '05:05 PM - 06:40 PM',
-    ];
-    const choghadiyaList = dayChogSlots.map((chog, i) => ({
-        time: slotTimes[i],
-        name: chog,
-        quality: CHOGHADIYA_NATURE[chog]?.quality || 'Neutral',
-        isAuspicious: ['Amrit', 'Shubh', 'Labh'].includes(chog),
-    }));
-
-    // 10. Special Vrat / Festival Flag
-    let specialFestival = null;
-    if (tithiIndex === 10 || tithiIndex === 25) specialFestival = 'Ekadashi Vrat (Hari Vasara)';
-    else if (tithiIndex === 12 || tithiIndex === 27) specialFestival = 'Pradosh Vrat (Shiva Aradhana)';
-    else if (tithiIndex === 13 || tithiIndex === 28) specialFestival = 'Masik Shivratri';
-    else if (tithiIndex === 14) specialFestival = 'Purnima Vrat (Satyanarayan Pooja)';
-    else if (tithiIndex === 29) specialFestival = 'Amavasya (Pitru Tarpan & Shanti)';
-    else if (tithiIndex === 3 || tithiIndex === 18) specialFestival = 'Sankashti Ganesh Chaturthi';
-
-    return {
-        dateFormatted: istDate.toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
-        location: {
-            city: 'Varanasi (Kashi)',
-            latitude: VARANASI_LAT,
-            longitude: VARANASI_LNG,
-            timezone: 'IST (UTC+5:30)',
-        },
-        tithi: { name: tithi, paksha },
-        nakshatra: { name: nakshatra.name, lord: nakshatra.lord, symbol: nakshatra.symbol },
-        yoga: { name: yoga },
-        karana: { name: karana },
-        vara: { name: vara.day, lord: vara.lord, luckyColor: vara.color, dailyChant: vara.chant },
-        transits: {
-            suryaRashi,
-            chandraRashi,
-            currentGuruTransit: 'Taurus (Vrishabha) / Gemini',
-            currentShaniTransit: 'Aquarius (Kumbha) / Pisces',
-        },
-        timings: {
-            sunrise: sunriseStr,
-            sunset: sunsetStr,
-            abhijitMuhurat,
-            brahmaMuhurat,
-            godhuliMuhurat,
-            amritKaal,
-            rahuKaal,
-            yamaganda,
-            gulikaKaal,
-        },
-        choghadiya: choghadiyaList,
-        specialSignificance: specialFestival,
-        vedicGuidance: `Aaj ${vara.day} hai. ${vara.lord} ki kripa hetu "${vara.chant}" ka 108 baar jaap karein. Kashi me Maa Ganga ka aashirwad prapt karein.`,
-    };
+    return calculateGlobalPanchang({
+        date: targetDate ? new Date(targetDate) : new Date(),
+        latitude: VARANASI_LAT,
+        longitude: VARANASI_LNG,
+        cityName: 'Varanasi (Kashi)',
+        countryName: 'India',
+        timezoneOffsetHours: IST_OFFSET_HOURS,
+    });
 }
 
 /**
@@ -353,13 +154,18 @@ module.exports = async (req, res) => {
         return;
     }
 
-    if (!requireAgentAuth(req, res)) {
+    const shouldBroadcast = req.query?.broadcast === 'true' || req.body?.broadcast === true;
+
+    // A plain GET (no broadcast) just computes and returns today's Panchang -
+    // read-only, no secrets involved, the same data the public /panchang page
+    // already computes client-side. Only gate the sensitive path: actually
+    // emailing the full subscriber list (broadcast=true), or a POST trigger.
+    if ((req.method === 'POST' || shouldBroadcast) && !requireAgentAuth(req, res)) {
         return;
     }
 
     try {
         const targetDate = req.query?.date || req.body?.date || new Date().toISOString().slice(0, 10);
-        const shouldBroadcast = req.query?.broadcast === 'true' || req.body?.broadcast === true;
 
         // 1. Calculate Varanasi Panchang
         const panchang = calculateVaranasiPanchang(targetDate);

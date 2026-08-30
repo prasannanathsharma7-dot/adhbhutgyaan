@@ -112,7 +112,11 @@ module.exports = async (req, res) => {
             if (item.scheduledDate) {
                 const parsedDate = new Date(item.scheduledDate);
                 if (!isNaN(parsedDate.getTime())) {
-                    updateDoc.scheduledDate = item.scheduledDate.toString().trim();
+                    // Normalize to YYYY-MM-DD (UTC) - cron-reminders.js finds tomorrow's
+                    // bookings via an exact string match against this field, so storing
+                    // whatever raw format the Sheet happens to send (e.g. "30/08/2026")
+                    // would silently break reminders for that booking with no error.
+                    updateDoc.scheduledDate = parsedDate.toISOString().slice(0, 10);
                     updateDoc.reminderSent = false;
                 }
             }
