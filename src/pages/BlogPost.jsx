@@ -3,7 +3,7 @@ import blogData from '../data/blog.json';
 import { useEffect, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import useSEO from '../hooks/useSEO';
-import { breadcrumbJsonLd, combineJsonLd } from '../utils/seo';
+import { breadcrumbJsonLd, faqJsonLd, combineJsonLd } from '../utils/seo';
 
 function useInView() {
     const ref = useRef(null);
@@ -32,11 +32,32 @@ function useInView() {
     return ref;
 }
 
+// Several article headings are already phrased as questions (e.g. "Kashi mein
+// Kalsarp Dosh puja kahan hoti hai?") with a direct answer in the paragraph
+// right after - a ready-made FAQ pair. Pulling these into FAQPage schema
+// makes eligible posts a lot more likely to get a rich-snippet / "People also
+// ask" style listing in Google, at no extra editorial effort.
+function extractFaqPairs(content) {
+    const faqs = [];
+    for (let i = 0; i < content.length; i++) {
+        const block = content[i];
+        if (block.type === 'heading' && block.text.trim().endsWith('?')) {
+            const next = content[i + 1];
+            if (next && next.type === 'paragraph' && next.text) {
+                faqs.push({ q: block.text, a: next.text });
+            }
+        }
+    }
+    return faqs;
+}
+
 export default function BlogPost() {
     const { slug } = useParams();
     const pageRef = useInView();
     const post = blogData.find(p => p.id === slug);
     const { t, lang } = useLanguage();
+
+    const faqPairs = post ? extractFaqPairs(post.content) : [];
 
     useSEO({
         title: post ? `${lang === 'hi' ? post.title : post.titleEn} | Adhbhut Gyaan` : t('ब्लॉग | Adhbhut Gyaan', 'Blog | Adhbhut Gyaan'),
@@ -50,7 +71,7 @@ export default function BlogPost() {
                 description: lang === 'hi' ? post.excerpt : post.excerptEn,
                 image: `https://www.adhbhutgyaan.com/images/${post.image}`,
                 datePublished: post.date,
-                author: { '@type': 'Organization', name: 'Adhbhut Gyaan' },
+                author: { '@id': 'https://www.adhbhutgyaan.com/#umang-nath-sharma' },
                 publisher: { '@type': 'Organization', name: 'Adhbhut Gyaan' },
                 mainEntityOfPage: `https://www.adhbhutgyaan.com/blog/${post.id}`,
             },
@@ -58,14 +79,22 @@ export default function BlogPost() {
                 { name: 'Home', path: '/' },
                 { name: 'Blog', path: '/blog' },
                 { name: lang === 'hi' ? post.title : post.titleEn, path: `/blog/${post.id}` },
-            ])
+            ]),
+            faqPairs.length > 0 ? faqJsonLd(faqPairs) : null
         ) : null,
     });
 
     if (!post) return <Navigate to="/blog" replace />;
 
-    // Find related posts (exclude current)
-    const relatedPosts = blogData.filter(p => p.id !== post.id).slice(0, 3);
+    // Related posts: prefer same category, then any post that recommends the
+    // same pooja service, and only fall back to "just the next few in the
+    // list" if neither yields enough - previously this always showed the
+    // same static first-3 posts regardless of what the current article was
+    // about.
+    const sameCategory = blogData.filter(p => p.id !== post.id && p.category === post.category);
+    const sameService = blogData.filter(p => p.id !== post.id && p.serviceId === post.serviceId && p.category !== post.category);
+    const others = blogData.filter(p => p.id !== post.id && p.category !== post.category && p.serviceId !== post.serviceId);
+    const relatedPosts = [...sameCategory, ...sameService, ...others].slice(0, 3);
 
     return (
         <div ref={pageRef}>
@@ -80,6 +109,7 @@ export default function BlogPost() {
                     <h1>{lang === 'hi' ? post.title : post.titleEn}</h1>
                     {lang === 'hi' && <p className="blog-post-title-en">{post.titleEn}</p>}
                     <div className="blog-post-meta">
+                        <span>👤 {t('डॉ. उमंग नाथ शर्मा', 'Dr. Umang Nath Sharma')}</span>
                         <span>📅 {new Date(post.date).toLocaleDateString(lang === 'hi' ? 'hi-IN' : 'en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
                         <span>⏱️ {post.readTime} {t('पढ़ने का समय', 'read')}</span>
                     </div>
