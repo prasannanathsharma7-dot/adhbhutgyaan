@@ -220,12 +220,12 @@ export default function Panchang() {
     // Dynamic SEO
     useSEO({
         title: t(
-            `आज का पंचांग — ${cityName} (${dateFormatted}) | शुभ मुहूर्त एवं राहु काल`,
-            `Today's Panchang — ${cityName} (${dateFormatted}) | Shubh Muhurat & Choghadiya`
+            `आज का पंचांग — ${cityName} (${dateFormatted}) | शुभ मुहूर्त, राहु काल एवं चौघड़िया`,
+            `Today's Panchang — ${cityName} (${dateFormatted}) | Shubh Muhurat, Rahu Kaal & Choghadiya`
         ),
         description: t(
-            `${cityName} का दैनिक वैदिक पंचांग: तिथि ${panchangData?.tithi?.name || 'Shukla Pratipada'}, नक्षत्र ${panchangData?.nakshatra?.name || 'Ashwini'}, अभिजित मुहूर्त ${panchangData?.muhurats?.abhijit || '11:45 AM - 12:35 PM'}, राहु काल ${panchangData?.inauspicious?.rahuKaal || '04:30 PM - 06:00 PM'} एवं चौघड़िया।`,
-            `Vedic Panchang for ${cityName}: Tithi ${panchangData?.tithi?.name || 'Shukla Pratipada'}, Nakshatra ${panchangData?.nakshatra?.name || 'Ashwini'}, Abhijit Muhurat ${panchangData?.muhurats?.abhijit || '11:45 AM - 12:35 PM'}, Rahu Kaal ${panchangData?.inauspicious?.rahuKaal || '04:30 PM - 06:00 PM'} & Choghadiya.`
+            `${cityName} का आज का पंचांग एवं शुभ मुहूर्त: सूर्योदय ${panchangData?.solar?.sunrise || '05:45 AM'}, सूर्यास्त ${panchangData?.solar?.sunset || '06:30 PM'}, तिथि ${panchangData?.tithi?.name || 'Shukla Pratipada'}, नक्षत्र ${panchangData?.nakshatra?.name || 'Ashwini'}, अभिजित मुहूर्त ${panchangData?.muhurats?.abhijit || '11:45 AM - 12:35 PM'}, राहु काल ${panchangData?.inauspicious?.rahuKaal || '04:30 PM - 06:00 PM'} एवं चौघड़िया।`,
+            `Today's Panchang & Shubh Muhurat for ${cityName}: Sunrise ${panchangData?.solar?.sunrise || '05:45 AM'}, Sunset ${panchangData?.solar?.sunset || '06:30 PM'}, Tithi ${panchangData?.tithi?.name || 'Shukla Pratipada'}, Nakshatra ${panchangData?.nakshatra?.name || 'Ashwini'}, Abhijit Muhurat ${panchangData?.muhurats?.abhijit || '11:45 AM - 12:35 PM'}, Rahu Kaal ${panchangData?.inauspicious?.rahuKaal || '04:30 PM - 06:00 PM'} & Choghadiya.`
         ),
         path: '/panchang',
         jsonLd: combineJsonLd(breadcrumbJsonLd([
