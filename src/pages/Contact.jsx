@@ -11,8 +11,8 @@ export default function Contact() {
     const { t, lang } = useLanguage();
 
     useSEO({
-        title: t('संपर्क करें | Adhbhut Gyaan', 'Contact Us | Adhbhut Gyaan'),
-        description: t('WhatsApp, फ़ोन या ईमेल से हमसे संपर्क करें — वाराणसी, उत्तर प्रदेश।', 'Get in touch with us via WhatsApp, phone, or email — Varanasi, Uttar Pradesh.'),
+        title: t('संपर्क करें — काशी के पंडित जी | Adhbhut Gyaan', 'Contact Us — Pandit Ji in Kashi, Banaras, Varanasi | Adhbhut Gyaan'),
+        description: t('WhatsApp, फ़ोन या ईमेल से हमसे संपर्क करें — पूजा बुकिंग व ज्योतिष परामर्श हेतु, वाराणसी (काशी/बनारस), उत्तर प्रदेश।', 'Contact Adhbhut Gyaan via WhatsApp, phone, or email for pooja booking and astrology consultation — Varanasi (Kashi/Banaras), Uttar Pradesh.'),
         path: '/contact',
         jsonLd: combineJsonLd(breadcrumbJsonLd([
             { name: 'Home', path: '/' },

@@ -27,8 +27,8 @@ export default function Horoscope() {
     const [error, setError] = useState('');
 
     useSEO({
-        title: t('राशिफल — दैनिक एवं मासिक राशिफल | Adhbhut Gyaan', 'Horoscope — Daily & Monthly Rashifal | Adhbhut Gyaan'),
-        description: t('अपनी राशि चुनें और आज या इस महीने का राशिफल पढ़ें — करियर, धन, स्वास्थ्य एवं रिश्तों पर मार्गदर्शन।', "Pick your rashi and read today's or this month's horoscope — guidance on career, money, health and relationships."),
+        title: t('राशिफल — आज का राशिफल, दैनिक एवं मासिक राशिफल | Adhbhut Gyaan', 'Free Daily Horoscope — Aaj Ka Rashifal, Today\'s & Monthly Horoscope | Adhbhut Gyaan'),
+        description: t('सभी 12 राशियों का आज का राशिफल, साप्ताहिक व मासिक राशिफल — करियर, धन, स्वास्थ्य एवं प्रेम पर काशी के ज्योतिषी डॉ. उमंग नाथ शर्मा का मार्गदर्शन।', "Free daily horoscope for all 12 zodiac signs (rashi) - today's and monthly horoscope on career, money, health and love, by Kashi astrologer Dr. Umang Nath Sharma."),
         path: '/horoscope',
         jsonLd: combineJsonLd(breadcrumbJsonLd([
             { name: 'Home', path: '/' },
