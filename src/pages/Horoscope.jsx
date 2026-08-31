@@ -37,16 +37,16 @@ function getBhakootResult(rashiA, rashiB, t) {
             note: t('एक ही राशि — विचार, स्वभाव व जीवनशैली में गहरी समानता।', 'Same Rashi — deep natural alignment in thinking, temperament and lifestyle.') };
     }
     if ([6, 8].includes(dist) || [6, 8].includes(reverseDist)) {
-        return { tier: 'caution', label: t('षडाष्टक — विशेष ध्यान आवश्यक', 'Shad-Ashtak — Needs Attention'),
-            note: t('यह दूरी भकूट दोष दर्शाती है — विवाह हेतु पूर्ण कुंडली मिलान द्वारा अन्य 7 कूटों की जांच आवश्यक।', 'This distance indicates Bhakoot Dosha — for marriage, a full Kundli match checking the other 7 kutas is recommended before any decision.') };
+        return { tier: 'caution', label: t('षडाष्टक — विशेष ध्यान आवश्यक', 'Shad-Ashtak Dosha — Needs Attention'),
+            note: t('भकूट दोष का सबसे गंभीर रूप — विवाह हेतु पूर्ण कुंडली मिलान व अन्य कूटों की जांच आवश्यक।', 'The most significant of the three Bhakoot Dosha combinations — a full Kundli match checking the other 7 kutas (and cancellation rules) is strongly recommended before any decision.') };
     }
     if ([2, 12].includes(dist) || [2, 12].includes(reverseDist)) {
-        return { tier: 'caution', label: t('द्विर्द्वादश — सामान्य से कम', 'Dwirdwadasha — Below Average'),
-            note: t('संवाद व समझौते पर अतिरिक्त प्रयास लाभकारी रहेगा।', 'Extra effort on communication and give-and-take will help this pairing.') };
+        return { tier: 'caution', label: t('द्विर्द्वादश दोष — ध्यान आवश्यक', 'Dwirdwadasha Dosha — Needs Attention'),
+            note: t('यह दूरी भकूट दोष दर्शाती है — पारिवारिक सामंजस्य व वित्त पर ध्यान देना उचित, पूर्ण मिलान अवश्य करवाएं।', 'This distance is one of the three classical Bhakoot Dosha combinations, traditionally linked to family harmony and finances — get a full Kundli match before deciding.') };
     }
-    if ([5, 9].includes(dist)) {
-        return { tier: 'excellent', label: t('त्रिकोण — उत्तम मेल', 'Trine — Excellent Match'),
-            note: t('स्वाभाविक समझ व सहयोग की प्रबल संभावना।', 'Strong natural understanding and cooperation between these signs.') };
+    if ([5, 9].includes(dist) || [5, 9].includes(reverseDist)) {
+        return { tier: 'caution', label: t('नवपंचम दोष — हल्का, पर ध्यान दें', 'Navpancham Dosha — Mild, Worth a Look'),
+            note: t('यह तीनों भकूट दोष संयोजनों में सबसे हल्का माना जाता है, एवं कई आधुनिक ज्योतिषी इसे दोष नहीं मानते — फिर भी पूर्ण मिलान से स्पष्टता मिलेगी।', 'Classically the mildest of the three Bhakoot Dosha combinations, and many modern astrologers don\u2019t count it as a dosha at all — a full Kundli match will give a clearer picture either way.') };
     }
     if (dist === 7) {
         return { tier: 'good', label: t('सप्तम — पूरक स्वभाव', 'Opposition — Complementary Natures'),
