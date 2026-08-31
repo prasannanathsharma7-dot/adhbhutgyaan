@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { gallery, pressHighlights, triptych, videoClips, youtubeUploadsPlaylistId, youtubeChannelId } from '../data/media';
+import { SquarePlay } from 'lucide-react';
 import useSEO from '../hooks/useSEO';
 import { breadcrumbJsonLd, combineJsonLd } from '../utils/seo';
 
@@ -415,7 +416,7 @@ export default function About() {
                     </div>
                     <div className="text-center" style={{ marginTop: '1.5rem' }}>
                         <a href={`https://www.youtube.com/channel/${youtubeChannelId}`} target="_blank" rel="noreferrer" className="btn btn-primary">
-                            ▶️ {t('YouTube पर सब्सक्राइब करें', 'Subscribe on YouTube')}
+                            <SquarePlay size={16} style={{ verticalAlign: '-3px', marginRight: '0.35rem' }} />{t('YouTube पर सब्सक्राइब करें', 'Subscribe on YouTube')}
                         </a>
                     </div>
                 </div>

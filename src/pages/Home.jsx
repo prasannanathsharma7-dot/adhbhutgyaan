@@ -8,6 +8,7 @@ import { localBusinessJsonLd, combineJsonLd } from '../utils/seo';
 import DailyPanchangCard from '../components/DailyPanchangCard';
 import { heritageSummary, testimonials } from '../data/heritage';
 import FlagIcon from '../components/FlagIcon';
+import { SquarePlay } from 'lucide-react';
 
 function useInView() {
     const ref = useRef();
@@ -482,7 +483,7 @@ export default function Home() {
                     </div>
                     <div className="text-center" style={{ marginTop: '1.5rem' }}>
                         <a href={`https://www.youtube.com/channel/${youtubeChannelId}`} target="_blank" rel="noreferrer" className="btn btn-primary">
-                            ▶️ {t('YouTube पर सब्सक्राइब करें', 'Subscribe on YouTube')}
+                            <SquarePlay size={16} style={{ verticalAlign: '-3px', marginRight: '0.35rem' }} />{t('YouTube पर सब्सक्राइब करें', 'Subscribe on YouTube')}
                         </a>
                     </div>
                 </div>
