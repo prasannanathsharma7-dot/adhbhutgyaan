@@ -58,7 +58,7 @@ const YOGAKARAKA_BY_ASCENDANT = {
     4: 'Mars',    // Cancer asc: Mars owns 5th (Scorpio) + 10th (Aries)
     5: 'Mars',    // Leo asc: Mars owns 4th (Scorpio) + 9th (Aries)
     7: 'Saturn',  // Libra asc: Saturn owns 4th (Capricorn) + 5th (Aquarius)
-    10: 'Venus',  // Capricorn asc: Venus owns 4th (Taurus) + 9th (Libra)
+    10: 'Venus',  // Capricorn asc: Venus owns 5th (Taurus) + 10th (Libra)
     11: 'Venus',  // Aquarius asc: Venus owns 4th (Taurus) + 9th (Libra... from Aquarius: 9th=Libra)
 };
 

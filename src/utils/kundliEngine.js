@@ -269,7 +269,14 @@ export function calculateInstantKundli({ birthDate, birthTime, birthPlace, name,
         ];
         const kalsarpName = hasKalsarp ? kalsarpTypes[(rahuSignNum - 1 + 12) % 12] : 'No Kalsarp Dosh';
 
-        const currentSaturnRashi = 11;
+        // Today's own ayanamsa (not the birth-date one) for accurately placing
+        // the CURRENT real-time transiting Saturn - the two can differ by up to
+        // ~1° for an old birth date, occasionally enough to matter right at a
+        // sign boundary.
+        const nowJD = (Date.now() / 86400000) + 2440587.5;
+        const nowT = (nowJD - 2451545.0) / 36525;
+        const nowAyanamsa = 23.85655556 + (1.39604167 * nowT) + (0.000308 * nowT * nowT);
+        const currentSaturnRashi = getSignNum(normalizeDeg(getTropicalLongitudes(new Date()).saturn - nowAyanamsa));
         const dist = ((currentSaturnRashi - moonSignNum + 12) % 12);
         let sadeSatiActive = false;
         let sadeSatiText = 'Shani Transit Shanta (No Active Sade Sati)';
@@ -290,7 +297,19 @@ export function calculateInstantKundli({ birthDate, birthTime, birthPlace, name,
             sadeSatiText = 'Ashtama Shani Dhaiya (8th House Transit)';
         }
 
-        const hasPitra = moonNakshatra.name === 'Magha' || sunSignNum === rahuSignNum || sunSignNum === satSignNum;
+        // Pitra Dosh — classical indicators (per Brihat Parashara Hora Shastra's
+        // 9th-house analysis, as commonly summarized by Vedic astrology
+        // references): Sun conjunct Rahu, Ketu, or Saturn (any house), OR
+        // Rahu/Ketu/Saturn occupying the 9th house (house of father/ancestors)
+        // from Lagna. "Moon in Magha nakshatra" was previously used as a
+        // stand-alone trigger here but is not a documented classical rule for
+        // Pitra Dosh specifically (Ketu ruling Magha is a real but separate
+        // fact) - removed rather than risk a false positive on a dosha this
+        // site sells a specific remedy (Tripindi Shradh) for.
+        const ninthHouseSign = ((lagnaSignNum + 9 - 2) % 12) + 1; // sign occupying the 9th house from Lagna
+        const ninthHouseAfflicted = [rahuSignNum, ketuSignNum, satSignNum].includes(ninthHouseSign);
+        const sunAfflicted = sunSignNum === rahuSignNum || sunSignNum === ketuSignNum || sunSignNum === satSignNum;
+        const hasPitra = sunAfflicted || ninthHouseAfflicted;
 
         return {
             devoteeName: name || 'Devotee',

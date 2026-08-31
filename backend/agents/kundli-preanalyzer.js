@@ -186,7 +186,15 @@ function computeVedicChartData(birthDateStr, birthTimeStr, birthPlaceStr, lat = 
     ];
     const kalsarpType = hasKalsarp ? kalsarpTypes[(rahuSignNum - 1 + 12) % 12] : 'No Kalsarp Dosh Detected';
 
-    const hasPitraAffliction = moonNakshatra.name === 'Magha' || sunSignNum === rahuSignNum;
+    // Pitra Dosh — classical indicators (per Brihat Parashara Hora Shastra's
+    // 9th-house analysis): Sun conjunct Rahu/Ketu/Saturn (any house), or
+    // Rahu/Ketu/Saturn occupying the 9th house (father/ancestors) from Lagna.
+    // "Moon in Magha" was previously used as a stand-alone trigger but is not
+    // a documented classical rule for Pitra Dosh specifically - removed.
+    const ninthHouseSign = ((lagnaSignNum + 9 - 2) % 12) + 1;
+    const ninthHouseAfflicted = [rahuSignNum, ketuSignNum, satSignNum].includes(ninthHouseSign);
+    const sunAfflicted = sunSignNum === rahuSignNum || sunSignNum === ketuSignNum || sunSignNum === satSignNum;
+    const hasPitraAffliction = sunAfflicted || ninthHouseAfflicted;
     const pitraDoshSeverity = hasPitraAffliction ? 'Active Ancestral Impediment (Pitra Rin)' : 'Mild / No Major Dosha';
 
     // Real current Saturn transit position (was previously hardcoded to Rashi 11 /
