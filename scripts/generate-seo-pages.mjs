@@ -146,20 +146,20 @@ const routes = [
     },
     {
         path: '/free-kundli',
-        title: 'Free Kundli & Janam Patrika by a Real Kashi Astrologer | Adhbhut Gyaan',
-        description: 'Submit your birth details and Dr. Umang Nath Sharma personally analyzes your Kundli - no automated software, real astrologer guidance from Kashi.',
+        title: 'फ्री कुंडली — निःशुल्क जन्म कुंडली एवं जन्म पत्रिका ऑनलाइन | Adhbhut Gyaan',
+        description: 'जन्म तिथि, समय व स्थान से मुफ्त जन्म कुंडली बनाएं — लग्न चार्ट, ग्रह स्थिति एवं दोष विश्लेषण तुरंत, काशी के ज्योतिषी डॉ. उमंग नाथ शर्मा द्वारा।',
         jsonLd: combineJsonLd(breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Free Kundli', path: '/free-kundli' }])),
     },
     {
         path: '/panchang',
-        title: 'दैनिक वैदिक पंचांग एवं शुभ मुहूर्त — Universal Dynamic Ephemeris | Adhbhut Gyaan',
-        description: 'विश्व के किसी भी नगर हेतु सटीक वैदिक पंचांग: तिथि, नक्षत्र, चौघड़िया, अभिजित मुहूर्त, एवं राहु काल की वास्तविक समय गणना।',
+        title: 'आज का पंचांग | शुभ मुहूर्त, राहु काल एवं चौघड़िया — Universal Dynamic Ephemeris | Adhbhut Gyaan',
+        description: 'विश्व के किसी भी नगर हेतु आज का पंचांग एवं शुभ मुहूर्त: सूर्योदय-सूर्यास्त, तिथि, नक्षत्र, अभिजित मुहूर्त, राहु काल एवं चौघड़िया की वास्तविक समय गणना।',
         jsonLd: combineJsonLd(breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Daily Panchang', path: '/panchang' }])),
     },
     {
         path: '/horoscope',
-        title: 'राशिफल — दैनिक एवं मासिक राशिफल | Adhbhut Gyaan',
-        description: 'अपनी राशि चुनें और आज या इस महीने का राशिफल पढ़ें - करियर, धन, स्वास्थ्य एवं रिश्तों पर मार्गदर्शन।',
+        title: 'राशिफल — आज का राशिफल, दैनिक एवं मासिक राशिफल | Adhbhut Gyaan',
+        description: 'सभी 12 राशियों का आज का राशिफल, साप्ताहिक व मासिक राशिफल — करियर, धन, स्वास्थ्य एवं प्रेम पर काशी के ज्योतिषी डॉ. उमंग नाथ शर्मा का मार्गदर्शन।',
         jsonLd: combineJsonLd(breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Horoscope', path: '/horoscope' }])),
     },
     {
@@ -170,8 +170,8 @@ const routes = [
     },
     {
         path: '/contact',
-        title: 'संपर्क करें | Adhbhut Gyaan',
-        description: 'WhatsApp, फ़ोन या ईमेल से हमसे संपर्क करें — वाराणसी, उत्तर प्रदेश।',
+        title: 'संपर्क करें — काशी के पंडित जी | Adhbhut Gyaan',
+        description: 'WhatsApp, फ़ोन या ईमेल से हमसे संपर्क करें — पूजा बुकिंग व ज्योतिष परामर्श हेतु, वाराणसी (काशी/बनारस), उत्तर प्रदेश।',
         jsonLd: combineJsonLd(breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Contact Us', path: '/contact' }])),
     },
     {
