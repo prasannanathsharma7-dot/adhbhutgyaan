@@ -3,10 +3,15 @@ import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import WhatsAppFloat from './components/WhatsAppFloat';
-import ChatWidget from './components/ChatWidget';
 import BackToTop from './components/BackToTop';
 import ScrollToTop from './components/ScrollToTop';
 import ErrorBoundary from './components/ErrorBoundary';
+
+// ChatWidget is a non-critical, below-the-fold floating widget with its own
+// message state/logic - lazy-loading it keeps its JS out of the initial
+// bundle so it doesn't compete with the LCP-critical page code for
+// parse/execute time on first load.
+const ChatWidget = lazy(() => import('./components/ChatWidget'));
 
 // Route-level code splitting
 const Home = lazy(() => import('./pages/Home'));
@@ -77,7 +82,9 @@ function App() {
             </main>
             <Footer />
             <WhatsAppFloat />
-            <ChatWidget />
+            <Suspense fallback={null}>
+                <ChatWidget />
+            </Suspense>
             <BackToTop />
         </ErrorBoundary>
     );

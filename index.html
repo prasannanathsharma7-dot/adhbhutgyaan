@@ -13,6 +13,23 @@
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://www.adhbhutgyaan.com/">
 
+  <!-- Font loading: preconnect + <link rel=stylesheet> instead of CSS @import.
+       @import inside index.css blocks the render tree until the browser has
+       parsed the CSS, discovered the @import, then fetched fonts.googleapis.com,
+       THEN fonts.gstatic.com - two extra sequential round trips before any
+       text can paint. Declaring it here lets the HTML preload scanner start
+       both connections immediately, in parallel with the JS bundle. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Tiro+Devanagari+Hindi:ital@0;1&family=Playfair+Display:wght@400;500;600;700;800&display=swap">
+
+  <!-- Hero image preload: this is a client-rendered SPA, so the <img> tag
+       for the hero banner (the LCP element on Home) doesn't exist in the
+       DOM until React hydrates - without this, the browser wouldn't even
+       start downloading it until after the JS bundle has fetched, parsed,
+       and executed. This lets it download in parallel with the JS instead. -->
+  <link rel="preload" as="image" href="/images/gallery/havan-group.webp" fetchpriority="high" type="image/webp">
+
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Adhbhut Gyaan">

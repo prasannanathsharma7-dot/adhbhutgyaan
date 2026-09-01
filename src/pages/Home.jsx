@@ -53,7 +53,10 @@ export default function Home() {
             {/* HERO */}
             <section className="hero" id="hero">
                 <div className="hero-bg">
-                    <img src="/images/gallery/havan-group.jpg" alt={t('काशी में सम्पन्न सामूहिक हवन', 'Collective havan performed in Kashi')} width="1280" height="720" fetchPriority="high" />
+                    <picture>
+                        <source srcSet="/images/gallery/havan-group.webp" type="image/webp" />
+                        <img src="/images/gallery/havan-group.jpg" alt={t('काशी में सम्पन्न सामूहिक हवन', 'Collective havan performed in Kashi')} width="1280" height="720" fetchPriority="high" />
+                    </picture>
                 </div>
                 <div className="hero-overlay" />
                 <div className="hero-content">

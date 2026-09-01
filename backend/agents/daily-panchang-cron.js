@@ -208,6 +208,16 @@ module.exports = async (req, res) => {
             }
         }
 
+        // The computed Panchang is identical for every visitor requesting the
+        // same date+location and only changes once per calendar day - a plain
+        // GET (no broadcast) is safe to cache at the edge/browser, so repeat
+        // page loads from different visitors don't each re-trigger a Cloud Run
+        // + MongoDB round trip for data that hasn't changed. Never cache the
+        // broadcast path (it has side effects - sends real emails).
+        if (!shouldBroadcast && req.method === 'GET') {
+            res.setHeader('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
+        }
+
         res.status(200).json({
             ok: true,
             agent: 'AGENT 3: Daily Panchang & Transit Alert Cron',
