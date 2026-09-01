@@ -49,7 +49,7 @@ const HOUSE_THEMES = {
  */
 function getCurrentGocharSummary(rashiIndex, period) {
     const sid = getSiderealLongitudes(new Date());
-    const signOf = deg => Math.floor(deg / 30);
+    const signOf = deg => Math.floor((((deg % 360) + 360) % 360) / 30); // defensively normalize first
     const houseFrom = planetSignIdx => ((planetSignIdx - rashiIndex + 12) % 12) + 1;
 
     // Moon changes sign every ~2.25 days, so it's only a meaningful anchor

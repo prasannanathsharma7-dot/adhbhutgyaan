@@ -187,7 +187,7 @@ export function calculateInstantKundli({ birthDate, birthTime, birthPlace, name,
         const sidKetu = normalizeDeg(sidRahu + 180);
 
         // Helper functions
-        const getSignNum = deg => Math.floor(deg / 30) + 1;
+        const getSignNum = deg => Math.floor((((deg % 360) + 360) % 360) / 30) + 1; // defensively normalize first, so an unnormalized/out-of-range degree can never produce sign 0 or 13
         const getHouse = (pSign) => ((pSign - lagnaSignNum + 12) % 12) + 1;
 
         const sunSignNum = getSignNum(sidSun);
