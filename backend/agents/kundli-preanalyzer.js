@@ -195,7 +195,7 @@ function computeVedicChartData(birthDateStr, birthTimeStr, birthPlaceStr, lat = 
     const ninthHouseAfflicted = [rahuSignNum, ketuSignNum, satSignNum].includes(ninthHouseSign);
     const sunAfflicted = sunSignNum === rahuSignNum || sunSignNum === ketuSignNum || sunSignNum === satSignNum;
     const hasPitraAffliction = sunAfflicted || ninthHouseAfflicted;
-    const pitraDoshSeverity = hasPitraAffliction ? 'Active Ancestral Impediment (Pitra Rin)' : 'Mild / No Major Dosha';
+    const pitraDoshSeverity = hasPitraAffliction ? 'Preliminary Pitra Rin Indication (Discuss with Astrologer)' : 'Mild / No Major Dosha';
 
     // Real current Saturn transit position (was previously hardcoded to Rashi 11 /
     // Aquarius regardless of date, which made Sade Sati results wrong for anyone

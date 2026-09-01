@@ -365,7 +365,7 @@ export function calculateInstantKundli({ birthDate, birthTime, birthPlace, name,
                 },
                 pitraDosh: {
                     hasDosh: hasPitra,
-                    severity: hasPitra ? 'Active Ancestral Impediment (Pitra Rin)' : 'Pitra Kripa / No Major Dosh',
+                    severity: hasPitra ? 'Preliminary Pitra Rin Indication (Discuss with Astrologer)' : 'Pitra Kripa / No Major Dosh',
                 },
             },
         };

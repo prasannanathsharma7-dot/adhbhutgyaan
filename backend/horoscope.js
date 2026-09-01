@@ -47,18 +47,24 @@ const HOUSE_THEMES = {
  * this moment's actual planetary positions instead of being astronomically
  * arbitrary content with the rashi name swapped in.
  */
-function getCurrentGocharSummary(rashiIndex) {
+function getCurrentGocharSummary(rashiIndex, period) {
     const sid = getSiderealLongitudes(new Date());
     const signOf = deg => Math.floor(deg / 30);
     const houseFrom = planetSignIdx => ((planetSignIdx - rashiIndex + 12) % 12) + 1;
 
-    const planets = [
-        { name: 'Moon (Chandra)', signIdx: signOf(sid.moon) },
+    // Moon changes sign every ~2.25 days, so it's only a meaningful anchor
+    // for the DAILY reading - including it in the monthly prompt would
+    // describe a Moon transit that's already stale for most of that month
+    // (monthly text is cached for the whole calendar month, see getDateKey).
+    const planets = period === 'monthly'
+        ? []
+        : [{ name: 'Moon (Chandra)', signIdx: signOf(sid.moon) }];
+    planets.push(
         { name: 'Jupiter (Guru)', signIdx: signOf(sid.jupiter) },
         { name: 'Saturn (Shani)', signIdx: signOf(sid.saturn) },
         { name: 'Rahu', signIdx: signOf(sid.rahu) },
         { name: 'Ketu', signIdx: signOf(sid.ketu) },
-    ];
+    );
 
     return planets.map(p => {
         const h = houseFrom(p.signIdx);
@@ -78,7 +84,7 @@ function getDateKey(period) {
 
 function buildPrompt(rashi, period, rashiIndex) {
     const scope = period === 'monthly' ? 'this month' : 'today';
-    const gochar = getCurrentGocharSummary(rashiIndex);
+    const gochar = getCurrentGocharSummary(rashiIndex, period);
     return `Write a ${period} Vedic horoscope (Rashifal) for ${rashi.nameEn} (${rashi.name}) rashi, ruled by ${rashi.lord}, for ${scope}.
 Base the reading on these REAL current planetary transits (Gochar) from this rashi - reference them naturally in the relevant paragraph rather than listing them mechanically: ${gochar}.
 Cover: career/work, money, relationships/family, and health - 1 short paragraph each (2-3 sentences).
@@ -172,3 +178,4 @@ module.exports = async (req, res) => {
         res.status(200).json({ ok: true, rashi, period, dateKey, text: fallbackText(rashi, period), source: 'fallback' });
     }
 };
+
