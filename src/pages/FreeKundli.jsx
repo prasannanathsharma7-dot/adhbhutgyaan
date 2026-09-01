@@ -29,7 +29,7 @@ export default function FreeKundli() {
         title: t('फ्री कुंडली — निःशुल्क जन्म कुंडली एवं जन्म पत्रिका ऑनलाइन | Adhbhut Gyaan', 'Free Kundli Online — Free Janam Kundli & Horoscope by Date of Birth | Adhbhut Gyaan'),
         description: t(
             'जन्म तिथि, समय व स्थान से मुफ्त जन्म कुंडली बनाएं — लग्न चार्ट, ग्रह स्थिति एवं दोष विश्लेषण तुरंत, काशी के ज्योतिषी डॉ. उमंग नाथ शर्मा द्वारा।',
-            'Generate your free Kundli online by date of birth, time & place - instant Janam Kundli, Lagna chart, planetary positions & dosha analysis by Kashi astrologer Dr. Umang Nath Sharma.'
+            'Generate your free Kundli online by date of birth, time & place - instant Lagna chart, planetary positions & dosha analysis by Kashi astrologer.'
         ),
         path: '/free-kundli',
         jsonLd: combineJsonLd(breadcrumbJsonLd([

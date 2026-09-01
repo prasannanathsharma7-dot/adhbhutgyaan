@@ -128,7 +128,7 @@ const routes = [
     {
         path: '/services',
         title: 'Pooja & Astrology Services in Kashi, Varanasi | हमारी पूजा सेवाएं | Adhbhut Gyaan',
-        description: 'Book authentic pooja in Kashi, Varanasi - Rudrabhishek, Kalsarp Dosh Nivaran, Tripindi Shradh, Astrology consultation & 10+ more Vedic services by Pt. Umang Nath Sharma.',
+        description: 'Book authentic pooja in Kashi, Varanasi - Rudrabhishek, Kalsarp Dosh Nivaran, Tripindi Shradh & 10+ more Vedic services by Pt. Umang Nath Sharma.',
         jsonLd: combineJsonLd(
             breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Services', path: '/services' }]),
             faqJsonLd([

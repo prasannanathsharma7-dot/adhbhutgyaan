@@ -20,7 +20,7 @@ export default function About() {
 
     useSEO({
         title: t('हमारे बारे में — शर्मा परिवार की विरासत | Adhbhut Gyaan', 'Dr. Umang Nath Sharma — Best Astrologer in Kashi, Varanasi | Adhbhut Gyaan'),
-        description: t('400+ वर्षों की वैदिक परंपरा, तीन पीढ़ियों की गाथा — महामहोपाध्याय पं. अयोध्या नाथ शर्मा से डॉ. उमंग नाथ शर्मा तक।', 'Dr. Umang Nath Sharma, renowned Kashi Astrologer and Vedic Pandit - four centuries of tradition across three generations, from Mahamahopadhyaya Pt. Ayodhya Nath Sharma to today.'),
+        description: t('400+ वर्षों की वैदिक परंपरा, तीन पीढ़ियों की गाथा — महामहोपाध्याय पं. अयोध्या नाथ शर्मा से डॉ. उमंग नाथ शर्मा तक।', 'Dr. Umang Nath Sharma, renowned Kashi Astrologer & Vedic Pandit - four centuries of tradition across three generations of the Sharma family.'),
         path: '/about',
         jsonLd: combineJsonLd(breadcrumbJsonLd([
             { name: 'Home', path: '/' },

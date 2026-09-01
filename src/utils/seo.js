@@ -72,6 +72,11 @@ export function localBusinessJsonLd() {
         url: `${SITE_URL}/`,
         telephone: '+919278148269',
         priceRange: '₹₹',
+        sameAs: [
+            'https://www.facebook.com/share/1GAD1LMAq5/',
+            'https://www.instagram.com/adhbhutgyaan369',
+            'https://youtube.com/@adhbhutgyaan4911',
+        ],
         address: {
             '@type': 'PostalAddress',
             streetAddress: 'J11/19, Nati Imli Rd, Ishwargangi',
