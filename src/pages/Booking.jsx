@@ -300,8 +300,8 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                                         {pkg.popular && <div className="package-popular-badge">⭐ {t('लोकप्रिय', 'Popular')}</div>}
                                         <div className="package-name">{lang === 'hi' ? pkg.name : pkg.nameEn}</div>
                                         {lang === 'hi' && <div className="package-name-en">{pkg.nameEn}</div>}
-                                        <div className="package-count">{pkg.paathCount}</div>
-                                        <div className="package-includes">{t('शामिल', 'Includes')}: {pkg.includes}</div>
+                                        <div className="package-count">{lang === 'hi' ? pkg.paathCount : (pkg.paathCountEn || pkg.paathCount)}</div>
+                                        <div className="package-includes">{t('शामिल', 'Includes')}: {lang === 'hi' ? pkg.includes : (pkg.includesEn || pkg.includes)}</div>
                                     </div>
                                 ))}
                             </div>

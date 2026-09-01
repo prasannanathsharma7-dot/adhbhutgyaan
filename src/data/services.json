@@ -28,7 +28,9 @@
         "paathCount": "एक-पर-एक परामर्श सत्र",
         "includes": "कुंडली विश्लेषण एवं उपाय सहित सम्पूर्ण मार्गदर्शन।",
         "price": null,
-        "popular": true
+        "popular": true,
+        "paathCountEn": "One-on-one consultation session",
+        "includesEn": "Complete guidance including birth-chart analysis and remedial measures."
       }
     ],
     "shortDescEn": "Comprehensive birth-chart analysis, planetary-affliction remedies, and authoritative astrological guidance for life's every concern, by Dr. Umang Nath Sharma."
@@ -62,7 +64,9 @@
         "paathCount": "501 पाठ (7 ब्राह्मण)",
         "includes": "हवन का खर्च अलग से होगा।",
         "price": 30060,
-        "popular": false
+        "popular": false,
+        "paathCountEn": "501 recitations (7 Brahmins)",
+        "includesEn": "Havan expenses charged separately."
       },
       {
         "name": "1008 महापाठ",
@@ -70,7 +74,9 @@
         "paathCount": "1008 पाठ (7 ब्राह्मण)",
         "includes": "हवन का खर्च अलग से होगा।",
         "price": 60480,
-        "popular": true
+        "popular": true,
+        "paathCountEn": "1008 recitations (7 Brahmins)",
+        "includesEn": "Havan expenses charged separately."
       }
     ],
     "shortDescEn": "The most potent tantric rite for protection against black magic and hostile sorcery, returning negative energy to its very source."
@@ -104,7 +110,9 @@
         "paathCount": "108 पाठ (5 ब्राह्मण)",
         "includes": "शास्त्रोक्त विधि से सम्पन्न। मूल्य हेतु पूछताछ करें।",
         "price": 3240,
-        "popular": true
+        "popular": true,
+        "paathCountEn": "108 recitations (5 Brahmins)",
+        "includesEn": "Performed as per scriptural method. Enquire for pricing."
       },
       {
         "name": "501 पाठ",
@@ -112,7 +120,9 @@
         "paathCount": "501 पाठ (5 ब्राह्मण)",
         "includes": "शास्त्रोक्त विधि से सम्पन्न। मूल्य हेतु पूछताछ करें।",
         "price": 15030,
-        "popular": false
+        "popular": false,
+        "paathCountEn": "501 recitations (5 Brahmins)",
+        "includesEn": "Performed as per scriptural method. Enquire for pricing."
       },
       {
         "name": "1008 महापाठ",
@@ -120,7 +130,9 @@
         "paathCount": "1008 पाठ (5 ब्राह्मण)",
         "includes": "शास्त्रोक्त विधि से सम्पन्न। मूल्य हेतु पूछताछ करें।",
         "price": 30240,
-        "popular": false
+        "popular": false,
+        "paathCountEn": "1008 recitations (5 Brahmins)",
+        "includesEn": "Performed as per scriptural method. Enquire for pricing."
       }
     ],
     "shortDescEn": "A profound tantric invocation dedicated to the ten Mahavidyas, for the removal of adversarial obstacles and the fulfilment of heartfelt aspirations."
@@ -154,7 +166,9 @@
         "paathCount": "सम्पूर्ण पूजन विधि",
         "includes": "3 ब्राह्मण भोजन व्यवस्था एवं दक्षिणा सहित।",
         "price": 11000,
-        "popular": true
+        "popular": true,
+        "paathCountEn": "Complete ritual procedure",
+        "includesEn": "Includes meal arrangements and dakshina for 3 Brahmins."
       },
       {
         "name": "त्रिपिंडी श्राद्ध (5 ब्राह्मण)",
@@ -162,7 +176,9 @@
         "paathCount": "सम्पूर्ण विस्तृत पूजन विधि",
         "includes": "5 ब्राह्मण भोजन व्यवस्था एवं दक्षिणा सहित।",
         "price": 15000,
-        "popular": false
+        "popular": false,
+        "paathCountEn": "Complete, elaborate ritual procedure",
+        "includesEn": "Includes meal arrangements and dakshina for 5 Brahmins."
       }
     ],
     "shortDescEn": "A sacred Shraddha rite performed at Kashi's Pishach Mochan Tirtha to dispel Pitru Dosha and grant eternal peace to unfulfilled ancestral souls."
@@ -196,7 +212,9 @@
         "paathCount": "सम्पूर्ण वैदिक विधि",
         "includes": "2 ब्राह्मण द्वारा पूजन एवं अनुष्ठान।",
         "price": 5100,
-        "popular": true
+        "popular": true,
+        "paathCountEn": "Complete Vedic procedure",
+        "includesEn": "Ritual and worship performed by 2 Brahmins."
       }
     ],
     "shortDescEn": "A duly ordained ritual at the sacred Naga Koop temple, for deliverance from the inauspicious influence of Rahu-Ketu, life’s persistent obstacles, and troubling dreams."
@@ -230,7 +248,9 @@
         "paathCount": "1 सम्पूर्ण अभिषेक",
         "includes": "रूद्राष्टाध्यायी के सम्पूर्ण पाठ के साथ दुग्धाभिषेक।",
         "price": 2100,
-        "popular": true
+        "popular": true,
+        "paathCountEn": "1 complete abhishekam",
+        "includesEn": "Milk abhishekam with the complete recitation of the Rudrashtadhyayi."
       },
       {
         "name": "एकादश रुद्राभिषेक",
@@ -238,7 +258,9 @@
         "paathCount": "11 पाठ",
         "includes": "11 ब्राह्मणों द्वारा एक साथ महा रुद्राभिषेक।",
         "price": 21000,
-        "popular": false
+        "popular": false,
+        "paathCountEn": "11 recitations",
+        "includesEn": "Grand Maha Rudrabhishek performed jointly by 11 Brahmins."
       }
     ],
     "shortDescEn": "The most sacred abhishekam of Lord Shiva - invoked for the alleviation of illness, the fulfilment of cherished wishes, and the dissolution of accumulated sin."
@@ -272,7 +294,9 @@
         "paathCount": "251 पाठ",
         "includes": "शास्त्रोक्त विधि से सम्पन्न। मूल्य हेतु पूछताछ करें।",
         "price": 6275,
-        "popular": false
+        "popular": false,
+        "paathCountEn": "251 recitations",
+        "includesEn": "Performed as per scriptural method. Enquire for pricing."
       },
       {
         "name": "501 पाठ",
@@ -280,7 +304,9 @@
         "paathCount": "501 पाठ",
         "includes": "शास्त्रोक्त विधि से सम्पन्न। मूल्य हेतु पूछताछ करें।",
         "price": 12525,
-        "popular": true
+        "popular": true,
+        "paathCountEn": "501 recitations",
+        "includesEn": "Performed as per scriptural method. Enquire for pricing."
       },
       {
         "name": "1008 महापाठ",
@@ -288,7 +314,9 @@
         "paathCount": "1008 पाठ",
         "includes": "शास्त्रोक्त विधि से सम्पन्न। मूल्य हेतु पूछताछ करें।",
         "price": 25200,
-        "popular": false
+        "popular": false,
+        "paathCountEn": "1008 recitations",
+        "includesEn": "Performed as per scriptural method. Enquire for pricing."
       }
     ],
     "shortDescEn": "The glorious hymn composed by Adi Shankaracharya himself, chanted for the alleviation of dire poverty and the bestowal of sudden, unexpected prosperity."
@@ -322,7 +350,9 @@
         "paathCount": "251 पाठ",
         "includes": "शास्त्रोक्त विधि से सम्पन्न। मूल्य हेतु पूछताछ करें।",
         "price": 7530,
-        "popular": true
+        "popular": true,
+        "paathCountEn": "251 recitations",
+        "includesEn": "Performed as per scriptural method. Enquire for pricing."
       },
       {
         "name": "501 पाठ",
@@ -330,7 +360,9 @@
         "paathCount": "501 पाठ",
         "includes": "शास्त्रोक्त विधि से सम्पन्न। मूल्य हेतु पूछताछ करें।",
         "price": 15030,
-        "popular": false
+        "popular": false,
+        "paathCountEn": "501 recitations",
+        "includesEn": "Performed as per scriptural method. Enquire for pricing."
       },
       {
         "name": "1008 महापाठ",
@@ -338,7 +370,9 @@
         "paathCount": "1008 पाठ",
         "includes": "शास्त्रोक्त विधि से सम्पन्न। मूल्य हेतु पूछताछ करें।",
         "price": 30240,
-        "popular": false
+        "popular": false,
+        "paathCountEn": "1008 recitations",
+        "includesEn": "Performed as per scriptural method. Enquire for pricing."
       }
     ],
     "shortDescEn": "Invoked to dissolve obstacles in auspicious undertakings, sharpen intellect and concentration, and bestow success in commerce and enterprise."
@@ -372,7 +406,9 @@
         "paathCount": "501 पाठ",
         "includes": "शास्त्रोक्त विधि से सम्पन्न। मूल्य हेतु पूछताछ करें।",
         "price": 10020,
-        "popular": true
+        "popular": true,
+        "paathCountEn": "501 recitations",
+        "includesEn": "Performed as per scriptural method. Enquire for pricing."
       },
       {
         "name": "1008 महापाठ",
@@ -380,7 +416,9 @@
         "paathCount": "1008 पाठ",
         "includes": "शास्त्रोक्त विधि से सम्पन्न। मूल्य हेतु पूछताछ करें।",
         "price": 20160,
-        "popular": false
+        "popular": false,
+        "paathCountEn": "1008 recitations",
+        "includesEn": "Performed as per scriptural method. Enquire for pricing."
       }
     ],
     "shortDescEn": "The most sacred hymn of the Rigveda, chanted to invoke Goddess Lakshmi's special grace, abundant prosperity, and a flourishing enterprise."
@@ -414,7 +452,9 @@
         "paathCount": "501 पाठ",
         "includes": "शास्त्रोक्त विधि से सम्पन्न। मूल्य हेतु पूछताछ करें।",
         "price": 12525,
-        "popular": true
+        "popular": true,
+        "paathCountEn": "501 recitations",
+        "includesEn": "Performed as per scriptural method. Enquire for pricing."
       },
       {
         "name": "1008 महापाठ",
@@ -422,7 +462,9 @@
         "paathCount": "1008 पाठ",
         "includes": "शास्त्रोक्त विधि से सम्पन्न। मूल्य हेतु पूछताछ करें।",
         "price": 25200,
-        "popular": false
+        "popular": false,
+        "paathCountEn": "1008 recitations",
+        "includesEn": "Performed as per scriptural method. Enquire for pricing."
       }
     ],
     "shortDescEn": "A Vedic hymn consecrated to Lord Vishnu, chanted for robust health, longevity, the pacification of Pitru Dosha, and the dissolution of sin."
@@ -456,7 +498,9 @@
         "paathCount": "सम्पूर्ण वैदिक विधि",
         "includes": "5 ब्राह्मणों द्वारा विधि-विधान से सम्पन्न।",
         "price": 11000,
-        "popular": true
+        "popular": true,
+        "paathCountEn": "Complete Vedic procedure",
+        "includesEn": "Performed with full traditional rites by 5 Brahmins."
       }
     ],
     "shortDescEn": "A symbolic pre-marital wedding rite performed to pacify the inauspicious effects of Manglik Dosha before the actual nuptials."

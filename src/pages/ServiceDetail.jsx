@@ -130,8 +130,8 @@ export default function ServiceDetail() {
                                 {pkg.popular && <div className="package-popular-badge">⭐ {t('लोकप्रिय', 'Popular')}</div>}
                                 <div className="package-name">{lang === 'hi' ? pkg.name : pkg.nameEn}</div>
                                 {lang === 'hi' && <div className="package-name-en">{pkg.nameEn}</div>}
-                                <div className="package-count">{pkg.paathCount}</div>
-                                <div className="package-includes">{t('शामिल', 'Includes')}: {pkg.includes}</div>
+                                <div className="package-count">{lang === 'hi' ? pkg.paathCount : (pkg.paathCountEn || pkg.paathCount)}</div>
+                                <div className="package-includes">{t('शामिल', 'Includes')}: {lang === 'hi' ? pkg.includes : (pkg.includesEn || pkg.includes)}</div>
                                 <a
                                     href={`https://wa.me/919278148269?text=${encodeURIComponent(t(
                                         `नमस्कार! मुझे "${service.name} — ${pkg.name}" के बारे में पूछताछ करनी है। कृपया अधिक जानकारी दें।`,
