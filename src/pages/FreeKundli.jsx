@@ -148,7 +148,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
     };
 
     return (
-        <div style={{ background: 'var(--warm-50)', minHeight: '100vh', paddingBottom: '3rem' }}>
+        <div style={{ background: 'var(--warm-100)', minHeight: '100vh', paddingBottom: '3rem' }}>
             {/* Print Styling */}
             <style>{`
                 @media print {
@@ -181,7 +181,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
             `}</style>
 
             {/* Header Banner */}
-            <header className="page-header" style={{ background: 'linear-gradient(135deg, var(--navy-950) 0%, var(--navy-850) 100%)', padding: 'clamp(2rem, 5vw, 3.5rem) 0 2rem' }}>
+            <header className="page-header" style={{ background: 'linear-gradient(135deg, var(--navy-950) 0%, var(--navy-900) 100%)', padding: 'clamp(2rem, 5vw, 3.5rem) 0 2rem' }}>
                 <div className="container">
                     <div className="breadcrumb">
                         <Link to="/">{t('होम', 'Home')}</Link>
@@ -208,7 +208,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                         <div style={{ background: 'var(--gold-50)', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-lg)', padding: '1rem 1.25rem', marginBottom: '1.25rem', fontSize: '0.88rem', color: 'var(--navy-900)', display: 'flex', gap: '0.75rem', alignItems: 'flex-start', boxShadow: 'var(--shadow-sm)' }}>
                             <Zap size={22} style={{ color: 'var(--gold-600)' }} />
                             <div>
-                                <strong style={{ display: 'block', marginBottom: '0.2rem', color: 'var(--gold-900)' }}>
+                                <strong style={{ display: 'block', marginBottom: '0.2rem', color: 'var(--gold-800)' }}>
                                     {t('सटीक लाहिड़ी अयनांश एवं काशी परंपरा', 'Authentic Lahiri Ephemeris & Kashi Lineage')}
                                 </strong>
                                 {t(
@@ -542,7 +542,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                 <h3 style={{ margin: 0, fontSize: '1.25rem', color: 'var(--navy-950)' }}>
                                     <Lock size={17} style={{ verticalAlign: '-3px', marginRight: '0.35rem' }} />{t('प्रीमियम भविष्य फल एवं समय चक्र (Locked Timeline Analysis)', 'Premium 5-8 Year Future Forecast (Locked)')}
                                 </h3>
-                                <span style={{ background: 'var(--gold-100)', color: 'var(--gold-900)', fontSize: '0.72rem', fontWeight: 700, padding: '0.2rem 0.6rem', borderRadius: '999px' }}>
+                                <span style={{ background: 'var(--gold-100)', color: 'var(--gold-800)', fontSize: '0.72rem', fontWeight: 700, padding: '0.2rem 0.6rem', borderRadius: '999px' }}>
                                     Pandit Ji Exclusive
                                 </span>
                             </div>

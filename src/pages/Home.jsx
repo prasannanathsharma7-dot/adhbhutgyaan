@@ -211,7 +211,7 @@ export default function Home() {
             {/* FREE KUNDLI HIGHLIGHT CALLOUT */}
             <section className="section" style={{ padding: '1.5rem 0' }}>
                 <div className="container">
-                    <div style={{ background: 'linear-gradient(135deg, var(--navy-950) 0%, var(--navy-850) 100%)', borderRadius: 'var(--radius-xl)', padding: 'clamp(1.5rem, 4vw, 2.5rem)', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.5rem', border: '1px solid rgba(212,168,67,0.3)', boxShadow: 'var(--shadow-lg)' }}>
+                    <div style={{ background: 'linear-gradient(135deg, var(--navy-950) 0%, var(--navy-900) 100%)', borderRadius: 'var(--radius-xl)', padding: 'clamp(1.5rem, 4vw, 2.5rem)', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.5rem', border: '1px solid rgba(212,168,67,0.3)', boxShadow: 'var(--shadow-lg)' }}>
                         <div style={{ maxWidth: '650px' }}>
                             <span style={{ background: 'rgba(212,168,67,0.2)', color: 'var(--gold-400)', padding: '0.25rem 0.75rem', borderRadius: '999px', fontSize: '0.8rem', fontWeight: 700, display: 'inline-block', marginBottom: '0.6rem' }}>
                                 🔮 {t('विशेष सेवा — निःशुल्क जन्म कुंडली', 'Special Service — Free Janam Kundli')}

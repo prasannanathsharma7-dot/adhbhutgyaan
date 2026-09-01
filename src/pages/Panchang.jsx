@@ -87,7 +87,7 @@ export default function Panchang() {
                                     timezoneOffsetHours: tzOffset,
                                     source: 'gps',
                                 });
-                                setGpsNotice(t(`📍 आपका स्थान स्वतः खोजा गया: ${city}, ${country}`, `📍 Auto-detected your location: ${city}, ${country}`));
+                                setGpsNotice(t(`आपका स्थान स्वतः खोजा गया: ${city}, ${country}`, `Auto-detected your location: ${city}, ${country}`));
                                 return;
                             }
                         } catch {
@@ -102,7 +102,7 @@ export default function Panchang() {
                             timezoneOffsetHours: tzOffset,
                             source: 'gps',
                         });
-                        setGpsNotice(t('📍 GPS निर्देशांक सफलतापूर्वक प्राप्त हुए।', '📍 GPS coordinates detected successfully.'));
+                        setGpsNotice(t('GPS निर्देशांक सफलतापूर्वक प्राप्त हुए।', 'GPS coordinates detected successfully.'));
                     } catch (err) {
                         console.warn('Geolocation parse error:', err);
                         setLocation(VARANASI_DEFAULT);
@@ -191,7 +191,7 @@ export default function Panchang() {
 
             setSearchQuery(`${city}, ${country}`);
             setIsDropdownOpen(false);
-            setGpsNotice(t(`📍 स्थान चुना गया: ${city}, ${country}`, `📍 Location selected: ${city}, ${country}`));
+            setGpsNotice(t(`स्थान चुना गया: ${city}, ${country}`, `Location selected: ${city}, ${country}`));
         } catch (err) {
             console.error('Location selection error:', err);
         }
@@ -301,9 +301,9 @@ export default function Panchang() {
     const activeChoghadiyaList = (choghadiyaTab === 'day' ? panchangData?.choghadiya?.day : panchangData?.choghadiya?.night) || [];
 
     return (
-        <div style={{ background: 'var(--warm-50)', minHeight: '100vh', paddingBottom: '3rem' }}>
+        <div style={{ background: 'var(--warm-100)', minHeight: '100vh', paddingBottom: '3rem' }}>
             {/* Header Banner */}
-            <header className="page-header" style={{ background: 'linear-gradient(135deg, var(--navy-950) 0%, var(--navy-850) 100%)', padding: 'clamp(2rem, 5vw, 3.5rem) 0 2rem' }}>
+            <header className="page-header" style={{ background: 'linear-gradient(135deg, var(--navy-950) 0%, var(--navy-900) 100%)', padding: 'clamp(2rem, 5vw, 3.5rem) 0 2rem' }}>
                 <div className="container">
                     <div className="breadcrumb">
                         <Link to="/">{t('होम', 'Home')}</Link>
@@ -397,7 +397,7 @@ export default function Panchang() {
                         <div style={{ marginTop: '0.75rem', paddingTop: '0.65rem', borderTop: '1px solid var(--border-light)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem', fontSize: '0.82rem', color: location?.source === 'gps' ? '#065f46' : 'var(--text-secondary)' }}>
                             <div>
                                 {location?.source === 'gps' && <span style={{ background: '#ecfdf5', color: '#065f46', padding: '0.2rem 0.5rem', borderRadius: '4px', fontWeight: 700, marginRight: '0.4rem', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}><CheckCircle2 size={13} /> GPS Active</span>}
-                                {gpsNotice}
+                                <MapPin size={13} style={{ verticalAlign: '-2px', marginRight: '0.25rem' }} />{gpsNotice}
                             </div>
                             <div style={{ color: 'var(--gold-800)', fontWeight: 600 }}>
                                 <Globe size={13} style={{ verticalAlign: '-2px', marginRight: '0.3rem' }} />Lat: {panchangData?.location?.latitude ?? '25.3176'}° | Lon: {panchangData?.location?.longitude ?? '82.9739'}° | {panchangData?.location?.timezoneOffset ?? 'UTC+5.5'}
@@ -447,27 +447,27 @@ export default function Panchang() {
                         </div>
 
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.65rem 0.85rem', background: 'var(--warm-50)', borderRadius: 'var(--radius-md)' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.65rem 0.85rem', background: 'var(--warm-100)', borderRadius: 'var(--radius-md)' }}>
                                 <span style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}><b><ScrollText size={13} style={{ verticalAlign: '-2px', marginRight: '0.2rem' }} />{t('तिथि', 'Tithi')}:</b></span>
                                 <span style={{ fontWeight: 700, color: 'var(--navy-900)', fontSize: '0.9rem' }}>{panchangData?.tithi?.name || 'Shukla Pratipada'} ({panchangData?.tithi?.paksha || 'Shukla Paksha'})</span>
                             </div>
 
-                            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.65rem 0.85rem', background: 'var(--warm-50)', borderRadius: 'var(--radius-md)' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.65rem 0.85rem', background: 'var(--warm-100)', borderRadius: 'var(--radius-md)' }}>
                                 <span style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}><b><Star size={13} style={{ verticalAlign: '-2px', marginRight: '0.2rem' }} />{t('नक्षत्र', 'Nakshatra')}:</b></span>
                                 <span style={{ fontWeight: 700, color: 'var(--navy-900)', fontSize: '0.9rem' }}>{panchangData?.nakshatra?.name || 'Ashwini'} (Pada {panchangData?.nakshatra?.pada || 1}) · {panchangData?.nakshatra?.lord || 'Ketu'}</span>
                             </div>
 
-                            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.65rem 0.85rem', background: 'var(--warm-50)', borderRadius: 'var(--radius-md)' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.65rem 0.85rem', background: 'var(--warm-100)', borderRadius: 'var(--radius-md)' }}>
                                 <span style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}><b><Sparkles size={13} style={{ verticalAlign: '-2px', marginRight: '0.2rem' }} />{t('योग', 'Yoga')}:</b></span>
                                 <span style={{ fontWeight: 700, color: 'var(--navy-900)', fontSize: '0.9rem' }}>{panchangData?.yoga?.name || 'Siddhi'}</span>
                             </div>
 
-                            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.65rem 0.85rem', background: 'var(--warm-50)', borderRadius: 'var(--radius-md)' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.65rem 0.85rem', background: 'var(--warm-100)', borderRadius: 'var(--radius-md)' }}>
                                 <span style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}><b><Flower2 size={13} style={{ verticalAlign: '-2px', marginRight: '0.2rem' }} />{t('करण', 'Karana')}:</b></span>
                                 <span style={{ fontWeight: 700, color: 'var(--navy-900)', fontSize: '0.9rem' }}>{panchangData?.karana?.name || 'Bava'}</span>
                             </div>
 
-                            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.65rem 0.85rem', background: 'var(--warm-50)', borderRadius: 'var(--radius-md)' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.65rem 0.85rem', background: 'var(--warm-100)', borderRadius: 'var(--radius-md)' }}>
                                 <span style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}><b>🕉️ {t('वार (दिन)', 'Vara / Day')}:</b></span>
                                 <span style={{ fontWeight: 700, color: 'var(--navy-900)', fontSize: '0.9rem' }}>{panchangData?.vara?.name || 'Somavara'}</span>
                             </div>
@@ -595,7 +595,7 @@ export default function Panchang() {
                                     padding: '0.85rem',
                                     borderRadius: 'var(--radius-md)',
                                     border: slot?.isAuspicious ? '1px solid #86efac' : (slot?.type === 'Inauspicious' ? '1px solid #fecaca' : '1px solid var(--border-light)'),
-                                    background: slot?.isAuspicious ? '#f0fdf4' : (slot?.type === 'Inauspicious' ? '#fef2f2' : 'var(--warm-50)'),
+                                    background: slot?.isAuspicious ? '#f0fdf4' : (slot?.type === 'Inauspicious' ? '#fef2f2' : 'var(--warm-100)'),
                                     display: 'flex',
                                     flexDirection: 'column',
                                     gap: '0.2rem',
@@ -619,7 +619,7 @@ export default function Panchang() {
                 </div>
 
                 {/* 1-Click WhatsApp Share Card & Pooja CTA */}
-                <div style={{ background: 'linear-gradient(135deg, var(--navy-950) 0%, var(--navy-850) 100%)', borderRadius: 'var(--radius-xl)', padding: 'clamp(1.5rem, 4vw, 2.5rem)', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.5rem', boxShadow: 'var(--shadow-lg)' }}>
+                <div style={{ background: 'linear-gradient(135deg, var(--navy-950) 0%, var(--navy-900) 100%)', borderRadius: 'var(--radius-xl)', padding: 'clamp(1.5rem, 4vw, 2.5rem)', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.5rem', boxShadow: 'var(--shadow-lg)' }}>
                     <div style={{ maxWidth: '600px' }}>
                         <span style={{ color: 'var(--gold-400)', fontWeight: 700, fontSize: '0.85rem', letterSpacing: '0.5px', textTransform: 'uppercase' }}>
                             <Share2 size={13} style={{ verticalAlign: '-2px', marginRight: '0.3rem' }} />{t('शेयर करें अथवा संकल्प बुक करें', 'Share Today’s Panchang & Book Sankalp')}

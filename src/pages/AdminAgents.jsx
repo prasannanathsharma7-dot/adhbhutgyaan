@@ -318,7 +318,7 @@ export default function AdminAgents() {
     return (
         <div>
             {/* Header */}
-            <header className="page-header" style={{ padding: '2rem 0', background: 'linear-gradient(135deg, var(--navy-950) 0%, var(--navy-850) 100%)' }}>
+            <header className="page-header" style={{ padding: '2rem 0', background: 'linear-gradient(135deg, var(--navy-950) 0%, var(--navy-900) 100%)' }}>
                 <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.25rem' }}>
                     <div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.25rem' }}>
@@ -827,7 +827,7 @@ export default function AdminAgents() {
                                                     borderRadius: '4px',
                                                     border: `1px solid ${a5Topic === opt.id ? 'var(--gold-500)' : 'var(--border-light)'}`,
                                                     background: a5Topic === opt.id ? 'var(--gold-50)' : 'white',
-                                                    color: a5Topic === opt.id ? 'var(--gold-900)' : 'var(--navy-900)',
+                                                    color: a5Topic === opt.id ? 'var(--gold-800)' : 'var(--navy-900)',
                                                     fontWeight: 600,
                                                     fontSize: '0.78rem',
                                                     cursor: 'pointer',

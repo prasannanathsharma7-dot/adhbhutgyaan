@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
+import { MapPin, Copy, CheckCircle2, MessageCircle, XCircle } from 'lucide-react';
 
 export default function DailyPanchangCard() {
     const { t, lang } = useLanguage();
@@ -54,7 +55,7 @@ export default function DailyPanchangCard() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.25rem', paddingBottom: '0.85rem', borderBottom: '1px solid var(--border-light)' }}>
                 <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--gold-800)', fontWeight: 700, fontSize: '0.82rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                        <span>📍</span> {t('वाराणसी (काशी) पंचांग', 'Varanasi (Kashi) Ephemeris')}
+                        <span><MapPin size={13} /></span> {t('वाराणसी (काशी) पंचांग', 'Varanasi (Kashi) Ephemeris')}
                     </div>
                     <h3 style={{ margin: '0.2rem 0 0', fontSize: 'clamp(1.1rem, 2.5vw, 1.4rem)', color: 'var(--navy-950)' }}>
                         {t('आज का पंचांग एवं शुभ मुहूर्त', "Today's Vedic Panchang & Shubh Muhurat")}
@@ -71,7 +72,7 @@ export default function DailyPanchangCard() {
                         className="btn btn-outline-dark"
                         style={{ fontSize: '0.78rem', padding: '0.4rem 0.75rem', borderRadius: 'var(--radius-full)' }}
                     >
-                        {copied ? '✓ Copied' : '📋 Copy'}
+                        {copied ? <><CheckCircle2 size={13} style={{ verticalAlign: '-2px', marginRight: '0.25rem' }} />Copied</> : <><Copy size={13} style={{ verticalAlign: '-2px', marginRight: '0.25rem' }} />Copy</>}
                     </button>
                     <a
                         href={whatsappShareUrl}
@@ -80,7 +81,7 @@ export default function DailyPanchangCard() {
                         className="btn btn-whatsapp"
                         style={{ fontSize: '0.78rem', padding: '0.4rem 0.85rem', borderRadius: 'var(--radius-full)' }}
                     >
-                        💬 {t('WhatsApp पर शेयर करें', 'Share on WhatsApp')}
+                        <MessageCircle size={14} style={{ verticalAlign: '-2px', marginRight: '0.3rem' }} />{t('WhatsApp पर शेयर करें', 'Share on WhatsApp')}
                     </a>
                 </div>
             </div>
@@ -117,7 +118,7 @@ export default function DailyPanchangCard() {
                 {/* Shubh Muhurats (Green) */}
                 <div style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.3)', borderRadius: 'var(--radius-md)', padding: '0.9rem 1rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#065f46', fontWeight: 700, fontSize: '0.85rem', marginBottom: '0.35rem' }}>
-                        <span>🟢</span> {t('शुभ मुहूर्त (Auspicious Windows)', 'Auspicious Muhurat Windows')}
+                        <span><CheckCircle2 size={17} style={{ color: '#16a34a' }} /></span> {t('शुभ मुहूर्त (Auspicious Windows)', 'Auspicious Muhurat Windows')}
                     </div>
                     <div style={{ fontSize: '0.8rem', color: '#1e293b', lineHeight: 1.5 }}>
                         <div><b>अभिजित मुहूर्त (Abhijit):</b> {abhijit}</div>
@@ -128,7 +129,7 @@ export default function DailyPanchangCard() {
                 {/* Inauspicious Timings (Red Warning) */}
                 <div style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 'var(--radius-md)', padding: '0.9rem 1rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#991b1b', fontWeight: 700, fontSize: '0.85rem', marginBottom: '0.35rem' }}>
-                        <span>🔴</span> {t('अशुभ काल (वर्जित समय / Avoid Major Deeds)', 'Inauspicious Period (Varjit)')}
+                        <span><XCircle size={17} style={{ color: '#dc2626' }} /></span> {t('अशुभ काल (वर्जित समय / Avoid Major Deeds)', 'Inauspicious Period (Varjit)')}
                     </div>
                     <div style={{ fontSize: '0.8rem', color: '#1e293b', lineHeight: 1.5 }}>
                         <div><b>राहु काल (Rahu Kaal):</b> {rahuKaal}</div>

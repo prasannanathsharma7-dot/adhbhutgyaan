@@ -167,7 +167,7 @@ export default function ChatWidget() {
                     {/* Header with Pandit Ji branding */}
                     <div
                         style={{
-                            background: 'linear-gradient(135deg, var(--navy-950) 0%, var(--navy-850) 100%)',
+                            background: 'linear-gradient(135deg, var(--navy-950) 0%, var(--navy-900) 100%)',
                             color: 'white',
                             padding: '1rem 1.25rem',
                             display: 'flex',
@@ -250,7 +250,7 @@ export default function ChatWidget() {
                             display: 'flex',
                             flexDirection: 'column',
                             gap: '0.75rem',
-                            background: 'var(--warm-50)',
+                            background: 'var(--warm-100)',
                         }}
                     >
                         {/* Welcome Greeting */}
