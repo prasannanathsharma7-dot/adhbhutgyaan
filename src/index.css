@@ -2867,3 +2867,11 @@ h3 {
         font-size: 1.1rem;
     }
 }
+
+/* Sticky bottom booking bar on Service Detail pages - hide the service
+   name label on very small screens so the WhatsApp button has room. */
+@media (max-width: 480px) {
+    .sticky-cta-name {
+        display: none;
+    }
+}

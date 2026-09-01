@@ -22,6 +22,7 @@ const FreeKundli = lazy(() => import('./pages/FreeKundli'));
 const Panchang = lazy(() => import('./pages/Panchang'));
 const Horoscope = lazy(() => import('./pages/Horoscope'));
 const About = lazy(() => import('./pages/About'));
+const PanditProfile = lazy(() => import('./pages/PanditProfile'));
 const Contact = lazy(() => import('./pages/Contact'));
 const Blog = lazy(() => import('./pages/Blog'));
 const BlogPost = lazy(() => import('./pages/BlogPost'));
@@ -67,6 +68,7 @@ function App() {
                         <Route path="/panchang" element={<Panchang />} />
                         <Route path="/horoscope" element={<Horoscope />} />
                         <Route path="/about" element={<About />} />
+                        <Route path="/pt-umang-nath-sharma" element={<PanditProfile />} />
                         <Route path="/contact" element={<Contact />} />
                         <Route path="/blog" element={<Blog />} />
                         <Route path="/blog/:slug" element={<BlogPost />} />

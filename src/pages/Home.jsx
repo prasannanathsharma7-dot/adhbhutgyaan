@@ -72,7 +72,7 @@ export default function Home() {
                     <div className="hero-text">
                         <div className="hero-om">ॐ</div>
                         <h1 className="hero-title-hindi">{t('अद्भुत ज्ञान', 'Adhbhut Gyaan')}</h1>
-                        <p className="hero-title-en">{t('पं. उमंग नाथ शर्मा — काशी, वाराणसी', 'Pt. Umang Nath Sharma — Kashi, Varanasi')}</p>
+                        <p className="hero-title-en"><Link to="/pt-umang-nath-sharma" style={{ color: 'inherit' }}>{t('पं. उमंग नाथ शर्मा', 'Pt. Umang Nath Sharma')}</Link> {t('— काशी, वाराणसी', '— Kashi, Varanasi')}</p>
                         <p className="hero-desc">
                             {t(
                                 <>बनारस (काशी) के अनुभवसम्पन्न एवं विद्वत्तापूर्ण पंडितों द्वारा<br />समस्त प्रकार की पूजा, पाठ, जप, हवन एवं ज्योतिषीय परामर्श<br /><strong style={{ color: 'var(--gold-300)' }}>गृह बैठे ऑनलाइन बुक करें</strong></>,
@@ -309,7 +309,9 @@ export default function Home() {
                     <div className="om-divider">ॐ</div>
                     <div className="astro-consult-grid">
                         <div className="astro-consult-photo fade-up">
-                            <img src="/images/heritage/umang-with-ayodhya-portrait.jpg" alt={t('डॉ. उमंग नाथ शर्मा', 'Dr. Umang Nath Sharma')} loading="lazy" />
+                            <Link to="/pt-umang-nath-sharma">
+                                <img src="/images/heritage/umang-with-ayodhya-portrait.jpg" alt={t('डॉ. उमंग नाथ शर्मा', 'Dr. Umang Nath Sharma')} loading="lazy" />
+                            </Link>
                         </div>
                         <div className="astro-consult-options">
                             <div className="astro-consult-card fade-up">
@@ -371,7 +373,18 @@ export default function Home() {
                                     <img src={`/images/icons/${images[service.id] || 'service-astrology-consultation'}.jpg`} alt="" width="64" height="64" loading="lazy" className="icon-service-icon-img" />
                                     <h3 className="icon-service-title">{lang === 'hi' ? service.name : service.nameEn}</h3>
                                     <p className="icon-service-desc">{lang === 'hi' ? service.shortDesc : (service.shortDescEn || service.shortDesc)}</p>
-                                    <Link to={`/services/${service.id}`} className="icon-service-link">{t('विवरण देखें', 'Know More')} →</Link>
+                                    <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+                                        <a
+                                            href={`https://wa.me/919278148269?text=${encodeURIComponent(t(`प्रणाम, मुझे ${service.name} पूजा काशी में करवानी है।`, `Pranam, I would like to book ${service.nameEn} pooja in Kashi.`))}`}
+                                            target="_blank" rel="noreferrer"
+                                            className="icon-service-link"
+                                            style={{ color: 'var(--whatsapp-dark)' }}
+                                        >
+                                            {t('WhatsApp बुक करें', 'WhatsApp Book')}
+                                        </a>
+                                        <span style={{ color: 'var(--border-light)' }}>|</span>
+                                        <Link to={`/services/${service.id}`} className="icon-service-link">{t('विधि व महत्व', 'Know More')} →</Link>
+                                    </div>
                                 </div>
                             );
                         })}

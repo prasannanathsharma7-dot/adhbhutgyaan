@@ -3,6 +3,7 @@ import servicesData from '../data/services.json';
 import { useLanguage } from '../context/LanguageContext';
 import useSEO from '../hooks/useSEO';
 import { breadcrumbJsonLd, serviceJsonLd, faqJsonLd, combineJsonLd } from '../utils/seo';
+import { Clock, Sparkles, Globe2, Landmark, Home as HomeIcon, MapPin, Star, MessageCircle, CheckCircle2 } from 'lucide-react';
 
 export default function ServiceDetail() {
     const { id } = useParams();
@@ -78,13 +79,13 @@ export default function ServiceDetail() {
                         <div>
                             <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '1rem' }}>{description}</p>
                             <div style={{ background: 'var(--gold-50)', padding: '0.75rem 1.25rem', borderRadius: 'var(--radius-md)', borderLeft: '4px solid var(--gold-500)', marginBottom: '1.25rem' }}>
-                                <strong>🕐 {t('सर्वोत्तम समय', 'Best Time')}:</strong> {lang === 'hi' ? service.bestTime : service.bestTimeEn}
+                                <strong style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}><Clock size={14} />{t('सर्वोत्तम समय', 'Best Time')}:</strong> {lang === 'hi' ? service.bestTime : service.bestTimeEn}
                             </div>
                             <h2 style={{ marginBottom: '0.75rem', color: 'var(--dark-100)', fontSize: '1.15rem' }}>{t('लाभ', 'Benefits')}:</h2>
                             <ul style={{ fontSize: '0.95rem', color: 'var(--text-secondary)' }}>
                                 {service.benefits.map((b, i) => (
                                     <li key={i} style={{ display: 'flex', gap: '0.5rem', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
-                                        <span style={{ color: 'var(--gold-600)', fontSize: '1.1rem' }}>✓</span>
+                                        <CheckCircle2 size={16} style={{ color: 'var(--gold-600)', flexShrink: 0, marginTop: '0.15rem' }} />
                                         <span>{lang === 'hi' ? b : service.benefitsEn[i]}</span>
                                     </li>
                                 ))}
@@ -94,11 +95,11 @@ export default function ServiceDetail() {
 
                     {isAstrology && (
                         <div style={{ background: 'var(--gold-50)', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-lg)', padding: '1.5rem', textAlign: 'center', marginBottom: '2rem' }}>
-                            <h3 style={{ marginBottom: '0.5rem' }}>✦ {t('निःशुल्क कुंडली मांगें', 'Request a Free Kundli')}</h3>
+                            <h3 style={{ marginBottom: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}><Sparkles size={18} />{t('निःशुल्क कुंडली मांगें', 'Request a Free Kundli')}</h3>
                             <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '1rem' }}>
                                 {t('कोई स्वचालित सॉफ्टवेयर नहीं — डॉ. उमंग नाथ शर्मा स्वयं आपकी कुंडली देखेंगे।', 'No automated software - Dr. Umang Nath Sharma personally reviews your birth chart.')}
                             </p>
-                            <Link to="/free-kundli" className="btn btn-primary">✦ {t('अभी मांगें', 'Request Now')}</Link>
+                            <Link to="/free-kundli" className="btn btn-primary"><Sparkles size={14} style={{ verticalAlign: '-2px', marginRight: '0.3rem' }} />{t('अभी मांगें', 'Request Now')}</Link>
                         </div>
                     )}
 
@@ -107,18 +108,18 @@ export default function ServiceDetail() {
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', justifyContent: 'center', marginBottom: '2rem' }}>
                         {(isAstrology
                             ? [
-                                { icon: '🌐', label: t('ऑनलाइन', 'Online') },
-                                { icon: '🏛️', label: t('व्यक्तिगत रूप से (हमारे वाराणसी स्थान पर)', 'In-person (at our Varanasi office)') },
+                                { icon: Globe2, label: t('ऑनलाइन', 'Online') },
+                                { icon: Landmark, label: t('व्यक्तिगत रूप से (हमारे वाराणसी स्थान पर)', 'In-person (at our Varanasi office)') },
                             ]
                             : [
-                                { icon: '🌐', label: t('ऑनलाइन', 'Online') },
-                                { icon: '🏠', label: t('ऑफलाइन (आपके स्थान पर)', 'Offline (at your location)') },
-                                { icon: '📍', label: t('किसी भी अन्य स्थान पर', 'At any other location') },
-                                { icon: '🛕', label: t('मंदिर में', 'At a Temple') },
+                                { icon: Globe2, label: t('ऑनलाइन', 'Online') },
+                                { icon: HomeIcon, label: t('ऑफलाइन (आपके स्थान पर)', 'Offline (at your location)') },
+                                { icon: MapPin, label: t('किसी भी अन्य स्थान पर', 'At any other location') },
+                                { icon: Landmark, label: t('मंदिर में', 'At a Temple') },
                             ]
                         ).map((m, i) => (
                             <span key={i} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', background: 'var(--gold-50)', border: '1px solid var(--border-gold)', color: 'var(--gold-700)', fontWeight: 600, fontSize: '0.85rem', padding: '0.45rem 0.9rem', borderRadius: 'var(--radius-xl)' }}>
-                                <span>{m.icon}</span>{m.label}
+                                <m.icon size={14} />{m.label}
                             </span>
                         ))}
                     </div>
@@ -127,7 +128,7 @@ export default function ServiceDetail() {
                     <div className="package-cards">
                         {service.packages.map(pkg => (
                             <div className={`package-card ${pkg.popular ? 'popular' : ''}`} key={pkg.nameEn}>
-                                {pkg.popular && <div className="package-popular-badge">⭐ {t('लोकप्रिय', 'Popular')}</div>}
+                                {pkg.popular && <div className="package-popular-badge"><Star size={12} style={{ verticalAlign: '-2px', marginRight: '0.2rem' }} />{t('लोकप्रिय', 'Popular')}</div>}
                                 <div className="package-name">{lang === 'hi' ? pkg.name : pkg.nameEn}</div>
                                 {lang === 'hi' && <div className="package-name-en">{pkg.nameEn}</div>}
                                 <div className="package-count">{lang === 'hi' ? pkg.paathCount : (pkg.paathCountEn || pkg.paathCount)}</div>
@@ -141,7 +142,7 @@ export default function ServiceDetail() {
                                     className="btn btn-primary"
                                     style={{ width: '100%', justifyContent: 'center' }}
                                 >
-                                    💬 {t('पूछताछ करें', 'Enquire Now')}
+                                    <MessageCircle size={15} style={{ verticalAlign: '-3px', marginRight: '0.35rem' }} />{t('पूछताछ करें', 'Enquire Now')}
                                 </a>
                             </div>
                         ))}
@@ -164,6 +165,29 @@ export default function ServiceDetail() {
                     </div>
                 </div>
             </section>
+
+            {/* Sticky bottom booking bar - always-visible conversion path, especially
+                important on mobile where the packages/enquiry buttons above may be
+                scrolled out of view for most of the page. */}
+            <div style={{
+                position: 'sticky', bottom: 0, left: 0, right: 0, zIndex: 40,
+                background: 'white', borderTop: '1px solid var(--border-gold)',
+                boxShadow: '0 -4px 16px rgba(0,0,0,0.08)', padding: '0.75rem 1rem',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem',
+            }}>
+                <span className="sticky-cta-name" style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--navy-900)' }}>
+                    {name}
+                </span>
+                <a
+                    href={`https://wa.me/919278148269?text=${encodeURIComponent(t(`प्रणाम, मुझे ${service.name} पूजा काशी में करवानी है।`, `Pranam, I would like to book ${service.nameEn} pooja in Kashi.`))}`}
+                    target="_blank" rel="noreferrer"
+                    className="btn btn-whatsapp"
+                    style={{ flex: '1 1 auto', maxWidth: '320px', justifyContent: 'center' }}
+                >
+                    <MessageCircle size={16} style={{ verticalAlign: '-3px', marginRight: '0.35rem' }} />
+                    {t('अभी बुक करें', 'Book Now')}
+                </a>
+            </div>
         </div>
     );
 }

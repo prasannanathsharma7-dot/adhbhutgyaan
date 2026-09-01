@@ -114,6 +114,13 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  <!-- Pandit Authority Profile Page -->
+  <url>
+    <loc>https://www.adhbhutgyaan.com/pt-umang-nath-sharma</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
   <!-- Contact Page -->
   <url>
     <loc>https://www.adhbhutgyaan.com/contact</loc>

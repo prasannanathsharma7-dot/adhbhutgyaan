@@ -150,7 +150,9 @@ export default function About() {
                     <div className="om-divider">ॐ</div>
                     <div className="about-story">
                         <div className="about-image">
-                            <img src="/images/heritage/umang-with-ayodhya-portrait.jpg" alt="Dr. Umang Nath Sharma" loading="lazy" style={{ objectFit: 'cover' }} />
+                            <Link to="/pt-umang-nath-sharma">
+                                <img src="/images/heritage/umang-with-ayodhya-portrait.jpg" alt="Dr. Umang Nath Sharma" loading="lazy" style={{ objectFit: 'cover' }} />
+                            </Link>
                         </div>
                         <div>
                             <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '1rem' }}>
@@ -159,12 +161,15 @@ export default function About() {
                                     'Dr. Umang Nath Sharma is the current head of the Sharma family\'s Vedic tradition and the family\'s sole trained astrologer — no one is senior to him or his equal in this role. Every other Pandit associated with Adhbhut Gyaan is skilled and trained in performing scripture-based karmakand — pooja, havan, and rituals — while astrological consultation, horoscope analysis, and prediction are Dr. Sharma\'s exclusive responsibility.'
                                 )}
                             </p>
-                            <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8 }}>
+                            <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '1.25rem' }}>
                                 {t(
                                     'मैरीलैंड स्टेट यूनिवर्सिटी, अमेरिका द्वारा "डॉक्टर ऑफ एस्ट्रोलॉजी" की उपाधि से सम्मानित, और सन् 2019 में जापान के Hulu TV द्वारा जिन पर एक वृत्तचित्र बनाई गई — डॉ. शर्मा ही अद्भुत ज्ञान की समस्त ज्योतिषीय गतिविधियों का मार्गदर्शन करते हैं।',
                                     'Conferred the degree of "Doctor of Astrology" by Maryland State University, USA, and the subject of a 2019 documentary by Japan\'s Hulu TV — Dr. Sharma personally guides every astrological activity at Adhbhut Gyaan.'
                                 )}
                             </p>
+                            <Link to="/pt-umang-nath-sharma" className="btn btn-outline-dark">
+                                {t('पूर्ण प्रोफ़ाइल देखें', 'View Full Profile')} →
+                            </Link>
                         </div>
                     </div>
                 </div>

@@ -169,6 +169,12 @@ const routes = [
         jsonLd: combineJsonLd(breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'About Us', path: '/about' }])),
     },
     {
+        path: '/pt-umang-nath-sharma',
+        title: 'डॉ. उमंग नाथ शर्मा — काशी के ज्योतिषाचार्य | Adhbhut Gyaan',
+        description: 'डॉ. उमंग नाथ शर्मा — 400+ वर्षों की काशी वैदिक परंपरा के तीसरी पीढ़ी के वाहक, मैरीलैंड स्टेट यूनिवर्सिटी (USA) से "डॉक्टर ऑफ एस्ट्रोलॉजी"। कुंडली विश्लेषण, ग्रह दोष निवारण एवं प्रामाणिक कर्मकांड।',
+        jsonLd: combineJsonLd(breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Dr. Umang Nath Sharma', path: '/pt-umang-nath-sharma' }])),
+    },
+    {
         path: '/contact',
         title: 'संपर्क करें — काशी के पंडित जी | Adhbhut Gyaan',
         description: 'WhatsApp, फ़ोन या ईमेल से हमसे संपर्क करें — पूजा बुकिंग व ज्योतिष परामर्श हेतु, वाराणसी (काशी/बनारस), उत्तर प्रदेश।',

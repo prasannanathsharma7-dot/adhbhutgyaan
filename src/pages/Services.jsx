@@ -244,15 +244,24 @@ export default function Services() {
 
                     <div className="service-browse-grid">
                         {filteredServices.map(service => (
-                            <Link key={service.id} to={`/services/${service.id}`} className="service-browse-card">
-                                <img src={`/images/${service.image}`} alt={service.nameEn} width="80" height="80" loading="lazy" className="service-browse-img" />
-                                <div className="service-browse-body">
-                                    <div className="service-browse-name">{lang === 'hi' ? service.name : service.nameEn}</div>
-                                    {lang === 'hi' && <div className="service-browse-name-en">{service.nameEn}</div>}
-                                    <p className="service-browse-desc">{lang === 'hi' ? service.shortDesc : service.descriptionEn}</p>
-                                </div>
-                                <span className="service-browse-arrow">→</span>
-                            </Link>
+                            <div key={service.id} className="service-browse-card" style={{ display: 'flex', flexDirection: 'column' }}>
+                                <Link to={`/services/${service.id}`} style={{ display: 'flex', alignItems: 'center', gap: '1rem', flex: 1 }}>
+                                    <img src={`/images/${service.image}`} alt={service.nameEn} width="80" height="80" loading="lazy" className="service-browse-img" />
+                                    <div className="service-browse-body">
+                                        <div className="service-browse-name">{lang === 'hi' ? service.name : service.nameEn}</div>
+                                        {lang === 'hi' && <div className="service-browse-name-en">{service.nameEn}</div>}
+                                        <p className="service-browse-desc">{lang === 'hi' ? service.shortDesc : service.descriptionEn}</p>
+                                    </div>
+                                    <span className="service-browse-arrow">→</span>
+                                </Link>
+                                <a
+                                    href={`https://wa.me/919278148269?text=${encodeURIComponent(t(`प्रणाम, मुझे ${service.name} पूजा काशी में करवानी है।`, `Pranam, I would like to book ${service.nameEn} pooja in Kashi.`))}`}
+                                    target="_blank" rel="noreferrer"
+                                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.35rem', marginTop: '0.75rem', paddingTop: '0.65rem', borderTop: '1px solid var(--border-light)', fontSize: '0.8rem', fontWeight: 700, color: 'var(--whatsapp-dark)' }}
+                                >
+                                    <MessageCircle size={13} /> {t('WhatsApp पर सीधे बुक करें', 'Book Directly on WhatsApp')}
+                                </a>
+                            </div>
                         ))}
                     </div>
 
