@@ -6,7 +6,10 @@ import { breadcrumbJsonLd, combineJsonLd } from '../utils/seo';
 import BirthDetailsInput from '../components/BirthDetailsInput';
 import NorthIndianChart from '../components/NorthIndianChart';
 import { calculateInstantKundli } from '../utils/kundliEngine';
-import { Droplet, Flame, Mountain, Wind, Sparkles, Zap, MapPin, Printer, RefreshCw, Orbit, Shield, Gem, Coins, Palette, Hash, TrendingUp, Heart, Wand2, MessageCircle, CalendarDays, AlertTriangle, CheckCircle2, Hourglass, Lock, Star } from 'lucide-react';
+import { buildFullKundliUnlockUrl, FULL_KUNDLI_PDF_PRICE_INR } from '../utils/whatsappRedirect';
+import KundaliSettingsBar from '../components/KundaliSettingsBar';
+import { DEFAULT_KUNDALI_SETTINGS, formatNumeral, formatHouseNumber } from '../utils/astrologyI18n';
+import { Droplet, Flame, Mountain, Wind, Sparkles, Zap, MapPin, Printer, RefreshCw, Orbit, Shield, Gem, Coins, Palette, Hash, TrendingUp, Heart, Wand2, MessageCircle, CalendarDays, AlertTriangle, CheckCircle2, Hourglass, Lock, Star, FileText } from 'lucide-react';
 
 function getElementIcon(element = '') {
     const el = String(element).toLowerCase();
@@ -24,6 +27,7 @@ export default function FreeKundli() {
     const [errors, setErrors] = useState({});
     const [status, setStatus] = useState('idle'); // idle | calculating | ready
     const [kundliResult, setKundliResult] = useState(null);
+    const [kundliSettings, setKundliSettings] = useState(DEFAULT_KUNDALI_SETTINGS);
 
     useSEO({
         title: t('फ्री कुंडली — निःशुल्क जन्म कुंडली एवं जन्म पत्रिका ऑनलाइन | Adhbhut Gyaan', 'Free Kundli Online — Free Janam Kundli & Horoscope by Date of Birth | Adhbhut Gyaan'),
@@ -317,12 +321,17 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                     /* VIEW 2: INSTANT FREEMIUM KUNDLI REPORT & PREMIUM GATED INSIGHTS */
                     <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
                         {/* Print Header */}
-                        <div className="print-only-header">
-                            <h2 style={{ margin: '0 0 0.25rem', color: '#1c2150' }}>अद्भुत ज्ञान — वैदिक जन्म पत्रिका रिपोर्ट</h2>
-                            <p style={{ margin: 0, fontSize: '0.9rem', color: '#64748b' }}>
-                                काशी ज्योतिष परंपरा · डॉ. उमंग नाथ शर्मा · Helpline: +91 92781 48269
-                            </p>
+                        <div className="print-only-header" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
+                            <img src="/images/logo.png" alt="Adhbhut Gyaan" width="48" height="48" style={{ width: '48px', height: '48px', borderRadius: '50%', flexShrink: 0 }} />
+                            <div>
+                                <h2 style={{ margin: '0 0 0.15rem', color: '#1c2150' }}>अद्भुत ज्ञान — वैदिक जन्म पत्रिका रिपोर्ट</h2>
+                                <p style={{ margin: 0, fontSize: '0.9rem', color: '#64748b' }}>
+                                    डॉ. उमंग नाथ शर्मा · काशी ज्योतिष परंपरा · Helpline: +91 92781 48269
+                                </p>
+                            </div>
                         </div>
+
+                        <KundaliSettingsBar settings={kundliSettings} onChange={setKundliSettings} />
 
                         {/* Report Top Bar */}
                         <div className="kundli-report-card" style={{ background: 'white', borderRadius: 'var(--radius-xl)', padding: '1.25rem 1.5rem', border: '1px solid var(--border-gold)', boxShadow: 'var(--shadow-md)', marginBottom: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
@@ -339,7 +348,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                     {kundliResult.devoteeName} {t('की जन्म पत्रिका', "'s Vedic Kundli")}
                                 </h2>
                                 <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-                                    DOB: {form.dob} | TOB: {form.tob || '06:30 AM'} | Lagna: <strong>{kundliResult.lagna.rashi} ({kundliResult.lagna.deg})</strong>
+                                    DOB: {form.dob} | TOB: {form.tob || '06:30 AM'} | Lagna: <strong>{kundliResult.lagna.rashi} ({formatNumeral(kundliResult.lagna.deg, kundliSettings.numeralSystem)})</strong>
                                 </p>
                             </div>
 
@@ -392,8 +401,8 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                             <tr style={{ borderBottom: '1px solid #f1f5f9', background: 'var(--gold-50)', fontWeight: 700 }}>
                                                 <td style={{ padding: '0.45rem 0.6rem', color: '#c49a2c' }}><Star size={12} style={{ verticalAlign: '-2px', marginRight: '0.2rem' }} />Asc (Lagna)</td>
                                                 <td style={{ padding: '0.45rem 0.6rem' }}>{kundliResult.lagna.rashi.split(' ')[0]}</td>
-                                                <td style={{ padding: '0.45rem 0.6rem' }}>House 1</td>
-                                                <td style={{ padding: '0.45rem 0.6rem' }}>{kundliResult.lagna.deg}</td>
+                                                <td style={{ padding: '0.45rem 0.6rem' }}>House {formatHouseNumber(1, kundliSettings.numeralSystem)}</td>
+                                                <td style={{ padding: '0.45rem 0.6rem' }}>{formatNumeral(kundliResult.lagna.deg, kundliSettings.numeralSystem)}</td>
                                                 <td style={{ padding: '0.45rem 0.6rem', color: '#047857' }}>Lagna Lord: {kundliResult.lagna.lord}</td>
                                             </tr>
                                             {kundliResult.planets.map((p, idx) => (
@@ -402,8 +411,8 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                                         {p.name}
                                                     </td>
                                                     <td style={{ padding: '0.4rem 0.6rem' }}>{p.rashi.short}</td>
-                                                    <td style={{ padding: '0.4rem 0.6rem', fontWeight: 600 }}>House {p.house}</td>
-                                                    <td style={{ padding: '0.4rem 0.6rem', color: 'var(--text-muted)' }}>{p.deg}</td>
+                                                    <td style={{ padding: '0.4rem 0.6rem', fontWeight: 600 }}>House {formatHouseNumber(p.house, kundliSettings.numeralSystem)}</td>
+                                                    <td style={{ padding: '0.4rem 0.6rem', color: 'var(--text-muted)' }}>{formatNumeral(p.deg, kundliSettings.numeralSystem)}</td>
                                                     <td style={{ padding: '0.4rem 0.6rem', fontSize: '0.75rem', color: p.isBenefic ? '#047857' : '#991b1b' }}>{p.nature}</td>
                                                 </tr>
                                             ))}
@@ -614,6 +623,46 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                     </div>
                                 </div>
                             </div>
+                        </div>
+
+                        {/* Full 24-Page PDF Unlock (₹501) - a separate offer from the
+                            "book a video consultation" CTA below: this is a one-time
+                            paid download of the complete traditional-style Kundli
+                            booklet (all divisional charts, dasha tables, and detailed
+                            Lodha-style readings), delivered via WhatsApp after payment. */}
+                        <div style={{
+                            background: 'linear-gradient(135deg, var(--gold-50), white)', border: '2px solid var(--gold-500)',
+                            borderRadius: 'var(--radius-xl)', padding: 'clamp(1.5rem, 4vw, 2.25rem)', margin: '1.5rem 0',
+                            textAlign: 'center',
+                        }}>
+                            <FileText size={30} style={{ color: 'var(--gold-700)', marginBottom: '0.5rem' }} />
+                            <h3 style={{ margin: '0 0 0.5rem', fontSize: '1.15rem' }}>
+                                {t('पूर्ण 24-पृष्ठ कुंडली PDF अनलॉक करें', 'Unlock Your Full 24-Page Kundli PDF')}
+                            </h3>
+                            <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', maxWidth: '520px', margin: '0 auto 1.25rem', lineHeight: 1.6 }}>
+                                {t(
+                                    'सभी वर्ग कुंडलियाँ (D2 से D30), संपूर्ण विंशोत्तरी महादशा-अंतर्दशा सारणी एवं डॉ. उमंग नाथ शर्मा द्वारा विस्तृत विश्लेषण — पारंपरिक काशी शैली में।',
+                                    'All divisional charts (D2 through D30), the complete Vimshottari Mahadasha/Antardasha tables, and detailed analysis by Dr. Umang Nath Sharma - in the traditional Kashi style.'
+                                )}
+                            </p>
+                            <div style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--gold-700)', marginBottom: '1rem' }}>
+                                ₹{FULL_KUNDLI_PDF_PRICE_INR}
+                            </div>
+                            <a
+                                href={buildFullKundliUnlockUrl({
+                                    name: kundliResult.devoteeName,
+                                    dob: form.dob,
+                                    tob: form.tob || '06:30 AM',
+                                    pob: kundliResult.birthPlace,
+                                    lang: kundliSettings.lang,
+                                    numeralSystem: kundliSettings.numeralSystem,
+                                })}
+                                target="_blank" rel="noreferrer"
+                                className="btn btn-whatsapp btn-lg"
+                            >
+                                <MessageCircle size={17} style={{ verticalAlign: '-3px', marginRight: '0.4rem' }} />
+                                {t('WhatsApp पर अनलॉक करें', 'Unlock via WhatsApp')}
+                            </a>
                         </div>
 
                         {/* SECTION 5: LUXURY HIGH-CONVERSION CONSULTATION ACTION CENTER */}
