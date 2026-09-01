@@ -209,11 +209,54 @@ function computeVedicChartData(birthDateStr, birthTimeStr, birthPlaceStr, lat = 
     else if (sadeSatiDistance === 3) sadeSatiPhase = 'Shani Dhaiya (Kantaka Shani - 4th House)';
     else if (sadeSatiDistance === 7) sadeSatiPhase = 'Shani Dhaiya (Ashtama Shani - 8th House)';
 
+    // --- PDF-report additions: full planetary table + house/chart data,
+    // reusing all the sidereal longitudes and sign numbers already computed
+    // above (no re-computation, purely additive to the existing return). ---
+    const formatDegMin = (absDeg) => {
+        const inSign = absDeg % 30;
+        const d = Math.floor(inSign);
+        const m = Math.floor((inSign - d) * 60);
+        return `${d}°${String(m).padStart(2, '0')}'`;
+    };
+    const PLANET_GLYPHS = {
+        sun: 'Su', moon: 'Mo', mars: 'Ma', mercury: 'Me',
+        jupiter: 'Ju', venus: 'Ve', saturn: 'Sa', rahu: 'Ra', ketu: 'Ke',
+    };
+    const planetList = [
+        { key: 'sun', nameEn: 'Sun (Surya)', signNum: sunSignNum, deg: sidSun },
+        { key: 'moon', nameEn: 'Moon (Chandra)', signNum: moonSignNum, deg: sidMoon },
+        { key: 'mars', nameEn: 'Mars (Mangal)', signNum: marsSignNum, deg: sidMars },
+        { key: 'mercury', nameEn: 'Mercury (Budh)', signNum: mercSignNum, deg: sidMercury },
+        { key: 'jupiter', nameEn: 'Jupiter (Guru)', signNum: jupSignNum, deg: sidJupiter },
+        { key: 'venus', nameEn: 'Venus (Shukra)', signNum: venSignNum, deg: sidVenus },
+        { key: 'saturn', nameEn: 'Saturn (Shani)', signNum: satSignNum, deg: sidSaturn },
+        { key: 'rahu', nameEn: 'Rahu', signNum: rahuSignNum, deg: sidRahu },
+        { key: 'ketu', nameEn: 'Ketu', signNum: ketuSignNum, deg: sidKetu },
+    ].map(p => ({
+        key: p.key,
+        nameEn: p.nameEn,
+        glyph: PLANET_GLYPHS[p.key],
+        rashi: RASHIS[p.signNum - 1].name,
+        house: getHouse(p.signNum),
+        deg: formatDegMin(p.deg),
+    }));
+
+    const houseData = {};
+    for (let h = 1; h <= 12; h++) {
+        const rashiId = ((lagnaSignNum + h - 2) % 12) + 1;
+        const planetsInHouse = planetList.filter(p => p.house === h).map(p => p.glyph);
+        if (h === 1) planetsInHouse.unshift('Asc');
+        houseData[h] = { rashiId, planets: planetsInHouse };
+    }
+
     return {
-        lagna: { rashi: lagnaRashi.name, lord: lagnaRashi.lord, element: lagnaRashi.element },
+        lagna: { rashi: lagnaRashi.name, lord: lagnaRashi.lord, element: lagnaRashi.element, deg: formatDegMin(siderealAsc), luckyGem: lagnaRashi.luckyGem, luckyColor: lagnaRashi.luckyColor },
         moon: { rashi: moonRashi.name, lord: moonRashi.lord, luckyGem: moonRashi.luckyGem, luckyColor: moonRashi.luckyColor },
         sun: { rashi: sunRashi.name, lord: sunRashi.lord },
         nakshatra: { name: moonNakshatra.name, pada, lord: moonNakshatra.lord, deity: moonNakshatra.deity },
+        ayanamsa: formatDegMin(ayanamsa),
+        planets: planetList,
+        houseData,
         doshas: {
             manglik: { hasDosh: isManglik, severity: manglikSeverity, marsHouseFromLagna: marsFromLagna, marsHouseFromMoon: marsFromMoon },
             kalsarp: { hasDosh: hasKalsarp, type: kalsarpType },
