@@ -379,6 +379,8 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                 houseData={kundliResult.houseData}
                                 devoteeName={kundliResult.devoteeName}
                                 lagnaName={kundliResult.lagna.rashi}
+                                numeralSystem={kundliSettings.numeralSystem}
+                                lang={kundliSettings.lang}
                             />
 
                             {/* Planetary Positions Table */}

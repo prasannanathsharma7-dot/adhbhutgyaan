@@ -1,8 +1,33 @@
 // North Indian Kundli Chart (Diamond Layout) SVG Component
 // File: src/components/NorthIndianChart.jsx
+import { formatNumeral, formatPlanetLabel } from '../utils/astrologyI18n';
 
-export default function NorthIndianChart({ houseData, devoteeName, lagnaName }) {
+// Maps the fixed English-short glyphs baked into kundliEngine.js's
+// houseData ('Su','Mo','Ma',...) to the planet keys astrologyI18n.js's
+// PLANET_LABELS table uses, so the SVG can re-render them in whichever
+// language/label-style the settings bar has chosen. 'Asc' (Ascendant) is
+// not a classical planet, so it's handled separately, unaffected by
+// planetLabelStyle.
+const GLYPH_TO_KEY = {
+    Su: 'sun', Mo: 'moon', Ma: 'mars', Me: 'mercury',
+    Ju: 'jupiter', Ve: 'venus', Sa: 'saturn', Ra: 'rahu', Ke: 'ketu',
+};
+
+export default function NorthIndianChart({ houseData, devoteeName, lagnaName, numeralSystem = 'latin', lang = 'hi' }) {
     if (!houseData) return null;
+
+    // The chart's house boxes are small, fixed-size SVG regions - full
+    // planet names ("बृहस्पति"/"Jupiter") would overflow and overlap when
+    // multiple planets share a house, so the chart always uses the short
+    // glyph style regardless of the settings bar's label-length choice.
+    // Only language (hi/en) and numeral system are chart-appropriate to
+    // vary; label LENGTH stays fixed here (the full-length option is
+    // meant for the Planetary Positions table, which has room for it).
+    const formatPlanetGlyph = (glyph) => {
+        if (glyph === 'Asc') return lang === 'hi' ? 'लग्न' : 'Asc';
+        const key = GLYPH_TO_KEY[glyph];
+        return key ? formatPlanetLabel(key, lang, 'short') : glyph;
+    };
 
     // Geometric coordinate anchors for Rashi Number and Planet Badges
     const houseCoords = {
@@ -64,9 +89,9 @@ export default function NorthIndianChart({ houseData, devoteeName, lagnaName }) 
                                 fill="#9a3412"
                                 fontSize="13"
                                 fontWeight="800"
-                                fontFamily="sans-serif"
+                                fontFamily={lang === 'hi' ? 'Tiro Devanagari Hindi, serif' : 'sans-serif'}
                             >
-                                {h.rashiId}
+                                {formatNumeral(h.rashiId, numeralSystem)}
                             </text>
 
                             {/* Planets in House */}
@@ -78,7 +103,7 @@ export default function NorthIndianChart({ houseData, devoteeName, lagnaName }) 
                                     dominantBaseline="central"
                                     fontSize="11"
                                     fontWeight="700"
-                                    fontFamily="sans-serif"
+                                    fontFamily={lang === 'hi' ? 'Tiro Devanagari Hindi, serif' : 'sans-serif'}
                                 >
                                     {h.planets.map((p, idx) => (
                                         <tspan
@@ -87,7 +112,7 @@ export default function NorthIndianChart({ houseData, devoteeName, lagnaName }) 
                                             dy={idx === 0 ? (h.planets.length > 2 ? '-0.8em' : (h.planets.length > 1 ? '-0.4em' : '0')) : '1.15em'}
                                             fill={p === 'Asc' ? '#c49a2c' : (['Ra', 'Ke', 'Sa', 'Ma'].includes(p) ? '#b91c1c' : '#0f172a')}
                                         >
-                                            {p}
+                                            {formatPlanetGlyph(p)}
                                         </tspan>
                                     ))}
                                 </text>
