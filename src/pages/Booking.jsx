@@ -6,6 +6,7 @@ import { gallery, videoClips } from '../data/media';
 import useSEO from '../hooks/useSEO';
 import { breadcrumbJsonLd, combineJsonLd } from '../utils/seo';
 import BirthDetailsInput from '../components/BirthDetailsInput';
+import { Smartphone, Landmark, Home as HomeIcon, Star, AlertTriangle, CheckCircle2, MessageCircle, Phone, Mail } from 'lucide-react';
 
 export default function Booking() {
     const [searchParams] = useSearchParams();
@@ -33,15 +34,15 @@ export default function Booking() {
     const [errors, setErrors] = useState({});
 
     const modeOptions = [
-        { v: 'online', icon: '📱', label: t('लाइव 1-on-1 WhatsApp वीडियो कॉल संकल्प', 'Direct 1-on-1 Live WhatsApp Video Call Sankalp') },
-        { v: 'temple', icon: '🛕', label: t('काशी में प्रत्यक्ष उपस्थिति (दशाश्वमेध / विश्वनाथ धाम)', 'In-Person in Varanasi (Ghats / Temple)') },
-        { v: 'offline', icon: '🏠', label: t('ऑफलाइन (पंडित जी आपके स्थान पर पधारें)', 'Offline (Pandit Ji travels to your location)') },
+        { v: 'online', icon: Smartphone, label: t('लाइव 1-on-1 WhatsApp वीडियो कॉल संकल्प', 'Direct 1-on-1 Live WhatsApp Video Call Sankalp') },
+        { v: 'temple', icon: Landmark, label: t('काशी में प्रत्यक्ष उपस्थिति (दशाश्वमेध / विश्वनाथ धाम)', 'In-Person in Varanasi (Ghats / Temple)') },
+        { v: 'offline', icon: HomeIcon, label: t('ऑफलाइन (पंडित जी आपके स्थान पर पधारें)', 'Offline (Pandit Ji travels to your location)') },
     ];
 
     // Astrology consultation options
     const astrologyModeOptions = [
-        { v: 'online', icon: '📱', label: t('लाइव वीडियो / ऑडियो कॉल परामर्श', 'Live Video / Audio Call Consultation') },
-        { v: 'visit', icon: '🏛️', label: t('काशी में व्यक्तिगत भेंट (प्रातः 9 - मध्याह्न 12)', 'Personal Visit in Varanasi (9 AM - 12 PM)') },
+        { v: 'online', icon: Smartphone, label: t('लाइव वीडियो / ऑडियो कॉल परामर्श', 'Live Video / Audio Call Consultation') },
+        { v: 'visit', icon: Landmark, label: t('काशी में व्यक्तिगत भेंट (प्रातः 9 - मध्याह्न 12)', 'Personal Visit in Varanasi (9 AM - 12 PM)') },
     ];
 
     const isAstrology = selectedService?.id === 'astrology-consultation';
@@ -297,7 +298,7 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                                         className={`package-card ${pkg.popular ? 'popular' : ''} ${selectedPkg?.nameEn === pkg.nameEn ? 'selected' : ''}`}
                                         onClick={() => setSelectedPkg(pkg)}
                                     >
-                                        {pkg.popular && <div className="package-popular-badge">⭐ {t('लोकप्रिय', 'Popular')}</div>}
+                                        {pkg.popular && <div className="package-popular-badge"><Star size={12} style={{ verticalAlign: '-2px', marginRight: '0.2rem' }} />{t('लोकप्रिय', 'Popular')}</div>}
                                         <div className="package-name">{lang === 'hi' ? pkg.name : pkg.nameEn}</div>
                                         {lang === 'hi' && <div className="package-name-en">{pkg.nameEn}</div>}
                                         <div className="package-count">{lang === 'hi' ? pkg.paathCount : (pkg.paathCountEn || pkg.paathCount)}</div>
@@ -334,11 +335,11 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                                                     fontWeight: 600, fontSize: '0.85rem', cursor: 'pointer',
                                                 }}
                                             >
-                                                <span>{m.icon}</span>{m.label}
+                                                <span style={{ display: 'inline-flex', verticalAlign: '-3px', marginRight: '0.3rem' }}><m.icon size={15} /></span>{m.label}
                                             </button>
                                         ))}
                                     </div>
-                                    {errors.mode && <p className="form-error">⚠ {errors.mode}</p>}
+                                    {errors.mode && <p className="form-error" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}><AlertTriangle size={13} />{errors.mode}</p>}
                                 </div>
                                 <div className="form-group">
                                     <label className="form-label" htmlFor="booking-name">{t('पूरा नाम', 'Full Name')} *</label>
@@ -351,7 +352,7 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                                         autoComplete="name"
                                         onChange={e => { setForm({ ...form, name: e.target.value }); setErrors({ ...errors, name: undefined }); }}
                                     />
-                                    {errors.name && <p className="form-error">⚠ {errors.name}</p>}
+                                    {errors.name && <p className="form-error" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}><AlertTriangle size={13} />{errors.name}</p>}
                                 </div>
                                 <div className="form-group">
                                     <label className="form-label" htmlFor="booking-phone">{t('मोबाइल नंबर', 'Phone Number')} *</label>
@@ -366,7 +367,7 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                                         aria-invalid={errors.phone ? 'true' : 'false'}
                                         onChange={e => { setForm({ ...form, phone: e.target.value }); setErrors({ ...errors, phone: undefined }); }}
                                     />
-                                    {errors.phone && <p className="form-error">⚠ {errors.phone}</p>}
+                                    {errors.phone && <p className="form-error" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}><AlertTriangle size={13} />{errors.phone}</p>}
                                 </div>
                                 <div className="form-group">
                                     <label className="form-label" htmlFor="booking-email">{t('ईमेल (वैकल्पिक — पुष्टि प्राप्त करने के लिए)', 'Email (optional — to receive a confirmation)')}</label>
@@ -416,7 +417,7 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                             )}
                             {saveStatus === 'saved' && (
                                 <p style={{ textAlign: 'center', fontSize: '0.8rem', color: 'var(--whatsapp)', marginBottom: '1rem' }}>
-                                    ✓ {t('आपकी पूछताछ सुरक्षित रूप से दर्ज हो गई है', 'Your enquiry has been securely recorded')}
+                                    <CheckCircle2 size={14} style={{ verticalAlign: '-2px', marginRight: '0.3rem' }} />{t('आपकी पूछताछ सुरक्षित रूप से दर्ज हो गई है', 'Your enquiry has been securely recorded')}
                                 </p>
                             )}
                             {saveStatus === 'error' && (
@@ -442,7 +443,7 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                                         </div>
                                     ))}
                                     <div style={{ background: 'var(--gold-50)', border: '1px dashed var(--border-gold)', borderRadius: 'var(--radius-md)', padding: '0.6rem 0.9rem', marginBottom: '1rem', fontSize: '0.85rem', color: 'var(--gold-700)', fontWeight: 600, textAlign: 'center' }}>
-                                        💬 {t('मूल्य हेतु पूछताछ करें', 'Enquire Now for Pricing')}
+                                        <MessageCircle size={15} style={{ verticalAlign: '-3px', marginRight: '0.35rem' }} />{t('मूल्य हेतु पूछताछ करें', 'Enquire Now for Pricing')}
                                     </div>
                                     <div style={{ borderTop: '1px solid var(--border-light)', paddingTop: '1rem', marginTop: '0.5rem' }}>
                                         {[[t('नाम', 'Name'), form.name], [t('फ़ोन', 'Phone'), form.phone], ...(form.email ? [[t('ईमेल', 'Email'), form.email]] : []), [t('तिथि', 'Date'), form.date || dateNotSet], ...(form.address ? [[t('पता', 'Address'), form.address]] : []), ...(form.notes ? [[t('विशेष', 'Notes'), form.notes]] : [])].map(([k, v]) => (
@@ -455,12 +456,12 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                             </div>
                             <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginTop: '2rem', flexWrap: 'wrap' }}>
                                 <button className="btn btn-outline-dark btn-lg" onClick={() => goToStep(3)}>{t('← वापस', '← Back')}</button>
-                                <a href={`https://wa.me/919278148269?text=${encodeURIComponent(whatsAppMsg)}`} target="_blank" rel="noreferrer" className="btn btn-whatsapp btn-lg">💬 {t('WhatsApp पर पूछताछ करें', 'Enquire on WhatsApp')}</a>
-                                <a href="tel:+919278148269" className="btn btn-primary btn-lg">📞 {t('कॉल करें', 'Call Us')}</a>
+                                <a href={`https://wa.me/919278148269?text=${encodeURIComponent(whatsAppMsg)}`} target="_blank" rel="noreferrer" className="btn btn-whatsapp btn-lg"><MessageCircle size={15} style={{ verticalAlign: '-3px', marginRight: '0.35rem' }} />{t('WhatsApp पर पूछताछ करें', 'Enquire on WhatsApp')}</a>
+                                <a href="tel:+919278148269" className="btn btn-primary btn-lg"><Phone size={15} style={{ verticalAlign: '-3px', marginRight: '0.35rem' }} />{t('कॉल करें', 'Call Us')}</a>
                             </div>
                             <div className="text-center" style={{ marginTop: '1rem' }}>
                                 <a href={`mailto:astrokashi369@gmail.com?subject=${encodeURIComponent(isAstrology ? t('नई ज्योतिष परामर्श पूछताछ', 'New Astrology Consultation Enquiry') : t('नई पूजा पूछताछ', 'New Pooja Enquiry'))}&body=${encodeURIComponent(emailMsg)}`} style={{ fontSize: '0.85rem', color: 'var(--gold-700)', fontWeight: 600 }}>
-                                    ✉️ {t('या ईमेल से पूछताछ करें', 'Or enquire by email instead')}
+                                    <Mail size={13} style={{ verticalAlign: '-2px', marginRight: '0.3rem' }} />{t('या ईमेल से पूछताछ करें', 'Or enquire by email instead')}
                                 </a>
                             </div>
                             <p style={{ textAlign: 'center', marginTop: '1.25rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>

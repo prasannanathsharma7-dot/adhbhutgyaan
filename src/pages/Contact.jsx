@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import useSEO from '../hooks/useSEO';
 import { breadcrumbJsonLd, combineJsonLd } from '../utils/seo';
+import { MessageCircle, Phone, Mail, MapPin, CheckCircle2, AlertTriangle } from 'lucide-react';
 
 export default function Contact() {
     const [form, setForm] = useState({ name: '', phone: '', email: '', subject: '', message: '' });
@@ -93,10 +94,10 @@ ${form.message}`;
     };
 
     const contactCards = [
-        { icon: '💬', label: 'WhatsApp', value: '+91 92781 48269', sub: t('तुरंत जवाब', 'Instant Reply'), href: 'https://wa.me/919278148269', color: 'var(--whatsapp)', bgColor: 'rgba(37,211,102,0.08)', borderColor: 'rgba(37,211,102,0.2)' },
-        { icon: '📞', label: t('फ़ोन', 'Phone'), value: '+91 92781 48269', sub: t('सुबह 7 बजे - रात 9 बजे', '7 AM - 9 PM'), href: 'tel:+919278148269', color: 'var(--gold-500)', bgColor: 'rgba(255,152,0,0.08)', borderColor: 'rgba(255,152,0,0.2)' },
-        { icon: '✉️', label: t('ईमेल', 'Email'), value: 'astrokashi369@gmail.com', sub: t('क्लिक करके ईमेल भेजें', 'Click to send an email'), href: 'mailto:astrokashi369@gmail.com', color: 'var(--gold-500)', bgColor: 'rgba(196,154,44,0.08)', borderColor: 'rgba(196,154,44,0.2)' },
-        { icon: '📍', label: t('कार्यालय का पता', 'Office Address'), value: 'J11/19, Pt Umang Nath Sharma,\nNati Imli Rd, Ishwargangi,\nVaranasi, UP 221001', sub: t('दिशा-निर्देश के लिए क्लिक करें', 'Click for directions'), href: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent('J11/19, Pt Umang Nath Sharma, Nati Imli Rd, Ishwargangi, Varanasi, UP 221001'), color: 'var(--red-400)', bgColor: 'rgba(183,28,28,0.05)', borderColor: 'rgba(183,28,28,0.15)' },
+        { icon: MessageCircle, label: 'WhatsApp', value: '+91 92781 48269', sub: t('तुरंत जवाब', 'Instant Reply'), href: 'https://wa.me/919278148269', color: 'var(--whatsapp)', bgColor: 'rgba(37,211,102,0.08)', borderColor: 'rgba(37,211,102,0.2)' },
+        { icon: Phone, label: t('फ़ोन', 'Phone'), value: '+91 92781 48269', sub: t('सुबह 7 बजे - रात 9 बजे', '7 AM - 9 PM'), href: 'tel:+919278148269', color: 'var(--gold-500)', bgColor: 'rgba(255,152,0,0.08)', borderColor: 'rgba(255,152,0,0.2)' },
+        { icon: Mail, label: t('ईमेल', 'Email'), value: 'astrokashi369@gmail.com', sub: t('क्लिक करके ईमेल भेजें', 'Click to send an email'), href: 'mailto:astrokashi369@gmail.com', color: 'var(--gold-500)', bgColor: 'rgba(196,154,44,0.08)', borderColor: 'rgba(196,154,44,0.2)' },
+        { icon: MapPin, label: t('कार्यालय का पता', 'Office Address'), value: 'J11/19, Pt Umang Nath Sharma,\nNati Imli Rd, Ishwargangi,\nVaranasi, UP 221001', sub: t('दिशा-निर्देश के लिए क्लिक करें', 'Click for directions'), href: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent('J11/19, Pt Umang Nath Sharma, Nati Imli Rd, Ishwargangi, Varanasi, UP 221001'), color: 'var(--red-400)', bgColor: 'rgba(183,28,28,0.05)', borderColor: 'rgba(183,28,28,0.15)' },
     ];
 
     const subjectOptions = [
@@ -136,9 +137,9 @@ ${form.message}`;
                                         >
                                             <div style={{
                                                 width: 50, height: 50, background: card.color, borderRadius: 'var(--radius-full)',
-                                                display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', flexShrink: 0
+                                                display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0
                                             }}>
-                                                {card.icon}
+                                                <card.icon size={22} color="white" />
                                             </div>
                                             <div>
                                                 <div style={{ fontWeight: 600, color: 'var(--dark-100)', marginBottom: '0.15rem' }}>{card.label}</div>
@@ -162,7 +163,7 @@ ${form.message}`;
                                 )}
                                 {saveStatus === 'saved' && (
                                     <p style={{ fontSize: '0.8rem', color: 'var(--whatsapp)', marginTop: '-1rem', marginBottom: '1rem' }}>
-                                        ✓ {t('आपका संदेश सुरक्षित रूप से दर्ज हो गया है', 'Your message has been securely recorded')}
+                                        <CheckCircle2 size={14} style={{ verticalAlign: '-2px', marginRight: '0.3rem' }} />{t('आपका संदेश सुरक्षित रूप से दर्ज हो गया है', 'Your message has been securely recorded')}
                                     </p>
                                 )}
                                 {saveStatus === 'error' && (
@@ -182,7 +183,7 @@ ${form.message}`;
                                             autoComplete="name"
                                             onChange={e => { setForm({ ...form, name: e.target.value }); setErrors({ ...errors, name: undefined }); }}
                                         />
-                                        {errors.name && <p className="form-error">⚠ {errors.name}</p>}
+                                        {errors.name && <p className="form-error" style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}><AlertTriangle size={13} />{errors.name}</p>}
                                     </div>
                                     <div className="form-group">
                                         <label className="form-label" htmlFor="contact-phone">{t('मोबाइल', 'Phone')} *</label>
@@ -197,7 +198,7 @@ ${form.message}`;
                                             aria-invalid={errors.phone ? 'true' : 'false'}
                                             onChange={e => { setForm({ ...form, phone: e.target.value }); setErrors({ ...errors, phone: undefined }); }}
                                         />
-                                        {errors.phone && <p className="form-error">⚠ {errors.phone}</p>}
+                                        {errors.phone && <p className="form-error" style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}><AlertTriangle size={13} />{errors.phone}</p>}
                                     </div>
                                     <div className="form-group">
                                         <label className="form-label" htmlFor="contact-email">{t('ईमेल', 'Email')}</label>
@@ -212,7 +213,7 @@ ${form.message}`;
                                             aria-invalid={errors.email ? 'true' : 'false'}
                                             onChange={e => { setForm({ ...form, email: e.target.value }); setErrors({ ...errors, email: undefined }); }}
                                         />
-                                        {errors.email && <p className="form-error">⚠ {errors.email}</p>}
+                                        {errors.email && <p className="form-error" style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}><AlertTriangle size={13} />{errors.email}</p>}
                                     </div>
                                     <div className="form-group">
                                         <label className="form-label">{t('विषय', 'Subject')}</label>
@@ -233,10 +234,10 @@ ${form.message}`;
                                             aria-invalid={errors.message ? 'true' : 'false'}
                                             onChange={e => { setForm({ ...form, message: e.target.value }); setErrors({ ...errors, message: undefined }); }}
                                         />
-                                        {errors.message && <p className="form-error">⚠ {errors.message}</p>}
+                                        {errors.message && <p className="form-error" style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}><AlertTriangle size={13} />{errors.message}</p>}
                                     </div>
-                                    <button type="submit" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', marginBottom: '0.75rem' }}>💬 {t('WhatsApp पर भेजें', 'Send via WhatsApp')}</button>
-                                    <button type="button" onClick={handleEmailSubmit} className="btn btn-outline-dark" style={{ width: '100%', justifyContent: 'center' }}>✉️ {t('ईमेल से भेजें', 'Send via Email')}</button>
+                                    <button type="submit" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', marginBottom: '0.75rem' }}><MessageCircle size={16} style={{ verticalAlign: '-3px', marginRight: '0.35rem' }} />{t('WhatsApp पर भेजें', 'Send via WhatsApp')}</button>
+                                    <button type="button" onClick={handleEmailSubmit} className="btn btn-outline-dark" style={{ width: '100%', justifyContent: 'center' }}><Mail size={16} style={{ verticalAlign: '-3px', marginRight: '0.35rem' }} />{t('ईमेल से भेजें', 'Send via Email')}</button>
                                 </form>
                             </div>
                         </div>
