@@ -4,10 +4,12 @@ import servicesData from '../data/services.json';
 import { useLanguage } from '../context/LanguageContext';
 import useSEO from '../hooks/useSEO';
 import { breadcrumbJsonLd, faqJsonLd, combineJsonLd } from '../utils/seo';
+import { Search, X, MessageCircle, Globe2, Landmark, CheckCircle2 } from 'lucide-react';
 
 export default function Services() {
     const { t, lang } = useLanguage();
     const [selectedConcern, setSelectedConcern] = useState(null);
+    const [searchQuery, setSearchQuery] = useState('');
 
     const concerns = [
         { id: 'health', img: 'concern-health', label: t('स्वास्थ्य संबंधी समस्या', 'Health Issues'), serviceIds: ['rudrabhishek', 'purush-suktam'] },
@@ -22,6 +24,16 @@ export default function Services() {
     const recommended = selectedConcern
         ? concerns.find(c => c.id === selectedConcern).serviceIds.map(id => servicesData.find(s => s.id === id)).filter(Boolean)
         : [];
+
+    const filteredServices = searchQuery.trim()
+        ? servicesData.filter(s => {
+            const q = searchQuery.trim().toLowerCase();
+            return s.name.includes(searchQuery.trim()) ||
+                s.nameEn.toLowerCase().includes(q) ||
+                (s.shortDesc || '').includes(searchQuery.trim()) ||
+                (s.shortDescEn || '').toLowerCase().includes(q);
+        })
+        : servicesData;
 
     useSEO({
         title: t('हमारी पूजा सेवाएं | Adhbhut Gyaan', 'Pooja & Astrology Services in Kashi, Varanasi | Adhbhut Gyaan'),
@@ -143,12 +155,12 @@ export default function Services() {
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem' }}>
                         {/* For those sitting overseas */}
                         <div className="card" style={{ padding: 'clamp(1.5rem, 3vw, 2rem)' }}>
-                            <div style={{ fontSize: '2rem', marginBottom: '0.75rem' }}>🌍</div>
+                            <Globe2 size={32} style={{ marginBottom: '0.75rem', color: 'var(--gold-600)' }} />
                             <h3 style={{ fontFamily: 'var(--font-hindi)', marginBottom: '1.25rem' }}>{t('विदेश में बसे भक्तों हेतु', 'For Those Sitting Overseas')}</h3>
                             <ul style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>
                                 {overseasItems.map((item, i) => (
                                     <li key={i} style={{ display: 'flex', gap: '0.5rem', alignItems: 'flex-start', marginBottom: '0.6rem' }}>
-                                        <span style={{ color: 'var(--gold-600)', fontSize: '1.1rem' }}>✓</span>
+                                        <CheckCircle2 size={16} style={{ color: 'var(--gold-600)', flexShrink: 0, marginTop: '0.15rem' }} />
                                         <span>{item}</span>
                                     </li>
                                 ))}
@@ -159,18 +171,18 @@ export default function Services() {
                                 className="btn btn-primary"
                                 style={{ width: '100%', justifyContent: 'center' }}
                             >
-                                💬 {t('पूछताछ करें', 'Inquire Now')}
+                                <MessageCircle size={15} style={{ verticalAlign: '-3px', marginRight: '0.35rem' }} />{t('पूछताछ करें', 'Inquire Now')}
                             </a>
                         </div>
 
                         {/* For guests visiting Varanasi */}
                         <div className="card" style={{ padding: 'clamp(1.5rem, 3vw, 2rem)' }}>
-                            <div style={{ fontSize: '2rem', marginBottom: '0.75rem' }}>🛕</div>
+                            <Landmark size={32} style={{ marginBottom: '0.75rem', color: 'var(--gold-600)' }} />
                             <h3 style={{ fontFamily: 'var(--font-hindi)', marginBottom: '1.25rem' }}>{t('वाराणसी पधार रहे अतिथियों हेतु', 'For Guests Visiting Varanasi')}</h3>
                             <ul style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>
                                 {varanasiItems.map((item, i) => (
                                     <li key={i} style={{ display: 'flex', gap: '0.5rem', alignItems: 'flex-start', marginBottom: '0.6rem' }}>
-                                        <span style={{ color: 'var(--gold-600)', fontSize: '1.1rem' }}>✓</span>
+                                        <CheckCircle2 size={16} style={{ color: 'var(--gold-600)', flexShrink: 0, marginTop: '0.15rem' }} />
                                         <span>{item}</span>
                                     </li>
                                 ))}
@@ -181,7 +193,7 @@ export default function Services() {
                                 className="btn btn-primary"
                                 style={{ width: '100%', justifyContent: 'center' }}
                             >
-                                💬 {t('पूछताछ करें', 'Inquire Now')}
+                                <MessageCircle size={15} style={{ verticalAlign: '-3px', marginRight: '0.35rem' }} />{t('पूछताछ करें', 'Inquire Now')}
                             </a>
                         </div>
                     </div>
@@ -196,8 +208,42 @@ export default function Services() {
                         <h2 className="section-title">{t('एक नज़र में हमारी सभी पूजा सेवाएं', 'All Our Pooja Services, At a Glance')}</h2>
                         <p className="section-subtitle">{t('किसी भी सेवा पर टैप करें — पूर्ण विवरण, पैकेज व मूल्य वहां मिलेंगे', 'Tap any service to see its full details, packages & pricing')}</p>
                     </div>
+
+                    <div style={{ maxWidth: '480px', margin: '1.75rem auto 0', position: 'relative' }}>
+                        <Search size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+                        <input
+                            type="text"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            placeholder={t('पूजा का नाम खोजें... (जैसे रुद्राभिषेक)', 'Search by pooja name... (e.g. Rudrabhishek)')}
+                            style={{
+                                width: '100%', padding: '0.85rem 1rem 0.85rem 2.75rem', borderRadius: 'var(--radius-xl)',
+                                border: '1.5px solid var(--border-gold)', fontSize: '0.95rem', background: 'white',
+                            }}
+                            aria-label={t('पूजा खोजें', 'Search services')}
+                        />
+                        {searchQuery && (
+                            <button
+                                type="button"
+                                onClick={() => setSearchQuery('')}
+                                aria-label={t('खोज साफ़ करें', 'Clear search')}
+                                style={{ position: 'absolute', right: '0.85rem', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', display: 'flex' }}
+                            >
+                                <X size={18} />
+                            </button>
+                        )}
+                    </div>
+
+                    {searchQuery && (
+                        <p style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '0.75rem' }}>
+                            {filteredServices.length > 0
+                                ? t(`${filteredServices.length} सेवा(एं) मिलीं`, `${filteredServices.length} service${filteredServices.length === 1 ? '' : 's'} found`)
+                                : t('कोई सेवा नहीं मिली — कृपया अन्य शब्द आज़माएं', 'No services found — try a different search term')}
+                        </p>
+                    )}
+
                     <div className="service-browse-grid">
-                        {servicesData.map(service => (
+                        {filteredServices.map(service => (
                             <Link key={service.id} to={`/services/${service.id}`} className="service-browse-card">
                                 <img src={`/images/${service.image}`} alt={service.nameEn} width="80" height="80" loading="lazy" className="service-browse-img" />
                                 <div className="service-browse-body">
@@ -209,6 +255,18 @@ export default function Services() {
                             </Link>
                         ))}
                     </div>
+
+                    {filteredServices.length === 0 && (
+                        <div style={{ textAlign: 'center', marginTop: '1.5rem' }}>
+                            <a
+                                href={`https://wa.me/919278148269?text=${encodeURIComponent(t(`नमस्कार! मुझे "${searchQuery}" के बारे में पूछताछ करनी है।`, `Hello! I'd like to ask about "${searchQuery}".`))}`}
+                                target="_blank" rel="noreferrer"
+                                className="btn btn-whatsapp"
+                            >
+                                <MessageCircle size={15} style={{ verticalAlign: '-3px', marginRight: '0.35rem' }} />{t('WhatsApp पर पूछें', 'Ask on WhatsApp')}
+                            </a>
+                        </div>
+                    )}
                 </div>
             </section>
         </div>

@@ -109,6 +109,48 @@ export default function Home() {
                 </div>
             </section>
 
+            {/* HOW IT WORKS — 3-Step Process Flow */}
+            <section className="section" style={{ paddingTop: '2.5rem', paddingBottom: '1rem' }}>
+                <div className="container">
+                    <div className="text-center">
+                        <span className="section-label" style={{ justifyContent: 'center' }}>{t('प्रक्रिया', 'How It Works')}</span>
+                        <h2 className="section-title">{t('तीन सरल चरणों में पूजा', 'Your Pooja, in 3 Simple Steps')}</h2>
+                    </div>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem', marginTop: '2rem', position: 'relative' }}>
+                        {[
+                            {
+                                num: '1',
+                                title: t('पूजा चुनें व संकल्प विवरण दें', 'Choose Your Pooja & Share Sankalp Details'),
+                                desc: t('अपनी आवश्यकता अनुसार पूजा चुनें और अपना नाम, गोत्र व संकल्प विवरण साझा करें।', 'Select the pooja you need and share your name, gotra & sankalp details with us.'),
+                            },
+                            {
+                                num: '2',
+                                title: t('काशी के पंडितों द्वारा लाइव वैदिक अनुष्ठान', 'Live Vedic Ritual by Kashi Pandits'),
+                                desc: t('हमारे अनुभवी पंडितगण शास्त्रोक्त विधि-विधान से आपकी पूजा सम्पन्न करते हैं।', 'Our experienced Pandits perform your pooja exactly as prescribed by the scriptures.'),
+                            },
+                            {
+                                num: '3',
+                                title: t('WhatsApp पर वीडियो प्रमाण व प्रसाद प्राप्ति', 'Video Proof & Prasad on WhatsApp'),
+                                desc: t('पूजा का वीडियो प्रमाण WhatsApp पर प्राप्त करें एवं प्रसाद अपने पते पर मंगवाएं।', 'Receive video proof of your pooja on WhatsApp, and have prasad delivered to your address.'),
+                            },
+                        ].map((step, i) => (
+                            <div key={step.num} className={`fade-up stagger-${i + 1}`} style={{ position: 'relative', background: 'white', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-lg)', padding: '1.75rem 1.5rem', textAlign: 'center' }}>
+                                <div style={{
+                                    width: '48px', height: '48px', margin: '0 auto 1rem', borderRadius: '50%',
+                                    background: 'linear-gradient(135deg, var(--gold-400), var(--gold-600))', color: 'var(--navy-950)',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.4rem', fontWeight: 800,
+                                    fontFamily: 'var(--font-heading)', boxShadow: 'var(--shadow-md)',
+                                }}>
+                                    {step.num}
+                                </div>
+                                <h3 style={{ fontSize: '1.05rem', marginBottom: '0.5rem' }}>{step.title}</h3>
+                                <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: 1.6, margin: 0 }}>{step.desc}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
             {/* VEDIC TRUST & AUTHENTICITY BADGES */}
             <section className="section" style={{ paddingTop: '2.5rem', paddingBottom: '1rem' }}>
                 <div className="container">
