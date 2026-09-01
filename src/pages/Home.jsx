@@ -54,7 +54,16 @@ export default function Home() {
             <section className="hero" id="hero">
                 <div className="hero-bg">
                     <picture>
-                        <source srcSet="/images/gallery/havan-group.webp" type="image/webp" />
+                        <source
+                            type="image/avif"
+                            srcSet="/images/gallery/havan-group-mobile-480w.avif 480w, /images/gallery/havan-group-tablet-768w.avif 768w, /images/gallery/havan-group-desktop-1280w.avif 1280w"
+                            sizes="100vw"
+                        />
+                        <source
+                            type="image/webp"
+                            srcSet="/images/gallery/havan-group-mobile-480w.webp 480w, /images/gallery/havan-group-tablet-768w.webp 768w, /images/gallery/havan-group-desktop-1280w.webp 1280w"
+                            sizes="100vw"
+                        />
                         <img src="/images/gallery/havan-group.jpg" alt={t('काशी में सम्पन्न सामूहिक हवन', 'Collective havan performed in Kashi')} width="1280" height="720" fetchPriority="high" />
                     </picture>
                 </div>

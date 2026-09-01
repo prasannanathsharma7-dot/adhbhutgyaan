@@ -28,7 +28,11 @@
        DOM until React hydrates - without this, the browser wouldn't even
        start downloading it until after the JS bundle has fetched, parsed,
        and executed. This lets it download in parallel with the JS instead. -->
-  <link rel="preload" as="image" href="/images/gallery/havan-group.webp" fetchpriority="high" type="image/webp">
+  <link rel="preload" as="image"
+    href="/images/gallery/havan-group-mobile-480w.avif"
+    imagesrcset="/images/gallery/havan-group-mobile-480w.avif 480w, /images/gallery/havan-group-tablet-768w.avif 768w, /images/gallery/havan-group-desktop-1280w.avif 1280w"
+    imagesizes="100vw"
+    fetchpriority="high" type="image/avif">
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
