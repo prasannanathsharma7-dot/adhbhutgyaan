@@ -316,7 +316,7 @@ export default function Home() {
                                 <div className={`icon-service-card fade-up stagger-${(i % 5) + 1}`} key={service.id}>
                                     <img src={`/images/icons/${images[service.id] || 'service-astrology-consultation'}.jpg`} alt="" width="64" height="64" loading="lazy" className="icon-service-icon-img" />
                                     <h3 className="icon-service-title">{lang === 'hi' ? service.name : service.nameEn}</h3>
-                                    <p className="icon-service-desc">{service.shortDesc}</p>
+                                    <p className="icon-service-desc">{lang === 'hi' ? service.shortDesc : (service.shortDescEn || service.shortDesc)}</p>
                                     <Link to={`/services/${service.id}`} className="icon-service-link">{t('विवरण देखें', 'Know More')} →</Link>
                                 </div>
                             );

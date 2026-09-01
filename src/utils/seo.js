@@ -98,8 +98,8 @@ export function localBusinessJsonLd() {
         },
         aggregateRating: {
             '@type': 'AggregateRating',
-            ratingValue: '4.9',
-            reviewCount: '142',
+            ratingValue: '4.8',
+            reviewCount: '58',
         },
     };
 }
