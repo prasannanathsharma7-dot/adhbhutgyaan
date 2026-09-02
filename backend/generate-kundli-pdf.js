@@ -18,6 +18,7 @@ const { generateGrahaEssays } = require('./utils/grahaEssays');
 const { analyzeJaimini } = require('./utils/jaimini');
 const { calculateCharaDasha } = require('./utils/charaDasha');
 const { findVarshaPravesh, calculateVarshaLagna, calculateMuntha, calculateMuddaDasha, SIGN_LORD: TAJIK_SIGN_LORD } = require('./utils/tajikVarshphal');
+const { analyzeLalKitab, calculateLalKitab35YearDasha, getRemedies } = require('./utils/lalKitab');
 const { nakshatraHi, deityHi, varnaHi, vashyaHi, ganaHi, nadiHi, yoniHi, lordHi } = require('./utils/hindiTerms');
 
 const FONT_DIR = path.join(__dirname, 'fonts');
@@ -757,6 +758,62 @@ module.exports = async (req, res) => {
             doc.text(m.startDate.toISOString().slice(0, 10), fx + 260, y, { width: 120 });
             doc.text(m.endDate.toISOString().slice(0, 10), fx + 380, y, { width: 120 });
             y += 17;
+        });
+
+        // ============ SUPPLEMENT: LAL KITAB SYSTEM & UPAY ============
+        y = startPage(doc, lang, T('अतिरिक्त', 'Supplement'));
+        y = sectionTitle(doc, T('लाल किताब — ग्रह स्थिति', 'Lal Kitab — Planetary Status'), y);
+        doc.font(FONT_REGULAR).fontSize(8.5).fillColor('#666').text(
+            T('लाल किताब पद्धति में प्रत्येक ग्रह की सोई/जागी स्थिति एवं नेक/मंदा वर्गीकरण उसके भाव पर आधारित होता है — यह पारंपरिक ज्योतिष से भिन्न, स्वतंत्र प्रणाली है।',
+              "In the Lal Kitab system, each planet's sleeping/awake status and Nek/Manda classification depends on its house - this is a distinct system from classical Parashari astrology, with its own methodology."),
+            fx - 24, y, { width: PAGE_W - 2 * (fx - 24) }
+        );
+        y += 36;
+
+        const lalKitab = analyzeLalKitab(R.planets, lang);
+        doc.font(FONT_BOLD).fontSize(9).fillColor(NAVY);
+        [T('ग्रह', 'Planet'), T('भाव', 'House'), T('स्थिति', 'Status'), T('नेक/मंदा', 'Nek/Manda')].forEach((h, i) => doc.text(h, fx + [0, 130, 220, 340][i], y, { width: [130, 90, 120, 120][i] }));
+        y += 16; doc.moveTo(fx, y).lineTo(PAGE_W - MARGIN - 40, y).lineWidth(0.5).stroke(GOLD); y += 6;
+        doc.font(FONT_REGULAR).fontSize(8.5).fillColor('#333');
+        lalKitab.grahaSthiti.forEach(g => {
+            doc.text(PL[g.key], fx, y, { width: 130 });
+            doc.text(String(g.house), fx + 130, y, { width: 90 });
+            doc.text(g.status, fx + 220, y, { width: 120 });
+            doc.text(g.nekManda, fx + 340, y, { width: 120 });
+            y += 17;
+        });
+        y += 10;
+        if (lalKitab.kismatJaganeWala) {
+            y = kvRow(doc, T('किस्मत जगाने वाला ग्रह', 'Fortune-Awakening Planet'), PL[lalKitab.kismatJaganeWala], fx, y, 220);
+        }
+
+        y += 16;
+        y = ensureRoom(doc, y, 100, lang, T('अतिरिक्त (जारी)', 'Supplement (contd.)'));
+        y = sectionTitle(doc, T('लाल किताब ३५ साला दशा चक्र', 'Lal Kitab 35-Year Dasha Cycle'), y);
+        const lalKitabDasha = calculateLalKitab35YearDasha(R.lagna.lord.toLowerCase(), R.utcDate);
+        doc.font(FONT_BOLD).fontSize(9).fillColor(NAVY);
+        [T('ग्रह', 'Planet'), T('अवधि', 'Duration'), T('प्रारंभ', 'Start'), T('समाप्ति', 'End')].forEach((h, i) => doc.text(h, fx + [0, 120, 220, 340][i], y, { width: [120, 100, 120, 120][i] }));
+        y += 16; doc.moveTo(fx, y).lineTo(PAGE_W - MARGIN - 40, y).lineWidth(0.5).stroke(GOLD); y += 6;
+        doc.font(FONT_REGULAR).fontSize(8.5).fillColor('#333');
+        lalKitabDasha.forEach(d => {
+            doc.text(PL[d.planet], fx, y, { width: 120 });
+            doc.text(`${d.years} ${T('वर्ष', 'yrs')}`, fx + 120, y, { width: 100 });
+            doc.text(d.startDate.toISOString().slice(0, 10), fx + 220, y, { width: 120 });
+            doc.text(d.endDate.toISOString().slice(0, 10), fx + 340, y, { width: 120 });
+            y += 17;
+        });
+
+        y += 16;
+        y = ensureRoom(doc, y, 200, lang, T('अतिरिक्त (जारी)', 'Supplement (contd.)'));
+        y = sectionTitle(doc, T('भाव-वार लाल किताब उपाय', 'Bhava-wise Lal Kitab Remedies'), y);
+        const mandaPlanets = lalKitab.grahaSthiti.filter(g => g.nekManda.startsWith(T('मंदा', 'Manda')));
+        (mandaPlanets.length ? mandaPlanets : lalKitab.grahaSthiti.slice(0, 3)).forEach(g => {
+            y = ensureRoom(doc, y, 80, lang, T('अतिरिक्त (जारी)', 'Supplement (contd.)'));
+            doc.font(FONT_BOLD).fontSize(9.5).fillColor(RED).text(`${PL[g.key]} (${T('भाव', 'House')} ${g.house})`, fx - 10, y, { width: PAGE_W - 2 * (fx - 10) });
+            y += 15;
+            const remedies = getRemedies(g.key, lang);
+            remedies.forEach(rem => { doc.font(FONT_REGULAR).fontSize(8.7).fillColor('#333').text(`•  ${rem}`, fx + 5, y, { width: PAGE_W - 2 * (fx + 5) }); y += 14; });
+            y += 8;
         });
 
         doc.end();
