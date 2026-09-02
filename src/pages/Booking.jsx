@@ -29,14 +29,20 @@ export default function Booking() {
     const [step, setStep] = useState(1);
     const [selectedService, setSelectedService] = useState(null);
     const [selectedPkg, setSelectedPkg] = useState(null);
-    const [form, setForm] = useState({ name: '', phone: '', email: '', date: '', address: '', notes: '', mode: '' });
+    const [form, setForm] = useState({ name: '', phone: '', email: '', date: '', address: '', notes: '', mode: '', preferredDate: '', preferredSlot: '' });
     const [saveStatus, setSaveStatus] = useState('idle'); // idle | saving | saved | error
     const [errors, setErrors] = useState({});
 
     const modeOptions = [
-        { v: 'online', icon: Smartphone, label: t('लाइव 1-on-1 WhatsApp वीडियो कॉल संकल्प', 'Direct 1-on-1 Live WhatsApp Video Call Sankalp') },
-        { v: 'temple', icon: Landmark, label: t('काशी में प्रत्यक्ष उपस्थिति (दशाश्वमेध / विश्वनाथ धाम)', 'In-Person in Varanasi (Ghats / Temple)') },
-        { v: 'offline', icon: HomeIcon, label: t('ऑफलाइन (पंडित जी आपके स्थान पर पधारें)', 'Offline (Pandit Ji travels to your location)') },
+        { v: 'online', icon: Smartphone, label: t('लाइव 1-on-1 WhatsApp वीडियो कॉल संकल्प', 'Direct 1-on-1 Live WhatsApp Video Call Sankalp'), desc: t('तीर्थ क्षेत्र काशी से 5 विद्वान ब्राह्मणों द्वारा लाइव पूजन — भारत एवं विदेश दोनों जगह उपलब्ध।', 'Live poojan performed by 5 learned Brahmins from the Kashi Teerth Kshetra - available Pan-India and globally.') },
+        { v: 'temple', icon: Landmark, label: t('काशी में प्रत्यक्ष उपस्थिति (दशाश्वमेध / विश्वनाथ धाम)', 'In-Person in Varanasi (Ghats / Temple)'), desc: t('यजमान स्वयं काशी आकर पूजा संपन्न करवाएं — स्थानिक गंगा घाट अथवा प्राचीन मंदिर में पूर्ण विधि-विधान की व्यवस्था रहेगी।', 'The Yajman travels to Kashi and performs the pooja in person - full traditional arrangements at the Ganga ghats or an ancient temple.') },
+        { v: 'offline', icon: HomeIcon, label: t('पंडित जी आपके द्वार पर (संपूर्ण भारत में)', "Pandit Ji at Your Doorstep (Pan-India)"), desc: t('काशी के प्रमाणित शास्त्रीय पंडित यजमान के घर/शहर आकर पूजा करेंगे। यजमान द्वारा पंडित जी की A/C ट्रेन/फ्लाइट यात्रा एवं स्थानीय आवास की व्यवस्था की जाएगी।', "Kashi's certified traditional Pandits travel to the Yajman's home/city to perform the pooja. The Yajman arranges the Pandit's A/C train/flight travel and local accommodation.") },
+    ];
+
+    const muhuratSlots = [
+        { v: 'pratahkal', label: t('प्रातःकाल', 'Pratahkal'), time: '06:00 AM - 10:00 AM' },
+        { v: 'madhyahna', label: t('मध्याह्न', 'Madhyahna'), time: '11:00 AM - 02:00 PM' },
+        { v: 'sayankal', label: t('सायंकाल', 'Sayankal'), time: '04:00 PM - 08:00 PM' },
     ];
 
     // Astrology consultation options
@@ -176,6 +182,7 @@ export default function Booking() {
 *${t('पैकेज', 'Package')}:* ${selectedPkg.name} (${selectedPkg.nameEn})
 *${t('जाप/पाठ', 'Jaap/Paath')}:* ${selectedPkg.paathCount}
 *${t('माध्यम', 'Mode')}:* ${modeLabel}
+${form.preferredDate ? `*${t('इच्छित मुहूर्त तिथि', 'Preferred Muhurat Date')}:* ${form.preferredDate}${form.preferredSlot ? ` (${muhuratSlots.find(s => s.v === form.preferredSlot)?.label} - ${muhuratSlots.find(s => s.v === form.preferredSlot)?.time})` : ''}` : ''}
 
 *${t('नाम', 'Name')}:* ${form.name}
 *${t('फ़ोन', 'Phone')}:* ${form.phone}
@@ -191,6 +198,7 @@ ${t('सेवा', 'Service')}: ${selectedService.name} (${selectedService.name
 ${t('पैकेज', 'Package')}: ${selectedPkg.name} (${selectedPkg.nameEn})
 ${t('जाप/पाठ', 'Jaap/Paath')}: ${selectedPkg.paathCount}
 ${t('माध्यम', 'Mode')}: ${modeLabel}
+${form.preferredDate ? `${t('इच्छित मुहूर्त तिथि', 'Preferred Muhurat Date')}: ${form.preferredDate}${form.preferredSlot ? ` (${muhuratSlots.find(s => s.v === form.preferredSlot)?.label} - ${muhuratSlots.find(s => s.v === form.preferredSlot)?.time})` : ''}` : ''}
 
 ${t('नाम', 'Name')}: ${form.name}
 ${t('फ़ोन', 'Phone')}: ${form.phone}
@@ -386,7 +394,43 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                                         ))}
                                     </div>
                                     {errors.mode && <p className="form-error" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}><AlertTriangle size={13} />{errors.mode}</p>}
+                                    {form.mode && activeModeOptions.find(m => m.v === form.mode)?.desc && (
+                                        <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '0.6rem', background: 'var(--cream)', padding: '0.65rem 0.9rem', borderRadius: 'var(--radius-md)', lineHeight: 1.5 }}>
+                                            {activeModeOptions.find(m => m.v === form.mode).desc}
+                                        </p>
+                                    )}
                                 </div>
+
+                                {form.mode && (
+                                    <div className="form-group">
+                                        <label className="form-label">{t('इच्छित तिथि एवं शुभ मुहूर्त (वैकल्पिक)', 'Preferred Date & Shubh Muhurat Slot (optional)')}</label>
+                                        <input
+                                            type="date"
+                                            className="form-input"
+                                            value={form.preferredDate}
+                                            min={new Date().toISOString().slice(0, 10)}
+                                            onChange={e => setForm({ ...form, preferredDate: e.target.value })}
+                                            style={{ marginBottom: '0.6rem' }}
+                                        />
+                                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                                            {muhuratSlots.map(s => (
+                                                <button
+                                                    key={s.v}
+                                                    type="button"
+                                                    onClick={() => setForm({ ...form, preferredSlot: form.preferredSlot === s.v ? '' : s.v })}
+                                                    style={{
+                                                        flex: '1 1 140px', textAlign: 'center', padding: '0.6rem 0.5rem', borderRadius: 'var(--radius-md)', cursor: 'pointer',
+                                                        border: form.preferredSlot === s.v ? '2px solid var(--gold-500)' : '1px solid var(--border-light)',
+                                                        background: form.preferredSlot === s.v ? 'var(--gold-50)' : 'white',
+                                                    }}
+                                                >
+                                                    <div style={{ fontWeight: 700, fontSize: '0.85rem' }}>{s.label}</div>
+                                                    <div style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>{s.time}</div>
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
                                 <div className="form-group">
                                     <label className="form-label" htmlFor="booking-name">{t('पूरा नाम', 'Full Name')} *</label>
                                     <input
@@ -503,8 +547,12 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                                     <div style={{ background: 'var(--gold-50)', border: '1px dashed var(--border-gold)', borderRadius: 'var(--radius-md)', padding: '0.6rem 0.9rem', marginBottom: '1rem', fontSize: '0.85rem', color: 'var(--gold-700)', fontWeight: 600, textAlign: 'center' }}>
                                         <MessageCircle size={15} style={{ verticalAlign: '-3px', marginRight: '0.35rem' }} />{t('मूल्य हेतु पूछताछ करें', 'Enquire Now for Pricing')}
                                     </div>
+                                    <div style={{ background: '#f0fdf4', border: '1px solid #86efac', borderRadius: 'var(--radius-md)', padding: '0.75rem 0.9rem', marginBottom: '1rem', fontSize: '0.8rem', color: '#166534', lineHeight: 1.5 }}>
+                                        <strong>{t('वैकल्पिक टोकन आरक्षण', 'Optional Slot Reservation Token')}:</strong>{' '}
+                                        {t('अपनी तिथि/समय पक्का आरक्षित करने हेतु आप ₹101 अथवा ₹501 का टोकन WhatsApp पर UPI द्वारा भेज सकते हैं — यह पूर्णतः वैकल्पिक है, अंतिम भुगतान से समायोजित किया जाएगा।', 'To firmly reserve your date/slot, you can optionally send a ₹101 or ₹501 token via UPI on WhatsApp - this is entirely optional and will be adjusted against the final payment.')}
+                                    </div>
                                     <div style={{ borderTop: '1px solid var(--border-light)', paddingTop: '1rem', marginTop: '0.5rem' }}>
-                                        {[[t('नाम', 'Name'), form.name], [t('फ़ोन', 'Phone'), form.phone], ...(form.email ? [[t('ईमेल', 'Email'), form.email]] : []), [t('तिथि', 'Date'), form.date || dateNotSet], ...(form.address ? [[t('पता', 'Address'), form.address]] : []), ...(form.notes ? [[t('विशेष', 'Notes'), form.notes]] : [])].map(([k, v]) => (
+                                        {[[t('नाम', 'Name'), form.name], [t('फ़ोन', 'Phone'), form.phone], ...(form.email ? [[t('ईमेल', 'Email'), form.email]] : []), [t('तिथि', 'Date'), form.date || dateNotSet], ...(form.preferredDate ? [[t('इच्छित मुहूर्त', 'Preferred Muhurat'), `${form.preferredDate}${form.preferredSlot ? ` (${muhuratSlots.find(s => s.v === form.preferredSlot)?.label})` : ''}`]] : []), ...(form.address ? [[t('पता', 'Address'), form.address]] : []), ...(form.notes ? [[t('विशेष', 'Notes'), form.notes]] : [])].map(([k, v]) => (
                                             <div key={k} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', fontSize: '0.9rem', gap: '1rem' }}>
                                                 <strong>{k}:</strong><span style={{ textAlign: 'right' }}>{v}</span>
                                             </div>
