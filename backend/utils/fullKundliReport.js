@@ -25,7 +25,12 @@ function computeFullKundliReport(dob, tob, pob, lat, lng, tzOffset) {
     // divisional-chart and dasha math, which work on raw degrees, not the
     // already-formatted strings in `base`).
     const [y, m, d] = dob.split('-').map(Number);
-    const [hh, mm] = (tob || '06:30').split(':').map(Number);
+    // Defensively extract just the leading HH:MM regardless of any trailing
+    // text (e.g. the frontend's "02:20 (02:20 AM)" display format) - a
+    // naive split(':') on that full string would silently produce NaN for
+    // minutes and corrupt every downstream calculation.
+    const tobMatch = String(tob || '06:30').match(/^(\d{1,2}):(\d{1,2})/);
+    const [hh, mm] = tobMatch ? [Number(tobMatch[1]), Number(tobMatch[2])] : [6, 30];
     const localDate = new Date(Date.UTC(y, m - 1, d, hh, mm));
     const utcDate = new Date(localDate.getTime() - tzOffset * 3600000);
     const sid = getSiderealLongitudes(utcDate);

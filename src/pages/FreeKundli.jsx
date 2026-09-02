@@ -6,7 +6,6 @@ import { breadcrumbJsonLd, combineJsonLd } from '../utils/seo';
 import BirthDetailsInput from '../components/BirthDetailsInput';
 import NorthIndianChart from '../components/NorthIndianChart';
 import { calculateInstantKundli } from '../utils/kundliEngine';
-import { buildFullKundliUnlockUrl, FULL_KUNDLI_PDF_PRICE_INR } from '../utils/whatsappRedirect';
 import KundaliSettingsBar from '../components/KundaliSettingsBar';
 import { DEFAULT_KUNDALI_SETTINGS, formatNumeral, formatHouseNumber } from '../utils/astrologyI18n';
 import { Droplet, Flame, Mountain, Wind, Sparkles, Zap, MapPin, Printer, RefreshCw, Orbit, Shield, Gem, Coins, Palette, Hash, TrendingUp, Heart, Wand2, MessageCircle, CalendarDays, AlertTriangle, CheckCircle2, Hourglass, Lock, Star, FileText } from 'lucide-react';
@@ -627,11 +626,10 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                             </div>
                         </div>
 
-                        {/* Full 24-Page PDF Unlock (₹501) - a separate offer from the
-                            "book a video consultation" CTA below: this is a one-time
-                            paid download of the complete traditional-style Kundli
-                            booklet (all divisional charts, dasha tables, and detailed
-                            Lodha-style readings), delivered via WhatsApp after payment. */}
+                        {/* Full 24-Page PDF - now free (no charge, no WhatsApp
+                            round-trip needed): directly downloadable using the
+                            same birth details and language/numeral settings
+                            currently shown on screen. */}
                         <div style={{
                             background: 'linear-gradient(135deg, var(--gold-50), white)', border: '2px solid var(--gold-500)',
                             borderRadius: 'var(--radius-xl)', padding: 'clamp(1.5rem, 4vw, 2.25rem)', margin: '1.5rem 0',
@@ -639,31 +637,33 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                         }}>
                             <FileText size={30} style={{ color: 'var(--gold-700)', marginBottom: '0.5rem' }} />
                             <h3 style={{ margin: '0 0 0.5rem', fontSize: '1.15rem' }}>
-                                {t('पूर्ण 24-पृष्ठ कुंडली PDF अनलॉक करें', 'Unlock Your Full 24-Page Kundli PDF')}
+                                {t('पूर्ण 24-पृष्ठ कुंडली PDF निःशुल्क डाउनलोड करें', 'Download Your Full 24-Page Kundli PDF — Free')}
                             </h3>
                             <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', maxWidth: '520px', margin: '0 auto 1.25rem', lineHeight: 1.6 }}>
                                 {t(
-                                    'सभी वर्ग कुंडलियाँ (D2 से D30), संपूर्ण विंशोत्तरी महादशा-अंतर्दशा सारणी एवं डॉ. उमंग नाथ शर्मा द्वारा विस्तृत विश्लेषण — पारंपरिक काशी शैली में।',
-                                    'All divisional charts (D2 through D30), the complete Vimshottari Mahadasha/Antardasha tables, and detailed analysis by Dr. Umang Nath Sharma - in the traditional Kashi style.'
+                                    'सभी वर्ग कुंडलियाँ (D2 से D30), संपूर्ण विंशोत्तरी महादशा-अंतर्दशा सारणी एवं डॉ. उमंग नाथ शर्मा द्वारा विस्तृत विश्लेषण — पारंपरिक काशी शैली में, बिल्कुल निःशुल्क।',
+                                    'All divisional charts (D2 through D30), the complete Vimshottari Mahadasha/Antardasha tables, and detailed analysis by Dr. Umang Nath Sharma - in the traditional Kashi style, completely free.'
                                 )}
                             </p>
-                            <div style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--gold-700)', marginBottom: '1rem' }}>
-                                ₹{FULL_KUNDLI_PDF_PRICE_INR}
+                            <div style={{ fontSize: '1.3rem', fontWeight: 800, color: '#16a34a', marginBottom: '1rem' }}>
+                                {t('निःशुल्क', 'FREE')}
                             </div>
                             <a
-                                href={buildFullKundliUnlockUrl({
+                                href={`/api/generate-kundli-pdf?${new URLSearchParams({
                                     name: kundliResult.devoteeName,
                                     dob: form.dob,
-                                    tob: form.tob || '06:30 AM',
+                                    tob: (form.tob || '06:30').split(' ')[0],
                                     pob: kundliResult.birthPlace,
+                                    lat: 25.3176,
+                                    lng: 82.9739,
+                                    tzOffset: 5.5,
                                     lang: kundliSettings.lang,
-                                    numeralSystem: kundliSettings.numeralSystem,
-                                })}
+                                }).toString()}`}
                                 target="_blank" rel="noreferrer"
-                                className="btn btn-whatsapp btn-lg"
+                                className="btn btn-primary btn-lg"
                             >
-                                <MessageCircle size={17} style={{ verticalAlign: '-3px', marginRight: '0.4rem' }} />
-                                {t('WhatsApp पर अनलॉक करें', 'Unlock via WhatsApp')}
+                                <FileText size={17} style={{ verticalAlign: '-3px', marginRight: '0.4rem' }} />
+                                {t('अभी डाउनलोड करें', 'Download Now')}
                             </a>
                         </div>
 

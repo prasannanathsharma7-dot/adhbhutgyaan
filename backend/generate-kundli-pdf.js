@@ -10,7 +10,7 @@
 
 const PDFDocument = require('pdfkit');
 const path = require('path');
-const { withCors } = require('./_db');
+const { withCors, getDb, checkRateLimit } = require('./_db');
 const { computeFullKundliReport, SIGN_NAMES } = require('./utils/fullKundliReport');
 const { maitriLabel } = require('./utils/lodhaRules');
 
@@ -127,6 +127,23 @@ module.exports = async (req, res) => {
         const params = req.method === 'POST' ? req.body : req.query;
         const { name = 'Devotee', fatherName = '', dob, tob, pob, lat = 25.3176, lng = 82.9739, tzOffset = 5.5, lang = 'hi' } = params || {};
         if (!dob) return res.status(400).json({ ok: false, error: 'dob is required (YYYY-MM-DD)' });
+
+        // Now that the full PDF is free/public (no payment gate), rate-limit
+        // per IP so it can't be spammed into a CPU-load or MongoDB-load
+        // problem. 10 reports per 10 minutes is generous for a real visitor
+        // trying a few family members' charts, while still bounding abuse.
+        try {
+            const db = await getDb();
+            const allowed = await checkRateLimit(db, req, 'generate-kundli-pdf', { limit: 10, windowMs: 10 * 60 * 1000 });
+            if (!allowed) {
+                return res.status(429).json({ ok: false, error: 'Too many requests - please try again in a few minutes.' });
+            }
+        } catch (rateLimitErr) {
+            // If the rate-limit check itself fails (e.g. DB unreachable),
+            // don't block a legitimate free user over an infra hiccup - log
+            // and continue rather than fail the whole request.
+            console.error('Rate limit check failed (continuing):', rateLimitErr.message);
+        }
 
         const R = computeFullKundliReport(dob, tob || '06:30', pob || '', Number(lat), Number(lng), Number(tzOffset));
         const T = (hi, en) => (lang === 'hi' ? hi : en);
