@@ -6,6 +6,7 @@ import { triptych, videoClips, youtubeUploadsPlaylistId, youtubeChannelId } from
 import useSEO from '../hooks/useSEO';
 import { localBusinessJsonLd, combineJsonLd } from '../utils/seo';
 import DailyPanchangCard from '../components/DailyPanchangCard';
+import VideoTestimonials from '../components/VideoTestimonials';
 import { heritageSummary, testimonials } from '../data/heritage';
 import FlagIcon from '../components/FlagIcon';
 import { SquarePlay } from 'lucide-react';
@@ -511,6 +512,22 @@ export default function Home() {
                                 </div>
                             );
                         })}
+                    </div>
+                </div>
+            </section>
+
+            {/* VIDEO TESTIMONIALS */}
+            <section className="section" style={{ background: 'var(--cream)' }}>
+                <div className="container">
+                    <div className="text-center fade-up">
+                        <span className="section-label">{t('वीडियो प्रतिक्रिया', 'Video Feedback')}</span>
+                        <h2 className="section-title">{t('भक्तों की आवाज़ में', "In Devotees' Own Voice")}</h2>
+                        <p style={{ color: 'var(--text-secondary)', maxWidth: 560, margin: '0.5rem auto 0' }}>
+                            {t('शीघ्र ही, हमारे भक्तों के वास्तविक अनुभव — उन्हीं की आवाज़ में।', "Coming soon: our devotees' real experiences, in their own voice.")}
+                        </p>
+                    </div>
+                    <div style={{ marginTop: '2rem' }}>
+                        <VideoTestimonials />
                     </div>
                 </div>
             </section>
