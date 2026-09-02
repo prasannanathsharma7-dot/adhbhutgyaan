@@ -237,6 +237,7 @@ function computeVedicChartData(birthDateStr, birthTimeStr, birthPlaceStr, lat = 
         nameEn: p.nameEn,
         glyph: PLANET_GLYPHS[p.key],
         rashi: RASHIS[p.signNum - 1].name,
+        signNum: p.signNum,
         house: getHouse(p.signNum),
         deg: formatDegMin(p.deg),
     }));

@@ -13,6 +13,8 @@ const path = require('path');
 const { withCors, getDb, checkRateLimit } = require('./_db');
 const { computeFullKundliReport, SIGN_NAMES } = require('./utils/fullKundliReport');
 const { maitriLabel } = require('./utils/lodhaRules');
+const { generateLifePredictions } = require('./utils/lifePredictions');
+const { nakshatraHi, deityHi, varnaHi, vashyaHi, ganaHi, nadiHi, yoniHi, lordHi } = require('./utils/hindiTerms');
 
 const FONT_DIR = path.join(__dirname, 'fonts');
 const FONT_REGULAR = path.join(FONT_DIR, 'NotoSansDevanagari-Regular.ttf');
@@ -215,6 +217,12 @@ module.exports = async (req, res) => {
         const T = (hi, en) => (lang === 'hi' ? hi : en);
         const PL = lang === 'hi' ? PLANET_LABEL_HI : PLANET_LABEL;
         const PL_SHORT = lang === 'hi' ? PLANET_LABEL_SHORT_HI : PLANET_LABEL_SHORT;
+        // Applies a Hindi-Devanagari translation only in Hindi mode - the
+        // core calculation engine only ever stores English terms
+        // (nakshatra names, Avakahada Varna/Vashya/etc.), this is a pure
+        // display-layer fix so Hindi mode doesn't show raw English mixed
+        // into otherwise-Hindi sentences.
+        const NT = (term, fn) => (lang === 'hi' ? fn(term) : term);
 
         const doc = new PDFDocument({ size: 'A4', autoFirstPage: false, info: { Title: `${safeName} - Vedic Kundli - Adhbhut Gyaan` } });
         doc.registerFont('Devanagari', FONT_REGULAR);
@@ -239,13 +247,13 @@ module.exports = async (req, res) => {
         y = kvRow(doc, T('अक्षांश / रेखांश', 'Latitude / Longitude'), `${latNum}, ${lngNum}`, fx, y);
         y = kvRow(doc, T('सूर्योदय', 'Sunrise'), R.panchang.timings.sunrise, fx, y);
         y = kvRow(doc, T('अयनांश (लाहिड़ी)', 'Ayanamsa (Lahiri)'), R.ayanamsa, fx, y);
-        y = kvRow(doc, T('जन्मनाम / राशि', 'Janma Naam / Rashi'), `${R.nakshatra.name} · ${R.moon.rashi}`, fx, y);
+        y = kvRow(doc, T('जन्मनाम / राशि', 'Janma Naam / Rashi'), `${NT(R.nakshatra.name, nakshatraHi)} · ${R.moon.rashi}`, fx, y);
         y += 16;
         y = sectionTitle(doc, T('सारांश', 'Summary'), y) - 10;
         [
             T(`लग्न (Ascendant): ${R.lagna.rashi} (${R.lagna.deg})`, `Lagna (Ascendant): ${R.lagna.rashi} (${R.lagna.deg})`),
             T(`चंद्र राशि (Moon Sign): ${R.moon.rashi}`, `Moon Sign: ${R.moon.rashi}`),
-            T(`नक्षत्र: ${R.nakshatra.name}, पद ${R.nakshatra.pada}`, `Nakshatra: ${R.nakshatra.name}, Pada ${R.nakshatra.pada}`),
+            T(`नक्षत्र: ${nakshatraHi(R.nakshatra.name)}, पद ${R.nakshatra.pada}`, `Nakshatra: ${R.nakshatra.name}, Pada ${R.nakshatra.pada}`),
         ].forEach(line => { doc.font(FONT_REGULAR).fontSize(10).fillColor('#333').text(line, fx - 24, y, { width: PAGE_W - 2 * (fx - 24) }); y += 18; });
 
         // ============ PAGE 2: PANCHANG & SAMVATSARA ============
@@ -261,7 +269,7 @@ module.exports = async (req, res) => {
             [T('मास', 'Masa'), R.panchang.tithi.paksha],
             [T('तिथि', 'Tithi'), R.panchang.tithi.name],
             [T('वार', 'Vaar'), R.panchang.vara.name],
-            [T('नक्षत्र', 'Nakshatra'), `${R.panchang.nakshatra.name} (${T('स्वामी', 'Lord')}: ${R.panchang.nakshatra.lord})`],
+            [T('नक्षत्र', 'Nakshatra'), `${NT(R.panchang.nakshatra.name, nakshatraHi)} (${T('स्वामी', 'Lord')}: ${NT(R.panchang.nakshatra.lord, lordHi)})`],
             [T('योग', 'Yoga'), R.panchang.yoga.name],
             [T('करण', 'Karana'), R.panchang.karana.name],
             [T('दिनमान (सूर्योदय-सूर्यास्त)', 'Dinamana (Sunrise-Sunset)'), `${R.panchang.timings.sunrise} - ${R.panchang.timings.sunset}`],
@@ -273,14 +281,14 @@ module.exports = async (req, res) => {
         y = sectionTitle(doc, T('अवकहड़ा चक्र', 'Avakahada Chakra'), y);
         [
             [T('जन्म लग्न', 'Birth Lagna'), R.lagna.rashi],
-            [T('नक्षत्र / पद', 'Nakshatra / Pada'), `${R.nakshatra.name} / ${R.nakshatra.pada}`],
+            [T('नक्षत्र / पद', 'Nakshatra / Pada'), `${NT(R.nakshatra.name, nakshatraHi)} / ${R.nakshatra.pada}`],
             [T('राशि', 'Rashi'), R.moon.rashi],
-            [T('राशीश', 'Rashisha (Lord)'), R.moon.lord],
-            [T('वर्ण', 'Varna'), R.avakahada.varna],
-            [T('वश्य', 'Vashya'), R.avakahada.vashya],
-            [T('योनि', 'Yoni'), R.avakahada.yoni],
-            [T('गण', 'Gana'), R.avakahada.gana],
-            [T('नाड़ी', 'Nadi'), R.avakahada.nadi],
+            [T('राशीश', 'Rashisha (Lord)'), NT(R.moon.lord, lordHi)],
+            [T('वर्ण', 'Varna'), NT(R.avakahada.varna, varnaHi)],
+            [T('वश्य', 'Vashya'), NT(R.avakahada.vashya, vashyaHi)],
+            [T('योनि', 'Yoni'), NT(R.avakahada.yoni, yoniHi)],
+            [T('गण', 'Gana'), NT(R.avakahada.gana, ganaHi)],
+            [T('नाड़ी', 'Nadi'), NT(R.avakahada.nadi, nadiHi)],
         ].forEach(([l, v]) => { y = kvRow(doc, l, v, fx, y); });
         y += 12;
         y = sectionTitle(doc, T('दशा बलम्', 'Dasha Balance'), y);
@@ -437,7 +445,7 @@ module.exports = async (req, res) => {
         y = sectionTitle(doc, T('लग्न एवं राशि स्वभाव', 'Lagna & Rashi Characteristics'), y);
         y = kvRow(doc, T('लग्न', 'Lagna'), R.lagna.rashi, fx, y);
         y = kvRow(doc, T('लग्न तत्व', 'Lagna Element'), R.lagna.element, fx, y);
-        y = kvRow(doc, T('लग्नेश', 'Lagna Lord'), R.lagna.lord, fx, y);
+        y = kvRow(doc, T('लग्नेश', 'Lagna Lord'), NT(R.lagna.lord, lordHi), fx, y);
         y += 16;
         const elementTraitHi = R.lagna.element === 'Fire' ? 'ऊर्जावान, साहसी एवं नेतृत्वक्षम' : R.lagna.element === 'Earth' ? 'स्थिर, व्यावहारिक एवं धैर्यवान' : R.lagna.element === 'Air' ? 'बौद्धिक, संचारकुशल एवं सामाजिक' : 'भावुक, संवेदनशील एवं कल्पनाशील';
         const elementTraitEn = R.lagna.element === 'Fire' ? 'energetic, courageous, and inclined toward leadership' : R.lagna.element === 'Earth' ? 'stable, practical, and patient' : R.lagna.element === 'Air' ? 'intellectual, communicative, and social' : 'emotional, sensitive, and imaginative';
@@ -451,8 +459,8 @@ module.exports = async (req, res) => {
         y = startPage(doc, lang, '22 / 24');
         y = sectionTitle(doc, T('व्यक्तित्व, रुचि एवं पारिवारिक स्वभाव', 'Personality, Inclinations & Family Nature'), y);
         y = kvRow(doc, T('चंद्र राशि (मानसिकता)', 'Moon Sign (Mentality)'), R.moon.rashi, fx, y);
-        y = kvRow(doc, T('गण', 'Gana (Temperament)'), R.avakahada.gana, fx, y);
-        y = kvRow(doc, T('वर्ण', 'Varna'), R.avakahada.varna, fx, y);
+        y = kvRow(doc, T('गण', 'Gana (Temperament)'), NT(R.avakahada.gana, ganaHi), fx, y);
+        y = kvRow(doc, T('वर्ण', 'Varna'), NT(R.avakahada.varna, varnaHi), fx, y);
         y += 12;
         doc.font(FONT_REGULAR).fontSize(9.5).fillColor('#333').text(
             T('चंद्र राशि मानसिक प्रवृत्ति, संवेगात्मक स्वभाव एवं पारिवारिक संबंधों को इंगित करती है। बुध व शुक्र की स्थिति कला, संचार व सामाजिक अभिरुचियों को दर्शाती है — विस्तृत विश्लेषण हेतु परामर्श लें।',
@@ -573,6 +581,25 @@ module.exports = async (req, res) => {
                 doc.text(a.endDate.toISOString().slice(0, 10), fx + 340, y, { width: 160 });
                 y += 18;
             });
+        });
+
+        // ============ SUPPLEMENT: 10-AREA LIFE PREDICTIONS ============
+        y = startPage(doc, lang, T('अतिरिक्त', 'Supplement'));
+        y = sectionTitle(doc, T('विस्तृत जीवन भविष्यफल', 'Detailed Life Predictions'), y);
+        doc.font(FONT_REGULAR).fontSize(8).fillColor('#666').text(
+            T('यह विश्लेषण जन्म कुंडली के प्रमुख भाव-स्वामियों एवं ग्रह-बल पर आधारित शास्त्रोक्त संकेत है — निश्चयात्मक भविष्यवाणी नहीं। विस्तृत एवं व्यक्तिगत मार्गदर्शन हेतु कृपया परामर्श लें।',
+              'These indications are based on the key house-lords and planetary strength in the birth chart per classical principles - they are indicative, not deterministic predictions. Please consult for detailed, personalised guidance.'),
+            fx - 24, y, { width: PAGE_W - 2 * (fx - 24) }
+        );
+        y += 40;
+
+        const lifeAreas = generateLifePredictions(R, lang);
+        lifeAreas.forEach((area, idx) => {
+            y = ensureRoom(doc, y, 70, lang, T('अतिरिक्त (जारी)', 'Supplement (contd.)'), T('विस्तृत जीवन भविष्यफल (जारी)', 'Detailed Life Predictions (contd.)'));
+            doc.font(FONT_BOLD).fontSize(10.5).fillColor(RED).text(`${idx + 1}. ${area.title}`, fx - 24, y, { width: PAGE_W - 2 * (fx - 24) });
+            y += 16;
+            doc.font(FONT_REGULAR).fontSize(9.5).fillColor('#333').text(area.text, fx - 24, y, { width: PAGE_W - 2 * (fx - 24) });
+            y += doc.heightOfString(area.text, { width: PAGE_W - 2 * (fx - 24), fontSize: 9.5 }) + 18;
         });
 
         doc.end();
