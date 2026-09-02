@@ -16,6 +16,8 @@ const { maitriLabel } = require('./utils/lodhaRules');
 const { generateLifePredictions } = require('./utils/lifePredictions');
 const { generateGrahaEssays } = require('./utils/grahaEssays');
 const { analyzeJaimini } = require('./utils/jaimini');
+const { calculateCharaDasha } = require('./utils/charaDasha');
+const { findVarshaPravesh, calculateVarshaLagna, calculateMuntha, calculateMuddaDasha, SIGN_LORD: TAJIK_SIGN_LORD } = require('./utils/tajikVarshphal');
 const { nakshatraHi, deityHi, varnaHi, vashyaHi, ganaHi, nadiHi, yoniHi, lordHi } = require('./utils/hindiTerms');
 
 const FONT_DIR = path.join(__dirname, 'fonts');
@@ -684,6 +686,76 @@ module.exports = async (req, res) => {
             doc.text(PL[a.planet], fx, y, { width: 150 });
             doc.text(a.baladi, fx + 150, y, { width: 170 });
             doc.text(a.jagrat, fx + 320, y, { width: 170 });
+            y += 17;
+        });
+
+        // ============ SUPPLEMENT: JAIMINI CHARA DASHA (12-RASHI TIMELINE) ============
+        y = startPage(doc, lang, T('अतिरिक्त', 'Supplement'));
+        y = sectionTitle(doc, T('जैमिनी चर दशा (१२ राशि समयरेखा)', 'Jaimini Chara Dasha (12-Rashi Timeline)'), y);
+        doc.font(FONT_REGULAR).fontSize(8.5).fillColor('#666').text(
+            T('चर दशा जैमिनी पद्धति की राशि-आधारित समय-प्रणाली है (ग्रह-आधारित विंशोत्तरी दशा से भिन्न) — प्रत्येक राशि की अवधि उसके स्वामी की स्थिति पर आधारित है।',
+              "Chara Dasha is the Jaimini tradition's sign-based timing system (distinct from the planet-based Vimshottari Dasha) - each sign's duration depends on where its lord is placed."),
+            fx - 24, y, { width: PAGE_W - 2 * (fx - 24) }
+        );
+        y += 36;
+
+        const planetSignsForCD = {};
+        R.planets.forEach(p => { planetSignsForCD[p.key] = p.signNum; });
+        const lagnaSignForCD = R.houseData[1].rashiId;
+        const charaDasha = calculateCharaDasha(lagnaSignForCD, planetSignsForCD, R.utcDate, SIGN_NAMES);
+
+        doc.font(FONT_BOLD).fontSize(9).fillColor(NAVY);
+        [T('राशि', 'Sign'), T('स्वामी', 'Lord'), T('अवधि', 'Duration'), T('प्रारंभ', 'Start'), T('समाप्ति', 'End')].forEach((h, i) => doc.text(h, fx + [0, 140, 210, 290, 400][i], y, { width: [140, 70, 80, 110, 110][i] }));
+        y += 16; doc.moveTo(fx, y).lineTo(PAGE_W - MARGIN - 40, y).lineWidth(0.5).stroke(GOLD); y += 6;
+        doc.font(FONT_REGULAR).fontSize(8.3).fillColor('#333');
+        charaDasha.mahadashas.forEach(m => {
+            y = ensureRoom(doc, y, 17, lang, T('अतिरिक्त (जारी)', 'Supplement (contd.)'), T('जैमिनी चर दशा (जारी)', 'Jaimini Chara Dasha (contd.)'));
+            doc.text(m.signName, fx, y, { width: 140 });
+            doc.text(PL[m.lord], fx + 140, y, { width: 70 });
+            doc.text(`${m.years} ${T('वर्ष', 'yrs')}`, fx + 210, y, { width: 80 });
+            doc.text(m.startDate.toISOString().slice(0, 10), fx + 290, y, { width: 110 });
+            doc.text(m.endDate.toISOString().slice(0, 10), fx + 400, y, { width: 110 });
+            y += 17;
+        });
+
+        // ============ SUPPLEMENT: TAJIK VARSHPHAL (ANNUAL CHART) ============
+        y = startPage(doc, lang, T('अतिरिक्त', 'Supplement'));
+        y = sectionTitle(doc, T('ताजिक वर्षफल (वार्षिक कुंडली)', 'Tajik Varshphal (Annual Horoscope)'), y);
+        doc.font(FONT_REGULAR).fontSize(8.5).fillColor('#666').text(
+            T('वर्षफल वह वार्षिक कुंडली है जो सूर्य के जन्म-राशि पर पुनः लौटने के सटीक क्षण (वर्ष प्रवेश) पर आधारित होती है — यह वर्तमान वर्ष के लिए विशेष फल दर्शाती है।',
+              'Varshphal is the annual chart cast for the exact moment the Sun returns to its natal sidereal position each year (Varsha Pravesh) - it indicates the specific themes of the current year.'),
+            fx - 24, y, { width: PAGE_W - 2 * (fx - 24) }
+        );
+        y += 36;
+
+        const currentYear = new Date().getUTCFullYear();
+        const vp = findVarshaPravesh(R.planetLongitudes.sun, R.utcDate, currentYear);
+        const completedYears = currentYear - R.utcDate.getUTCFullYear();
+        const vLagnaLon = calculateVarshaLagna(vp, Number(lat), Number(lng));
+        const vLagnaSign = Math.floor(vLagnaLon / 30) + 1;
+        const varshesh = TAJIK_SIGN_LORD[vLagnaSign];
+        const lagnaSignForCD2 = R.houseData[1].rashiId;
+        const muntha = calculateMuntha(lagnaSignForCD2, completedYears);
+        const munthaHouse = ((muntha - vLagnaSign + 12) % 12) + 1;
+
+        y = kvRow(doc, T('वर्ष प्रवेश (सटीक क्षण)', 'Varsha Pravesh (exact moment)'), vp.toISOString().slice(0, 16).replace('T', ' ') + ' UTC', fx, y, 200);
+        y = kvRow(doc, T('वर्ष लग्न', 'Varsha Lagna'), SIGN_NAMES[vLagnaSign - 1], fx, y, 200);
+        y = kvRow(doc, T('वर्षेश (वर्ष स्वामी)', 'Varshesh (Year Lord)'), PL[varshesh], fx, y, 200);
+        y = kvRow(doc, T('मुंथा राशि', 'Muntha Sign'), SIGN_NAMES[muntha - 1], fx, y, 200);
+        y = kvRow(doc, T('मुंथा भाव (वर्ष लग्न से)', 'Muntha House (from Varsha Lagna)'), String(munthaHouse), fx, y, 200);
+        y += 20;
+
+        y = sectionTitle(doc, T('मुद्दा दशा (चालू वर्ष)', 'Mudda Dasha (Current Year)'), y);
+        doc.font(FONT_BOLD).fontSize(9).fillColor(NAVY);
+        [T('ग्रह', 'Planet'), T('अवधि (दिन)', 'Duration (days)'), T('प्रारंभ', 'Start'), T('समाप्ति', 'End')].forEach((h, i) => doc.text(h, fx + [0, 130, 260, 380][i], y, { width: [130, 130, 120, 120][i] }));
+        y += 16; doc.moveTo(fx, y).lineTo(PAGE_W - MARGIN - 40, y).lineWidth(0.5).stroke(GOLD); y += 6;
+        doc.font(FONT_REGULAR).fontSize(8.5).fillColor('#333');
+        const mudda = calculateMuddaDasha(R.dasha.startingLord, vp);
+        mudda.forEach(m => {
+            doc.text(PL[m.lord.toLowerCase()] || m.lord, fx, y, { width: 130 });
+            doc.text(`${m.days.toFixed(1)} ${T('दिन', 'days')}`, fx + 130, y, { width: 130 });
+            doc.text(m.startDate.toISOString().slice(0, 10), fx + 260, y, { width: 120 });
+            doc.text(m.endDate.toISOString().slice(0, 10), fx + 380, y, { width: 120 });
             y += 17;
         });
 
