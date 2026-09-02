@@ -8,6 +8,7 @@ const { calculateGlobalPanchang } = require('./panchang-engine');
 const { getSiderealLongitudes } = require('./vedic-ephemeris');
 const divs = require('./divisionalCharts');
 const { calculateVimshottariDasha } = require('./vimshottariDasha');
+const { calculateYoginiDasha } = require('./yoginiDasha');
 const { calculateSadeSatiTimeline } = require('./sadeSati');
 const { getAvakahada } = require('./avakahadaChakra');
 const { computePanchadhaMaitri, maitriLabel } = require('./lodhaRules');
@@ -83,6 +84,7 @@ function computeFullKundliReport(dob, tob, pob, lat, lng, tzOffset) {
 
     // Vimshottari Dasha (from Moon's real sidereal longitude + birth instant)
     const dasha = calculateVimshottariDasha(sid.moon, utcDate);
+    const yoginiDasha = calculateYoginiDasha(sid.moon, utcDate);
     const moonSignNum = Math.floor((((sid.moon % 360) + 360) % 360) / 30) + 1;
     const sadeSati = calculateSadeSatiTimeline(moonSignNum, utcDate, 100);
 
@@ -108,6 +110,7 @@ function computeFullKundliReport(dob, tob, pob, lat, lng, tzOffset) {
         divisionalCharts,
         vargaLagnaSign,
         dasha,
+        yoginiDasha,
         sadeSati,
         avakahada,
         panchadhaMaitri,

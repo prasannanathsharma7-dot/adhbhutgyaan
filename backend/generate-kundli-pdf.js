@@ -14,6 +14,7 @@ const { withCors, getDb, checkRateLimit } = require('./_db');
 const { computeFullKundliReport, SIGN_NAMES } = require('./utils/fullKundliReport');
 const { maitriLabel } = require('./utils/lodhaRules');
 const { generateLifePredictions } = require('./utils/lifePredictions');
+const { generateGrahaEssays } = require('./utils/grahaEssays');
 const { nakshatraHi, deityHi, varnaHi, vashyaHi, ganaHi, nadiHi, yoniHi, lordHi } = require('./utils/hindiTerms');
 
 const FONT_DIR = path.join(__dirname, 'fonts');
@@ -600,6 +601,48 @@ module.exports = async (req, res) => {
             y += 16;
             doc.font(FONT_REGULAR).fontSize(9.5).fillColor('#333').text(area.text, fx - 24, y, { width: PAGE_W - 2 * (fx - 24) });
             y += doc.heightOfString(area.text, { width: PAGE_W - 2 * (fx - 24), fontSize: 9.5 }) + 18;
+        });
+
+        // ============ SUPPLEMENT: 9 GRAHA INDIVIDUAL ESSAYS ============
+        y = startPage(doc, lang, T('अतिरिक्त', 'Supplement'));
+        y = sectionTitle(doc, T('नवग्रह विवेचन', 'Individual Planet Analysis'), y);
+        const grahaEssays = generateGrahaEssays(R, lang);
+        grahaEssays.forEach((essay, idx) => {
+            y = ensureRoom(doc, y, 70, lang, T('अतिरिक्त (जारी)', 'Supplement (contd.)'), T('नवग्रह विवेचन (जारी)', 'Individual Planet Analysis (contd.)'));
+            doc.font(FONT_BOLD).fontSize(10.5).fillColor(RED).text(`${idx + 1}. ${essay.title}`, fx - 24, y, { width: PAGE_W - 2 * (fx - 24) });
+            y += 16;
+            doc.font(FONT_REGULAR).fontSize(9.5).fillColor('#333').text(essay.text, fx - 24, y, { width: PAGE_W - 2 * (fx - 24) });
+            y += doc.heightOfString(essay.text, { width: PAGE_W - 2 * (fx - 24), fontSize: 9.5 }) + 18;
+        });
+
+        // ============ SUPPLEMENT: YOGINI DASHA (36-YEAR CYCLE) ============
+        y = startPage(doc, lang, T('अतिरिक्त', 'Supplement'));
+        y = sectionTitle(doc, T('योगिनी दशा (३६ वर्षीय चक्र)', 'Yogini Dasha (36-Year Cycle)'), y);
+        doc.font(FONT_REGULAR).fontSize(8.5).fillColor('#666').text(
+            T('योगिनी दशा विंशोत्तरी दशा के साथ प्रयुक्त एक ३६ वर्षीय पूरक दशा-प्रणाली है, जो निकट भविष्य के समय-निर्धारण हेतु विशेष उपयोगी मानी जाती है।',
+              'Yogini Dasha is a complementary 36-year timing system used alongside Vimshottari Dasha, particularly valued for near-term predictive timing.'),
+            fx - 24, y, { width: PAGE_W - 2 * (fx - 24) }
+        );
+        y += 34;
+
+        const yoginiNameHi = { Mangala: 'मंगला', Pingala: 'पिंगला', Dhanya: 'धन्या', Bhramari: 'भ्रामरी', Bhadrika: 'भद्रिका', Ulka: 'उल्का', Siddha: 'सिद्धा', Sankata: 'संकटा' };
+        doc.font(FONT_BOLD).fontSize(9).fillColor(NAVY);
+        [T('योगिनी', 'Yogini'), T('ग्रह', 'Planet'), T('अवधि', 'Duration'), T('प्रारंभ', 'Start'), T('समाप्ति', 'End')].forEach((h, i) => doc.text(h, fx + [0, 90, 180, 270, 380][i], y, { width: [90, 90, 90, 110, 110][i] }));
+        y += 16; doc.moveTo(fx, y).lineTo(PAGE_W - MARGIN - 40, y).lineWidth(0.5).stroke(GOLD); y += 4;
+
+        R.yoginiDasha.mahadashas.forEach((m, idx) => {
+            y = ensureRoom(doc, y, 20, lang, T('अतिरिक्त (जारी)', 'Supplement (contd.)'), T('योगिनी दशा (जारी)', 'Yogini Dasha (contd.)'));
+            // Alternating row background, matching the requested AstroSage-style grid.
+            if (idx % 2 === 0) {
+                doc.rect(fx - 6, y - 3, PAGE_W - 2 * MARGIN - 2 * (fx - MARGIN) + 12, 17).fill('#fdf6e8');
+            }
+            doc.font(FONT_REGULAR).fontSize(8.7).fillColor('#333');
+            doc.text(T(yoginiNameHi[m.yogini], m.yogini), fx, y, { width: 90 });
+            doc.text(T(PLANET_LABEL_HI[m.planet.toLowerCase()] || m.planet, m.planet), fx + 90, y, { width: 90 });
+            doc.text(`${m.years.toFixed(2)} ${T('वर्ष', 'yrs')}`, fx + 180, y, { width: 90 });
+            doc.text(m.startDate.toISOString().slice(0, 10), fx + 270, y, { width: 110 });
+            doc.text(m.endDate.toISOString().slice(0, 10), fx + 380, y, { width: 110 });
+            y += 18;
         });
 
         doc.end();
