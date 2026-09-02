@@ -64,6 +64,22 @@ function computeFullKundliReport(dob, tob, pob, lat, lng, tzOffset) {
         d30: buildVarga(divs.d30Trimshamsha, true),
     };
 
+    // Each divisional chart's OWN Lagna (Ascendant) position - needed so the
+    // chart house-plot below can place house 1 at the varga's actual Lagna
+    // sign, not always Aries (which was a real simplification the site had
+    // before this fix - it produced a chart with correct planet SIGNS but a
+    // meaningless house layout, since houses are always counted from the
+    // varga's own Lagna, not from Aries).
+    const lagnaLon = base.lagna.longitude;
+    const vargaLagnaSign = {
+        d2: divs.d2Hora(lagnaLon),
+        d3: divs.d3Drekkana(lagnaLon),
+        d7: divs.d7Saptamsha(lagnaLon),
+        d9: divs.d9Navamsha(lagnaLon),
+        d12: divs.d12Dwadashamsha(lagnaLon),
+        d30: divs.d30Trimshamsha(lagnaLon).sign,
+    };
+
     // Vimshottari Dasha (from Moon's real sidereal longitude + birth instant)
     const dasha = calculateVimshottariDasha(sid.moon, utcDate);
 
@@ -87,6 +103,7 @@ function computeFullKundliReport(dob, tob, pob, lat, lng, tzOffset) {
         ...base,
         planetLongitudes,
         divisionalCharts,
+        vargaLagnaSign,
         dasha,
         avakahada,
         panchadhaMaitri,

@@ -364,7 +364,7 @@ module.exports = async (req, res) => {
             y = startPage(doc, lang, `${vp.num} / 24`);
             y = sectionTitle(doc, T(vp.titleHi, vp.titleEn), y);
             doc.font(FONT_REGULAR).fontSize(8.5).fillColor('#666').text(T(vp.descHi, vp.descEn), 0, y, { align: 'center', width: PAGE_W });
-            drawNorthIndianVarga(doc, PAGE_W / 2 - 110, y + 20, 220, (h) => vargaHouseData(R.divisionalCharts[vp.key], 1)[h], lang);
+            drawNorthIndianVarga(doc, PAGE_W / 2 - 110, y + 20, 220, (h) => vargaHouseData(R.divisionalCharts[vp.key], R.vargaLagnaSign[vp.key])[h], lang);
             let ty = y + 260;
             doc.font(FONT_BOLD).fontSize(9).fillColor(NAVY).text(T('ग्रह स्थिति', 'Planet Positions'), fx, ty); ty += 16;
             doc.font(FONT_REGULAR).fontSize(8.5).fillColor('#333');

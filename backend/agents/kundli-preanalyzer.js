@@ -250,7 +250,7 @@ function computeVedicChartData(birthDateStr, birthTimeStr, birthPlaceStr, lat = 
     }
 
     return {
-        lagna: { rashi: lagnaRashi.name, lord: lagnaRashi.lord, element: lagnaRashi.element, deg: formatDegMin(siderealAsc), luckyGem: lagnaRashi.luckyGem, luckyColor: lagnaRashi.luckyColor },
+        lagna: { rashi: lagnaRashi.name, lord: lagnaRashi.lord, element: lagnaRashi.element, deg: formatDegMin(siderealAsc), luckyGem: lagnaRashi.luckyGem, luckyColor: lagnaRashi.luckyColor, longitude: siderealAsc },
         moon: { rashi: moonRashi.name, lord: moonRashi.lord, luckyGem: moonRashi.luckyGem, luckyColor: moonRashi.luckyColor },
         sun: { rashi: sunRashi.name, lord: sunRashi.lord },
         nakshatra: { name: moonNakshatra.name, pada, lord: moonNakshatra.lord, deity: moonNakshatra.deity },
