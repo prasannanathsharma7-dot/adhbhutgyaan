@@ -504,5 +504,143 @@
       }
     ],
     "shortDescEn": "A symbolic pre-marital wedding rite performed to pacify the inauspicious effects of Manglik Dosha before the actual nuptials."
+  },
+  {
+    "id": "griha-pravesh",
+    "image": "services/rudrabhishek_real.jpg",
+    "name": "गृहप्रवेश एवं वास्तु शांति पूजन",
+    "nameEn": "Griha Pravesh & Vastu Shanti Pujan",
+    "shortDesc": "नए घर में प्रवेश से पूर्व वास्तु दोष निवारण एवं सुख-समृद्धि हेतु शास्त्रोक्त पूजन।",
+    "shortDescEn": "Scripturally-grounded Vastu-defect pacification and prosperity ritual before entering a new home.",
+    "description": "गृहप्रवेश पूजन नए निवास में प्रवेश से पूर्व किया जाने वाला अत्यंत आवश्यक अनुष्ठान है, जिसमें वास्तु देवता एवं दिशाओं के अधिष्ठाता देवताओं का पूजन कर घर को दोषमुक्त एवं शुभ बनाया जाता है।",
+    "descriptionEn": "Griha Pravesh Pujan is an essential ritual performed before moving into a new residence - the Vastu Devata and the presiding deities of the directions are worshipped to free the home of defects and make it auspicious.",
+    "bestTime": "वास्तु शास्त्र अनुसार शुभ मुहूर्त, विशेषकर वसंत एवं शरद ऋतु",
+    "bestTimeEn": "An auspicious Muhurat per Vastu Shastra, especially during spring and autumn",
+    "benefits": [
+      "वास्तु दोषों का निवारण",
+      "घर में सुख-समृद्धि एवं शांति की स्थापना",
+      "नकारात्मक ऊर्जा का शमन",
+      "परिवार के स्वास्थ्य एवं उन्नति हेतु शुभ आरंभ"
+    ],
+    "benefitsEn": [
+      "Removal of Vastu defects",
+      "Establishment of happiness, prosperity, and peace in the home",
+      "Pacification of negative energy",
+      "An auspicious start for the family's health and progress"
+    ],
+    "packages": [
+      {
+        "name": "संक्षिप्त गृहप्रवेश पूजन",
+        "nameEn": "Basic Griha Pravesh Pujan",
+        "paathCount": "1 पूजन",
+        "includes": "गणेश पूजन, वास्तु शांति एवं हवन सहित संक्षिप्त विधि।",
+        "price": 5100,
+        "popular": false,
+        "paathCountEn": "1 ritual",
+        "includesEn": "A concise ceremony including Ganesh Pujan, Vastu Shanti, and Havan."
+      },
+      {
+        "name": "संपूर्ण गृहप्रवेश एवं वास्तु शांति",
+        "nameEn": "Complete Griha Pravesh & Vastu Shanti",
+        "paathCount": "1 विस्तृत पूजन",
+        "includes": "नवग्रह पूजन, वास्तु शांति, दिक्पाल पूजन एवं पूर्णाहुति सहित संपूर्ण विधि-विधान।",
+        "price": 11000,
+        "popular": true,
+        "paathCountEn": "1 elaborate ceremony",
+        "includesEn": "Full traditional rites including Navgraha Pujan, Vastu Shanti, Dikpal Pujan, and Purnahuti."
+      }
+    ]
+  },
+  {
+    "id": "navgrah-shanti",
+    "image": "services/rudrabhishek_real.jpg",
+    "name": "नवग्रह शांति एवं रुद्राभिषेक",
+    "nameEn": "Navgrah Shanti & Rudrabhishek",
+    "shortDesc": "नवों ग्रहों की अशुभता शमन हेतु विशेष हवन एवं रुद्राभिषेक अनुष्ठान।",
+    "shortDescEn": "A special Havan and Rudrabhishek ritual to pacify the inauspicious influence of all nine planets.",
+    "description": "नवग्रह शांति अनुष्ठान में नवों ग्रहों (सूर्य, चंद्र, मंगल, बुध, गुरु, शुक्र, शनि, राहु, केतु) के दोषों का शमन कर रुद्राभिषेक के साथ जीवन में ग्रह-जनित बाधाओं को दूर किया जाता है।",
+    "descriptionEn": "The Navgrah Shanti ritual pacifies the afflictions of all nine planets (Sun, Moon, Mars, Mercury, Jupiter, Venus, Saturn, Rahu, Ketu) and, combined with Rudrabhishek, removes planetary obstacles from life.",
+    "bestTime": "शनिवार, ग्रह-पीड़ा काल, वार्षिक राशिफल अनुसार दशा-परिवर्तन के समय",
+    "bestTimeEn": "Saturdays, periods of planetary affliction, or at the time of a Dasha change per annual predictions",
+    "benefits": [
+      "ग्रह-जनित बाधाओं का निवारण",
+      "स्वास्थ्य, करियर एवं वित्तीय स्थिरता में सुधार",
+      "मानसिक शांति एवं आत्मविश्वास की वृद्धि",
+      "शनि, राहु-केतु के अशुभ प्रभावों का शमन"
+    ],
+    "benefitsEn": [
+      "Removal of planetary-caused obstacles",
+      "Improvement in health, career, and financial stability",
+      "Increased mental peace and self-confidence",
+      "Pacification of inauspicious Saturn and Rahu-Ketu influences"
+    ],
+    "packages": [
+      {
+        "name": "नवग्रह हवन",
+        "nameEn": "Navgrah Havan",
+        "paathCount": "1 हवन",
+        "includes": "नवों ग्रहों हेतु मंत्रोच्चार सहित संक्षिप्त हवन।",
+        "price": 3100,
+        "popular": false,
+        "paathCountEn": "1 Havan",
+        "includesEn": "A concise Havan with mantra recitation for all nine planets."
+      },
+      {
+        "name": "नवग्रह शांति महा रुद्राभिषेक",
+        "nameEn": "Navgrah Shanti Maha Rudrabhishek",
+        "paathCount": "9 ग्रह पूजन + अभिषेक",
+        "includes": "नवग्रह पूजन, रुद्राभिषेक एवं पूर्णाहुति सहित विस्तृत अनुष्ठान।",
+        "price": 15100,
+        "popular": true,
+        "paathCountEn": "9-planet worship + abhishekam",
+        "includesEn": "An elaborate ritual including Navgraha Pujan, Rudrabhishek, and Purnahuti."
+      }
+    ]
+  },
+  {
+    "id": "mahamrityunjaya-jaap",
+    "image": "services/rudrabhishek_real.jpg",
+    "name": "महामृत्युंजय अनुष्ठान",
+    "nameEn": "Mahamrityunjaya Jaap Anushthan",
+    "shortDesc": "आरोग्य, दीर्घायु एवं अकाल मृत्यु-भय निवारण हेतु परम शक्तिशाली महामृत्युंजय मंत्र जाप।",
+    "shortDescEn": "The supremely powerful Mahamrityunjaya mantra Jaap for health, longevity, and protection from untimely death.",
+    "description": "महामृत्युंजय जाप भगवान शिव को समर्पित एक परम शक्तिशाली मंत्र-साधना है, जो गंभीर रोग, दीर्घायु-बाधा एवं अकाल मृत्यु के भय के निवारण हेतु विशेष रूप से किया जाता है।",
+    "descriptionEn": "Mahamrityunjaya Jaap is a supremely powerful mantra practice dedicated to Lord Shiva, performed especially to counter serious illness, obstacles to longevity, and the fear of untimely death.",
+    "bestTime": "महाशिवरात्रि, श्रावण मास, स्वास्थ्य-संकट के समय, सोमवार",
+    "bestTimeEn": "Mahashivratri, the Shravan month, times of health crisis, Mondays",
+    "benefits": [
+      "आरोग्य एवं दीर्घायु की प्राप्ति",
+      "गंभीर रोगों से सुरक्षा",
+      "अकाल मृत्यु-भय का निवारण",
+      "मानसिक बल एवं आध्यात्मिक ऊर्जा में वृद्धि"
+    ],
+    "benefitsEn": [
+      "Attainment of health and longevity",
+      "Protection from serious illness",
+      "Removal of the fear of untimely death",
+      "Increased mental strength and spiritual energy"
+    ],
+    "packages": [
+      {
+        "name": "एकादश (11000) जाप",
+        "nameEn": "Ekadash (11,000) Jaap",
+        "paathCount": "11,000 जाप",
+        "includes": "11,000 महामृत्युंजय मंत्र जाप एवं संकल्प।",
+        "price": 5100,
+        "popular": false,
+        "paathCountEn": "11,000 recitations",
+        "includesEn": "11,000 recitations of the Mahamrityunjaya mantra with Sankalp."
+      },
+      {
+        "name": "सवा लक्ष जाप एवं हवन",
+        "nameEn": "Sava Laksha Jaap & Havan",
+        "paathCount": "1,25,000 जाप",
+        "includes": "सवा लक्ष जाप, पूर्णाहुति हवन एवं ब्राह्मण भोज सहित संपूर्ण अनुष्ठान।",
+        "price": 21000,
+        "popular": true,
+        "paathCountEn": "125,000 recitations",
+        "includesEn": "A complete ritual with 125,000 recitations, a Purnahuti Havan, and Brahmin Bhoj."
+      }
+    ]
   }
 ]
