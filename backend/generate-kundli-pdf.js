@@ -554,6 +554,27 @@ module.exports = async (req, res) => {
             y += 16;
         });
 
+        // ============ SUPPLEMENT: REMAINING 5 MAHADASHA ANTARDASHA TABLES ============
+        // Pages 17-20 (in the core numbered sequence) already cover this
+        // person's first 4 Mahadashas' Antardasha breakdowns. The spec asks
+        // for all 9 - appended here rather than renumbered into the core
+        // sequence, same reasoning as the Sade Sati supplement above.
+        R.dasha.mahadashas.slice(4).forEach((m) => {
+            y = startPage(doc, lang, T('अतिरिक्त', 'Supplement'));
+            y = sectionTitle(doc, T(`${PL[m.lord.toLowerCase()] || m.lord} महादशा — अंतर्दशा सारणी`, `${PLANET_LABEL[m.lord.toLowerCase()] || m.lord} Mahadasha — Antardasha Table`), y);
+            doc.font(FONT_BOLD).fontSize(9).fillColor(NAVY);
+            [T('अंतर्दशा स्वामी', 'Antardasha Lord'), T('प्रारंभ', 'Start'), T('समाप्ति', 'End')].forEach((h, i) => doc.text(h, fx + [0, 180, 340][i], y, { width: [180, 160, 160][i] }));
+            y += 16; doc.moveTo(fx, y).lineTo(PAGE_W - MARGIN - 40, y).lineWidth(0.5).stroke(GOLD); y += 8;
+            doc.font(FONT_REGULAR).fontSize(9).fillColor('#333');
+            m.antardashas.forEach(a => {
+                y = ensureRoom(doc, y, 18, lang, T('अतिरिक्त (जारी)', 'Supplement (contd.)'), T(`${PL[m.lord.toLowerCase()] || m.lord} महादशा (जारी)`, `${PLANET_LABEL[m.lord.toLowerCase()] || m.lord} Mahadasha (contd.)`));
+                doc.text(PL[a.lord.toLowerCase()] || a.lord, fx, y, { width: 180 });
+                doc.text(a.startDate.toISOString().slice(0, 10), fx + 180, y, { width: 160 });
+                doc.text(a.endDate.toISOString().slice(0, 10), fx + 340, y, { width: 160 });
+                y += 18;
+            });
+        });
+
         doc.end();
     } catch (err) {
         console.error('Kundli PDF generation error:', err);
