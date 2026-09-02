@@ -15,6 +15,9 @@ export default function MuhuratReport() {
     useSEO({
         title: t('आपकी शुभ मुहूर्त रिपोर्ट | Adhbhut Gyaan', 'Your Shubh Muhurat Report | Adhbhut Gyaan'),
         path: `/muhurat/report/${orderId}`,
+        noindex: true, // contains a real customer's name and personal booking details -
+        // this permanent link is meant to be shared privately (WhatsApp), not
+        // discovered via public search, so it must never be indexed.
     });
 
     useEffect(() => {

@@ -198,6 +198,24 @@ const routes = [
         description: 'इस वेबसाइट के उपयोग की शर्तें।',
         jsonLd: combineJsonLd(breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Terms of Service', path: '/terms' }])),
     },
+    {
+        path: '/muhurat',
+        title: 'शुभ मुहूर्त — विवाह, गृह प्रवेश, नामकरण, व्यापार | Adhbhut Gyaan',
+        description: 'अपने जीवन के महत्वपूर्ण अवसर हेतु शास्त्रोक्त शुभ मुहूर्त प्राप्त करें — पंचांग-आधारित सटीक गणना, विवाह, गृह प्रवेश, नामकरण एवं व्यापार आरंभ हेतु।',
+        jsonLd: combineJsonLd(
+            breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Muhurat', path: '/muhurat' }]),
+            faqJsonLd([
+                { q: 'शुभ मुहूर्त कैसे निकाला जाता है?', a: 'तिथि, नक्षत्र, वार एवं शुभ योगों के शास्त्रोक्त संयोजन के आधार पर पंचांग-गणना द्वारा शुभ मुहूर्त निकाला जाता है।' },
+                { q: 'क्या मुहूर्त रिपोर्ट WhatsApp पर मिल सकती है?', a: 'हां, फॉर्म भरने के बाद आपकी रिपोर्ट का एक स्थायी लिंक बनता है जिसे आप WhatsApp पर साझा या सहेज सकते हैं।' },
+            ])
+        ),
+    },
+    {
+        path: '/vastu-score',
+        title: 'AI वास्तु स्कोर — जल्द आ रहा है | Adhbhut Gyaan',
+        description: 'अपने घर के 2D फ्लोर प्लान से 16-ज़ोन वास्तु स्कोर एवं उपाय प्राप्त करें — जल्द उपलब्ध। मुख्य द्वार की दिशा चुनें और तुरंत वास्तु विश्लेषण पाएं।',
+        jsonLd: combineJsonLd(breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Vastu Score', path: '/vastu-score' }])),
+    },
 ];
 
 // ---- Blog posts (one route per post, from blog.json) ----
@@ -281,5 +299,24 @@ for (const service of servicesData) {
 for (const route of routes) {
     renderPage(route);
 }
+
+// ---- sitemap.xml, auto-generated from the SAME `routes` array above ----
+// Previously a hand-maintained static file in public/ - real gap found:
+// 5 already-shipped pages (/muhurat, /vastu-score, and 3 new service pages)
+// were completely missing from it, since nothing enforced sitemap.xml
+// staying in sync with actual routes. Deriving it from `routes` here makes
+// that drift structurally impossible going forward - any route added to
+// this file is automatically in the sitemap too.
+const today = new Date().toISOString().slice(0, 10);
+const PRIORITY_OVERRIDES = { '/': '1.0', '/services': '0.9', '/booking': '0.9', '/free-kundli': '0.9' };
+const sitemapUrls = routes.map(r => {
+    const priority = PRIORITY_OVERRIDES[r.path] || (r.path.startsWith('/services/') ? '0.8' : r.path.startsWith('/blog/') ? '0.6' : '0.7');
+    const changefreq = r.path === '/' || r.path === '/panchang' || r.path === '/horoscope' ? 'daily' : r.path.startsWith('/blog/') ? 'monthly' : 'weekly';
+    return `  <url>\n    <loc>${SITE_URL}${r.path}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
+}).join('\n');
+const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapUrls}\n</urlset>\n`;
+writeFileSync(join(ROOT, 'public', 'sitemap.xml'), sitemapXml);
+writeFileSync(join(DIST, 'sitemap.xml'), sitemapXml);
+console.log(`[seo-pages] sitemap.xml regenerated with ${routes.length} URLs.`);
 
 console.log(`[seo-pages] done - generated ${routes.length} static pages.`);
