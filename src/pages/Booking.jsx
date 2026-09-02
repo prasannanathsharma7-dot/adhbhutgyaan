@@ -6,7 +6,7 @@ import { gallery, videoClips } from '../data/media';
 import useSEO from '../hooks/useSEO';
 import { breadcrumbJsonLd, combineJsonLd } from '../utils/seo';
 import BirthDetailsInput from '../components/BirthDetailsInput';
-import { Smartphone, Landmark, Home as HomeIcon, Star, AlertTriangle, CheckCircle2, MessageCircle, Phone, Mail } from 'lucide-react';
+import { Smartphone, Landmark, Home as HomeIcon, Star, AlertTriangle, CheckCircle2, MessageCircle, Phone, Mail, FileText, CalendarClock, Video, Gift } from 'lucide-react';
 
 export default function Booking() {
     const [searchParams] = useSearchParams();
@@ -284,6 +284,37 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                                 loading="lazy"
                                 style={{ width: '90px', height: '90px', objectFit: 'cover', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-light)', flexShrink: 0 }}
                             />
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            <section className="section" style={{ paddingTop: '1rem', paddingBottom: '1rem' }}>
+                <div className="container" style={{ maxWidth: 900, margin: '0 auto' }}>
+                    <h2 className="section-title text-center" style={{ fontSize: '1.4rem', marginBottom: '0.4rem' }}>{t('बुकिंग के बाद क्या होता है?', 'What Happens After You Book?')}</h2>
+                    <p className="text-center" style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '1.75rem', maxWidth: 560, marginLeft: 'auto', marginRight: 'auto' }}>
+                        {t('एक पारदर्शी, चार-चरण प्रक्रिया — आरंभ से लेकर प्रसादम् प्राप्ति तक।', 'A transparent, 4-step process from submission to receiving your Prasadam.')}
+                    </p>
+                    <div className="consultation-process-steps">
+                        {[
+                            { n: 1, Icon: FileText, title: t('विवरण दर्ज करें', 'Submit Details'), desc: t('जन्म विवरण, गोत्र एवं संकल्प आवश्यकताएं साझा करें।', 'Share birth details, Gotra, and Sankalp requirements.') },
+                            { n: 2, Icon: CalendarClock, title: t('स्लॉट व पंडित आवंटन', 'Slot & Pandit Allocation'), desc: t('काशी के वैदिक विद्वानों द्वारा पुष्टि।', 'Confirmation by Kashi Vedic scholars.') },
+                            { n: 3, Icon: Video, title: t('लाइव अनुष्ठान / 1-on-1 कॉल', 'Live Ritual / 1-on-1 Call'), desc: t('WhatsApp अथवा लाइव वीडियो स्ट्रीम द्वारा HD प्रमाण।', 'HD video proof via WhatsApp or live video stream.') },
+                            { n: 4, Icon: Gift, title: t('प्रसादम् एवं डिजिटल आशीर्वाद', 'Prasadam & Digital Ashirwad'), desc: t('अनुष्ठान रिपोर्ट, परामर्श उपाय एवं प्रसादम् प्रेषण।', 'Ritual report, remedies, and Prasadam dispatch.') },
+                        ].map((s, i, arr) => (
+                            <div className="consultation-process-step" key={s.n}>
+                                <div className="consultation-process-step-inner">
+                                    <div className="consultation-process-icon">
+                                        <s.Icon size={20} />
+                                        <span className="consultation-process-num">{s.n}</span>
+                                    </div>
+                                    <div>
+                                        <h3 className="consultation-process-title">{s.title}</h3>
+                                        <p className="consultation-process-desc">{s.desc}</p>
+                                    </div>
+                                </div>
+                                {i < arr.length - 1 && <div className="consultation-process-connector" aria-hidden="true" />}
+                            </div>
                         ))}
                     </div>
                 </div>
