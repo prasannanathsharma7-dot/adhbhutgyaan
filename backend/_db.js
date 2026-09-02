@@ -82,21 +82,43 @@ function getClientIp(req) {
 
 // Simple IP + route rate limit backed by Mongo (works across serverless cold starts,
 // unlike an in-memory counter). Returns true if the request is allowed.
+let rateLimitIndexEnsured = false;
+
 async function checkRateLimit(db, req, route, { limit = 5, windowMs = 10 * 60 * 1000 } = {}) {
     const ip = getClientIp(req);
     const _id = `${route}:${ip}`;
     const now = Date.now();
     const col = db.collection('rate_limits');
 
+    // Self-cleaning: every rate-limit document gets a TTL expiry so this
+    // collection can't grow unboundedly as new IPs hit any rate-limited
+    // route over time. createIndex is idempotent (safe/cheap to call
+    // repeatedly with the same spec), but still worth avoiding on every
+    // single request - the in-memory flag persists for the life of this
+    // warm container/process, so it only actually runs once per cold start.
+    if (!rateLimitIndexEnsured) {
+        try {
+            await col.createIndex({ expiresAt: 1 }, { expireAfterSeconds: 0 });
+        } catch (e) {
+            console.error('rate_limits TTL index creation failed (continuing):', e.message);
+        }
+        rateLimitIndexEnsured = true;
+    }
+    // Generous safety margin over any realistic windowMs, so the document
+    // outlives its own rate-limit window (needed for the count to still be
+    // readable right up until it naturally expires) without lingering long
+    // after it's no longer useful.
+    const expiresAt = new Date(now + Math.max(windowMs * 2, 3600000));
+
     const doc = await col.findOne({ _id });
     if (!doc || now - doc.windowStart > windowMs) {
-        await col.updateOne({ _id }, { $set: { windowStart: now, count: 1 } }, { upsert: true });
+        await col.updateOne({ _id }, { $set: { windowStart: now, count: 1, expiresAt } }, { upsert: true });
         return true;
     }
     if (doc.count >= limit) {
         return false;
     }
-    await col.updateOne({ _id }, { $inc: { count: 1 } });
+    await col.updateOne({ _id }, { $inc: { count: 1 }, $set: { expiresAt } });
     return true;
 }
 
