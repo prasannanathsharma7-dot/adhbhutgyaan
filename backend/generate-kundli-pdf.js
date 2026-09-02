@@ -29,6 +29,13 @@ const MARGIN = 36;
 
 const PLANET_LABEL = { sun: 'Sun (Surya)', moon: 'Moon (Chandra)', mars: 'Mars (Mangal)', mercury: 'Mercury (Budh)', jupiter: 'Jupiter (Guru)', venus: 'Venus (Shukra)', saturn: 'Saturn (Shani)', rahu: 'Rahu', ketu: 'Ketu' };
 const PLANET_LABEL_HI = { sun: 'सूर्य', moon: 'चन्द्र', mars: 'मंगल', mercury: 'बुध', jupiter: 'गुरु', venus: 'शुक्र', saturn: 'शनि', rahu: 'राहु', ketu: 'केतु' };
+// Compact 2-3 letter forms specifically for narrow-column grids (Panchadha
+// Maitri) where the full "Mercury (Budh)"-style label would overflow the
+// column and overlap adjacent rows - this exact overflow was a real bug,
+// caught by rendering the English-mode PDF and visually inspecting it, not
+// just trusting the same label set used elsewhere would still fit.
+const PLANET_LABEL_SHORT = { sun: 'Su', moon: 'Mo', mars: 'Ma', mercury: 'Me', jupiter: 'Ju', venus: 'Ve', saturn: 'Sa', rahu: 'Ra', ketu: 'Ke' };
+const PLANET_LABEL_SHORT_HI = { sun: 'सू०', moon: 'चं०', mars: 'मं०', mercury: 'बु०', jupiter: 'गु०', venus: 'शु०', saturn: 'श०', rahu: 'रा०', ketu: 'के०' };
 const PLANET_ORDER = ['sun', 'moon', 'mars', 'mercury', 'jupiter', 'venus', 'saturn', 'rahu', 'ketu'];
 
 function drawPageBorder(doc) {
@@ -189,6 +196,7 @@ module.exports = async (req, res) => {
         const R = computeFullKundliReport(dob, tob || '06:30', safePob, latNum, lngNum, tzNum);
         const T = (hi, en) => (lang === 'hi' ? hi : en);
         const PL = lang === 'hi' ? PLANET_LABEL_HI : PLANET_LABEL;
+        const PL_SHORT = lang === 'hi' ? PLANET_LABEL_SHORT_HI : PLANET_LABEL_SHORT;
 
         const doc = new PDFDocument({ size: 'A4', autoFirstPage: false, info: { Title: `${safeName} - Vedic Kundli - Adhbhut Gyaan` } });
         doc.registerFont('Devanagari', FONT_REGULAR);
@@ -311,11 +319,11 @@ module.exports = async (req, res) => {
         const cellW = 58;
         doc.font(FONT_BOLD).fontSize(7.5).fillColor(NAVY);
         doc.text('', fx, y, { width: 50 });
-        maitriKeys.forEach((k, i) => doc.text(PL[k], fx + 50 + i * cellW, y, { width: cellW, align: 'center' }));
+        maitriKeys.forEach((k, i) => doc.text(PL_SHORT[k], fx + 50 + i * cellW, y, { width: cellW, align: 'center' }));
         y += 16;
         doc.font(FONT_REGULAR).fontSize(7.2);
         maitriKeys.forEach(from => {
-            doc.font(FONT_BOLD).fillColor(NAVY).text(PL[from], fx, y, { width: 50 });
+            doc.font(FONT_BOLD).fillColor(NAVY).text(PL_SHORT[from], fx, y, { width: 50 });
             maitriKeys.forEach((to, i) => {
                 if (from === to) { doc.font(FONT_REGULAR).fillColor('#ccc').text('—', fx + 50 + i * cellW, y, { width: cellW, align: 'center' }); return; }
                 const tier = R.panchadhaMaitri[from][to];
