@@ -72,6 +72,24 @@ function sectionTitle(doc, text, y) {
     return y + 26;
 }
 
+const MAX_CONTENT_Y = PAGE_H - MARGIN - 50; // leave room for the bottom border
+
+/**
+ * Ensures there's room for the next row before drawing it - if not, starts
+ * a fresh page (redrawing the branded header/border and, optionally, a
+ * continued-section title) and returns the new y. Needed for any table
+ * whose row count isn't bounded to what's known to fit one page (e.g. the
+ * Sade Sati timeline, whose length varies per person - up to several dozen
+ * rows when Saturn's retrograde motion produces multiple re-entries into
+ * the same phase).
+ */
+function ensureRoom(doc, y, rowHeight, lang, pageLabel, continuedTitle) {
+    if (y + rowHeight <= MAX_CONTENT_Y) return y;
+    let ny = startPage(doc, lang, pageLabel);
+    if (continuedTitle) ny = sectionTitle(doc, continuedTitle, ny);
+    return ny;
+}
+
 function kvRow(doc, label, value, x, y, labelWidth = 150) {
     const valueWidth = PAGE_W - 2 * MARGIN - labelWidth - 40;
     doc.font(FONT_BOLD).fontSize(9.5).fillColor(NAVY).text(`${label}:`, x, y, { width: labelWidth });
@@ -485,6 +503,56 @@ module.exports = async (req, res) => {
         doc.font(FONT_BOLD).fontSize(12).fillColor(NAVY).text(T('ज्योतिषाचार्य पं. डॉ. उमंग नाथ शर्मा', 'Astrologer: Dr. Umang Nath Sharma'), fx - 24, y);
         y += 16;
         doc.font(FONT_REGULAR).fontSize(8.5).fillColor('#666').text('Adhbhut Gyaan · Nati Imli Road, Ishwargangi, Varanasi · +91 92781 48269', fx - 24, y);
+
+        // ============ SUPPLEMENT: SHANI SADE SATI / DHAIYA 100-YEAR TIMELINE ============
+        // Appended after the core 24 pages (rather than renumbered into the
+        // 1-24 sequence) so every existing page label stays correct.
+        y = startPage(doc, lang, T('अतिरिक्त', 'Supplement'));
+        y = sectionTitle(doc, T('शनि साढ़े साती एवं ढैया — १०० वर्षीय समयरेखा', 'Shani Sade Sati & Dhaiya — 100-Year Timeline'), y);
+        doc.font(FONT_REGULAR).fontSize(8.5).fillColor('#666').text(
+            T('साढ़े साती तब होती है जब शनि जन्म-चंद्र राशि से १२वें, १वें अथवा २वें भाव से गोचर करता है (उदय, शिखर, अस्त चरण)। शनि की वक्री गति के कारण एक ही चरण कई बार, कुछ माह के अंतराल पर, प्रकट हो सकता है — यह सामान्य एवं शास्त्रोक्त है।',
+              "Sade Sati occurs when Saturn transits the 12th, 1st, or 2nd sign from the natal Moon sign (Rising, Peak, Setting phases). Because Saturn moves retrograde for part of each year, the same phase can appear more than once, a few months apart - this is normal and scripturally expected, not an error."),
+            fx - 24, y, { width: PAGE_W - 2 * (fx - 24) }
+        );
+        y += 46;
+
+        const phaseLabelHi = { rising: 'उदय चरण', peak: 'शिखर चरण', setting: 'अस्त चरण' };
+        const phaseLabelEn = { rising: 'Rising', peak: 'Peak', setting: 'Setting' };
+        doc.font(FONT_BOLD).fontSize(9).fillColor(NAVY);
+        [T('चरण', 'Phase'), T('राशि', 'Sign'), T('प्रारंभ', 'Start'), T('समाप्ति', 'End')].forEach((h, i) => doc.text(h, fx + [0, 90, 250, 360][i], y, { width: [88, 155, 105, 130][i] }));
+        y += 16; doc.moveTo(fx, y).lineTo(PAGE_W - MARGIN - 40, y).lineWidth(0.5).stroke(GOLD); y += 8;
+        doc.font(FONT_REGULAR).fontSize(8.5);
+        R.sadeSati.sadeSatiPeriods.forEach(p => {
+            y = ensureRoom(doc, y, 16, lang, T('अतिरिक्त (जारी)', 'Supplement (contd.)'), T('शनि साढ़े साती (जारी)', 'Shani Sade Sati (contd.)'));
+            doc.fillColor(p.phase === 'peak' ? RED : '#333');
+            doc.text(T(phaseLabelHi[p.phase], phaseLabelEn[p.phase]), fx, y, { width: 100 });
+            doc.text(SIGN_NAMES[p.saturnSign - 1], fx + 90, y, { width: 155 });
+            doc.text(p.startDate.toISOString().slice(0, 10), fx + 250, y, { width: 105 });
+            doc.text(p.endDate.toISOString().slice(0, 10), fx + 360, y, { width: 130 });
+            y += 16;
+        });
+
+        y += 20;
+        y = ensureRoom(doc, y, 60, lang, T('अतिरिक्त (जारी)', 'Supplement (contd.)'));
+        y = sectionTitle(doc, T('शनि ढैया (कंटक शनि)', 'Shani Dhaiya (Kantak Shani)'), y);
+        doc.font(FONT_REGULAR).fontSize(8.5).fillColor('#666').text(
+            T('ढैया तब होती है जब शनि जन्म-चंद्र राशि से ४थे अथवा ८वें भाव से गोचर करता है — साढ़े साती से हल्का, परंतु फिर भी सचेत रहने योग्य प्रभाव।',
+              "Dhaiya occurs when Saturn transits the 4th or 8th sign from the natal Moon - a milder influence than Sade Sati, but still worth being mindful of."),
+            fx - 24, y, { width: PAGE_W - 2 * (fx - 24) }
+        );
+        y += 30;
+        doc.font(FONT_BOLD).fontSize(9).fillColor(NAVY);
+        [T('स्थिति', 'Type'), T('राशि', 'Sign'), T('प्रारंभ', 'Start'), T('समाप्ति', 'End')].forEach((h, i) => doc.text(h, fx + [0, 90, 250, 360][i], y, { width: [88, 155, 105, 130][i] }));
+        y += 16; doc.moveTo(fx, y).lineTo(PAGE_W - MARGIN - 40, y).lineWidth(0.5).stroke(GOLD); y += 8;
+        doc.font(FONT_REGULAR).fontSize(8.5).fillColor('#333');
+        R.sadeSati.dhaiyaPeriods.forEach(p => {
+            y = ensureRoom(doc, y, 16, lang, T('अतिरिक्त (जारी)', 'Supplement (contd.)'), T('शनि ढैया (जारी)', 'Shani Dhaiya (contd.)'));
+            doc.text(T(`${p.type} भाव`, `${p.type} house`), fx, y, { width: 100 });
+            doc.text(SIGN_NAMES[p.saturnSign - 1], fx + 90, y, { width: 155 });
+            doc.text(p.startDate.toISOString().slice(0, 10), fx + 250, y, { width: 105 });
+            doc.text(p.endDate.toISOString().slice(0, 10), fx + 360, y, { width: 130 });
+            y += 16;
+        });
 
         doc.end();
     } catch (err) {
