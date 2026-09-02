@@ -66,9 +66,16 @@ function sectionTitle(doc, text, y) {
 }
 
 function kvRow(doc, label, value, x, y, labelWidth = 150) {
+    const valueWidth = PAGE_W - 2 * MARGIN - labelWidth - 40;
     doc.font(FONT_BOLD).fontSize(9.5).fillColor(NAVY).text(`${label}:`, x, y, { width: labelWidth });
-    doc.font(FONT_REGULAR).fontSize(9.5).fillColor('#333').text(String(value), x + labelWidth, y, { width: PAGE_W - 2 * MARGIN - labelWidth - 40 });
-    return y + 18;
+    doc.font(FONT_REGULAR).fontSize(9.5).fillColor('#333').text(String(value), x + labelWidth, y, { width: valueWidth });
+    // The label and value can wrap to different numbers of lines - measure
+    // both and advance by whichever is taller, so a long value never
+    // overlaps the next row (this previously assumed a fixed single-line
+    // height, which broke visibly once a value wrapped to 2+ lines).
+    const valueHeight = doc.heightOfString(String(value), { width: valueWidth, fontSize: 9.5 });
+    const labelHeight = doc.heightOfString(`${label}:`, { width: labelWidth, fontSize: 9.5 });
+    return y + Math.max(valueHeight, labelHeight, 14) + 4;
 }
 
 /** North Indian diamond chart with a plug-in per-house data source. */
@@ -128,6 +135,40 @@ module.exports = async (req, res) => {
         const { name = 'Devotee', fatherName = '', dob, tob, pob, lat = 25.3176, lng = 82.9739, tzOffset = 5.5, lang = 'hi' } = params || {};
         if (!dob) return res.status(400).json({ ok: false, error: 'dob is required (YYYY-MM-DD)' });
 
+        // Input validation - this is now a public, unauthenticated endpoint,
+        // so malformed input must fail cleanly (400) rather than crash deep
+        // inside the calculation pipeline (500 with a confusing stack-trace
+        // message), and a genuinely invalid calendar date (e.g. 30 Feb, which
+        // JS silently rolls forward into March) must be REJECTED rather than
+        // silently producing a wrong chart for the wrong date.
+        const dobMatch = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dob);
+        if (!dobMatch) {
+            return res.status(400).json({ ok: false, error: 'dob must be in YYYY-MM-DD format' });
+        }
+        const checkDate = new Date(Date.UTC(Number(dobMatch[1]), Number(dobMatch[2]) - 1, Number(dobMatch[3])));
+        const isRealCalendarDate = checkDate.getUTCFullYear() === Number(dobMatch[1])
+            && checkDate.getUTCMonth() === Number(dobMatch[2]) - 1
+            && checkDate.getUTCDate() === Number(dobMatch[3]);
+        if (!isRealCalendarDate) {
+            return res.status(400).json({ ok: false, error: 'dob is not a real calendar date' });
+        }
+        if (tob && !/^\d{1,2}:\d{1,2}/.test(String(tob))) {
+            return res.status(400).json({ ok: false, error: 'tob must start with HH:MM' });
+        }
+        const latNum = Number(lat), lngNum = Number(lng), tzNum = Number(tzOffset);
+        if (!Number.isFinite(latNum) || latNum < -90 || latNum > 90) {
+            return res.status(400).json({ ok: false, error: 'lat must be a number between -90 and 90' });
+        }
+        if (!Number.isFinite(lngNum) || lngNum < -180 || lngNum > 180) {
+            return res.status(400).json({ ok: false, error: 'lng must be a number between -180 and 180' });
+        }
+        if (!Number.isFinite(tzNum) || tzNum < -12 || tzNum > 14) {
+            return res.status(400).json({ ok: false, error: 'tzOffset must be a number between -12 and 14' });
+        }
+        const safeName = String(name || 'Devotee').trim().slice(0, 70) || 'Devotee';
+        const safeFatherName = String(fatherName || '').trim().slice(0, 70);
+        const safePob = String(pob || '').trim().slice(0, 100);
+
         // Now that the full PDF is free/public (no payment gate), rate-limit
         // per IP so it can't be spammed into a CPU-load or MongoDB-load
         // problem. 10 reports per 10 minutes is generous for a real visitor
@@ -145,15 +186,15 @@ module.exports = async (req, res) => {
             console.error('Rate limit check failed (continuing):', rateLimitErr.message);
         }
 
-        const R = computeFullKundliReport(dob, tob || '06:30', pob || '', Number(lat), Number(lng), Number(tzOffset));
+        const R = computeFullKundliReport(dob, tob || '06:30', safePob, latNum, lngNum, tzNum);
         const T = (hi, en) => (lang === 'hi' ? hi : en);
         const PL = lang === 'hi' ? PLANET_LABEL_HI : PLANET_LABEL;
 
-        const doc = new PDFDocument({ size: 'A4', autoFirstPage: false, info: { Title: `${name} - Vedic Kundli - Adhbhut Gyaan` } });
+        const doc = new PDFDocument({ size: 'A4', autoFirstPage: false, info: { Title: `${safeName} - Vedic Kundli - Adhbhut Gyaan` } });
         doc.registerFont('Devanagari', FONT_REGULAR);
         doc.registerFont('Devanagari-Bold', FONT_BOLD);
         res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', `attachment; filename="Kundli-${name.replace(/[^a-zA-Z0-9]/g, '_')}-24page.pdf"`);
+        res.setHeader('Content-Disposition', `attachment; filename="Kundli-${safeName.replace(/[^a-zA-Z0-9]/g, '_')}-24page.pdf"`);
         doc.pipe(res);
 
         // ============ PAGE 1: COVER ============
@@ -164,12 +205,12 @@ module.exports = async (req, res) => {
         doc.font(FONT_BOLD).fontSize(15).fillColor(NAVY).text(T('जन्म पत्रिका', 'Vedic Birth Chart (Kundli)'), 0, y, { align: 'center', width: PAGE_W });
         y += 34;
         const fx = MARGIN + 60;
-        y = kvRow(doc, T('नाम', 'Name'), name, fx, y);
-        if (fatherName) y = kvRow(doc, T('पिता का नाम', "Father's Name"), fatherName, fx, y);
+        y = kvRow(doc, T('नाम', 'Name'), safeName, fx, y);
+        if (safeFatherName) y = kvRow(doc, T('पिता का नाम', "Father's Name"), safeFatherName, fx, y);
         y = kvRow(doc, T('जन्म तिथि', 'Date of Birth'), dob, fx, y);
         y = kvRow(doc, T('जन्म समय', 'Time of Birth'), tob || 'N/A', fx, y);
-        y = kvRow(doc, T('जन्म स्थान', 'Place of Birth'), pob || 'N/A', fx, y);
-        y = kvRow(doc, T('अक्षांश / रेखांश', 'Latitude / Longitude'), `${lat}, ${lng}`, fx, y);
+        y = kvRow(doc, T('जन्म स्थान', 'Place of Birth'), safePob || 'N/A', fx, y);
+        y = kvRow(doc, T('अक्षांश / रेखांश', 'Latitude / Longitude'), `${latNum}, ${lngNum}`, fx, y);
         y = kvRow(doc, T('सूर्योदय', 'Sunrise'), R.panchang.timings.sunrise, fx, y);
         y = kvRow(doc, T('अयनांश (लाहिड़ी)', 'Ayanamsa (Lahiri)'), R.ayanamsa, fx, y);
         y = kvRow(doc, T('जन्मनाम / राशि', 'Janma Naam / Rashi'), `${R.nakshatra.name} · ${R.moon.rashi}`, fx, y);
