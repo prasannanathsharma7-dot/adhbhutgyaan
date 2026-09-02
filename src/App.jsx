@@ -15,6 +15,8 @@ const ChatWidget = lazy(() => import('./components/ChatWidget'));
 
 // Route-level code splitting
 const Home = lazy(() => import('./pages/Home'));
+const Muhurat = lazy(() => import('./pages/Muhurat'));
+const MuhuratReport = lazy(() => import('./pages/MuhuratReport'));
 const Services = lazy(() => import('./pages/Services'));
 const ServiceDetail = lazy(() => import('./pages/ServiceDetail'));
 const Booking = lazy(() => import('./pages/Booking'));
@@ -68,6 +70,8 @@ function App() {
                         <Route path="/panchang" element={<Panchang />} />
                         <Route path="/horoscope" element={<Horoscope />} />
                         <Route path="/about" element={<About />} />
+                        <Route path="/muhurat" element={<Muhurat />} />
+                        <Route path="/muhurat/report/:orderId" element={<MuhuratReport />} />
                         <Route path="/pt-umang-nath-sharma" element={<PanditProfile />} />
                         <Route path="/contact" element={<Contact />} />
                         <Route path="/blog" element={<Blog />} />
