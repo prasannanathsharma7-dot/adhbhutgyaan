@@ -1,5 +1,5 @@
 const { ObjectId } = require('mongodb');
-const { getDb, withCors, capStr, escapeHtml, checkRateLimit } = require('./_db');
+const { getDb, withCors, capStr, escapeHtml, checkRateLimit, isValidIndianPhone, isValidName } = require('./_db');
 const { notifyAdmin } = require('./_notify');
 
 function isAdmin(req) {
@@ -35,13 +35,22 @@ module.exports = async (req, res) => {
                 res.status(400).json({ ok: false, error: 'name and text are required' });
                 return;
             }
+            if (!isValidName(name)) {
+                res.status(400).json({ ok: false, error: 'name must be at least 3 alphabetic characters' });
+                return;
+            }
+            const reviewPhone = capStr(body.phone, 30);
+            if (reviewPhone && !isValidIndianPhone(reviewPhone)) {
+                res.status(400).json({ ok: false, error: 'phone must be a valid 10-digit Indian mobile number' });
+                return;
+            }
             if (!Number.isInteger(rating) || rating < 1 || rating > 5) {
                 rating = 5;
             }
 
             const doc = {
                 name,
-                phone: capStr(body.phone, 30),
+                phone: reviewPhone,
                 text,
                 rating,
                 serviceName: capStr(body.serviceName, 200),

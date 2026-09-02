@@ -58,6 +58,24 @@ function capStr(value, maxLen) {
     return (value || '').toString().trim().slice(0, maxLen);
 }
 
+// Shared server-side validation - the actual security boundary, since
+// frontend validation can always be bypassed by calling the API directly.
+// Fixes a real bug: multiple lead-capture endpoints (bookings.js,
+// contact.js, muhurat-booking.js) only checked `!name || !phone` (a
+// presence check), which let a 19-digit garbage string like
+// "8454070784548989494" or a name like "gsff"/"vsndbnz" straight into
+// the database even after the equivalent frontend forms were fixed to
+// reject them - anything hitting the API directly, or any request sent
+// before the frontend fix was deployed, still got through.
+function isValidIndianPhone(phone) {
+    const digits = (phone || '').toString().replace(/\D/g, '');
+    return /^[6-9]\d{9}$/.test(digits);
+}
+function isValidName(name) {
+    const trimmed = (name || '').toString().trim();
+    return trimmed.length >= 3 && /^[A-Za-z\u0900-\u097F\s.]+$/.test(trimmed);
+}
+
 // Escapes text before it's interpolated into an HTML email body. Without this,
 // a form submission containing e.g. <a href="...">click here</a> in the name
 // or message field would render as a real, clickable link in the notification
@@ -122,4 +140,4 @@ async function checkRateLimit(db, req, route, { limit = 5, windowMs = 10 * 60 * 
     return true;
 }
 
-module.exports = { getDb, withCors, capStr, escapeHtml, checkRateLimit, getClientIp };
+module.exports = { getDb, withCors, capStr, escapeHtml, checkRateLimit, getClientIp, isValidIndianPhone, isValidName };

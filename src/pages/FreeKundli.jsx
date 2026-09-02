@@ -43,10 +43,14 @@ export default function FreeKundli() {
 
     const validate = () => {
         const next = {};
-        if (!form.name.trim()) next.name = t('कृपया अपना नाम लिखें', 'Please enter your name');
+        const nameTrimmed = form.name.trim();
+        if (!nameTrimmed) next.name = t('कृपया अपना नाम लिखें', 'Please enter your name');
+        else if (nameTrimmed.length < 3 || !/^[A-Za-z\u0900-\u097F\s.]+$/.test(nameTrimmed)) next.name = t('कृपया सही नाम लिखें (कम से कम 3 अक्षर, केवल अक्षर)', 'Please enter a valid name (at least 3 letters, alphabetic only)');
         if (!form.dob.trim()) next.dob = t('कृपया मान्य जन्म तिथि दर्ज करें (दिन, माह, वर्ष)', 'Please enter your valid date of birth (Day, Month, Year)');
         if (!form.pob.trim()) next.pob = t('कृपया जन्म स्थान लिखें', 'Please enter your place of birth');
-        if (!form.phone.trim()) next.phone = t('कृपया मोबाइल नंबर लिखें', 'Please enter your phone number');
+        const phoneDigits = form.phone.replace(/\D/g, '');
+        if (!phoneDigits) next.phone = t('कृपया मोबाइल नंबर लिखें', 'Please enter your phone number');
+        else if (!/^[6-9]\d{9}$/.test(phoneDigits)) next.phone = t('कृपया सही 10-अंकों का भारतीय मोबाइल नंबर लिखें', 'Please enter a valid 10-digit Indian mobile number');
         setErrors(next);
         if (Object.keys(next).length > 0) {
             const firstKey = `kundli-${Object.keys(next)[0]}`;
@@ -231,7 +235,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                         autoComplete="name"
                                         placeholder={t('जैसे: राहुल शर्मा', 'e.g. Rahul Sharma')}
                                         value={form.name}
-                                        onChange={e => { setForm({ ...form, name: e.target.value }); setErrors({ ...errors, name: undefined }); }}
+                                        onChange={e => { const filtered = e.target.value.replace(/[^A-Za-z\u0900-\u097F\s.]/g, ''); setForm({ ...form, name: filtered }); setErrors({ ...errors, name: undefined }); }}
                                     />
                                     {errors.name && <p className="form-error" style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}><AlertTriangle size={13} />{errors.name}</p>}
                                 </div>
@@ -277,9 +281,10 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                         inputMode="tel"
                                         autoComplete="tel"
                                         className={`form-input ${errors.phone ? 'has-error' : ''}`}
-                                        placeholder="+91 92781 48269"
+                                        placeholder="9876543210"
                                         value={form.phone}
-                                        onChange={e => { setForm({ ...form, phone: e.target.value }); setErrors({ ...errors, phone: undefined }); }}
+                                        maxLength={10}
+                                        onChange={e => { const digitsOnly = e.target.value.replace(/\D/g, '').slice(0, 10); setForm({ ...form, phone: digitsOnly }); setErrors({ ...errors, phone: undefined }); }}
                                     />
                                     {errors.phone && <p className="form-error" style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}><AlertTriangle size={13} />{errors.phone}</p>}
                                 </div>

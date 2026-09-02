@@ -19,6 +19,7 @@ export default function Muhurat() {
     const [form, setForm] = useState({ name: '', phone: '', monthsAhead: 3 });
     const [status, setStatus] = useState('idle'); // idle | loading | error
     const [error, setError] = useState('');
+    const [fieldErrors, setFieldErrors] = useState({});
 
     useSEO({
         title: t('शुभ मुहूर्त — विवाह, गृह प्रवेश, नामकरण, व्यापार | Adhbhut Gyaan', 'Shubh Muhurat — Marriage, Housewarming, Naming, Business | Adhbhut Gyaan'),
@@ -27,9 +28,33 @@ export default function Muhurat() {
         jsonLd: combineJsonLd(breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Muhurat', path: '/muhurat' }])),
     });
 
+    const isFormValid = () => {
+        const nameTrimmed = form.name.trim();
+        const nameOk = nameTrimmed.length >= 3 && /^[A-Za-z\u0900-\u097F\s.]+$/.test(nameTrimmed);
+        const phoneOk = /^[6-9]\d{9}$/.test(form.phone.replace(/\D/g, ''));
+        return Boolean(category) && nameOk && phoneOk;
+    };
+
+    const validateField = (field) => {
+        const next = { ...fieldErrors };
+        if (field === 'name') {
+            const nameTrimmed = form.name.trim();
+            if (!nameTrimmed) next.name = t('कृपया अपना नाम लिखें', 'Please enter your name');
+            else if (nameTrimmed.length < 3 || !/^[A-Za-z\u0900-\u097F\s.]+$/.test(nameTrimmed)) next.name = t('कृपया सही नाम लिखें (कम से कम 3 अक्षर, केवल अक्षर)', 'Please enter a valid name (at least 3 letters, alphabetic only)');
+            else next.name = undefined;
+        }
+        if (field === 'phone') {
+            const phoneDigits = form.phone.replace(/\D/g, '');
+            if (!phoneDigits) next.phone = t('कृपया मोबाइल नंबर लिखें', 'Please enter your phone number');
+            else if (!/^[6-9]\d{9}$/.test(phoneDigits)) next.phone = t('कृपया सही 10-अंकों का भारतीय मोबाइल नंबर लिखें', 'Please enter a valid 10-digit Indian mobile number');
+            else next.phone = undefined;
+        }
+        setFieldErrors(next);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!category || !form.name.trim() || !form.phone.trim()) return;
+        if (!isFormValid()) return;
         setStatus('loading');
         setError('');
         try {
@@ -89,13 +114,19 @@ export default function Muhurat() {
                             <h3 style={{ marginBottom: '1.25rem' }}>{t('2. अपनी जानकारी दें', '2. Your Details')}</h3>
                             <div style={{ marginBottom: '1rem' }}>
                                 <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.4rem', fontSize: '0.9rem' }}>{t('नाम', 'Name')}</label>
-                                <input type="text" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} required
-                                    style={{ width: '100%', padding: '0.7rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-light)' }} />
+                                <input type="text" value={form.name}
+                                    onChange={e => { const filtered = e.target.value.replace(/[^A-Za-z\u0900-\u097F\s.]/g, ''); setForm(f => ({ ...f, name: filtered })); setFieldErrors(fe => ({ ...fe, name: undefined })); }}
+                                    onBlur={() => validateField('name')} required
+                                    style={{ width: '100%', padding: '0.7rem 1rem', borderRadius: 'var(--radius-md)', border: fieldErrors.name ? '1px solid #dc2626' : '1px solid var(--border-light)' }} />
+                                {fieldErrors.name && <p style={{ color: '#dc2626', fontSize: '0.8rem', marginTop: '0.3rem' }}>{fieldErrors.name}</p>}
                             </div>
                             <div style={{ marginBottom: '1rem' }}>
                                 <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.4rem', fontSize: '0.9rem' }}>{t('फ़ोन नंबर', 'Phone Number')}</label>
-                                <input type="tel" value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} required placeholder="+91 92781 48269"
-                                    style={{ width: '100%', padding: '0.7rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-light)' }} />
+                                <input type="tel" value={form.phone} maxLength={10} placeholder="9876543210"
+                                    onChange={e => { const digitsOnly = e.target.value.replace(/\D/g, '').slice(0, 10); setForm(f => ({ ...f, phone: digitsOnly })); setFieldErrors(fe => ({ ...fe, phone: undefined })); }}
+                                    onBlur={() => validateField('phone')} required
+                                    style={{ width: '100%', padding: '0.7rem 1rem', borderRadius: 'var(--radius-md)', border: fieldErrors.phone ? '1px solid #dc2626' : '1px solid var(--border-light)' }} />
+                                {fieldErrors.phone && <p style={{ color: '#dc2626', fontSize: '0.8rem', marginTop: '0.3rem' }}>{fieldErrors.phone}</p>}
                             </div>
                             <div style={{ marginBottom: '1.5rem' }}>
                                 <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.4rem', fontSize: '0.9rem' }}>{t('कितने महीनों में', 'Search within')}</label>
@@ -108,7 +139,7 @@ export default function Muhurat() {
                                 </select>
                             </div>
                             {error && <p style={{ color: '#b91c1c', fontSize: '0.85rem', marginBottom: '1rem' }}>{error}</p>}
-                            <button type="submit" className="btn btn-primary" disabled={status === 'loading'} style={{ width: '100%', justifyContent: 'center' }}>
+                            <button type="submit" className="btn btn-primary" disabled={status === 'loading' || !isFormValid()} style={{ width: '100%', justifyContent: 'center', opacity: (status === 'loading' || !isFormValid()) ? 0.6 : 1 }}>
                                 {status === 'loading' ? <Loader2 size={16} className="spin" style={{ marginRight: '0.4rem' }} /> : null}
                                 {status === 'loading' ? t('गणना हो रही है...', 'Calculating...') : t('शुभ मुहूर्त प्राप्त करें', 'Get Shubh Muhurat')}
                             </button>

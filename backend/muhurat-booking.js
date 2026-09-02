@@ -11,7 +11,7 @@
 // gateway credentials exist in this codebase, and none are invented here.
 
 const { ObjectId } = require('mongodb');
-const { getDb, withCors, capStr, checkRateLimit } = require('./_db');
+const { getDb, withCors, capStr, checkRateLimit, isValidIndianPhone, isValidName } = require('./_db');
 const { findMuhurat, CATEGORY_RULES } = require('./utils/muhuratEngine');
 
 function isAdmin(req) {
@@ -37,6 +37,12 @@ module.exports = async (req, res) => {
             }
             if (!name || !phone) {
                 return res.status(400).json({ ok: false, error: 'name and phone are required' });
+            }
+            if (!isValidIndianPhone(phone)) {
+                return res.status(400).json({ ok: false, error: 'phone must be a valid 10-digit Indian mobile number' });
+            }
+            if (!isValidName(name)) {
+                return res.status(400).json({ ok: false, error: 'name must be at least 3 alphabetic characters' });
             }
 
             const safeMonthsAhead = Math.min(Math.max(Number(monthsAhead) || 3, 1), 12);

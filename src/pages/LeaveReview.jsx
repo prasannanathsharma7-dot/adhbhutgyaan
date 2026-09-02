@@ -18,8 +18,14 @@ export default function LeaveReview() {
 
     const validate = () => {
         const next = {};
-        if (!form.name.trim()) {
+        const nameTrimmed = form.name.trim();
+        if (!nameTrimmed) {
             next.name = t('कृपया अपना नाम लिखें', 'Please enter your name');
+        } else if (nameTrimmed.length < 3 || !/^[A-Za-z\u0900-\u097F\s.]+$/.test(nameTrimmed)) {
+            next.name = t('कृपया सही नाम लिखें (कम से कम 3 अक्षर, केवल अक्षर)', 'Please enter a valid name (at least 3 letters, alphabetic only)');
+        }
+        if (form.phone.trim() && !/^[6-9]\d{9}$/.test(form.phone.replace(/\D/g, ''))) {
+            next.phone = t('कृपया सही 10-अंकों का मोबाइल नंबर लिखें', 'Please enter a valid 10-digit mobile number');
         }
         if (!form.text.trim() || form.text.trim().length < 10) {
             next.text = t('कृपया कम से कम 10 अक्षरों की समीक्षा लिखें', 'Please write a review of at least 10 characters');
@@ -101,7 +107,7 @@ export default function LeaveReview() {
                                         placeholder={t('अपना नाम लिखें', 'Enter your name')}
                                         value={form.name}
                                         aria-invalid={errors.name ? 'true' : 'false'}
-                                        onChange={e => { setForm({ ...form, name: e.target.value }); setErrors({ ...errors, name: undefined }); }}
+                                        onChange={e => { const filtered = e.target.value.replace(/[^A-Za-z\u0900-\u097F\s.]/g, ''); setForm({ ...form, name: filtered }); setErrors({ ...errors, name: undefined }); }}
                                     />
                                     {errors.name && <p className="form-error">⚠ {errors.name}</p>}
                                 </div>
@@ -121,12 +127,15 @@ export default function LeaveReview() {
                                     <label className="form-label" htmlFor="review-phone">{t('मोबाइल (केवल हमारे रिकॉर्ड हेतु, सार्वजनिक नहीं होगा)', 'Phone (for our records only, not shown publicly)')}</label>
                                     <input
                                         id="review-phone"
-                                        className="form-input"
+                                        className={`form-input ${errors.phone ? 'has-error' : ''}`}
                                         type="tel"
-                                        placeholder="+91 92781 48269"
+                                        placeholder="9876543210"
                                         value={form.phone}
-                                        onChange={e => setForm({ ...form, phone: e.target.value })}
+                                        maxLength={10}
+                                        aria-invalid={errors.phone ? 'true' : 'false'}
+                                        onChange={e => { const digitsOnly = e.target.value.replace(/\D/g, '').slice(0, 10); setForm({ ...form, phone: digitsOnly }); setErrors({ ...errors, phone: undefined }); }}
                                     />
+                                    {errors.phone && <p className="form-error">⚠ {errors.phone}</p>}
                                 </div>
 
                                 <div className="form-group">
