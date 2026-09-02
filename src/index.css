@@ -578,6 +578,7 @@ h3 {
     .nav-dropdown-menu {
         position: static;
         transform: none;
+        left: auto;
         opacity: 1;
         visibility: visible;
         display: none;
@@ -589,6 +590,11 @@ h3 {
     }
     .nav-dropdown-menu.open {
         display: flex;
+        transform: none;
+        left: auto;
+    }
+    .nav-dropdown-menu a {
+        white-space: normal;
     }
 }
 

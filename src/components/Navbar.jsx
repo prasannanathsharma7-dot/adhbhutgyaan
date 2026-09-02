@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
-import { Sunrise, Sparkles, Star } from 'lucide-react';
+import { Sunrise, Sparkles, Star, CalendarHeart, Compass } from 'lucide-react';
 
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
@@ -65,6 +65,8 @@ export default function Navbar() {
         { to: '/panchang', label: t('पंचांग', 'Panchang'), Icon: Sunrise },
         { to: '/free-kundli', label: t('फ्री कुंडली', 'Free Kundli'), Icon: Sparkles },
         { to: '/horoscope', label: t('राशिफल', 'Horoscope'), Icon: Star },
+        { to: '/muhurat', label: t('शुभ मुहूर्त', 'Shubh Muhurat'), Icon: CalendarHeart },
+        { to: '/vastu-score', label: t('वास्तु स्कोर', 'Vastu Score'), Icon: Compass, badge: t('जल्द', 'Soon') },
     ];
 
     const restLinks = [
@@ -118,6 +120,7 @@ export default function Navbar() {
                                     aria-current={location.pathname === link.to ? 'page' : undefined}
                                 >
                                     <span className="nav-dropdown-icon"><link.Icon size={15} /></span> {link.label}
+                                    {link.badge && <span style={{ marginLeft: '0.4rem', fontSize: '0.65rem', fontWeight: 700, color: 'var(--gold-700)', background: 'var(--gold-100)', padding: '0.1rem 0.4rem', borderRadius: '999px' }}>{link.badge}</span>}
                                 </Link>
                             ))}
                         </div>
