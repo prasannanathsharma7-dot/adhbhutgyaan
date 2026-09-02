@@ -23,11 +23,17 @@ export default function Contact() {
 
     const validate = () => {
         const next = {};
-        if (!form.name.trim()) {
+        const nameTrimmed = form.name.trim();
+        if (!nameTrimmed) {
             next.name = t('कृपया अपना नाम लिखें', 'Please enter your name');
+        } else if (nameTrimmed.length < 3 || !/^[A-Za-z\u0900-\u097F\s.]+$/.test(nameTrimmed)) {
+            next.name = t('कृपया सही नाम लिखें (कम से कम 3 अक्षर, केवल अक्षर)', 'Please enter a valid name (at least 3 letters, alphabetic only)');
         }
-        if (!form.phone.trim() || form.phone.replace(/\D/g, '').length < 10) {
-            next.phone = t('कृपया सही मोबाइल नंबर लिखें (कम से कम 10 अंक)', 'Please enter a valid phone number (at least 10 digits)');
+        const phoneDigits = form.phone.replace(/\D/g, '');
+        if (!phoneDigits) {
+            next.phone = t('कृपया मोबाइल नंबर लिखें', 'Please enter your phone number');
+        } else if (!/^[6-9]\d{9}$/.test(phoneDigits)) {
+            next.phone = t('कृपया सही 10-अंकों का भारतीय मोबाइल नंबर लिखें', 'Please enter a valid 10-digit Indian mobile number');
         }
         if (form.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
             next.email = t('कृपया सही ईमेल पता लिखें', 'Please enter a valid email address');
@@ -181,7 +187,7 @@ ${form.message}`;
                                             value={form.name}
                                             aria-invalid={errors.name ? 'true' : 'false'}
                                             autoComplete="name"
-                                            onChange={e => { setForm({ ...form, name: e.target.value }); setErrors({ ...errors, name: undefined }); }}
+                                            onChange={e => { const filtered = e.target.value.replace(/[^A-Za-z\u0900-\u097F\s.]/g, ''); setForm({ ...form, name: filtered }); setErrors({ ...errors, name: undefined }); }}
                                         />
                                         {errors.name && <p className="form-error" style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}><AlertTriangle size={13} />{errors.name}</p>}
                                     </div>
@@ -193,10 +199,11 @@ ${form.message}`;
                                             type="tel"
                                             inputMode="tel"
                                             autoComplete="tel"
-                                            placeholder="+91 92781 48269"
+                                            placeholder="9876543210"
                                             value={form.phone}
                                             aria-invalid={errors.phone ? 'true' : 'false'}
-                                            onChange={e => { setForm({ ...form, phone: e.target.value }); setErrors({ ...errors, phone: undefined }); }}
+                                            maxLength={10}
+                                            onChange={e => { const digitsOnly = e.target.value.replace(/\D/g, '').slice(0, 10); setForm({ ...form, phone: digitsOnly }); setErrors({ ...errors, phone: undefined }); }}
                                         />
                                         {errors.phone && <p className="form-error" style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}><AlertTriangle size={13} />{errors.phone}</p>}
                                     </div>

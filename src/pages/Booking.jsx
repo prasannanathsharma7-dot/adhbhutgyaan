@@ -92,13 +92,59 @@ export default function Booking() {
         }
     };
 
+    // Real-time validity check (drives the submit button's disabled state) -
+    // mirrors handleSubmit's rules exactly so the button only enables once
+    // every field would actually pass validation.
+    const isStep3Valid = () => {
+        const nameTrimmed = form.name.trim();
+        const nameOk = nameTrimmed.length >= 3 && /^[A-Za-z\u0900-\u097F\s.]+$/.test(nameTrimmed);
+        const phoneOk = /^[6-9]\d{9}$/.test(form.phone.replace(/\D/g, ''));
+        const addressOk = !form.address || form.address.trim().length === 0 || form.address.trim().length >= 5;
+        return nameOk && phoneOk && addressOk && Boolean(form.mode);
+    };
+
+    // Real-time field-level validation, shown on blur (so the user isn't
+    // nagged mid-keystroke) - this is what actually explains WHY the
+    // submit button below is disabled, since a disabled button never
+    // fires onClick and so handleSubmit's error-setting would otherwise
+    // never run for an untouched/invalid form.
+    const validateFieldOnBlur = (field) => {
+        const next = { ...errors };
+        if (field === 'name') {
+            const nameTrimmed = form.name.trim();
+            if (!nameTrimmed) next.name = t('कृपया अपना नाम लिखें', 'Please enter your name');
+            else if (nameTrimmed.length < 3 || !/^[A-Za-z\u0900-\u097F\s.]+$/.test(nameTrimmed)) next.name = t('कृपया सही नाम लिखें (कम से कम 3 अक्षर, केवल अक्षर)', 'Please enter a valid name (at least 3 letters, alphabetic only)');
+            else next.name = undefined;
+        }
+        if (field === 'phone') {
+            const phoneDigits = form.phone.replace(/\D/g, '');
+            if (!phoneDigits) next.phone = t('कृपया मोबाइल नंबर लिखें', 'Please enter your phone number');
+            else if (!/^[6-9]\d{9}$/.test(phoneDigits)) next.phone = t('कृपया सही 10-अंकों का भारतीय मोबाइल नंबर लिखें', 'Please enter a valid 10-digit Indian mobile number');
+            else next.phone = undefined;
+        }
+        if (field === 'address') {
+            if (form.address && form.address.trim().length > 0 && form.address.trim().length < 5) next.address = t('कृपया पूरा पता/शहर लिखें (कम से कम 5 अक्षर)', 'Please enter a complete address/city (at least 5 characters)');
+            else next.address = undefined;
+        }
+        setErrors(next);
+    };
+
     const handleSubmit = () => {
         const next = {};
-        if (!form.name.trim()) {
+        const nameTrimmed = form.name.trim();
+        if (!nameTrimmed) {
             next.name = t('कृपया अपना नाम लिखें', 'Please enter your name');
+        } else if (nameTrimmed.length < 3 || !/^[A-Za-z\u0900-\u097F\s.]+$/.test(nameTrimmed)) {
+            next.name = t('कृपया सही नाम लिखें (कम से कम 3 अक्षर, केवल अक्षर)', 'Please enter a valid name (at least 3 letters, alphabetic only)');
         }
-        if (!form.phone.trim() || form.phone.replace(/\D/g, '').length < 10) {
-            next.phone = t('कृपया सही मोबाइल नंबर लिखें (कम से कम 10 अंक)', 'Please enter a valid phone number (at least 10 digits)');
+        const phoneDigits = form.phone.replace(/\D/g, '');
+        if (!phoneDigits) {
+            next.phone = t('कृपया मोबाइल नंबर लिखें', 'Please enter your phone number');
+        } else if (!/^[6-9]\d{9}$/.test(phoneDigits)) {
+            next.phone = t('कृपया सही 10-अंकों का भारतीय मोबाइल नंबर लिखें', 'Please enter a valid 10-digit Indian mobile number');
+        }
+        if (form.address && form.address.trim().length > 0 && form.address.trim().length < 5) {
+            next.address = t('कृपया पूरा पता/शहर लिखें (कम से कम 5 अक्षर)', 'Please enter a complete address/city (at least 5 characters)');
         }
         if (!form.mode) {
             next.mode = t('कृपया पूजा का माध्यम चुनें', 'Please select how you want the pooja performed');
@@ -350,7 +396,12 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                                         value={form.name}
                                         aria-invalid={errors.name ? 'true' : 'false'}
                                         autoComplete="name"
-                                        onChange={e => { setForm({ ...form, name: e.target.value }); setErrors({ ...errors, name: undefined }); }}
+                                        onChange={e => {
+                                            const filtered = e.target.value.replace(/[^A-Za-z\u0900-\u097F\s.]/g, '');
+                                            setForm({ ...form, name: filtered });
+                                            setErrors({ ...errors, name: undefined });
+                                        }}
+                                        onBlur={() => validateFieldOnBlur('name')}
                                     />
                                     {errors.name && <p className="form-error" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}><AlertTriangle size={13} />{errors.name}</p>}
                                 </div>
@@ -362,10 +413,16 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                                         type="tel"
                                         inputMode="tel"
                                         autoComplete="tel"
-                                        placeholder="+91 92781 48269"
+                                        placeholder="9876543210"
                                         value={form.phone}
                                         aria-invalid={errors.phone ? 'true' : 'false'}
-                                        onChange={e => { setForm({ ...form, phone: e.target.value }); setErrors({ ...errors, phone: undefined }); }}
+                                        maxLength={10}
+                                        onChange={e => {
+                                            const digitsOnly = e.target.value.replace(/\D/g, '').slice(0, 10);
+                                            setForm({ ...form, phone: digitsOnly });
+                                            setErrors({ ...errors, phone: undefined });
+                                        }}
+                                        onBlur={() => validateFieldOnBlur('phone')}
                                     />
                                     {errors.phone && <p className="form-error" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}><AlertTriangle size={13} />{errors.phone}</p>}
                                 </div>
@@ -392,7 +449,8 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                                 </div>
                                 <div className="form-group">
                                     <label className="form-label">{t('पता / शहर / मंदिर का नाम', 'City / Address / Temple Name')}</label>
-                                    <input className="form-input" placeholder={t('शहर, पता या मंदिर का नाम लिखें', 'Enter city, address, or temple name')} value={form.address} onChange={e => setForm({ ...form, address: e.target.value })} />
+                                    <input className={`form-input ${errors.address ? 'has-error' : ''}`} placeholder={t('शहर, पता या मंदिर का नाम लिखें', 'Enter city, address, or temple name')} value={form.address} onChange={e => { setForm({ ...form, address: e.target.value }); setErrors({ ...errors, address: undefined }); }} onBlur={() => validateFieldOnBlur('address')} />
+                                    {errors.address && <p className="form-error" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}><AlertTriangle size={13} />{errors.address}</p>}
                                 </div>
                                 <div className="form-group">
                                     <label className="form-label">{t('विशेष निर्देश', 'Special Instructions')}</label>
@@ -401,7 +459,7 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                             </div>
                             <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginTop: '1.5rem', flexWrap: 'wrap' }}>
                                 <button className="btn btn-outline-dark btn-lg" onClick={() => goToStep(2)}>{t('← वापस', '← Back')}</button>
-                                <button className="btn btn-primary btn-lg" onClick={handleSubmit}>{t('समीक्षा करें →', 'Review →')}</button>
+                                <button className="btn btn-primary btn-lg" onClick={handleSubmit} disabled={!isStep3Valid()} style={!isStep3Valid() ? { opacity: 0.5, cursor: 'not-allowed' } : {}}>{t('समीक्षा करें →', 'Review →')}</button>
                             </div>
                         </div>
                     )}
