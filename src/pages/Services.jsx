@@ -246,7 +246,11 @@ export default function Services() {
                         {filteredServices.map(service => (
                             <div key={service.id} className="service-browse-card" style={{ display: 'flex', flexDirection: 'column' }}>
                                 <Link to={`/services/${service.id}`} style={{ display: 'flex', alignItems: 'center', gap: '1rem', flex: 1 }}>
-                                    <img src={`/images/${service.image}`} alt={service.nameEn} width="80" height="80" loading="lazy" className="service-browse-img" />
+                                    <picture>
+                                        <source type="image/avif" srcSet={`/images/${service.image.replace('.jpg', '.avif')}`} />
+                                        <source type="image/webp" srcSet={`/images/${service.image.replace('.jpg', '.webp')}`} />
+                                        <img src={`/images/${service.image}`} alt={service.nameEn} width="80" height="80" loading="lazy" className="service-browse-img" />
+                                    </picture>
                                     <div className="service-browse-body">
                                         <div className="service-browse-name">{lang === 'hi' ? service.name : service.nameEn}</div>
                                         {lang === 'hi' && <div className="service-browse-name-en">{service.nameEn}</div>}

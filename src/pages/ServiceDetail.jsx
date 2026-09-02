@@ -74,7 +74,11 @@ export default function ServiceDetail() {
                 <div className="container">
                     <div className="about-story" style={{ marginBottom: '2rem' }}>
                         <div className="about-image">
-                            <img src={`/images/${service.image}`} alt={service.nameEn} width="640" height="640" fetchPriority="high" />
+                            <picture>
+                                <source type="image/avif" srcSet={`/images/${service.image.replace('.jpg', '.avif')}`} />
+                                <source type="image/webp" srcSet={`/images/${service.image.replace('.jpg', '.webp')}`} />
+                                <img src={`/images/${service.image}`} alt={service.nameEn} width="640" height="640" fetchPriority="high" />
+                            </picture>
                         </div>
                         <div>
                             <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '1rem' }}>{description}</p>

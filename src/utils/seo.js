@@ -65,7 +65,7 @@ export function serviceJsonLd(service, lang) {
  */
 export function localBusinessJsonLd() {
     return {
-        '@type': ['LocalBusiness', 'HinduTemple'],
+        '@type': ['LocalBusiness', 'HinduTemple', 'ProfessionalService'],
         name: 'Adhbhut Gyaan - Pt. Umang Nath Sharma',
         image: `${SITE_URL}/images/logo.png`,
         '@id': `${SITE_URL}/#business`,
@@ -87,8 +87,8 @@ export function localBusinessJsonLd() {
         },
         geo: {
             '@type': 'GeoCoordinates',
-            latitude: 25.3176,
-            longitude: 82.9739,
+            latitude: 25.326913,
+            longitude: 83.007403,
         },
         openingHoursSpecification: {
             '@type': 'OpeningHoursSpecification',
