@@ -335,6 +335,52 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                             </div>
                         </div>
 
+                        {/* Quick Vedic Snapshot - instant, unmissable summary shown before
+                            the detailed report below, followed by a locked teaser card
+                            that drives WhatsApp conversion for deeper analysis. */}
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '0.85rem', marginBottom: '1rem' }}>
+                            {[
+                                { label: t('लग्न (Ascendant)', 'Ascendant (Lagna)'), value: kundliResult.lagna.rashi, Icon: Sparkles },
+                                { label: t('चंद्र राशि (Moon Sign)', 'Moon Sign (Rashi)'), value: kundliResult.moon.rashi, Icon: Star },
+                                { label: t('जन्म नक्षत्र', 'Birth Nakshatra'), value: `${kundliResult.nakshatra.name} (${t('पद', 'Pada')} ${kundliResult.nakshatra.pada})`, Icon: Orbit },
+                            ].map((s, i) => (
+                                <div key={i} style={{ background: 'linear-gradient(135deg, var(--navy-950), var(--navy-900))', borderRadius: 'var(--radius-lg)', padding: '1rem 1.1rem', color: 'white' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--gold-400)', fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.02em', marginBottom: '0.4rem' }}>
+                                        <s.Icon size={13} /> {s.label}
+                                    </div>
+                                    <div style={{ fontSize: '1.05rem', fontWeight: 700, lineHeight: 1.3 }}>{s.value}</div>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="no-print" style={{ position: 'relative', marginBottom: '1.5rem', borderRadius: 'var(--radius-xl)', overflow: 'hidden', border: '1px solid var(--border-gold)' }}>
+                            <div aria-hidden="true" style={{ filter: 'blur(6px)', opacity: 0.55, padding: '1.5rem', pointerEvents: 'none', userSelect: 'none' }}>
+                                <h3 style={{ margin: '0 0 0.75rem' }}>{t('ग्रह दोष एवं करियर/विवाह पूर्वानुमान', 'Planetary Doshas & Career/Marriage Forecast')}</h3>
+                                <p style={{ margin: '0 0 0.5rem' }}>मांगलिक दोष: {t('विश्लेषण उपलब्ध', 'Analysis available')} — शनि साढ़े साती: {t('विश्लेषण उपलब्ध', 'Analysis available')}</p>
+                                <p style={{ margin: '0 0 0.5rem' }}>करियर योग: गुरु व शनि की स्थिति के अनुसार विस्तृत विश्लेषण उपलब्ध है, जो आपके व्यावसायिक जीवन की दिशा दर्शाता है।</p>
+                                <p style={{ margin: 0 }}>विवाह योग: सप्तम भाव एवं शुक्र की स्थिति के आधार पर वैवाहिक जीवन का पूर्वानुमान उपलब्ध है।</p>
+                            </div>
+                            <div style={{ position: 'absolute', inset: 0, background: 'rgba(20,17,15,0.55)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '1.5rem' }}>
+                                <Lock size={26} style={{ color: 'var(--gold-400)', marginBottom: '0.6rem' }} />
+                                <h3 style={{ color: 'white', margin: '0 0 0.4rem', fontSize: '1.15rem' }}>{t('ग्रह दोष एवं करियर/विवाह पूर्वानुमान', 'Planetary Doshas & Career/Marriage Forecast')}</h3>
+                                <p style={{ color: 'var(--warm-200)', fontSize: '0.85rem', maxWidth: '440px', margin: '0 0 1.1rem' }}>
+                                    {t('मांगलिक दोष, साढ़े साती, करियर एवं विवाह योग का विस्तृत, व्यक्तिगत विश्लेषण काशी के पंडितों से प्राप्त करें।', 'Get a detailed, personal analysis of Manglik Dosha, Sade Sati, career yogas, and marriage compatibility from the Pandits of Kashi.')}
+                                </p>
+                                <a
+                                    href={`https://wa.me/919278148269?text=${encodeURIComponent(t(
+                                        `प्रणाम, मुझे अपनी संपूर्ण कुंडली विश्लेषण चाहिए।\nनाम: ${kundliResult.devoteeName}\nजन्म तिथि: ${form.dob}\nजन्म समय: ${form.tob || '06:30 AM'}\nजन्म स्थान: ${kundliResult.birthPlace}\nलग्न: ${kundliResult.lagna.rashi} | चंद्र राशि: ${kundliResult.moon.rashi} | नक्षत्र: ${kundliResult.nakshatra.name}`,
+                                        `Pranam, I would like my complete Kundli analysis.\nName: ${kundliResult.devoteeName}\nDOB: ${form.dob}\nTOB: ${form.tob || '06:30 AM'}\nPlace: ${kundliResult.birthPlace}\nLagna: ${kundliResult.lagna.rashi} | Moon Sign: ${kundliResult.moon.rashi} | Nakshatra: ${kundliResult.nakshatra.name}`
+                                    ))}`}
+                                    target="_blank" rel="noreferrer"
+                                    className="btn btn-whatsapp btn-lg"
+                                    style={{ whiteSpace: 'normal', maxWidth: '100%', textAlign: 'center', lineHeight: 1.4 }}
+                                >
+                                    <MessageCircle size={17} style={{ verticalAlign: '-3px', marginRight: '0.4rem' }} />
+                                    {t('काशी के पंडितों से पूर्ण 1-on-1 विश्लेषण अनलॉक करें', 'Unlock Complete 1-on-1 Analysis with Kashi Pandits')}
+                                </a>
+                            </div>
+                        </div>
+
                         <KundaliSettingsBar settings={kundliSettings} onChange={setKundliSettings} />
 
                         {/* Report Top Bar */}
