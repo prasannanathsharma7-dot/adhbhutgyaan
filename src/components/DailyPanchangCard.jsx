@@ -70,7 +70,7 @@ export default function DailyPanchangCard() {
                         type="button"
                         onClick={handleCopy}
                         className="btn btn-outline-dark"
-                        style={{ fontSize: '0.78rem', padding: '0.4rem 0.75rem', borderRadius: 'var(--radius-full)' }}
+                        style={{ fontSize: '0.78rem', padding: '0.65rem 0.9rem', borderRadius: 'var(--radius-full)', minHeight: '44px' }}
                     >
                         {copied ? <><CheckCircle2 size={13} style={{ verticalAlign: '-2px', marginRight: '0.25rem' }} />Copied</> : <><Copy size={13} style={{ verticalAlign: '-2px', marginRight: '0.25rem' }} />Copy</>}
                     </button>
@@ -79,7 +79,7 @@ export default function DailyPanchangCard() {
                         target="_blank"
                         rel="noreferrer"
                         className="btn btn-whatsapp"
-                        style={{ fontSize: '0.78rem', padding: '0.4rem 0.85rem', borderRadius: 'var(--radius-full)' }}
+                        style={{ fontSize: '0.78rem', padding: '0.65rem 1rem', borderRadius: 'var(--radius-full)', minHeight: '44px' }}
                     >
                         <MessageCircle size={14} style={{ verticalAlign: '-2px', marginRight: '0.3rem' }} />{t('WhatsApp पर शेयर करें', 'Share on WhatsApp')}
                     </a>
