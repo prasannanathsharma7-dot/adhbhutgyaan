@@ -15,6 +15,7 @@ const { computeFullKundliReport, SIGN_NAMES } = require('./utils/fullKundliRepor
 const { maitriLabel } = require('./utils/lodhaRules');
 const { generateLifePredictions } = require('./utils/lifePredictions');
 const { generateGrahaEssays } = require('./utils/grahaEssays');
+const { analyzeJaimini } = require('./utils/jaimini');
 const { nakshatraHi, deityHi, varnaHi, vashyaHi, ganaHi, nadiHi, yoniHi, lordHi } = require('./utils/hindiTerms');
 
 const FONT_DIR = path.join(__dirname, 'fonts');
@@ -643,6 +644,47 @@ module.exports = async (req, res) => {
             doc.text(m.startDate.toISOString().slice(0, 10), fx + 270, y, { width: 110 });
             doc.text(m.endDate.toISOString().slice(0, 10), fx + 380, y, { width: 110 });
             y += 18;
+        });
+
+        // ============ SUPPLEMENT: JAIMINI SYSTEM (KARAKAS & AVASTHAS) ============
+        y = startPage(doc, lang, T('अतिरिक्त', 'Supplement'));
+        y = sectionTitle(doc, T('जैमिनी ज्योतिष — चर कारक', 'Jaimini System — Chara Karakas'), y);
+        doc.font(FONT_REGULAR).fontSize(8.5).fillColor('#666').text(
+            T('चर कारक सप्त ग्रहों (सूर्य से शनि तक, राहु-केतु रहित) को उनकी राशि-अंश के अनुसार क्रमबद्ध कर निर्धारित किए जाते हैं — सर्वाधिक अंश आत्मकारक, न्यूनतम अंश दारकारक।',
+              'The Chara Karakas are determined by ranking the 7 classical planets (Sun through Saturn, excluding Rahu/Ketu) by their degree-within-sign - the highest becomes Atmakaraka, the lowest becomes Darakaraka.'),
+            fx - 24, y, { width: PAGE_W - 2 * (fx - 24) }
+        );
+        y += 36;
+
+        const jaimini = analyzeJaimini(R, lang);
+        doc.font(FONT_BOLD).fontSize(9).fillColor(NAVY);
+        [T('कारक', 'Karaka'), T('संक्षेप', 'Abbr.'), T('ग्रह', 'Planet'), T('अंश', 'Degree'), T('कारकत्व', 'Signifies')].forEach((h, i) => doc.text(h, fx + [0, 110, 150, 220, 290][i], y, { width: [110, 40, 70, 70, 200][i] }));
+        y += 16; doc.moveTo(fx, y).lineTo(PAGE_W - MARGIN - 40, y).lineWidth(0.5).stroke(GOLD); y += 6;
+        doc.font(FONT_REGULAR).fontSize(8.3).fillColor('#333');
+        jaimini.charaKarakas.forEach(k => {
+            doc.text(T(k.karaka, k.karaka), fx, y, { width: 110 });
+            doc.text(k.abbr, fx + 110, y, { width: 40 });
+            doc.text(PL[k.planet], fx + 150, y, { width: 70 });
+            doc.text(`${k.degree.toFixed(2)}°`, fx + 220, y, { width: 70 });
+            doc.text(k.signifies, fx + 290, y, { width: 200 });
+            y += 17;
+        });
+        y += 20;
+        y = kvRow(doc, T('कारकांश', "Karakamsha (AK's Navamsha sign)"), jaimini.karakamsha, fx, y, 220);
+        y = kvRow(doc, T('स्वांश (नवमांश लग्न)', 'Swamsha (Navamsha Lagna)'), jaimini.swamsha, fx, y, 220);
+
+        y += 20;
+        y = ensureRoom(doc, y, 140, lang, T('अतिरिक्त (जारी)', 'Supplement (contd.)'));
+        y = sectionTitle(doc, T('ग्रह अवस्थाएं', 'Planetary Avasthas'), y);
+        doc.font(FONT_BOLD).fontSize(9).fillColor(NAVY);
+        [T('ग्रह', 'Planet'), T('बाल्यादि अवस्था', 'Baladi Avastha'), T('जाग्रत/स्वप्न', 'Jagrat/Swapna')].forEach((h, i) => doc.text(h, fx + [0, 150, 320][i], y, { width: [150, 170, 170][i] }));
+        y += 16; doc.moveTo(fx, y).lineTo(PAGE_W - MARGIN - 40, y).lineWidth(0.5).stroke(GOLD); y += 6;
+        doc.font(FONT_REGULAR).fontSize(8.5).fillColor('#333');
+        jaimini.avasthas.forEach(a => {
+            doc.text(PL[a.planet], fx, y, { width: 150 });
+            doc.text(a.baladi, fx + 150, y, { width: 170 });
+            doc.text(a.jagrat, fx + 320, y, { width: 170 });
+            y += 17;
         });
 
         doc.end();
