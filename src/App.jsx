@@ -13,8 +13,19 @@ import ErrorBoundary from './components/ErrorBoundary';
 // parse/execute time on first load.
 const ChatWidget = lazy(() => import('./components/ChatWidget'));
 
+// Home is imported EAGERLY (not lazy), unlike every other route below -
+// it's the single highest-traffic entry point, and lazy-loading it means
+// visitors landing here see a short, generic PageLoader skeleton that
+// doesn't match the homepage's actual (much longer) content, causing a
+// large, measured layout shift (CLS 0.4, well into Google's "Poor" range)
+// once the real content pops in. Eager-loading the homepage specifically
+// - a well-established practice - means its content is present from the
+// very first render, eliminating that shift; every other route still
+// benefits from code-splitting since visitors navigating to them have
+// already loaded the app shell.
+import Home from './pages/Home';
+
 // Route-level code splitting
-const Home = lazy(() => import('./pages/Home'));
 const VastuScore = lazy(() => import('./pages/VastuScore'));
 const Muhurat = lazy(() => import('./pages/Muhurat'));
 const MuhuratReport = lazy(() => import('./pages/MuhuratReport'));
