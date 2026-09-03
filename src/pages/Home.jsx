@@ -6,10 +6,11 @@ import { triptych, videoClips, youtubeUploadsPlaylistId, youtubeChannelId } from
 import useSEO from '../hooks/useSEO';
 import { localBusinessJsonLd, combineJsonLd } from '../utils/seo';
 import DailyPanchangCard from '../components/DailyPanchangCard';
+import UpcomingMuhuratWidget from '../components/UpcomingMuhuratWidget';
 import VideoTestimonials from '../components/VideoTestimonials';
 import { heritageSummary, testimonials } from '../data/heritage';
 import FlagIcon from '../components/FlagIcon';
-import { SquarePlay } from 'lucide-react';
+import { SquarePlay, XCircle, CheckCircle2 } from 'lucide-react';
 
 function useInView() {
     const ref = useRef();
@@ -105,6 +106,8 @@ export default function Home() {
                     </div>
                 </div>
             </section>
+
+            <UpcomingMuhuratWidget />
 
             {/* TRIPTYCH */}
             <section className="section" style={{ paddingBottom: 0 }}>
@@ -418,6 +421,35 @@ export default function Home() {
                                 <img src={`/images/icons/${f.img}.jpg`} alt="" width="56" height="56" loading="lazy" className="feature-icon-img" />
                                 <h3 className="feature-title">{f.title}</h3>
                                 <p className="feature-desc">{f.desc}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* WHY CHOOSE US - honest comparison */}
+            <section className="section" style={{ background: 'var(--navy-950)' }}>
+                <div className="container">
+                    <div className="text-center">
+                        <span className="section-label" style={{ justifyContent: 'center', color: 'var(--gold-400)' }}>{t('क्यों अद्भुत ज्ञान', 'Why Adhbhut Gyaan')}</span>
+                        <h2 className="section-title" style={{ color: 'white' }}>{t('सामान्य पूजा-सेवाओं से हम कैसे अलग हैं', 'How We\'re Different From a Typical Pooja Service')}</h2>
+                    </div>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', marginTop: '2rem', maxWidth: 900, marginLeft: 'auto', marginRight: 'auto' }}>
+                        {[
+                            { badHi: 'पूजा का कोई प्रमाण नहीं मिलता', badEn: 'No proof the pooja actually happened', goodHi: 'लाइव वीडियो कॉल + फोटो/वीडियो प्रमाण हर पूजा के साथ', goodEn: 'Live video call + photo/video proof with every pooja' },
+                            { badHi: 'कीमत अस्पष्ट, बाद में छुपे शुल्क', badEn: 'Vague pricing, hidden charges revealed later', goodHi: 'पारदर्शी मूल्य — बुकिंग से पहले ही स्पष्ट', goodEn: 'Transparent pricing, clear before you book' },
+                            { badHi: 'पंडित की योग्यता असत्यापित', badEn: "Pandit's credentials are unverified", goodHi: 'काशी की 400+ वर्षों की तीन-पीढ़ी वैदिक विरासत', goodEn: "400+ years, three generations of Kashi's Vedic lineage" },
+                            { badHi: 'सिर्फ एक ही विकल्प — ऑनलाइन या कुछ नहीं', badEn: 'Only one option - online or nothing', goodHi: '3 पारदर्शी विकल्प: ऑनलाइन, काशी में, अथवा आपके द्वार पर', goodEn: '3 transparent options: online, at Kashi, or at your doorstep' },
+                        ].map((item, i) => (
+                            <div key={i} style={{ background: 'rgba(255,255,255,0.05)', borderRadius: 'var(--radius-lg)', padding: '1.25rem 1.4rem' }}>
+                                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.6rem', marginBottom: '0.6rem' }}>
+                                    <XCircle size={17} style={{ color: '#f87171', flexShrink: 0, marginTop: '0.1rem' }} />
+                                    <span style={{ color: 'var(--warm-300)', fontSize: '0.85rem', textDecoration: 'line-through', opacity: 0.7 }}>{t(item.badHi, item.badEn)}</span>
+                                </div>
+                                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.6rem' }}>
+                                    <CheckCircle2 size={17} style={{ color: '#4ade80', flexShrink: 0, marginTop: '0.1rem' }} />
+                                    <span style={{ color: 'white', fontSize: '0.9rem', fontWeight: 600 }}>{t(item.goodHi, item.goodEn)}</span>
+                                </div>
                             </div>
                         ))}
                     </div>
