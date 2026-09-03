@@ -19,7 +19,7 @@ const { analyzeJaimini } = require('./utils/jaimini');
 const { calculateCharaDasha } = require('./utils/charaDasha');
 const { findVarshaPravesh, calculateVarshaLagna, calculateMuntha, calculateMuddaDasha, SIGN_LORD: TAJIK_SIGN_LORD } = require('./utils/tajikVarshphal');
 const { analyzeLalKitab, calculateLalKitab35YearDasha, getRemedies } = require('./utils/lalKitab');
-const { calculateShadbala, calculateBhavaBala } = require('./utils/shadbala');
+const { calculateShadbala, calculateBhavaBala, generateShadbalaFaladesh, generateBhavaBalaFaladesh } = require('./utils/shadbala');
 const { nakshatraHi, deityHi, varnaHi, vashyaHi, ganaHi, nadiHi, yoniHi, lordHi } = require('./utils/hindiTerms');
 
 const FONT_DIR = path.join(__dirname, 'fonts');
@@ -851,6 +851,18 @@ module.exports = async (req, res) => {
             y += 17;
         });
 
+        y += 16;
+        y = ensureRoom(doc, y, 90, lang, T('अतिरिक्त (जारी)', 'Supplement (contd.)'));
+        const shadbalaFaladesh = generateShadbalaFaladesh(shadbala, lang);
+        doc.font(FONT_BOLD).fontSize(9.5).fillColor(RED).text(T('षड्बल फलादेश', 'Shadbala Interpretation'), fx - 10, y, { width: PAGE_W - 2 * (fx - 10) });
+        y += 16;
+        doc.font(FONT_REGULAR).fontSize(8.7).fillColor('#333').text(shadbalaFaladesh.summary, fx, y, { width: PAGE_W - 2 * fx });
+        y += doc.heightOfString(shadbalaFaladesh.summary, { width: PAGE_W - 2 * fx, fontSize: 8.7 }) + 8;
+        doc.text(`•  ${shadbalaFaladesh.strongNote}`, fx, y, { width: PAGE_W - 2 * fx });
+        y += doc.heightOfString(`•  ${shadbalaFaladesh.strongNote}`, { width: PAGE_W - 2 * fx, fontSize: 8.7 }) + 6;
+        doc.text(`•  ${shadbalaFaladesh.weakNote}`, fx, y, { width: PAGE_W - 2 * fx });
+        y += doc.heightOfString(`•  ${shadbalaFaladesh.weakNote}`, { width: PAGE_W - 2 * fx, fontSize: 8.7 }) + 10;
+
         y += 20;
         y = ensureRoom(doc, y, 200, lang, T('अतिरिक्त (जारी)', 'Supplement (contd.)'));
         y = sectionTitle(doc, T('भाव बल (आंशिक)', 'Bhava Bala — House Strength (Partial)'), y);
@@ -878,6 +890,17 @@ module.exports = async (req, res) => {
             doc.text(v.totalRupas.toFixed(2), fx + 400, y, { width: 70 });
             y += 17;
         });
+
+        y += 16;
+        y = ensureRoom(doc, y, 90, lang, T('अतिरिक्त (जारी)', 'Supplement (contd.)'));
+        const bhavaBalaFaladesh = generateBhavaBalaFaladesh(bhavaBala, lang);
+        doc.font(FONT_BOLD).fontSize(9.5).fillColor(RED).text(T('भाव बल फलादेश', 'Bhava Bala Interpretation'), fx - 10, y, { width: PAGE_W - 2 * (fx - 10) });
+        y += 16;
+        doc.font(FONT_REGULAR).fontSize(8.7).fillColor('#333').text(bhavaBalaFaladesh.summary, fx, y, { width: PAGE_W - 2 * fx });
+        y += doc.heightOfString(bhavaBalaFaladesh.summary, { width: PAGE_W - 2 * fx, fontSize: 8.7 }) + 8;
+        doc.text(`•  ${bhavaBalaFaladesh.strongNote}`, fx, y, { width: PAGE_W - 2 * fx });
+        y += doc.heightOfString(`•  ${bhavaBalaFaladesh.strongNote}`, { width: PAGE_W - 2 * fx, fontSize: 8.7 }) + 6;
+        doc.text(`•  ${bhavaBalaFaladesh.weakNote}`, fx, y, { width: PAGE_W - 2 * fx });
 
         doc.end();
     } catch (err) {

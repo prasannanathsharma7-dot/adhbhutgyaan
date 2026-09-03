@@ -21,7 +21,7 @@ import { isValidIndianPhone, isValidName } from '../backend/_db.js';
 import { computeVedicChartData } from '../backend/agents/kundli-preanalyzer.js';
 import { computeFullKundliReport, SIGN_NAMES } from '../backend/utils/fullKundliReport.js';
 import { calculateVastuScore, scoreRoom, ROOM_RULES, DIRECTIONS as VASTU_DIRECTIONS } from '../backend/utils/vastuEngine.js';
-import { calculateShadbala, calculateBhavaBala, uchchaBala, digBala, bhavaDigBala, NAISARGIKA_BALA } from '../backend/utils/shadbala.js';
+import { calculateShadbala, calculateBhavaBala, uchchaBala, digBala, bhavaDigBala, NAISARGIKA_BALA, generateShadbalaFaladesh, generateBhavaBalaFaladesh } from '../backend/utils/shadbala.js';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -685,6 +685,19 @@ for (let h = 1; h <= 12; h++) houseLordsTest[h] = SIGN_LORD[refReport.houseData[
 const bhavaBalaTest = calculateBhavaBala(shadbalaTest, houseLordsTest);
 assert(Object.keys(bhavaBalaTest).length === 12, 'Bhava Bala: all 12 houses scored for the reference chart');
 assert(Object.values(bhavaBalaTest).every(v => v.totalVirupas >= 0), 'Bhava Bala: no house scores negative (Bhavadhipati + Dig are both non-negative by construction)');
+
+// Faladesh (interpretation text) generation
+const shadbalaFaladeshTest = generateShadbalaFaladesh(shadbalaTest, 'en');
+assert(shadbalaFaladeshTest.summary && shadbalaFaladeshTest.summary.length > 30, 'Shadbala Faladesh: generates a non-trivial summary');
+assert(shadbalaFaladeshTest.ranked[0].rupas >= shadbalaFaladeshTest.ranked[shadbalaFaladeshTest.ranked.length - 1].rupas, 'Shadbala Faladesh: ranked list is sorted strongest-to-weakest');
+assert(shadbalaFaladeshTest.strongNote.length > 20 && shadbalaFaladeshTest.weakNote.length > 20, 'Shadbala Faladesh: both strong and weak interpretive notes are non-trivial text');
+const shadbalaFaladeshHi = generateShadbalaFaladesh(shadbalaTest, 'hi');
+assert(shadbalaFaladeshHi.summary !== shadbalaFaladeshTest.summary, 'Shadbala Faladesh: Hindi and English summaries are genuinely different text, not the same string');
+
+const bhavaBalaFaladeshTest = generateBhavaBalaFaladesh(bhavaBalaTest, 'en');
+assert(bhavaBalaFaladeshTest.summary && bhavaBalaFaladeshTest.summary.length > 30, 'Bhava Bala Faladesh: generates a non-trivial summary');
+assert(bhavaBalaFaladeshTest.ranked[0].rupas >= bhavaBalaFaladeshTest.ranked[bhavaBalaFaladeshTest.ranked.length - 1].rupas, 'Bhava Bala Faladesh: ranked list is sorted strongest-to-weakest');
+assert(bhavaBalaFaladeshTest.ranked.length === 12, 'Bhava Bala Faladesh: ranks all 12 houses');
 
 
 console.log('\n\x1b[1m\x1b[36m============================================================\x1b[0m');

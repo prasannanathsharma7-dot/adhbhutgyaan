@@ -189,4 +189,74 @@ function calculateBhavaBala(shadbalaResults, houseLords) {
     return results;
 }
 
-module.exports = { calculateShadbala, calculateBhavaBala, uchchaBala, saptavargajaBala, ojayugmaBala, kendradiBala, drekkanaBala, digBala, bhavaDigBala, NAISARGIKA_BALA, EXALT_DEG, DEBIL_DEG };
+const PLANET_NAME_HI = { sun: 'सूर्य', moon: 'चन्द्र', mars: 'मंगल', mercury: 'बुध', jupiter: 'गुरु', venus: 'शुक्र', saturn: 'शनि' };
+const PLANET_NAME_EN = { sun: 'Sun', moon: 'Moon', mars: 'Mars', mercury: 'Mercury', jupiter: 'Jupiter', venus: 'Venus', saturn: 'Saturn' };
+const PLANET_SIGNIF_HI = { sun: 'आत्मबल, पिता, स्वास्थ्य एवं प्रतिष्ठा', moon: 'मन, माता, भावनात्मक स्थिरता', mars: 'साहस, ऊर्जा, भाई-बहन', mercury: 'बुद्धि, वाणी, व्यापार-कुशलता', jupiter: 'ज्ञान, भाग्य, संतान एवं गुरुजन', venus: 'प्रेम, वैवाहिक सुख, कला एवं वैभव', saturn: 'अनुशासन, दीर्घकालिक परिश्रम एवं स्थायित्व' };
+const PLANET_SIGNIF_EN = { sun: 'self-confidence, father, health, and standing', moon: 'mind, mother, and emotional stability', mars: 'courage, energy, and siblings', mercury: 'intellect, speech, and business acumen', jupiter: 'wisdom, fortune, children, and mentors', venus: 'love, marital happiness, arts, and comfort', saturn: 'discipline, long-term effort, and stability' };
+
+const HOUSE_LIFE_AREA_HI = { 1: 'व्यक्तित्व एवं स्वास्थ्य', 2: 'धन एवं वाणी', 3: 'साहस एवं भाई-बहन', 4: 'सुख एवं माता', 5: 'संतान एवं बुद्धि', 6: 'शत्रु एवं रोग-प्रतिरोध', 7: 'विवाह एवं साझेदारी', 8: 'आयु एवं गूढ़ विषय', 9: 'भाग्य एवं धर्म', 10: 'करियर एवं सामाजिक प्रतिष्ठा', 11: 'आय एवं लाभ', 12: 'व्यय एवं मोक्ष' };
+const HOUSE_LIFE_AREA_EN = { 1: 'personality and health', 2: 'wealth and speech', 3: 'courage and siblings', 4: 'domestic happiness and mother', 5: 'children and intellect', 6: 'obstacles and disease-resistance', 7: 'marriage and partnerships', 8: 'longevity and hidden matters', 9: 'fortune and dharma', 10: 'career and public standing', 11: 'income and gains', 12: 'expenses and spiritual release' };
+
+/**
+ * shadbalaResults: output of calculateShadbala().
+ * Returns { rankedHi/rankedEn text array, strongest, weakest, perPlanetNote }
+ * grounded in RELATIVE ranking within this one chart (valid given the
+ * partial-scope disclosure above - absolute classical-threshold
+ * comparisons are NOT valid here since this total is systematically
+ * lower than a full six-component calculation).
+ */
+function generateShadbalaFaladesh(shadbalaResults, lang) {
+    const T = (hi, en) => (lang === 'hi' ? hi : en);
+    const entries = Object.entries(shadbalaResults).map(([key, v]) => ({ key, rupas: v.totalRupas }));
+    entries.sort((a, b) => b.rupas - a.rupas);
+
+    const strongest = entries[0];
+    const weakest = entries[entries.length - 1];
+    const pName = (k) => (lang === 'hi' ? PLANET_NAME_HI[k] : PLANET_NAME_EN[k]);
+    const pSignif = (k) => (lang === 'hi' ? PLANET_SIGNIF_HI[k] : PLANET_SIGNIF_EN[k]);
+
+    const summary = T(
+        `प्रस्तुत आंशिक षड्बल के अनुसार, इस कुंडली में ${pName(strongest.key)} सापेक्षिक रूप से सर्वाधिक बलवान (${strongest.rupas.toFixed(2)} रूप) है, जबकि ${pName(weakest.key)} अपेक्षाकृत निर्बल (${weakest.rupas.toFixed(2)} रूप) है — यह तुलना केवल इसी कुंडली के 7 ग्रहों के बीच सापेक्षिक है, पूर्ण पारंपरिक न्यूनतम मानदंड से नहीं (चूंकि काल, चेष्टा एवं दृक् बल सम्मिलित नहीं हैं)।`,
+        `Based on this partial Shadbala, ${pName(strongest.key)} is relatively the strongest planet in this chart (${strongest.rupas.toFixed(2)} Rupas), while ${pName(weakest.key)} is comparatively the weakest (${weakest.rupas.toFixed(2)} Rupas) - this is a RELATIVE comparison among the 7 planets in this one chart only, not a comparison against the full classical minimum thresholds (since Kala, Chesta, and Drik Bala aren't included here).`
+    );
+
+    const strongNote = T(
+        `${pName(strongest.key)} की सापेक्षिक बलवत्ता यह संकेत देती है कि ${pSignif(strongest.key)} से संबंधित विषय इस कुंडली में तुलनात्मक रूप से सुदृढ़ आधार पर टिके हैं।`,
+        `${pName(strongest.key)}'s relative strength suggests matters of ${pSignif(strongest.key)} rest on comparatively firmer ground in this chart.`
+    );
+    const weakNote = T(
+        `${pName(weakest.key)} की सापेक्षिक निर्बलता यह दर्शाती है कि ${pSignif(weakest.key)} से संबंधित विषयों में सजग प्रयास एवं उचित उपाय विशेष लाभकारी हो सकते हैं।`,
+        `${pName(weakest.key)}'s relative weakness suggests matters of ${pSignif(weakest.key)} may particularly benefit from conscious effort and appropriate remedies.`
+    );
+
+    return { summary, strongNote, weakNote, ranked: entries };
+}
+
+/**
+ * bhavaBalaResults: output of calculateBhavaBala().
+ */
+function generateBhavaBalaFaladesh(bhavaBalaResults, lang) {
+    const T = (hi, en) => (lang === 'hi' ? hi : en);
+    const entries = Object.entries(bhavaBalaResults).map(([house, v]) => ({ house: Number(house), rupas: v.totalRupas }));
+    entries.sort((a, b) => b.rupas - a.rupas);
+    const strongest = entries[0];
+    const weakest = entries[entries.length - 1];
+    const hArea = (h) => (lang === 'hi' ? HOUSE_LIFE_AREA_HI[h] : HOUSE_LIFE_AREA_EN[h]);
+
+    const summary = T(
+        `इस कुंडली में भाव ${strongest.house} (${hArea(strongest.house)}) सापेक्षिक रूप से सर्वाधिक बलवान (${strongest.rupas.toFixed(2)} रूप) है, जबकि भाव ${weakest.house} (${hArea(weakest.house)}) अपेक्षाकृत निर्बल (${weakest.rupas.toFixed(2)} रूप) है — यह तुलना भावाधिपति बल एवं दिग् बल पर आधारित है (भाव दृष्टि बल सम्मिलित नहीं)।`,
+        `In this chart, House ${strongest.house} (${hArea(strongest.house)}) is relatively the strongest (${strongest.rupas.toFixed(2)} Rupas), while House ${weakest.house} (${hArea(weakest.house)}) is comparatively the weakest (${weakest.rupas.toFixed(2)} Rupas) - based on Bhavadhipati and Dig Bala only (Bhava Drishti Bala isn't included).`
+    );
+    const strongNote = T(
+        `भाव ${strongest.house} की सुदृढ़ता ${hArea(strongest.house)} से जुड़े विषयों में स्वाभाविक सहजता का संकेत देती है।`,
+        `House ${strongest.house}'s strength suggests a natural ease in matters of ${hArea(strongest.house)}.`
+    );
+    const weakNote = T(
+        `भाव ${weakest.house} की निर्बलता ${hArea(weakest.house)} से जुड़े विषयों में अतिरिक्त सजगता एवं प्रयास की आवश्यकता दर्शाती है।`,
+        `House ${weakest.house}'s weakness suggests matters of ${hArea(weakest.house)} may need extra attention and effort.`
+    );
+
+    return { summary, strongNote, weakNote, ranked: entries };
+}
+
+module.exports = { calculateShadbala, calculateBhavaBala, generateShadbalaFaladesh, generateBhavaBalaFaladesh, uchchaBala, saptavargajaBala, ojayugmaBala, kendradiBala, drekkanaBala, digBala, bhavaDigBala, NAISARGIKA_BALA, EXALT_DEG, DEBIL_DEG };
