@@ -19,6 +19,7 @@ const { analyzeJaimini } = require('./utils/jaimini');
 const { calculateCharaDasha } = require('./utils/charaDasha');
 const { findVarshaPravesh, calculateVarshaLagna, calculateMuntha, calculateMuddaDasha, SIGN_LORD: TAJIK_SIGN_LORD } = require('./utils/tajikVarshphal');
 const { analyzeLalKitab, calculateLalKitab35YearDasha, getRemedies } = require('./utils/lalKitab');
+const { calculateShadbala, calculateBhavaBala } = require('./utils/shadbala');
 const { nakshatraHi, deityHi, varnaHi, vashyaHi, ganaHi, nadiHi, yoniHi, lordHi } = require('./utils/hindiTerms');
 
 const FONT_DIR = path.join(__dirname, 'fonts');
@@ -814,6 +815,68 @@ module.exports = async (req, res) => {
             const remedies = getRemedies(g.key, lang);
             remedies.forEach(rem => { doc.font(FONT_REGULAR).fontSize(8.7).fillColor('#333').text(`•  ${rem}`, fx + 5, y, { width: PAGE_W - 2 * (fx + 5) }); y += 14; });
             y += 8;
+        });
+
+        // ============ SUPPLEMENT: SHADBALA & BHAVA BALA (PARTIAL) ============
+        y = startPage(doc, lang, T('अतिरिक्त', 'Supplement'));
+        y = sectionTitle(doc, T('षड्बल — ग्रह बल (आंशिक)', 'Shadbala — Planetary Strength (Partial)'), y);
+        doc.font(FONT_REGULAR).fontSize(8).fillColor('#666').text(
+            T('यह गणना स्थान बल, दिग् बल एवं नैसर्गिक बल पर आधारित है (षड्बल के 6 में से 3 अंग) — काल बल, चेष्टा बल एवं दृक् बल सम्मिलित नहीं हैं, अतः यह पूर्ण पारंपरिक षड्बल से स्वाभाविक रूप से कम होगा। तुलनात्मक विश्लेषण हेतु उपयोगी है, पूर्ण थ्रेशहोल्ड-तुलना हेतु नहीं।',
+              'This calculation covers Sthana Bala, Dig Bala, and Naisargika Bala (3 of Shadbala\'s 6 components) - Kala Bala, Chesta Bala, and Drik Bala are not included, so totals are naturally lower than a full classical calculation. Useful for relative comparison between planets, not for comparing against classical minimum thresholds.'),
+            fx - 24, y, { width: PAGE_W - 2 * (fx - 24) }
+        );
+        y += 40;
+
+        const shadbalaInput = {};
+        const shadbalaHouses = {};
+        R.planets.forEach(p => {
+            if (['sun', 'moon', 'mars', 'mercury', 'jupiter', 'venus', 'saturn'].includes(p.key)) {
+                shadbalaInput[p.key] = R.planetLongitudes[p.key];
+                shadbalaHouses[p.key] = p.house;
+            }
+        });
+        const shadbala = calculateShadbala(shadbalaInput, shadbalaHouses);
+
+        doc.font(FONT_BOLD).fontSize(9).fillColor(NAVY);
+        [T('ग्रह', 'Planet'), T('स्थान बल', 'Sthana'), T('दिग् बल', 'Dig'), T('नैसर्गिक', 'Naisargika'), T('कुल (वि.)', 'Total (V)'), T('रूप', 'Rupas')].forEach((h, i) => doc.text(h, fx + [0, 90, 175, 250, 335, 420][i], y, { width: [90, 85, 75, 85, 85, 70][i] }));
+        y += 16; doc.moveTo(fx, y).lineTo(PAGE_W - MARGIN - 40, y).lineWidth(0.5).stroke(GOLD); y += 6;
+        doc.font(FONT_REGULAR).fontSize(8.3).fillColor('#333');
+        Object.entries(shadbala).forEach(([key, v]) => {
+            doc.text(PL[key], fx, y, { width: 90 });
+            doc.text(v.sthanaTotal.toFixed(1), fx + 90, y, { width: 85 });
+            doc.text(v.dig.toFixed(1), fx + 175, y, { width: 75 });
+            doc.text(v.naisargika.toFixed(2), fx + 250, y, { width: 85 });
+            doc.text(v.totalVirupas.toFixed(1), fx + 335, y, { width: 85 });
+            doc.text(v.totalRupas.toFixed(2), fx + 420, y, { width: 70 });
+            y += 17;
+        });
+
+        y += 20;
+        y = ensureRoom(doc, y, 200, lang, T('अतिरिक्त (जारी)', 'Supplement (contd.)'));
+        y = sectionTitle(doc, T('भाव बल (आंशिक)', 'Bhava Bala — House Strength (Partial)'), y);
+        doc.font(FONT_REGULAR).fontSize(8).fillColor('#666').text(
+            T('भावाधिपति बल एवं भाव दिग् बल पर आधारित (भाव दृष्टि बल सम्मिलित नहीं)।', 'Based on Bhavadhipati Bala and Bhava Dig Bala (Bhava Drishti Bala not included).'),
+            fx - 24, y, { width: PAGE_W - 2 * (fx - 24) }
+        );
+        y += 28;
+
+        const houseLordsForBhava = {};
+        for (let h = 1; h <= 12; h++) houseLordsForBhava[h] = TAJIK_SIGN_LORD[R.houseData[h].rashiId];
+        const bhavaBala = calculateBhavaBala(shadbala, houseLordsForBhava);
+
+        doc.font(FONT_BOLD).fontSize(9).fillColor(NAVY);
+        [T('भाव', 'House'), T('स्वामी', 'Lord'), T('भावाधिपति', 'Lord Str.'), T('दिग् बल', 'Dig'), T('कुल (वि.)', 'Total (V)'), T('रूप', 'Rupas')].forEach((h, i) => doc.text(h, fx + [0, 65, 140, 240, 315, 400][i], y, { width: [65, 75, 100, 75, 85, 70][i] }));
+        y += 16; doc.moveTo(fx, y).lineTo(PAGE_W - MARGIN - 40, y).lineWidth(0.5).stroke(GOLD); y += 6;
+        doc.font(FONT_REGULAR).fontSize(8.3).fillColor('#333');
+        Object.entries(bhavaBala).forEach(([house, v]) => {
+            y = ensureRoom(doc, y, 17, lang, T('अतिरिक्त (जारी)', 'Supplement (contd.)'));
+            doc.text(house, fx, y, { width: 65 });
+            doc.text(PL[houseLordsForBhava[house]], fx + 65, y, { width: 75 });
+            doc.text(v.bhavadhipati.toFixed(1), fx + 140, y, { width: 100 });
+            doc.text(v.dig.toFixed(1), fx + 240, y, { width: 75 });
+            doc.text(v.totalVirupas.toFixed(1), fx + 315, y, { width: 85 });
+            doc.text(v.totalRupas.toFixed(2), fx + 400, y, { width: 70 });
+            y += 17;
         });
 
         doc.end();

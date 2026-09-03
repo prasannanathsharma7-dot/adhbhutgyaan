@@ -21,6 +21,7 @@ import { isValidIndianPhone, isValidName } from '../backend/_db.js';
 import { computeVedicChartData } from '../backend/agents/kundli-preanalyzer.js';
 import { computeFullKundliReport, SIGN_NAMES } from '../backend/utils/fullKundliReport.js';
 import { calculateVastuScore, scoreRoom, ROOM_RULES, DIRECTIONS as VASTU_DIRECTIONS } from '../backend/utils/vastuEngine.js';
+import { calculateShadbala, calculateBhavaBala, uchchaBala, digBala, bhavaDigBala, NAISARGIKA_BALA } from '../backend/utils/shadbala.js';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -54,7 +55,7 @@ console.log('\x1b[1m\x1b[36m====================================================
 // -------------------------------------------------------------
 // SUITE 1: VEDIC KUNDLI EPHEMERIS MATHEMATICAL BENCHMARK
 // -------------------------------------------------------------
-console.log('\x1b[1m\x1b[33m[1/20] Testing Vedic Kundli Ephemeris Calculation Engine...\x1b[0m');
+console.log('\x1b[1m\x1b[33m[1/21] Testing Vedic Kundli Ephemeris Calculation Engine...\x1b[0m');
 
 try {
     const benchmark = calculateInstantKundli({
@@ -98,7 +99,7 @@ try {
 // -------------------------------------------------------------
 // SUITE 2: GLOBAL DYNAMIC PANCHANG ENGINE
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[2/20] Testing Global Dynamic Panchang & Solar Ephemeris...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[2/21] Testing Global Dynamic Panchang & Solar Ephemeris...\x1b[0m');
 
 try {
     const panchang = calculateGlobalPanchang({
@@ -133,7 +134,7 @@ try {
 // -------------------------------------------------------------
 // SUITE 3: FRONTEND MODULES & CORE COMPONENTS INTEGRITY
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[3/20] Testing Frontend Pages & Critical Components...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[3/21] Testing Frontend Pages & Critical Components...\x1b[0m');
 
 const criticalComponents = [
     'src/App.jsx',
@@ -165,7 +166,7 @@ for (const compPath of criticalComponents) {
 // -------------------------------------------------------------
 // SUITE 4: SERVERLESS API AGENTS & ROUTES
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[4/20] Testing Backend API Microservices & Agent Routes...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[4/21] Testing Backend API Microservices & Agent Routes...\x1b[0m');
 
 const apiRoutes = [
     'backend/agents/kundli-preanalyzer.js',
@@ -195,7 +196,7 @@ for (const routePath of apiRoutes) {
 // -------------------------------------------------------------
 // SUITE 5: PRODUCTION BUILD & SEO ARTIFACTS
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[5/20] Testing Production Distribution & Pre-Rendered Pages...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[5/21] Testing Production Distribution & Pre-Rendered Pages...\x1b[0m');
 
 const distPath = path.join(projectRoot, 'dist');
 if (fs.existsSync(distPath)) {
@@ -214,7 +215,7 @@ if (fs.existsSync(distPath)) {
 // -------------------------------------------------------------
 // SUITE 6: DIVISIONAL CHARTS (D2, D3, D7, D9, D12, D30)
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[6/20] Testing Divisional Chart (Varga) Calculators...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[6/21] Testing Divisional Chart (Varga) Calculators...\x1b[0m');
 
 // D2 Hora: odd sign 0-15deg->Leo(5), 15-30deg->Cancer(4); even sign reversed
 assert(d2Hora(0) === 5, 'D2: 0° Aries (odd, 1st half) -> Leo');
@@ -274,7 +275,7 @@ assert(signAndOffset(720).signNum === 1, 'signAndOffset: 720° (2 full circles) 
 // -------------------------------------------------------------
 // SUITE 7: VIMSHOTTARI DASHA
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[7/20] Testing Vimshottari Dasha Engine...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[7/21] Testing Vimshottari Dasha Engine...\x1b[0m');
 
 assert(VIMSHOTTARI_ORDER.length === 9, 'Vimshottari: DASHA_ORDER has all 9 planets');
 assert(Object.values(VIMSHOTTARI_YEARS).reduce((a, b) => a + b, 0) === 120, 'Vimshottari: planetary years sum to exactly 120');
@@ -299,7 +300,7 @@ for (let i = 0; i < vim2.mahadashas.length - 1; i++) {
 // -------------------------------------------------------------
 // SUITE 8: YOGINI DASHA
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[8/20] Testing Yogini Dasha Engine...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[8/21] Testing Yogini Dasha Engine...\x1b[0m');
 
 assert(YOGINI_ORDER.length === 8, 'Yogini: YOGINI_ORDER has all 8 Yoginis');
 assert(Object.values(YOGINI_YEARS).reduce((a, b) => a + b, 0) === 36, 'Yogini: planetary years sum to exactly 36');
@@ -318,7 +319,7 @@ assert(yogTotalYears > 34 && yogTotalYears < 36, 'Yogini: reference chart total 
 // -------------------------------------------------------------
 // SUITE 9: SADE SATI TIMELINE
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[9/20] Testing Shani Sade Sati / Dhaiya Timeline...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[9/21] Testing Shani Sade Sati / Dhaiya Timeline...\x1b[0m');
 
 const sade1 = calculateSadeSatiTimeline(4, new Date('1994-02-23'), 100); // Moon in Cancer(4)
 assert(sade1.sadeSatiPeriods.length > 0, 'Sade Sati: reference chart (Moon in Cancer) finds Sade Sati periods across 100 years');
@@ -345,7 +346,7 @@ if (risingPeriods.length >= 2) {
 // -------------------------------------------------------------
 // SUITE 10: JAIMINI SYSTEM (Karakas, Karakamsha, Avasthas)
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[10/20] Testing Jaimini System (Chara Karakas & Avasthas)...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[10/21] Testing Jaimini System (Chara Karakas & Avasthas)...\x1b[0m');
 
 // Baladi Avastha - full verified 7-planet worked example
 assert(baladiAvastha(17, 2) === 'Yuva', 'Jaimini Baladi: Sun-analog 17° even sign -> Yuva (verified example)');
@@ -376,7 +377,7 @@ for (let i = 0; i < karakaTest.length - 1; i++) {
 // -------------------------------------------------------------
 // SUITE 11: JAIMINI CHARA DASHA
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[11/20] Testing Jaimini Chara Dasha...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[11/21] Testing Jaimini Chara Dasha...\x1b[0m');
 
 assert(signCount(1, 1, 'forward') === 12, 'Chara Dasha signCount: same sign -> 12 (max duration)');
 assert(signCount(1, 2, 'forward') === 1, 'Chara Dasha signCount: Aries->Taurus forward -> 1');
@@ -396,7 +397,7 @@ assert(cd.mahadashas.every(m => m.antardashas.length === 12), 'Chara Dasha: ever
 // -------------------------------------------------------------
 // SUITE 12: TAJIK VARSHPHAL
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[12/20] Testing Tajik Varshphal (Annual Chart) Engine...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[12/21] Testing Tajik Varshphal (Annual Chart) Engine...\x1b[0m');
 
 assert(calculateMuntha(3, 32) === 11, 'Tajik Muntha: (Lagna 3 + 32 completed years) mod 12 -> 11');
 assert(calculateMuntha(11, 1) === 12, 'Tajik Muntha: (Lagna 11 + 1) mod 12 = 0 -> wraps to 12');
@@ -416,7 +417,7 @@ assert(mudda[0].lord === 'Saturn', 'Tajik Mudda Dasha: starts from the specified
 // -------------------------------------------------------------
 // SUITE 13: LAL KITAB SYSTEM
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[13/20] Testing Lal Kitab System...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[13/21] Testing Lal Kitab System...\x1b[0m');
 
 assert(LALKITAB_ORDER.length === 9, 'Lal Kitab: DASHA_ORDER has all 9 planets');
 const lk35 = calculateLalKitab35YearDasha('mercury', new Date('1994-02-23'));
@@ -442,7 +443,7 @@ assert(getRemedies('saturn', 'hi').length >= 3, 'Lal Kitab Remedies: Hindi remed
 // -------------------------------------------------------------
 // SUITE 14: LIFE PREDICTIONS & GRAHA STRENGTH LOGIC
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[14/20] Testing Life Predictions & Planetary Strength Logic...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[14/21] Testing Life Predictions & Planetary Strength Logic...\x1b[0m');
 
 // strengthOf: own/exalted/debilitated/neutral for all 7 classical planets
 assert(strengthOf('sun', 5) === 'own', 'Strength: Sun in Leo(5) -> own');
@@ -491,7 +492,7 @@ assert(predictionsEn[9].text.toLowerCase().includes('doctor'), 'Life Predictions
 // -------------------------------------------------------------
 // SUITE 15: GRAHA (PLANET) ESSAYS
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[15/20] Testing 9 Graha Individual Essays...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[15/21] Testing 9 Graha Individual Essays...\x1b[0m');
 
 const essaysHi = generateGrahaEssays(refReport, 'hi');
 const essaysEn = generateGrahaEssays(refReport, 'en');
@@ -504,7 +505,7 @@ assert(!essaysHi.some(e => /\b(mercury|saturn|jupiter|venus|mars)\b/i.test(e.tex
 // -------------------------------------------------------------
 // SUITE 16: HINDI TRANSLATION LOOKUP (hindiTerms.js)
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[16/20] Testing Hindi Term Translation Lookup...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[16/21] Testing Hindi Term Translation Lookup...\x1b[0m');
 
 assert(nakshatraHi('Pushya') === 'पुष्य', 'hindiTerms: nakshatraHi("Pushya") -> पुष्य');
 assert(nakshatraHi('Ashwini') === 'अश्विनी', 'hindiTerms: nakshatraHi("Ashwini") -> अश्विनी');
@@ -522,7 +523,7 @@ assert(lordHi('UnknownLord') === 'UnknownLord', 'hindiTerms: unknown lord falls 
 // -------------------------------------------------------------
 // SUITE 17: MUHURAT ENGINE
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[17/20] Testing Muhurat Engine (Tithi/Vara parsing & category rules)...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[17/21] Testing Muhurat Engine (Tithi/Vara parsing & category rules)...\x1b[0m');
 
 assert(tithiNumberOf('Krishna Shashthi') === 6, 'Muhurat: tithiNumberOf parses "Krishna Shashthi" -> 6');
 assert(tithiNumberOf('Shukla Panchami') === 5, 'Muhurat: tithiNumberOf parses "Shukla Panchami" -> 5');
@@ -545,7 +546,7 @@ assert(muhuratScan.matches.every(m => !CATEGORY_RULES.vivah.avoidVaraNums.includ
 // -------------------------------------------------------------
 // SUITE 18: INPUT VALIDATION (backend/_db.js) - regression tests for the real spam bug
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[18/20] Testing Server-Side Phone/Name Validation (anti-spam regression)...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[18/21] Testing Server-Side Phone/Name Validation (anti-spam regression)...\x1b[0m');
 
 // The exact malicious data from the real bug report
 assert(isValidIndianPhone('8454070784548989494') === false, 'Validation: the exact reported 19-digit spam phone is rejected');
@@ -583,7 +584,7 @@ assert(isValidName('@#$%') === false, 'Validation: pure symbol "name" -> rejecte
 // -------------------------------------------------------------
 // SUITE 19: CROSS-VERIFICATION AGAINST THE REAL REFERENCE PRINTED BOOKLET
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[19/20] Cross-checking the full pipeline against the reference physical Kundli...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[19/21] Cross-checking the full pipeline against the reference physical Kundli...\x1b[0m');
 
 // Abhishek Raj, 23 Feb 1994, 14:20, Marhaura, Bihar - matched against the
 // real printed Kundli booklet the user shared earlier this session.
@@ -606,7 +607,7 @@ assert(Math.abs((refDashaTotalYears + refDashaPreBirthElapsed) - 120) < 0.01, 'R
 // -------------------------------------------------------------
 // SUITE 20: VASTU SCORE ENGINE
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[20/20] Testing Vastu Score Engine (form-based, verified classical rules)...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[20/21] Testing Vastu Score Engine (form-based, verified classical rules)...\x1b[0m');
 
 assert(VASTU_DIRECTIONS.length === 8, 'Vastu: all 8 directions defined');
 assert(Object.keys(ROOM_RULES).length === 5, 'Vastu: exactly 5 room-types scored (matching the well-corroborated rule set)');
@@ -638,6 +639,52 @@ assert(scoreRoom('kitchen', 'NE').tier === 'avoid', 'Vastu scoreRoom: Kitchen in
 assert(scoreRoom('kitchen', 'W') !== null, 'Vastu scoreRoom: an unlisted direction still returns a neutral result, not null');
 assert(scoreRoom('unknownRoom', 'N') === null, 'Vastu scoreRoom: an unknown room-key safely returns null (no crash)');
 assert(scoreRoom('kitchen', 'INVALID') === null, 'Vastu scoreRoom: an invalid direction string safely returns null (no crash)');
+
+// -------------------------------------------------------------
+// SUITE 21: SHADBALA & BHAVA BALA (PARTIAL - Sthana+Dig+Naisargika)
+// -------------------------------------------------------------
+console.log('\n\x1b[1m\x1b[33m[21/21] Testing Shadbala & Bhava Bala (verified worked examples)...\x1b[0m');
+
+// Uchcha Bala - verified worked example: Sun at 72° (12° Gemini), debilitation 190° -> 39.3
+assert(Math.abs(uchchaBala('sun', 72) - 39.33) < 0.1, 'Shadbala Uchcha: Sun at 12° Gemini -> 39.3 Virupas (verified worked example)');
+assert(uchchaBala('sun', 10) === 60, 'Shadbala Uchcha: planet at exact exaltation degree -> 60 (maximum)');
+assert(uchchaBala('sun', 190) === 0, 'Shadbala Uchcha: planet at exact debilitation degree -> 0 (minimum)');
+
+// Naisargika Bala - fixed values, verified against source (Sun strongest, Saturn weakest)
+assert(NAISARGIKA_BALA.sun === 60, 'Shadbala Naisargika: Sun = 60 (maximum, fixed)');
+assert(NAISARGIKA_BALA.saturn === 8.57, 'Shadbala Naisargika: Saturn = 8.57 (minimum, fixed)');
+assert(NAISARGIKA_BALA.sun > NAISARGIKA_BALA.moon && NAISARGIKA_BALA.moon > NAISARGIKA_BALA.venus, 'Shadbala Naisargika: descending order Sun>Moon>Venus matches classical sequence');
+
+// Dig Bala - verified against documented peak houses
+assert(digBala('jupiter', 1) === 60, 'Shadbala Dig: Jupiter in House 1 (its peak) -> 60 (maximum)');
+assert(digBala('jupiter', 7) === 0, 'Shadbala Dig: Jupiter in House 7 (180° opposite its peak) -> 0 (minimum)');
+assert(digBala('sun', 10) === 60, 'Shadbala Dig: Sun in House 10 (its peak) -> 60');
+assert(digBala('saturn', 7) === 60, 'Shadbala Dig: Saturn in House 7 (its peak) -> 60');
+assert(digBala('moon', 4) === 60, 'Shadbala Dig: Moon in House 4 (its peak) -> 60');
+
+// Bhava Dig Bala - verified worked example (Aries ascendant: 10th=60,11th=50...4th=0)
+assert(bhavaDigBala(10) === 60, 'Bhava Dig: House 10 (peak) -> 60 (verified worked example)');
+assert(bhavaDigBala(11) === 50, 'Bhava Dig: House 11 -> 50 (verified worked example)');
+assert(bhavaDigBala(12) === 40, 'Bhava Dig: House 12 -> 40 (verified worked example)');
+assert(bhavaDigBala(1) === 30, 'Bhava Dig: House 1 -> 30 (verified worked example)');
+assert(bhavaDigBala(2) === 20, 'Bhava Dig: House 2 -> 20 (verified worked example)');
+assert(bhavaDigBala(3) === 10, 'Bhava Dig: House 3 -> 10 (verified worked example)');
+assert(bhavaDigBala(4) === 0, 'Bhava Dig: House 4 (opposite peak) -> 0 (verified worked example)');
+
+// Full Shadbala/Bhava Bala structural checks against the real reference chart
+const shadbalaTest = calculateShadbala(
+    { sun: refReport.planetLongitudes.sun, moon: refReport.planetLongitudes.moon, mars: refReport.planetLongitudes.mars, mercury: refReport.planetLongitudes.mercury, jupiter: refReport.planetLongitudes.jupiter, venus: refReport.planetLongitudes.venus, saturn: refReport.planetLongitudes.saturn },
+    Object.fromEntries(refReport.planets.filter(p => ['sun', 'moon', 'mars', 'mercury', 'jupiter', 'venus', 'saturn'].includes(p.key)).map(p => [p.key, p.house]))
+);
+assert(Object.keys(shadbalaTest).length === 7, 'Shadbala: all 7 classical planets scored for the reference chart');
+assert(Object.values(shadbalaTest).every(v => v.totalVirupas > 0 && v.totalVirupas < 480), 'Shadbala: every planet\'s partial total is a plausible positive value, less than the full-calculation ceiling');
+assert(Object.values(shadbalaTest).every(v => Math.abs(v.totalRupas - v.totalVirupas / 60) < 0.001), 'Shadbala: Rupas conversion is always exactly Virupas/60');
+
+const houseLordsTest = {};
+for (let h = 1; h <= 12; h++) houseLordsTest[h] = SIGN_LORD[refReport.houseData[h].rashiId];
+const bhavaBalaTest = calculateBhavaBala(shadbalaTest, houseLordsTest);
+assert(Object.keys(bhavaBalaTest).length === 12, 'Bhava Bala: all 12 houses scored for the reference chart');
+assert(Object.values(bhavaBalaTest).every(v => v.totalVirupas >= 0), 'Bhava Bala: no house scores negative (Bhavadhipati + Dig are both non-negative by construction)');
 
 
 console.log('\n\x1b[1m\x1b[36m============================================================\x1b[0m');
