@@ -343,7 +343,7 @@ export default function Home() {
                     <div className="text-center fade-up" style={{ marginTop: '2rem', display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
                         <Link to="/free-kundli" className="btn btn-gold btn-lg">✦ {t('निःशुल्क कुंडली मांगें', 'Request Free Kundli')}</Link>
                         <a href={`https://wa.me/919278148269?text=${encodeURIComponent(t('नमस्कार! मुझे ज्योतिष परामर्श के लिए अपॉइंटमेंट चाहिए।', 'Hello! I would like to book an astrology consultation appointment.'))}`} target="_blank" rel="noreferrer" className="btn btn-whatsapp btn-lg">💬 {t('अपॉइंटमेंट के लिए पूछें', 'Enquire for Appointment')}</a>
-                        <Link to="/contact" className="btn btn-outline btn-lg">📅 {t('अपॉइंटमेंट बुक करें', 'Book Appointment')}</Link>
+                        <Link to="/contact" className="btn btn-outline-dark btn-lg">📅 {t('अपॉइंटमेंट बुक करें', 'Book Appointment')}</Link>
                     </div>
                 </div>
             </section>
