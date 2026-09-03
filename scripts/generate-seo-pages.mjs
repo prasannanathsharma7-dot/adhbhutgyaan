@@ -216,8 +216,8 @@ const routes = [
     },
     {
         path: '/vastu-score',
-        title: 'AI वास्तु स्कोर — जल्द आ रहा है | Adhbhut Gyaan',
-        description: 'अपने घर के 2D फ्लोर प्लान से 16-ज़ोन वास्तु स्कोर एवं उपाय प्राप्त करें — जल्द उपलब्ध। मुख्य द्वार की दिशा चुनें और तुरंत वास्तु विश्लेषण पाएं।',
+        title: 'AI वास्तु स्कोर — अपने घर का निःशुल्क वास्तु विश्लेषण | Adhbhut Gyaan',
+        description: 'मुख्य द्वार, रसोई, पूजा घर, शयन कक्ष एवं शौचालय की दिशा बताएं — तुरंत शास्त्रोक्त वास्तु स्कोर एवं उपाय प्राप्त करें।',
         jsonLd: combineJsonLd(breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Vastu Score', path: '/vastu-score' }])),
     },
 ];

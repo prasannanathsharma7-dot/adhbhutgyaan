@@ -66,7 +66,7 @@ export default function Navbar() {
         { to: '/free-kundli', label: t('फ्री कुंडली', 'Free Kundli'), Icon: Sparkles },
         { to: '/horoscope', label: t('राशिफल', 'Horoscope'), Icon: Star },
         { to: '/muhurat', label: t('शुभ मुहूर्त', 'Shubh Muhurat'), Icon: CalendarHeart },
-        { to: '/vastu-score', label: t('वास्तु स्कोर', 'Vastu Score'), Icon: Compass, badge: t('जल्द', 'Soon') },
+        { to: '/vastu-score', label: t('वास्तु स्कोर', 'Vastu Score'), Icon: Compass },
     ];
 
     const restLinks = [

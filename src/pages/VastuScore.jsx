@@ -1,92 +1,142 @@
+import { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import useSEO from '../hooks/useSEO';
 import { breadcrumbJsonLd, combineJsonLd } from '../utils/seo';
-import { Compass, UploadCloud, ScanLine, FileCheck2, MessageCircle, Sparkles } from 'lucide-react';
+import { calculateVastuScore, getRemedy, DIRECTIONS, DIRECTION_LABEL_HI, DIRECTION_LABEL_EN, ROOM_RULES } from '../utils/vastuEngine';
+import { Compass, MessageCircle, Lock, CheckCircle2, AlertTriangle, MinusCircle, RefreshCw } from 'lucide-react';
+
+const TIER_ICON = { ideal: CheckCircle2, acceptable: MinusCircle, avoid: AlertTriangle, neutral: MinusCircle };
+const TIER_COLOR = { ideal: '#16a34a', acceptable: '#ca8a04', avoid: '#dc2626', neutral: 'var(--text-secondary)' };
 
 export default function VastuScore() {
-    const { t } = useLanguage();
+    const { t, lang } = useLanguage();
+    const DIRECTION_LABEL = lang === 'hi' ? DIRECTION_LABEL_HI : DIRECTION_LABEL_EN;
+    const [placements, setPlacements] = useState({ mainDoor: '', kitchen: '', poojaRoom: '', masterBedroom: '', toilet: '' });
+    const [result, setResult] = useState(null);
 
     useSEO({
-        title: t('AI वास्तु स्कोर — जल्द आ रहा है | Adhbhut Gyaan', 'AI Vastu Score — Coming Soon | Adhbhut Gyaan'),
-        description: t('अपने घर के 2D फ्लोर प्लान से 16-ज़ोन वास्तु स्कोर एवं उपाय प्राप्त करें — जल्द उपलब्ध।', 'Get a 16-zone Vastu score and remedies from your home\'s 2D floor plan - coming soon.'),
+        title: t('AI वास्तु स्कोर — अपने घर का निःशुल्क वास्तु विश्लेषण | Adhbhut Gyaan', 'Vastu Score — Free Instant Vastu Analysis for Your Home | Adhbhut Gyaan'),
+        description: t('मुख्य द्वार, रसोई, पूजा घर, शयन कक्ष एवं शौचालय की दिशा बताएं — तुरंत शास्त्रोक्त वास्तु स्कोर एवं उपाय प्राप्त करें।', "Tell us your Main Door, Kitchen, Pooja Room, Bedroom, and Toilet directions - get an instant, scripturally-grounded Vastu score and remedies."),
         path: '/vastu-score',
         jsonLd: combineJsonLd(breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Vastu Score', path: '/vastu-score' }])),
     });
 
-    const steps = [
-        { icon: UploadCloud, hi: '2D फ्लोर प्लान अपलोड करें', en: 'Upload Your 2D Floor Plan' },
-        { icon: Compass, hi: 'मुख्य द्वार की दिशा चुनें (उत्तर कम्पास)', en: 'Select Main Door Direction (North Compass)' },
-        { icon: ScanLine, hi: '16-ज़ोन वास्तु विश्लेषण प्राप्त करें', en: 'Get Your 16-Zone Vastu Analysis' },
-        { icon: FileCheck2, hi: 'स्कोर एवं उपाय देखें', en: 'View Score & Remedies' },
-    ];
+    const allFilled = Object.values(placements).every(Boolean);
 
-    const whatsappUrl = `https://wa.me/919278148269?text=${encodeURIComponent(
-        t('प्रणाम, मुझे AI वास्तु स्कोर फीचर की Waitlist/Early Access चाहिए।', 'Pranam, I would like Waitlist/Early Access for the AI Vastu Score feature.')
-    )}`;
+    const handleCalculate = () => {
+        if (!allFilled) return;
+        setResult(calculateVastuScore(placements));
+    };
+
+    const handleReset = () => {
+        setPlacements({ mainDoor: '', kitchen: '', poojaRoom: '', masterBedroom: '', toilet: '' });
+        setResult(null);
+    };
+
+    const whatsappUrl = `https://wa.me/919278148269?text=${encodeURIComponent(t(
+        `प्रणाम, मुझे अपने घर का विस्तृत 100-पॉइंट वास्तु ऑडिट चाहिए।\nमेरा वास्तु स्कोर: ${result?.percentage}%\n${Object.entries(placements).map(([k, v]) => `${ROOM_RULES[k].nameHi}: ${DIRECTION_LABEL_HI[v]}`).join('\n')}`,
+        `Pranam, I would like a detailed 100-point Vastu audit for my home.\nMy Vastu Score: ${result?.percentage}%\n${Object.entries(placements).map(([k, v]) => `${ROOM_RULES[k].nameEn}: ${DIRECTION_LABEL_EN[v]}`).join('\n')}`
+    ))}`;
 
     return (
         <div>
-            <section className="hero" style={{ minHeight: '45vh', background: 'var(--navy-950)' }}>
-                <div className="container text-center" style={{ position: 'relative', zIndex: 2, padding: '3.5rem 0' }}>
+            <section className="hero" style={{ minHeight: '38vh', background: 'var(--navy-950)' }}>
+                <div className="container text-center" style={{ position: 'relative', zIndex: 2, padding: '3rem 0' }}>
                     <span className="section-label" style={{ justifyContent: 'center', color: 'var(--gold-400)' }}>
-                        <Sparkles size={14} style={{ marginRight: '0.4rem' }} />{t('जल्द आ रहा है', 'Coming Soon')}
+                        <Compass size={14} style={{ marginRight: '0.4rem' }} />{t('वास्तु स्कोर', 'Vastu Score')}
                     </span>
                     <h1 style={{ color: 'white', fontSize: 'clamp(1.8rem, 5vw, 2.6rem)', margin: '0.5rem 0' }}>
-                        {t('AI फ्लोर प्लान वास्तु इंजन', 'AI Floor Plan Vastu Engine')}
+                        {t('अपने घर का निःशुल्क वास्तु स्कोर पाएं', "Get Your Home's Free Vastu Score")}
                     </h1>
-                    <p style={{ color: 'var(--warm-200)', maxWidth: '640px', margin: '0 auto' }}>
-                        {t('अपना 2D फ्लोर प्लान अपलोड करें, मुख्य द्वार की दिशा चुनें, और तुरंत 16-ज़ोन वास्तु स्कोर एवं उपाय प्राप्त करें।', "Upload your 2D floor plan, select your main door's direction, and instantly get a 16-zone Vastu score and remedies.")}
+                    <p style={{ color: 'var(--warm-200)', maxWidth: '620px', margin: '0 auto' }}>
+                        {t('मुख्य द्वार, रसोई, पूजा घर, शयन कक्ष एवं शौचालय की दिशा बताएं — शास्त्रोक्त वास्तु नियमों पर आधारित तुरंत विश्लेषण।', "Tell us the direction of your Main Door, Kitchen, Pooja Room, Bedroom, and Toilet - get an instant analysis based on classical Vastu Shastra principles.")}
                     </p>
                 </div>
             </section>
 
             <section className="section">
-                <div className="container">
-                    <h2 className="section-title text-center">{t('यह कैसे काम करेगा', 'How It Will Work')}</h2>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1.5rem', marginTop: '2rem', maxWidth: '900px', marginLeft: 'auto', marginRight: 'auto' }}>
-                        {steps.map((s, i) => (
-                            <div key={i} style={{ textAlign: 'center', padding: '1.5rem 1rem', background: 'var(--cream)', borderRadius: 'var(--radius-lg)' }}>
-                                <div style={{ width: '52px', height: '52px', borderRadius: '50%', background: 'var(--gold-100)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 0.75rem' }}>
-                                    <s.icon size={24} style={{ color: 'var(--gold-700)' }} />
+                <div className="container" style={{ maxWidth: 640 }}>
+                    {!result ? (
+                        <div style={{ background: 'var(--cream)', borderRadius: 'var(--radius-lg)', padding: '1.75rem' }}>
+                            {Object.entries(ROOM_RULES).map(([roomKey, rule]) => (
+                                <div className="form-group" key={roomKey}>
+                                    <label className="form-label">{lang === 'hi' ? rule.nameHi : rule.nameEn}</label>
+                                    <select
+                                        className="form-select"
+                                        value={placements[roomKey]}
+                                        onChange={e => setPlacements(p => ({ ...p, [roomKey]: e.target.value }))}
+                                    >
+                                        <option value="">{t('दिशा चुनें', 'Select direction')}</option>
+                                        {DIRECTIONS.map(d => (
+                                            <option key={d} value={d}>{DIRECTION_LABEL[d]}</option>
+                                        ))}
+                                    </select>
                                 </div>
-                                <div style={{ fontWeight: 700, fontSize: '0.85rem' }}>{i + 1}. {t(s.hi, s.en)}</div>
+                            ))}
+                            <button
+                                type="button"
+                                className="btn btn-primary btn-lg"
+                                disabled={!allFilled}
+                                onClick={handleCalculate}
+                                style={{ width: '100%', justifyContent: 'center', opacity: allFilled ? 1 : 0.5, marginTop: '0.5rem' }}
+                            >
+                                <Compass size={16} style={{ verticalAlign: '-3px', marginRight: '0.4rem' }} />
+                                {t('मेरा वास्तु स्कोर देखें', 'Calculate My Vastu Score')}
+                            </button>
+                        </div>
+                    ) : (
+                        <div>
+                            <div className="text-center" style={{ marginBottom: '1.75rem' }}>
+                                <div style={{ fontSize: '3.2rem', fontWeight: 800, color: result.percentage >= 70 ? '#16a34a' : result.percentage >= 40 ? '#ca8a04' : '#dc2626' }}>
+                                    {result.percentage}%
+                                </div>
+                                <p style={{ color: 'var(--text-secondary)' }}>{t('आपका वास्तु स्कोर (मूल विश्लेषण)', 'Your Vastu Score (Basic Analysis)')}</p>
                             </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
 
-            <section className="section" style={{ background: 'var(--cream)' }}>
-                <div className="container" style={{ maxWidth: '820px' }}>
-                    <h2 className="section-title text-center">{t('मूल्य निर्धारण (प्रस्तावित)', 'Pricing (Proposed)')}</h2>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.5rem', marginTop: '2rem' }}>
-                        <div style={{ background: 'white', borderRadius: 'var(--radius-lg)', padding: '1.75rem', border: '1px solid var(--border-light)' }}>
-                            <h3 style={{ marginBottom: '0.5rem' }}>{t('मूल ज़ोन सारांश', 'Basic Zone Summary')}</h3>
-                            <div style={{ fontSize: '1.6rem', fontWeight: 800, color: '#16a34a', marginBottom: '0.75rem' }}>{t('निःशुल्क', 'FREE')}</div>
-                            <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>{t('16 ज़ोन का संक्षिप्त सारांश एवं सामान्य संकेत।', 'A brief 16-zone summary with general indicators.')}</p>
-                        </div>
-                        <div style={{ background: 'white', borderRadius: 'var(--radius-lg)', padding: '1.75rem', border: '2px solid var(--gold-500)', boxShadow: 'var(--shadow-gold)' }}>
-                            <h3 style={{ marginBottom: '0.5rem' }}>{t('विस्तृत 100-पॉइंट ऑडिट रिपोर्ट', 'Detailed 100-Point Audit Report')}</h3>
-                            <div style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--gold-700)', marginBottom: '0.75rem' }}>₹499 <span style={{ fontSize: '1rem', fontWeight: 600 }}>- ₹999</span></div>
-                            <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>{t('संपूर्ण 100-पॉइंट विश्लेषण, विस्तृत दोष-सूची एवं व्यक्तिगत उपाय।', 'A complete 100-point analysis, detailed defect list, and personalized remedies.')}</p>
-                        </div>
-                    </div>
-                    <p style={{ textAlign: 'center', fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '1.5rem' }}>
-                        {t('* यह फीचर अभी विकासाधीन है — मूल्य अंतिम रूप से बदल सकते हैं।', '* This feature is still in development - final pricing may change.')}
-                    </p>
-                </div>
-            </section>
+                            <div style={{ display: 'grid', gap: '0.75rem', marginBottom: '1.75rem' }}>
+                                {result.results.map(r => {
+                                    const Icon = TIER_ICON[r.tier];
+                                    return (
+                                        <div key={r.roomKey} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', background: 'white', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-md)', padding: '0.85rem 1rem' }}>
+                                            <Icon size={20} style={{ color: TIER_COLOR[r.tier], flexShrink: 0 }} />
+                                            <div style={{ flex: 1 }}>
+                                                <div style={{ fontWeight: 700, fontSize: '0.9rem' }}>{lang === 'hi' ? ROOM_RULES[r.roomKey].nameHi : ROOM_RULES[r.roomKey].nameEn}</div>
+                                                <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>{DIRECTION_LABEL[r.direction]} — {t({ ideal: 'आदर्श', acceptable: 'स्वीकार्य', avoid: 'दोषपूर्ण', neutral: 'सामान्य' }[r.tier], { ideal: 'Ideal', acceptable: 'Acceptable', avoid: 'Defect', neutral: 'Neutral' }[r.tier])}</div>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
 
-            <section className="section text-center">
-                <div className="container">
-                    <h2 className="section-title">{t('सबसे पहले जानें', 'Be the First to Know')}</h2>
-                    <p style={{ maxWidth: '520px', margin: '0.75rem auto 1.5rem', color: 'var(--text-secondary)' }}>
-                        {t('इस फीचर के लॉन्च होते ही सबसे पहले सूचित होने के लिए WhatsApp पर हमसे जुड़ें।', 'Join us on WhatsApp to be notified the moment this feature launches.')}
+                            <div style={{ position: 'relative', marginBottom: '1.5rem', borderRadius: 'var(--radius-xl)', overflow: 'hidden', border: '1px solid var(--border-gold)' }}>
+                                <div aria-hidden="true" style={{ filter: 'blur(6px)', opacity: 0.55, padding: '1.5rem', pointerEvents: 'none', userSelect: 'none' }}>
+                                    <h3 style={{ margin: '0 0 0.75rem' }}>{t('विस्तृत 100-पॉइंट वास्तु ऑडिट', 'Detailed 100-Point Vastu Audit')}</h3>
+                                    {result.results.filter(r => r.tier !== 'ideal').map(r => (
+                                        <p key={r.roomKey} style={{ margin: '0 0 0.5rem' }}>{getRemedy(r.roomKey, lang)}</p>
+                                    ))}
+                                </div>
+                                <div style={{ position: 'absolute', inset: 0, background: 'rgba(20,17,15,0.55)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '1.5rem' }}>
+                                    <Lock size={26} style={{ color: 'var(--gold-400)', marginBottom: '0.6rem' }} />
+                                    <h3 style={{ color: 'white', margin: '0 0 0.4rem', fontSize: '1.1rem' }}>{t('विस्तृत 100-पॉइंट वास्तु ऑडिट', 'Detailed 100-Point Vastu Audit')}</h3>
+                                    <p style={{ color: 'var(--warm-200)', fontSize: '0.85rem', maxWidth: '440px', margin: '0 0 1.1rem' }}>
+                                        {t('प्रत्येक दोष हेतु विस्तृत उपाय, यंत्र-स्थापना एवं व्यक्तिगत परामर्श — ₹499 - ₹999', 'Detailed remedies for each defect, yantra placement guidance, and a personal consultation - ₹499 - ₹999')}
+                                    </p>
+                                    <a href={whatsappUrl} target="_blank" rel="noreferrer" className="btn btn-whatsapp btn-lg" style={{ whiteSpace: 'normal', maxWidth: '100%' }}>
+                                        <MessageCircle size={17} style={{ verticalAlign: '-3px', marginRight: '0.4rem' }} />
+                                        {t('विस्तृत ऑडिट हेतु WhatsApp करें', 'Get Detailed Audit via WhatsApp')}
+                                    </a>
+                                </div>
+                            </div>
+
+                            <button type="button" className="btn btn-outline-dark" onClick={handleReset} style={{ width: '100%', justifyContent: 'center' }}>
+                                <RefreshCw size={15} style={{ verticalAlign: '-2px', marginRight: '0.4rem' }} />
+                                {t('दोबारा गणना करें', 'Recalculate')}
+                            </button>
+                        </div>
+                    )}
+                    <p style={{ textAlign: 'center', fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '1.5rem' }}>
+                        {t('* यह विश्लेषण 5 प्रमुख कक्षों पर आधारित सामान्य मार्गदर्शन है, संपूर्ण 16-ज़ोन शास्त्रोक्त गणना नहीं — सटीक एवं व्यक्तिगत विश्लेषण हेतु परामर्श लें।', '* This is general guidance based on 5 key rooms, not a full 16-zone classical calculation - consult for a precise, personalized analysis.')}
                     </p>
-                    <a href={whatsappUrl} target="_blank" rel="noreferrer" className="btn btn-whatsapp btn-lg">
-                        <MessageCircle size={17} style={{ verticalAlign: '-3px', marginRight: '0.4rem' }} />
-                        {t('Waitlist / Early Access हेतु WhatsApp करें', 'Join Waitlist / Early Access via WhatsApp')}
-                    </a>
                 </div>
             </section>
         </div>
