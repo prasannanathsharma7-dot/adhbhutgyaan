@@ -545,6 +545,19 @@ export default function Home() {
                             );
                         })}
                     </div>
+
+                    <div className="text-center" style={{ marginTop: '2rem', background: 'var(--cream)', borderRadius: 'var(--radius-lg)', padding: '1.5rem', maxWidth: 560, marginLeft: 'auto', marginRight: 'auto' }}>
+                        <p style={{ marginBottom: '0.9rem', fontSize: '0.9rem' }}>
+                            {t('क्या आपने हमारी सेवा का अनुभव लिया है? Google पर अपनी समीक्षा साझा करें — इससे अन्य भक्तों को हम तक पहुँचने में मदद मिलती है।', 'Have you experienced our service? Share your review on Google - it helps other devotees find us.')}
+                        </p>
+                        <a
+                            href="https://www.google.com/maps/search/?api=1&query=Adhbhut+Gyaan+Pt+Umang+Nath+Sharma+Varanasi"
+                            target="_blank" rel="noreferrer"
+                            className="btn btn-outline-dark"
+                        >
+                            ⭐ {t('Google पर समीक्षा लिखें', 'Write a Review on Google')}
+                        </a>
+                    </div>
                 </div>
             </section>
 
