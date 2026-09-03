@@ -72,7 +72,29 @@ module.exports = async (req, res) => {
 
         if (req.method === 'GET') {
             const orderId = req.query.orderId;
-            if (!orderId) return res.status(400).json({ ok: false, error: 'orderId is required' });
+
+            // List-mode: no orderId given, but a valid admin key is present -
+            // returns all orders for the /admin dashboard's Muhurat tab, in
+            // the same { ok, items } shape every other admin tab
+            // (bookings/contact/reviews) already uses.
+            if (!orderId) {
+                if (!isAdmin(req)) {
+                    return res.status(400).json({ ok: false, error: 'orderId is required' });
+                }
+                const limit = Math.min(Number(req.query.limit) || 100, 200);
+                const docs = await col.find({}).sort({ createdAt: -1 }).limit(limit).toArray();
+                const items = docs.map(d => ({
+                    _id: d._id.toString(),
+                    category: d.category,
+                    categoryLabel: CATEGORY_RULES[d.category],
+                    name: d.name,
+                    phone: d.phone,
+                    matchCount: (d.matches || []).length,
+                    paymentStatus: d.paymentStatus,
+                    createdAt: d.createdAt,
+                }));
+                return res.status(200).json({ ok: true, items });
+            }
 
             let doc;
             try {
@@ -103,6 +125,30 @@ module.exports = async (req, res) => {
                 },
                 isAdminView,
             });
+        }
+
+        if (req.method === 'PATCH') {
+            if (!isAdmin(req)) {
+                return res.status(401).json({ ok: false, error: 'Unauthorized' });
+            }
+            const body = req.body || {};
+            const id = (body.id || '').toString().trim();
+            const paymentStatus = (body.paymentStatus || '').toString().trim();
+            const VALID_PAYMENT_STATUSES = ['pending', 'paid', 'cancelled'];
+            if (!id || !VALID_PAYMENT_STATUSES.includes(paymentStatus)) {
+                return res.status(400).json({ ok: false, error: `Valid id and paymentStatus (${VALID_PAYMENT_STATUSES.join('/')}) are required` });
+            }
+            let objectId;
+            try {
+                objectId = new ObjectId(id);
+            } catch (e) {
+                return res.status(400).json({ ok: false, error: 'Invalid id' });
+            }
+            const updateResult = await col.updateOne({ _id: objectId }, { $set: { paymentStatus } });
+            if (updateResult.matchedCount === 0) {
+                return res.status(404).json({ ok: false, error: 'Order not found' });
+            }
+            return res.status(200).json({ ok: true });
         }
 
         return res.status(405).json({ ok: false, error: 'Method not allowed' });

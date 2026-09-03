@@ -4,6 +4,7 @@ import useSEO from '../hooks/useSEO';
 
 const TABS = [
     { id: 'bookings', label: 'Bookings', endpoint: '/api/bookings' },
+    { id: 'muhurat', label: 'Muhurat', endpoint: '/api/muhurat-booking' },
     { id: 'messages', label: 'Messages', endpoint: '/api/contact' },
     { id: 'reviews', label: 'Reviews', endpoint: '/api/reviews' },
     { id: 'subscribers', label: 'Subscribers', endpoint: '/api/newsletter' },
@@ -26,6 +27,7 @@ function StatusBadge({ status }) {
         confirmed: { bg: 'rgba(37,211,102,0.1)', c: 'var(--whatsapp)' },
         approved: { bg: 'rgba(37,211,102,0.1)', c: 'var(--whatsapp)' },
         completed: { bg: 'rgba(37,211,102,0.15)', c: 'var(--whatsapp)' },
+        paid: { bg: 'rgba(37,211,102,0.15)', c: 'var(--whatsapp)' },
         rejected: { bg: 'rgba(183,28,28,0.1)', c: 'var(--red-400)' },
         cancelled: { bg: 'rgba(183,28,28,0.1)', c: 'var(--red-400)' },
     };
@@ -212,6 +214,22 @@ export default function Admin() {
         }
     };
 
+    const muhuratPaymentAction = async (id, paymentStatus) => {
+        try {
+            const res = await fetch('/api/muhurat-booking', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json', 'x-admin-key': key },
+                body: JSON.stringify({ id, paymentStatus }),
+            });
+            const data = await res.json();
+            if (data.ok) {
+                setItems(prev => prev.map(it => (it._id === id ? { ...it, paymentStatus } : it)));
+            }
+        } catch {
+            /* ignore */
+        }
+    };
+
     if (!key) {
         return (
             <div className="section" style={{ minHeight: '60vh', display: 'flex', alignItems: 'center' }}>
@@ -316,6 +334,31 @@ export default function Admin() {
                                     )}
                                 </div>
                                 {it.status === 'completed' && <SankalpDispatch booking={it} adminKey={key} />}
+                            </div>
+                        ))}
+
+                        {tab === 'muhurat' && items.map(it => (
+                            <div key={it._id} style={{ background: 'white', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-lg)', padding: '1rem 1.25rem', boxShadow: 'var(--shadow-md)' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', gap: '0.5rem', flexWrap: 'wrap' }}>
+                                    <strong>{it.name}</strong>
+                                    <StatusBadge status={it.paymentStatus} />
+                                </div>
+                                <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginTop: '0.35rem' }}>
+                                    📞 <a href={`tel:${it.phone}`}>{it.phone}</a> · {it.categoryLabel ? it.categoryLabel.nameEn : it.category} · {it.matchCount} {it.matchCount === 1 ? 'date' : 'dates'} found
+                                </div>
+                                <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
+                                    {fmtDate(it.createdAt)}
+                                </div>
+                                <div style={{ marginTop: '0.75rem', display: 'flex', gap: '0.6rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                                    <a href={`/muhurat/report/${it._id}?admin_key=${encodeURIComponent(key)}`} target="_blank" rel="noreferrer" className="btn btn-outline-dark" style={{ padding: '0.35rem 0.8rem', fontSize: '0.85rem' }}>
+                                        🔗 View Report
+                                    </a>
+                                    <StatusSelect
+                                        value={it.paymentStatus}
+                                        options={['pending', 'paid', 'cancelled']}
+                                        onChange={(status) => muhuratPaymentAction(it._id, status)}
+                                    />
+                                </div>
                             </div>
                         ))}
 
