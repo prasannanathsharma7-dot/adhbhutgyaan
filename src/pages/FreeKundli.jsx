@@ -20,6 +20,36 @@ function getElementIcon(element = '') {
     return <Sparkles size={15} style={{ color: '#7c3aed' }} />;
 }
 
+// Geocodes a free-text birth-place string to real lat/lng coordinates via
+// Nominatim (OpenStreetMap's free, keyless geocoding API) - fixes a real
+// accuracy bug where every Free Kundli calculation silently used
+// Varanasi's coordinates regardless of what city the user actually typed.
+// On any failure (network error, place not found, rate-limited), returns
+// null so the caller can fall back to a sane default rather than break
+// the whole feature - a wrong-but-available Kundli is better than none.
+async function geocodeBirthPlace(placeName) {
+    try {
+        const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(placeName)}&format=json&limit=1&addressdetails=1`;
+        const res = await fetch(url, { headers: { Accept: 'application/json' } });
+        if (!res.ok) return null;
+        const results = await res.json();
+        if (!Array.isArray(results) || results.length === 0) return null;
+        const { lat, lon, address } = results[0];
+        const latitude = parseFloat(lat);
+        const longitude = parseFloat(lon);
+        if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) return null;
+        // Timezone-offset resolution is a separate, harder problem than
+        // geocoding (needs a lat/lng-to-timezone lookup, not just
+        // reverse-geocoding) - defaulting to IST (+5:30) is correct for
+        // every Indian city (the vast majority of users) but is a known,
+        // disclosed limitation for a genuinely non-Indian birthplace.
+        const isIndia = address?.country_code === 'in';
+        return { latitude, longitude, isIndia };
+    } catch {
+        return null;
+    }
+}
+
 export default function FreeKundli() {
     const { t, lang } = useLanguage();
     const [form, setForm] = useState({ name: '', dob: '', tob: '06:30 (06:30 AM)', pob: 'Varanasi, Uttar Pradesh', gender: '', phone: '', email: '', question: '' });
@@ -61,20 +91,36 @@ export default function FreeKundli() {
         return true;
     };
 
-    const handleGenerate = (e) => {
+    const [geoNote, setGeoNote] = useState('');
+
+    const handleGenerate = async (e) => {
         e.preventDefault();
         if (!validate()) return;
         setStatus('calculating');
+        setGeoNote('');
 
         try {
+            // Resolve the actually-typed birth place to real coordinates -
+            // falls back to Varanasi's coordinates (the previous, always-
+            // wrong-for-non-Varanasi behavior) only if geocoding fails, so
+            // the feature degrades gracefully rather than breaking.
+            const geo = await geocodeBirthPlace(form.pob);
+            const latitude = geo?.latitude ?? 25.3176;
+            const longitude = geo?.longitude ?? 82.9739;
+            if (!geo) {
+                setGeoNote(t('स्थान सटीक रूप से नहीं मिल सका — काशी के निर्देशांक अस्थायी रूप से उपयोग किए गए हैं। कृपया अधिक स्पष्ट शहर/राज्य लिखें।', "We couldn't precisely locate this place - Varanasi's coordinates were used as a fallback. Please try a more specific city/state name for full accuracy."));
+            } else if (!geo.isIndia) {
+                setGeoNote(t('भारत के बाहर के जन्म-स्थान हेतु समय-क्षेत्र IST (+5:30) मान लिया गया है, जो सटीक न भी हो सकता है — सटीक विश्लेषण हेतु परामर्श लें।', "For a non-Indian birthplace, the timezone was assumed to be IST (+5:30), which may not be accurate - consult for a precise analysis."));
+            }
+
             // 1. Instant authentic Lahiri Ayanamsa calculation on client (<1ms)
             const result = calculateInstantKundli({
                 name: form.name,
                 birthDate: form.dob,
                 birthTime: form.tob,
                 birthPlace: form.pob,
-                latitude: 25.3176,
-                longitude: 82.9739,
+                latitude,
+                longitude,
                 tzOffset: 5.5,
             });
 
@@ -316,7 +362,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                 </div>
 
                                 <button type="submit" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', padding: '0.85rem', fontSize: '1rem' }} disabled={status === 'calculating'}>
-                                    {status === 'calculating' ? t('वैदिक गणना की जा रही है...', 'Calculating Vedic Chart...') : <><Zap size={16} style={{ verticalAlign: '-3px', marginRight: '0.3rem' }} />{t('निःशुल्क कुंडली रिपोर्ट तुरंत देखें', 'Generate Free Kundli Analysis')}</>}
+                                    {status === 'calculating' ? t('स्थान खोजा जा रहा है एवं वैदिक गणना की जा रही है...', 'Locating city & calculating Vedic chart...') : <><Zap size={16} style={{ verticalAlign: '-3px', marginRight: '0.3rem' }} />{t('निःशुल्क कुंडली रिपोर्ट तुरंत देखें', 'Generate Free Kundli Analysis')}</>}
                                 </button>
                             </form>
                         </div>
@@ -335,6 +381,12 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                             </div>
                         </div>
 
+                        {geoNote && (
+                            <div style={{ background: '#fef3c7', border: '1px solid #f59e0b', borderRadius: 'var(--radius-md)', padding: '0.7rem 1rem', marginBottom: '1rem', fontSize: '0.82rem', color: '#92400e', display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
+                                <AlertTriangle size={15} style={{ flexShrink: 0, marginTop: '0.1rem' }} />
+                                <span>{geoNote}</span>
+                            </div>
+                        )}
                         {/* Quick Vedic Snapshot - instant, unmissable summary shown before
                             the detailed report below, followed by a locked teaser card
                             that drives WhatsApp conversion for deeper analysis. */}
