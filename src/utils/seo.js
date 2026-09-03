@@ -37,6 +37,17 @@ export function faqJsonLd(items) {
  * service-specific searches (e.g. "rudrabhishek puja varanasi price")
  * independently of the general /services listing page.
  */
+// Structured areaServed - proper Country/Place typed entities rather than
+// bare strings, per Schema.org's recommendation for areaServed. Reused
+// across LocalBusiness and every Service schema for consistency.
+export const STRUCTURED_AREA_SERVED = [
+    { '@type': 'City', name: 'Varanasi' },
+    { '@type': 'Country', name: 'India' },
+    { '@type': 'Country', name: 'United States' },
+    { '@type': 'Country', name: 'United Kingdom' },
+    { '@type': 'Place', name: 'Worldwide (Online Services)' },
+];
+
 export function serviceJsonLd(service, lang) {
     const name = lang === 'hi' ? service.name : service.nameEn;
     const description = lang === 'hi' ? service.description : service.descriptionEn;
@@ -50,7 +61,18 @@ export function serviceJsonLd(service, lang) {
             name: 'Adhbhut Gyaan',
             url: `${SITE_URL}/`,
         },
-        areaServed: ['Varanasi', 'Kashi', 'Banaras', 'India', 'Worldwide (online)'],
+        areaServed: STRUCTURED_AREA_SERVED,
+        // In-person delivery (one of the site's 3 delivery tiers - see
+        // Booking.jsx) happens at the physical Varanasi location during
+        // this specific window; online/WhatsApp booking itself remains
+        // possible any time per the LocalBusiness's broader hours.
+        hoursAvailable: {
+            '@type': 'OpeningHoursSpecification',
+            dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+            opens: '09:00',
+            closes: '12:00',
+            description: 'In-person pooja hours at the Varanasi location; online booking available 24/7.',
+        },
         offers: (service.packages || []).map(pkg => ({
             '@type': 'Offer',
             name: lang === 'hi' ? pkg.name : pkg.nameEn,
@@ -71,6 +93,7 @@ export function localBusinessJsonLd() {
         '@id': `${SITE_URL}/#business`,
         url: `${SITE_URL}/`,
         telephone: '+919278148269',
+        email: 'astrokashi369@gmail.com',
         priceRange: '₹₹',
         sameAs: [
             'https://www.facebook.com/share/1GAD1LMAq5/',
@@ -90,6 +113,18 @@ export function localBusinessJsonLd() {
             latitude: 25.326913,
             longitude: 83.007403,
         },
+        areaServed: STRUCTURED_AREA_SERVED,
+        // Two distinct windows, both real (confirmed directly): general
+        // contact/consultation (WhatsApp/phone/online) runs 07:00-21:00
+        // daily; in-person pooja bookings AT the physical Varanasi
+        // location specifically run 09:00-12:00. Schema.org's
+        // openingHoursSpecification has no clean way to label WHICH
+        // activity a given window applies to at the LocalBusiness level,
+        // so the broader contactability window is kept here (matches
+        // what's already live and verified) - the narrower in-person
+        // window is attached to the specific in-person Service entries
+        // instead (see serviceJsonLd's hoursAvailable), where Schema.org
+        // does support that distinction cleanly.
         openingHoursSpecification: {
             '@type': 'OpeningHoursSpecification',
             dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],

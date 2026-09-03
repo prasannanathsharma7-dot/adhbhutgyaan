@@ -59,6 +59,14 @@ function faqJsonLd(items) {
     };
 }
 
+const STRUCTURED_AREA_SERVED = [
+    { '@type': 'City', name: 'Varanasi' },
+    { '@type': 'Country', name: 'India' },
+    { '@type': 'Country', name: 'United States' },
+    { '@type': 'Country', name: 'United Kingdom' },
+    { '@type': 'Place', name: 'Worldwide (Online Services)' },
+];
+
 function serviceJsonLd(service) {
     return {
         '@type': 'Service',
@@ -66,7 +74,14 @@ function serviceJsonLd(service) {
         name: service.name,
         description: service.description,
         provider: { '@type': 'HinduTemple', name: 'Adhbhut Gyaan', url: `${SITE_URL}/` },
-        areaServed: ['Varanasi', 'Kashi', 'Banaras', 'India', 'Worldwide (online)'],
+        areaServed: STRUCTURED_AREA_SERVED,
+        hoursAvailable: {
+            '@type': 'OpeningHoursSpecification',
+            dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+            opens: '09:00',
+            closes: '12:00',
+            description: 'In-person pooja hours at the Varanasi location; online booking available 24/7.',
+        },
         offers: (service.packages || []).map(pkg => ({
             '@type': 'Offer',
             name: pkg.name,
@@ -139,6 +154,16 @@ const routes = [
                 { q: 'क्या मुझे पूजा का लाइव प्रमाण मिलेगा?', a: 'हां, ऑनलाइन संकल्प के दौरान आपको लाइव WhatsApp वीडियो कॉल द्वारा वास्तविक समय में पूजा देखने का अवसर मिलता है — साथ ही पूजा के फोटो/वीडियो प्रमाण भी भेजे जाते हैं।' },
                 { q: 'विदेश (NRI) में रहने वाले भक्त कैसे बुकिंग करें?', a: 'विदेश से भी बुकिंग सरल है — WhatsApp पर अपना नाम, गोत्र व जन्म विवरण भेजें, अंतरराष्ट्रीय भुगतान स्वीकार किया जाता है, एवं पूजा का समय आपके स्थानीय समय-क्षेत्र अनुसार समन्वित किया जाता है।' },
                 { q: 'क्या घर पर पूजा सामग्री भेजी जाती है?', a: 'हां, यदि आप घर बैठे संकल्प करना चाहते हैं तो अनुरोध पर आवश्यक पूजा सामग्री आपके पते पर भेजी जा सकती है — विवरण हेतु WhatsApp पर पूछें।' },
+                // English equivalents added alongside the Hindi entries above
+                // (same FAQPage, not a separate page) - a pragmatic choice
+                // given this site doesn't have separate URL-based language
+                // routes (e.g. /en/services vs /hi/services) for true i18n;
+                // this at least lets both Hindi- and English-language search
+                // queries match relevant FAQ content on the same URL.
+                { q: 'How does online pooja booking in Kashi work?', a: 'You share your name, Gotra, and Sankalp requirements via WhatsApp or our booking form; our Kashi-based Pandits perform the pooja at the scheduled time and connect with you live for the Sankalp - no travel to Varanasi required.' },
+                { q: 'Will I receive video proof with my Sankalp?', a: 'Yes - during online Sankalp you get a live WhatsApp video call to watch the pooja in real time, and photo/video proof of the completed ritual is also shared with you afterward.' },
+                { q: 'What is included in the pooja price?', a: 'The price includes complete pooja samagri (ritual materials), the experienced Pandits\' Dakshina, and Havan where applicable - there are no hidden charges.' },
+                { q: 'How is my booking confirmed?', a: 'After you submit the booking form, our team contacts you via WhatsApp or call within 24 hours to confirm the date and details.' },
             ])
         ),
     },
@@ -152,7 +177,24 @@ const routes = [
         path: '/free-kundli',
         title: 'फ्री कुंडली — निःशुल्क जन्म कुंडली एवं जन्म पत्रिका ऑनलाइन | Adhbhut Gyaan',
         description: 'जन्म तिथि, समय व स्थान से मुफ्त जन्म कुंडली बनाएं — लग्न चार्ट, ग्रह स्थिति एवं दोष विश्लेषण तुरंत, काशी के ज्योतिषी डॉ. उमंग नाथ शर्मा द्वारा।',
-        jsonLd: combineJsonLd(breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Free Kundli', path: '/free-kundli' }])),
+        jsonLd: combineJsonLd(
+            breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Free Kundli', path: '/free-kundli' }]),
+            {
+                '@type': 'Service',
+                serviceType: 'Free Janam Kundli Analysis',
+                name: 'Free Janam Kundli (Birth Chart) Analysis',
+                description: 'Instant, free Vedic birth-chart (Janam Kundli) generation - Lagna, Rashi, Nakshatra, planetary positions, and dosha analysis, computed with Lahiri Ayanamsa. A locked, detailed Planetary Doshas & Career/Marriage forecast is available via 1-on-1 consultation with the Pandits of Kashi.',
+                provider: { '@type': 'HinduTemple', name: 'Adhbhut Gyaan', url: `${SITE_URL}/` },
+                areaServed: STRUCTURED_AREA_SERVED,
+                offers: {
+                    '@type': 'Offer',
+                    name: 'Free Kundli Report',
+                    price: '0',
+                    priceCurrency: 'INR',
+                    availability: 'https://schema.org/InStock',
+                },
+            }
+        ),
     },
     {
         path: '/panchang',
