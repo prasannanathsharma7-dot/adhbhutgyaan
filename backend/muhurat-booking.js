@@ -48,9 +48,17 @@ module.exports = async (req, res) => {
             const safeMonthsAhead = Math.min(Math.max(Number(monthsAhead) || 3, 1), 12);
             const startDate = new Date();
             const endDate = new Date(startDate.getTime() + safeMonthsAhead * 30 * 86400000);
-            const safeLat = Number.isFinite(Number(lat)) ? Number(lat) : 25.3176;
-            const safeLng = Number.isFinite(Number(lng)) ? Number(lng) : 82.9739;
-            const safeTz = Number.isFinite(Number(tzOffset)) ? Number(tzOffset) : 5.5;
+            // Bounds-checked, not just "is it a finite number" - a wildly
+            // out-of-range value (e.g. lat: 99999) previously passed
+            // Number.isFinite() and would silently feed garbage into the
+            // Panchang calculation instead of falling back to the sane
+            // Varanasi default.
+            const latNum = Number(lat);
+            const lngNum = Number(lng);
+            const tzNum = Number(tzOffset);
+            const safeLat = Number.isFinite(latNum) && latNum >= -90 && latNum <= 90 ? latNum : 25.3176;
+            const safeLng = Number.isFinite(lngNum) && lngNum >= -180 && lngNum <= 180 ? lngNum : 82.9739;
+            const safeTz = Number.isFinite(tzNum) && tzNum >= -12 && tzNum <= 14 ? tzNum : 5.5;
 
             const result = findMuhurat(category, startDate, endDate, safeLat, safeLng, safeTz);
 

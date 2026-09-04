@@ -76,7 +76,27 @@ export default function FreeKundli() {
         const nameTrimmed = form.name.trim();
         if (!nameTrimmed) next.name = t('कृपया अपना नाम लिखें', 'Please enter your name');
         else if (nameTrimmed.length < 3 || !/^[A-Za-z\u0900-\u097F\s.]+$/.test(nameTrimmed)) next.name = t('कृपया सही नाम लिखें (कम से कम 3 अक्षर, केवल अक्षर)', 'Please enter a valid name (at least 3 letters, alphabetic only)');
-        if (!form.dob.trim()) next.dob = t('कृपया मान्य जन्म तिथि दर्ज करें (दिन, माह, वर्ष)', 'Please enter your valid date of birth (Day, Month, Year)');
+        if (!form.dob.trim()) {
+            next.dob = t('कृपया मान्य जन्म तिथि दर्ज करें (दिन, माह, वर्ष)', 'Please enter your valid date of birth (Day, Month, Year)');
+        } else {
+            // Defense-in-depth (matching the phone/name fix pattern) - the
+            // BirthDetailsInput component already range-checks each part
+            // as it's typed, but this re-validates the assembled date
+            // directly before it's used in any astrological calculation,
+            // in case that's ever bypassed.
+            const dobMatch = form.dob.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+            const currentYear = new Date().getFullYear();
+            if (!dobMatch) {
+                next.dob = t('जन्म तिथि सही प्रारूप में नहीं है', 'Date of birth is not in a valid format');
+            } else {
+                const [, y, m, d] = dobMatch.map(Number);
+                const parsed = new Date(Date.UTC(y, m - 1, d));
+                const isRealDate = parsed.getUTCFullYear() === y && parsed.getUTCMonth() === m - 1 && parsed.getUTCDate() === d;
+                if (!isRealDate || y < 1900 || y > currentYear) {
+                    next.dob = t('कृपया एक वास्तविक जन्म तिथि दर्ज करें (1900 से वर्तमान वर्ष के बीच)', 'Please enter a real date of birth (between 1900 and the current year)');
+                }
+            }
+        }
         if (!form.pob.trim()) next.pob = t('कृपया जन्म स्थान लिखें', 'Please enter your place of birth');
         const phoneDigits = form.phone.replace(/\D/g, '');
         if (!phoneDigits) next.phone = t('कृपया मोबाइल नंबर लिखें', 'Please enter your phone number');

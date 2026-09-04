@@ -81,8 +81,16 @@ export default function BirthDetailsInput({
 
     const handleYearChange = (e) => {
         const val = e.target.value.replace(/[^0-9]/g, '').slice(0, 4);
-        setYear(val);
-        emitDob(day, month, val);
+        // Only 4-digit-complete years get range-checked (1900 - current
+        // year) - partial input while typing (e.g. "1", "19") is allowed
+        // through so the user isn't blocked mid-keystroke; the final
+        // check happens once all 4 digits are present.
+        const num = parseInt(val, 10);
+        const currentYear = new Date().getFullYear();
+        if (val.length < 4 || (num >= 1900 && num <= currentYear)) {
+            setYear(val);
+            emitDob(day, month, val);
+        }
     };
 
     const emitDob = (d, m, y) => {
