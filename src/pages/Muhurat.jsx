@@ -139,6 +139,9 @@ export default function Muhurat() {
                                 </select>
                             </div>
                             {error && <p style={{ color: '#b91c1c', fontSize: '0.85rem', marginBottom: '1rem' }}>{error}</p>}
+                            <div style={{ background: '#f0fdf4', border: '1px solid #86efac', borderRadius: 'var(--radius-md)', padding: '0.7rem 0.9rem', marginBottom: '1rem', fontSize: '0.82rem', color: '#166534', textAlign: 'center' }}>
+                                {t('इस सेवा का शुल्क मात्र ₹151 है — रिपोर्ट प्राप्त करने के बाद WhatsApp पर भुगतान करें।', 'This service costs just ₹151 - pay via WhatsApp after receiving your report.')}
+                            </div>
                             <button type="submit" className="btn btn-primary" disabled={status === 'loading' || !isFormValid()} style={{ width: '100%', justifyContent: 'center', opacity: (status === 'loading' || !isFormValid()) ? 0.6 : 1 }}>
                                 {status === 'loading' ? <Loader2 size={16} className="spin" style={{ marginRight: '0.4rem' }} /> : null}
                                 {status === 'loading' ? t('गणना हो रही है...', 'Calculating...') : t('शुभ मुहूर्त प्राप्त करें', 'Get Shubh Muhurat')}

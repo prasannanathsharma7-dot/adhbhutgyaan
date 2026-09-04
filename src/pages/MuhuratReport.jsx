@@ -45,8 +45,8 @@ export default function MuhuratReport() {
 
     const { order, isAdminView } = data;
     const whatsappUrl = `https://wa.me/919278148269?text=${encodeURIComponent(
-        t(`प्रणाम, मेरी मुहूर्त रिपोर्ट (Order ID: ${orderId}) तैयार है। कृपया भुगतान हेतु UPI/QR भेजें।`,
-          `Pranam, my Muhurat report (Order ID: ${orderId}) is ready. Please share UPI/QR for payment.`)
+        t(`प्रणाम, मेरी मुहूर्त रिपोर्ट (Order ID: ${orderId}) तैयार है। ₹151 शुल्क हेतु कृपया UPI/QR भेजें।`,
+          `Pranam, my Muhurat report (Order ID: ${orderId}) is ready. Please share UPI/QR for the ₹151 payment.`)
     )}`;
 
     return (
@@ -79,12 +79,13 @@ export default function MuhuratReport() {
             )}
 
             <div style={{ marginTop: '2.5rem', textAlign: 'center', background: 'var(--cream)', borderRadius: 'var(--radius-lg)', padding: '1.75rem' }}>
+                <div style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--gold-700)', marginBottom: '0.5rem' }}>₹151</div>
                 <p style={{ marginBottom: '1rem', fontSize: '0.9rem' }}>
-                    {t('विस्तृत, व्यक्तिगत परामर्श एवं मुहूर्त-पुष्टि हेतु डॉ. उमंग नाथ शर्मा से संपर्क करें।', "For detailed, personalized consultation and Muhurat confirmation, contact Dr. Umang Nath Sharma.")}
+                    {t('इस मुहूर्त-सेवा का शुल्क — विस्तृत, व्यक्तिगत परामर्श एवं मुहूर्त-पुष्टि हेतु डॉ. उमंग नाथ शर्मा से WhatsApp पर संपर्क करें।', "The fee for this Muhurat service - for detailed, personalized consultation and confirmation, contact Dr. Umang Nath Sharma on WhatsApp.")}
                 </p>
                 <a href={whatsappUrl} target="_blank" rel="noreferrer" className="btn btn-whatsapp btn-lg">
                     <MessageCircle size={17} style={{ verticalAlign: '-3px', marginRight: '0.4rem' }} />
-                    {t('WhatsApp पर संपर्क करें', 'Contact via WhatsApp')}
+                    {t('₹151 भुगतान हेतु WhatsApp करें', 'Pay ₹151 via WhatsApp')}
                 </a>
             </div>
         </div>
