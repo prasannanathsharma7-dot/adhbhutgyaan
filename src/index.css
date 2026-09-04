@@ -729,10 +729,40 @@ h3 {
     filter: grayscale(0.3);
 }
 
+/* Tactile press-feedback - previously zero :active states existed
+   anywhere on the site, so buttons had hover-lift but no "pressed down"
+   feel on actual click/tap, which reads as less polished/responsive.
+   Scoped to real buttons/links with .btn, not every element, so this
+   can't interfere with anything else. */
+.btn:active:not(:disabled) {
+    transform: translateY(0) scale(0.97);
+    transition-duration: 100ms;
+}
+
+/* Subtle shine-sweep on the primary CTA's hover - a common premium
+   micro-interaction, purely decorative (an overlay pseudo-element, no
+   effect on layout/hit-area/accessibility). */
 .btn-primary {
+    position: relative;
+    overflow: hidden;
     background: linear-gradient(135deg, var(--gold-400), var(--gold-600));
     color: var(--navy-950);
     box-shadow: var(--shadow-gold);
+}
+.btn-primary::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+    transform: skewX(-20deg);
+    transition: left 650ms ease;
+    pointer-events: none;
+}
+.btn-primary:hover::after {
+    left: 125%;
 }
 
 .btn-primary:hover {
