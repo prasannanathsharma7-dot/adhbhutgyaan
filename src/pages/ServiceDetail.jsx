@@ -73,12 +73,17 @@ export default function ServiceDetail() {
             <section className="section">
                 <div className="container">
                     <div className="about-story" style={{ marginBottom: '2rem' }}>
-                        <div className="about-image">
+                        <div className="about-image" style={{ position: 'relative' }}>
                             <picture>
                                 <source type="image/avif" srcSet={`/images/${service.image.replace('.jpg', '.avif')}`} />
                                 <source type="image/webp" srcSet={`/images/${service.image.replace('.jpg', '.webp')}`} />
                                 <img src={`/images/${service.image}`} alt={service.nameEn} width="640" height="640" fetchPriority="high" />
                             </picture>
+                            {service.isRepresentativeImage && (
+                                <span style={{ position: 'absolute', top: '0.75rem', left: '0.75rem', background: 'rgba(20,17,15,0.75)', color: 'var(--gold-300)', fontSize: '0.7rem', fontWeight: 700, padding: '0.3rem 0.7rem', borderRadius: '999px' }}>
+                                    {t('प्रतिनिधि चित्र', 'Representative Image')}
+                                </span>
+                            )}
                         </div>
                         <div>
                             <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '1rem' }}>{description}</p>

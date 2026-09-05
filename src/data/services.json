@@ -549,7 +549,8 @@
         "paathCountEn": "1 elaborate ceremony",
         "includesEn": "Full traditional rites including Navgraha Pujan, Vastu Shanti, Dikpal Pujan, and Purnahuti."
       }
-    ]
+    ],
+    "isRepresentativeImage": true
   },
   {
     "id": "navgrah-shanti",
@@ -595,7 +596,8 @@
         "paathCountEn": "9-planet worship + abhishekam",
         "includesEn": "An elaborate ritual including Navgraha Pujan, Rudrabhishek, and Purnahuti."
       }
-    ]
+    ],
+    "isRepresentativeImage": true
   },
   {
     "id": "mahamrityunjaya-jaap",
@@ -641,6 +643,7 @@
         "paathCountEn": "125,000 recitations",
         "includesEn": "A complete ritual with 125,000 recitations, a Purnahuti Havan, and Brahmin Bhoj."
       }
-    ]
+    ],
+    "isRepresentativeImage": true
   }
 ]
