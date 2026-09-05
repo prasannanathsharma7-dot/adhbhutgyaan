@@ -538,21 +538,31 @@ export default function Home() {
                             ⭐ {t('Google पर समीक्षा लिखें', 'Write a Review on Google')}
                         </a>
                     </div>
-                </div>
-            </section>
 
-            {/* VIDEO TESTIMONIALS */}
-            <section className="section" style={{ background: 'var(--cream)' }}>
-                <div className="container">
-                    <div className="text-center fade-up">
-                        <span className="section-label">{t('वीडियो प्रतिक्रिया', 'Video Feedback')}</span>
-                        <h2 className="section-title">{t('भक्तों की आवाज़ में', "In Devotees' Own Voice")}</h2>
-                        <p style={{ color: 'var(--text-secondary)', maxWidth: 560, margin: '0.5rem auto 0' }}>
-                            {t('शीघ्र ही, हमारे भक्तों के वास्तविक अनुभव — उन्हीं की आवाज़ में।', "Coming soon: our devotees' real experiences, in their own voice.")}
-                        </p>
-                    </div>
-                    <div style={{ marginTop: '2rem' }}>
-                        <VideoTestimonials />
+                    {/* Video testimonials - kept in the SAME section/container as
+                        the text testimonials above (not a separate full-width
+                        section with its own background-color break) since both
+                        are fundamentally the same thing - "what devotees say" -
+                        just in two media formats. Previously split across two
+                        back-to-back top-level sections, which read as
+                        fragmented rather than organized (the same issue found
+                        and fixed earlier for the duplicate "Why Choose Us"
+                        sections) - a user scrolling past effectively saw social-
+                        proof, then MORE social-proof under a near-identical
+                        heading, immediately followed by an unrelated real-videos
+                        section using a similar video-grid layout, which made all
+                        three run together visually rather than reading as
+                        distinct, purposeful sections. */}
+                    <div style={{ marginTop: '3rem', paddingTop: '2.5rem', borderTop: '1px solid var(--border-light)' }}>
+                        <div className="text-center fade-up">
+                            <h3 style={{ fontSize: '1.3rem', marginBottom: '0.4rem' }}>{t('भक्तों की आवाज़ में (वीडियो)', "In Devotees' Own Voice (Video)")}</h3>
+                            <p style={{ color: 'var(--text-secondary)', maxWidth: 560, margin: '0 auto', fontSize: '0.9rem' }}>
+                                {t('शीघ्र ही, हमारे भक्तों के वास्तविक अनुभव — उन्हीं की आवाज़ में।', "Coming soon: our devotees' real experiences, in their own voice.")}
+                            </p>
+                        </div>
+                        <div style={{ marginTop: '1.75rem' }}>
+                            <VideoTestimonials />
+                        </div>
                     </div>
                 </div>
             </section>
