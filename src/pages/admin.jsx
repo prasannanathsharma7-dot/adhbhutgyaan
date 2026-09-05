@@ -135,6 +135,7 @@ export default function Admin() {
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(false);
     const [loadError, setLoadError] = useState('');
+    const [searchQuery, setSearchQuery] = useState('');
 
     const load = useCallback(async (activeKey, activeTab) => {
         if (!activeKey) return;
@@ -165,7 +166,15 @@ export default function Admin() {
 
     useEffect(() => {
         if (key) load(key, tab);
+        setSearchQuery('');
     }, [key, tab, load]);
+
+    const filteredItems = searchQuery.trim()
+        ? items.filter(it => {
+            const q = searchQuery.trim().toLowerCase();
+            return ['name', 'phone', 'email', 'text'].some(field => (it[field] || '').toString().toLowerCase().includes(q));
+        })
+        : items;
 
     const handleLogin = (e) => {
         e.preventDefault();
@@ -290,15 +299,50 @@ export default function Admin() {
                         ))}
                     </div>
 
+                    {/* Quick summary stats - counts by status, computed from
+                        whatever's currently loaded (the last 100 for this
+                        tab) rather than a separate query, so it always
+                        matches exactly what's shown below. */}
+                    {!loading && !loadError && items.length > 0 && (
+                        <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '1.25rem' }}>
+                            <div style={{ background: 'var(--navy-950)', color: 'white', borderRadius: 'var(--radius-md)', padding: '0.6rem 1rem', fontSize: '0.85rem' }}>
+                                <strong>{items.length}</strong> total
+                            </div>
+                            {Object.entries(items.reduce((acc, it) => {
+                                const key = it.status || it.paymentStatus || 'new';
+                                acc[key] = (acc[key] || 0) + 1;
+                                return acc;
+                            }, {})).map(([status, count]) => (
+                                <div key={status} style={{ background: 'var(--cream)', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-md)', padding: '0.6rem 1rem', fontSize: '0.85rem' }}>
+                                    <strong>{count}</strong> {status}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
+                    {!loading && !loadError && items.length > 0 && (
+                        <input
+                            type="text"
+                            className="form-input"
+                            placeholder="Search by name or phone…"
+                            value={searchQuery}
+                            onChange={e => setSearchQuery(e.target.value)}
+                            style={{ marginBottom: '1.25rem', maxWidth: '360px' }}
+                        />
+                    )}
+
                     {loading && <p style={{ color: 'var(--text-muted)' }}>Loading…</p>}
                     {loadError && <p className="form-error">⚠ {loadError}</p>}
 
                     {!loading && !loadError && items.length === 0 && (
                         <p style={{ color: 'var(--text-muted)' }}>No entries yet.</p>
                     )}
+                    {!loading && !loadError && items.length > 0 && filteredItems.length === 0 && (
+                        <p style={{ color: 'var(--text-muted)' }}>No entries match "{searchQuery}".</p>
+                    )}
 
                     <div style={{ display: 'grid', gap: '1rem' }}>
-                        {tab === 'bookings' && items.map(it => (
+                        {tab === 'bookings' && filteredItems.map(it => (
                             <div key={it._id} style={{ background: 'white', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-lg)', padding: '1rem 1.25rem', boxShadow: 'var(--shadow-md)' }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', gap: '0.5rem', flexWrap: 'wrap' }}>
                                     <strong>{it.name}</strong>
@@ -337,7 +381,7 @@ export default function Admin() {
                             </div>
                         ))}
 
-                        {tab === 'muhurat' && items.map(it => (
+                        {tab === 'muhurat' && filteredItems.map(it => (
                             <div key={it._id} style={{ background: 'white', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-lg)', padding: '1rem 1.25rem', boxShadow: 'var(--shadow-md)' }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', gap: '0.5rem', flexWrap: 'wrap' }}>
                                     <strong>{it.name}</strong>
@@ -362,7 +406,7 @@ export default function Admin() {
                             </div>
                         ))}
 
-                        {tab === 'messages' && items.map(it => (
+                        {tab === 'messages' && filteredItems.map(it => (
                             <div key={it._id} style={{ background: 'white', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-lg)', padding: '1rem 1.25rem', boxShadow: 'var(--shadow-md)' }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', gap: '0.5rem', flexWrap: 'wrap' }}>
                                     <strong>{it.name}</strong>
@@ -385,7 +429,7 @@ export default function Admin() {
                             </div>
                         ))}
 
-                        {tab === 'reviews' && items.map(it => (
+                        {tab === 'reviews' && filteredItems.map(it => (
                             <div key={it._id} style={{ background: 'white', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-lg)', padding: '1rem 1.25rem', boxShadow: 'var(--shadow-md)' }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', gap: '0.5rem', flexWrap: 'wrap' }}>
                                     <strong>{it.name}</strong>
@@ -419,7 +463,7 @@ export default function Admin() {
                             </button>
                         )}
 
-                        {tab === 'subscribers' && items.map(it => (
+                        {tab === 'subscribers' && filteredItems.map(it => (
                             <div key={it._id} style={{ background: 'white', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-lg)', padding: '0.85rem 1.25rem', boxShadow: 'var(--shadow-md)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
                                 <span>✉️ {it.email}</span>
                                 <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{fmtDate(it.createdAt)}</span>
