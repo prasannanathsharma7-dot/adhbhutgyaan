@@ -33,7 +33,6 @@ const whatsappConcierge = require('../api/agents/whatsapp-concierge.js');
 const lifeDomainSynthesis = require('../api/agents/life-domain-synthesis.js');
 const generateKundliPdf = require('../api/generate-kundli-pdf.js');
 const muhuratBooking = require('../api/muhurat-booking.js');
-const debugAdminKey = require('../api/debug-admin-key.js'); // TEMPORARY - see backend/debug-admin-key.js
 
 // Each handler already switches on req.method internally (GET/POST/PATCH/OPTIONS),
 // so `app.all` (matches every HTTP method) is the correct mount for all of them.
@@ -57,7 +56,6 @@ app.all('/api/agents/whatsapp-concierge', whatsappConcierge);
 app.all('/api/agents/life-domain-synthesis', lifeDomainSynthesis);
 app.all('/api/generate-kundli-pdf', generateKundliPdf);
 app.all('/api/muhurat-booking', muhuratBooking);
-app.all('/api/debug-admin-key', debugAdminKey); // TEMPORARY - see backend/debug-admin-key.js
 
 // Simple root route so visiting the Cloud Run URL directly shows something
 // sensible instead of "Cannot GET /" - the actual site stays on Vercel.
