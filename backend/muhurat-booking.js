@@ -16,7 +16,14 @@ const { findMuhurat, CATEGORY_RULES } = require('./utils/muhuratEngine');
 
 function isAdmin(req) {
     const providedKey = req.headers['x-admin-key'] || req.query.admin_key || req.query.key;
-    return Boolean(process.env.ADMIN_KEY) && providedKey === process.env.ADMIN_KEY;
+    const envKey = (process.env.ADMIN_KEY || '').trim();
+    // Trim both sides defensively - a trailing/leading space or newline
+    // accidentally included when pasting the value into Vercel's env-var
+    // field (or auto-inserted by some mobile keyboards on the login
+    // input, though type="password" already suppresses most autocorrect)
+    // would otherwise cause an exact-match comparison to silently fail
+    // with "Invalid admin key" even when the visible characters match.
+    return Boolean(envKey) && (providedKey || '').trim() === envKey;
 }
 
 module.exports = async (req, res) => {
