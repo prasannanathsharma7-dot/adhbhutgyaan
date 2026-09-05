@@ -46,6 +46,27 @@ export default function BirthDetailsInput({
     const monthRef = useRef(null);
     const yearRef = useRef(null);
     const minRef = useRef(null);
+    // Debounce timers for the single-digit auto-advance below - without
+    // this, typing a single digit like day "5" or hour "3" jumped focus
+    // to the next field IMMEDIATELY, so a fast typist's very next
+    // keystroke (meant to continue in the same field, or landing before
+    // the jump visually registered) got swallowed by whatever was newly
+    // focused instead - a real, reported bug ("typing is difficult"),
+    // confirmed by simulating fast/zero-delay typing: a stray keystroke
+    // after a single-digit day landed in the Month dropdown instead.
+    // Waiting briefly before committing to the jump gives a fast typist
+    // room to complete a genuine two-digit value first.
+    const dayAdvanceTimer = useRef(null);
+    const hourAdvanceTimer = useRef(null);
+
+    // Clear any pending debounced auto-advance if the component unmounts
+    // mid-timer (e.g. user navigates away right after typing a single
+    // digit) - avoids calling .focus() on a ref that may no longer point
+    // to a mounted element.
+    useEffect(() => () => {
+        clearTimeout(dayAdvanceTimer.current);
+        clearTimeout(hourAdvanceTimer.current);
+    }, []);
 
     // Sync initial values from props
     useEffect(() => {
@@ -66,8 +87,15 @@ export default function BirthDetailsInput({
         if (val === '' || (num >= 1 && num <= 31)) {
             setDay(val);
             emitDob(val, month, year);
-            if (val.length === 2 || num > 3) {
+            clearTimeout(dayAdvanceTimer.current);
+            if (val.length === 2) {
                 monthRef.current?.focus();
+            } else if (num > 3) {
+                // A single digit 4-9 can't be the start of any valid
+                // 2-digit day (max is 31), so advancing is safe - but
+                // debounced, not instant, so a fast typist's next
+                // keystroke isn't swallowed by the newly-focused field.
+                dayAdvanceTimer.current = setTimeout(() => monthRef.current?.focus(), 450);
             }
         }
     };
@@ -127,8 +155,14 @@ export default function BirthDetailsInput({
         if (val === '' || (num >= 1 && num <= 12)) {
             setHour(val);
             emitTob(val, minute, period, timeUnknown);
-            if (val.length === 2 || num > 1) {
+            clearTimeout(hourAdvanceTimer.current);
+            if (val.length === 2) {
                 minRef.current?.focus();
+            } else if (num > 1) {
+                // Same debounce reasoning as the day field above - a
+                // single digit 2-9 can't start a valid 2-digit hour
+                // (max is 12), so advancing is safe, but debounced.
+                hourAdvanceTimer.current = setTimeout(() => minRef.current?.focus(), 450);
             }
         }
     };

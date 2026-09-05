@@ -4,6 +4,7 @@ import { useLanguage } from '../context/LanguageContext';
 import useSEO from '../hooks/useSEO';
 import { breadcrumbJsonLd, combineJsonLd } from '../utils/seo';
 import BirthDetailsInput from '../components/BirthDetailsInput';
+import LocationAutocomplete from '../components/LocationAutocomplete';
 import NorthIndianChart from '../components/NorthIndianChart';
 import { calculateInstantKundli } from '../utils/kundliEngine';
 import KundaliSettingsBar from '../components/KundaliSettingsBar';
@@ -124,7 +125,12 @@ export default function FreeKundli() {
             // falls back to Varanasi's coordinates (the previous, always-
             // wrong-for-non-Varanasi behavior) only if geocoding fails, so
             // the feature degrades gracefully rather than breaking.
-            const geo = await geocodeBirthPlace(form.pob);
+            // If the user picked a suggestion from the autocomplete
+            // dropdown, we already have precise coordinates for it - no
+            // need to re-geocode the same text on submit.
+            const geo = (Number.isFinite(form.selectedLat) && Number.isFinite(form.selectedLng))
+                ? { latitude: form.selectedLat, longitude: form.selectedLng, isIndia: form.selectedIsIndia }
+                : await geocodeBirthPlace(form.pob);
             const latitude = geo?.latitude ?? 25.3176;
             const longitude = geo?.longitude ?? 82.9739;
             if (!geo) {
@@ -319,12 +325,13 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
 
                                 <div className="form-group" style={{ marginBottom: '1.25rem' }}>
                                     <label className="form-label" htmlFor="kundli-pob">{t('जन्म स्थान — शहर, राज्य (Place of Birth)', 'Place of Birth (City, State)')} *</label>
-                                    <input
+                                    <LocationAutocomplete
                                         id="kundli-pob"
                                         className={`form-input ${errors.pob ? 'has-error' : ''}`}
                                         placeholder={t('जैसे: वाराणसी, उत्तर प्रदेश', 'e.g. Varanasi, Uttar Pradesh')}
                                         value={form.pob}
-                                        onChange={e => { setForm({ ...form, pob: e.target.value }); setErrors({ ...errors, pob: undefined }); }}
+                                        onChange={val => { setForm(f => ({ ...f, pob: val, selectedLat: undefined, selectedLng: undefined, selectedIsIndia: undefined })); setErrors(errs => ({ ...errs, pob: undefined })); }}
+                                        onSelect={({ label, latitude, longitude, isIndia }) => setForm(f => ({ ...f, pob: label, selectedLat: latitude, selectedLng: longitude, selectedIsIndia: isIndia }))}
                                     />
                                     {errors.pob && <p className="form-error" style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}><AlertTriangle size={13} />{errors.pob}</p>}
                                 </div>
