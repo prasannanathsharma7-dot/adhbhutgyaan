@@ -399,40 +399,20 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* WHY CHOOSE US */}
-            <section className="section section-warm" id="why-us">
-                <div className="container">
-                    <div className="text-center fade-up">
-                        <span className="section-label">{t('हमें क्यों चुनें?', 'Why Choose Us?')}</span>
-                        <h2 className="section-title">{t('काशी की परम्परा, आपके द्वार', "Kashi's Tradition, At Your Door")}</h2>
-                        <p className="section-subtitle">{t('सहस्राब्दियों की आध्यात्मिक परम्परा के वाहक, बनारस के अनुभवसम्पन्न पंडित — अब ऑनलाइन सुलभ।', 'Accomplished Pandits of Banaras, upholding millennia of spiritual tradition — now accessible online.')}</p>
-                    </div>
-                    <div className="om-divider"><img src="/images/logo.png" alt="" className="inline-logo-md" width="512" height="512" /></div>
-                    <div className="features-grid">
-                        {[
-                            { img: 'institutional-recognition', title: t('काशी के विद्वत्तापूर्ण पंडित', 'Erudite Pandits of Kashi'), desc: t('बनारस हिंदू विश्वविद्यालय और संस्कृत विद्यापीठ से शिक्षित, अनुभवसम्पन्न एवं प्रमाणित पंडितगण।', 'Accomplished, certified Pandits, educated at Banaras Hindu University and Sanskrit Vidyapeeth.') },
-                            { img: 'vedic-manuscript', title: t('शास्त्रोक्त विधि-विधान', 'Authentic Vedic Methods'), desc: t('वेद एवं शास्त्रों के अनुसार शुद्ध विधि-विधान से सम्पूर्ण पूजन कार्य सम्पन्न।', 'Every ritual performed with precision, exactly as prescribed by the Vedas and scriptures.') },
-                            { img: 'online-booking', title: t('ऑनलाइन बुकिंग', 'Online Booking'), desc: t('गृह बैठे सुगमता से पूजा बुक करें। WhatsApp अथवा वेबसाइट से त्वरित बुकिंग।', 'Book a pooja with ease, from the comfort of home. Swift booking via WhatsApp or our website.') },
-                            { img: 'live-video-pooja', title: t('लाइव पूजा विकल्प', 'Live Pooja Option'), desc: t('वीडियो कॉल के माध्यम से पूजा में सम्मिलित हों — देश-विदेश में कहीं से भी।', 'Join your pooja live via video call — from anywhere across the globe.') },
-                            { img: 'samagri-delivery', title: t('पूजा सामग्री डिलीवरी', 'Pooja Samagri Delivery'), desc: t('पूजा हेतु आवश्यक समस्त सामग्री — सम्पूर्ण भारत में डिलीवरी उपलब्ध।', 'Every material essential to your pooja — delivered anywhere across India.') },
-                            { img: 'fair-pricing', title: t('उचित दक्षिणा', 'Fair Pricing'), desc: t('समस्त पूजा सेवाओं का मूल्य पारदर्शी एवं उचित। कोई छुपी हुई लागत नहीं।', 'Transparent, equitable pricing on every service. No hidden costs, ever.') },
-                        ].map((f, i) => (
-                            <div className={`feature-card fade-up stagger-${i + 1}`} key={i}>
-                                <img src={`/images/icons/${f.img}.jpg`} alt="" width="56" height="56" loading="lazy" className="feature-icon-img" />
-                                <h3 className="feature-title">{f.title}</h3>
-                                <p className="feature-desc">{f.desc}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* WHY CHOOSE US - honest comparison */}
+            {/* WHY CHOOSE US - merged: honest pain-point comparison (more
+                persuasive, addresses real doubts directly) now carries the
+                unique practical details (BHU/Sanskrit Vidyapeeth education,
+                India-wide samagri delivery, live-video option) that used to
+                live in a separate, redundant "Why Choose Us" feature-grid
+                section right above this one - the two were saying the same
+                thing in two different visual formats back-to-back, which
+                read as repetitive rather than organized. */}
             <section className="section" style={{ background: 'var(--navy-950)' }}>
                 <div className="container">
                     <div className="text-center">
                         <span className="section-label" style={{ justifyContent: 'center', color: 'var(--gold-400)' }}>{t('क्यों अद्भुत ज्ञान', 'Why Adhbhut Gyaan')}</span>
                         <h2 className="section-title" style={{ color: 'white' }}>{t('सामान्य पूजा-सेवाओं से हम कैसे अलग हैं', 'How We\'re Different From a Typical Pooja Service')}</h2>
+                        <p style={{ color: 'var(--warm-200)', maxWidth: 640, margin: '0.75rem auto 0' }}>{t('बनारस हिंदू विश्वविद्यालय एवं संस्कृत विद्यापीठ से शिक्षित पंडितगण — पूरे भारत में पूजा सामग्री डिलीवरी सहित।', 'Pandits educated at Banaras Hindu University and Sanskrit Vidyapeeth - with pooja samagri delivery available across India.')}</p>
                     </div>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', marginTop: '2rem', maxWidth: 900, marginLeft: 'auto', marginRight: 'auto' }}>
                         {[
