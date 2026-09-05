@@ -355,14 +355,25 @@ for (const route of routes) {
 // this file is automatically in the sitemap too.
 const today = new Date().toISOString().slice(0, 10);
 const PRIORITY_OVERRIDES = { '/': '1.0', '/services': '0.9', '/booking': '0.9', '/free-kundli': '0.9' };
+// The homepage ('/') is a real gap found here: it's never in `routes` above
+// (that array only covers pages built by cloning+templating the built
+// index.html - the homepage itself IS that built index.html, handled by
+// its own direct edits earlier in this script, not by this loop) - so a
+// site with 38 sitemap URLs had NONE of them be the actual root homepage.
+// Deliberately NOT adding '/' to `routes` itself to fix this, since that
+// array also drives the per-route page-cloning logic below, and cloning
+// index.html onto itself risks corrupting its carefully-maintained
+// static JSON-LD/meta-tags - this only touches the sitemap output.
+const homeUrl = `  <url>\n    <loc>${SITE_URL}/</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>${PRIORITY_OVERRIDES['/']}</priority>\n  </url>`;
 const sitemapUrls = routes.map(r => {
     const priority = PRIORITY_OVERRIDES[r.path] || (r.path.startsWith('/services/') ? '0.8' : r.path.startsWith('/blog/') ? '0.6' : '0.7');
     const changefreq = r.path === '/' || r.path === '/panchang' || r.path === '/horoscope' ? 'daily' : r.path.startsWith('/blog/') ? 'monthly' : 'weekly';
     return `  <url>\n    <loc>${SITE_URL}${r.path}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
 }).join('\n');
-const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapUrls}\n</urlset>\n`;
+const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${homeUrl}\n${sitemapUrls}\n</urlset>\n`;
 writeFileSync(join(ROOT, 'public', 'sitemap.xml'), sitemapXml);
 writeFileSync(join(DIST, 'sitemap.xml'), sitemapXml);
-console.log(`[seo-pages] sitemap.xml regenerated with ${routes.length} URLs.`);
+console.log(`[seo-pages] sitemap.xml regenerated with ${routes.length + 1} URLs.`);
+
 
 console.log(`[seo-pages] done - generated ${routes.length} static pages.`);

@@ -208,6 +208,22 @@ if (fs.existsSync(distPath)) {
 
     const kundliHtml = path.join(distPath, 'free-kundli', 'index.html');
     assert(fs.existsSync(kundliHtml), 'dist/free-kundli/index.html static SEO page exists');
+
+    // Regression test for a real gap: the sitemap previously had 38 URLs,
+    // none of which was the homepage itself (routes.map() only ever
+    // covered pages built by cloning index.html, not index.html's own
+    // '/' route, which is handled separately) - Google Search Console
+    // and any crawler reading the sitemap for priority-signals never saw
+    // an explicit entry for the site's single most important page.
+    const sitemapPath = path.join(distPath, 'sitemap.xml');
+    if (fs.existsSync(sitemapPath)) {
+        const sitemapContent = fs.readFileSync(sitemapPath, 'utf-8');
+        assert(sitemapContent.includes('<loc>https://www.adhbhutgyaan.com/</loc>'), 'sitemap.xml includes the homepage root URL');
+        const homeUrlBlockMatch = sitemapContent.match(/<loc>https:\/\/www\.adhbhutgyaan\.com\/<\/loc>\s*<lastmod>[^<]*<\/lastmod>\s*<changefreq>[^<]*<\/changefreq>\s*<priority>([^<]*)<\/priority>/);
+        assert(homeUrlBlockMatch && homeUrlBlockMatch[1] === '1.0', 'sitemap.xml: homepage has priority 1.0 (the highest, correctly signaling it as the most important page)');
+        const homeOccurrences = (sitemapContent.match(/<loc>https:\/\/www\.adhbhutgyaan\.com\/<\/loc>/g) || []).length;
+        assert(homeOccurrences === 1, 'sitemap.xml: homepage appears exactly once (not duplicated)');
+    }
 } else {
     console.log('  \x1b[33mℹ Note: dist/ not yet generated in this pass. (Will verify during build)\x1b[0m');
 }
