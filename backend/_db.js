@@ -104,7 +104,6 @@ let rateLimitIndexEnsured = false;
 
 async function checkRateLimit(db, req, route, { limit = 5, windowMs = 10 * 60 * 1000 } = {}) {
     const ip = getClientIp(req);
-    const _id = `${route}:${ip}`;
     const now = Date.now();
     const col = db.collection('rate_limits');
 
@@ -122,22 +121,36 @@ async function checkRateLimit(db, req, route, { limit = 5, windowMs = 10 * 60 * 
         }
         rateLimitIndexEnsured = true;
     }
+
+    // Fixed-window-bucket design: the window number itself is baked into
+    // the document's _id (route:ip:bucketNumber), so each time-window
+    // naturally gets its own document - no "read the current count, then
+    // decide what to write" step is needed at all. This makes the whole
+    // check-and-increment a SINGLE atomic findOneAndUpdate ($inc + upsert),
+    // which MongoDB guarantees is race-free even under concurrent requests.
+    // The previous implementation split this into a separate findOne
+    // (read) followed by a conditional updateOne (write) - two genuinely
+    // concurrent requests from the same IP (e.g. a double-clicked submit,
+    // or a few parallel requests) could both read the same pre-increment
+    // count, both see it under the limit, and both then increment,
+    // letting more requests through than the configured limit actually
+    // allows. Bucketing removes the race entirely rather than trying to
+    // narrow the window it occurs in.
+    const bucket = Math.floor(now / windowMs);
+    const _id = `${route}:${ip}:${bucket}`;
     // Generous safety margin over any realistic windowMs, so the document
-    // outlives its own rate-limit window (needed for the count to still be
-    // readable right up until it naturally expires) without lingering long
-    // after it's no longer useful.
+    // outlives its own bucket (needed for the count to still be readable
+    // right up until it naturally expires) without lingering long after
+    // it's no longer useful.
     const expiresAt = new Date(now + Math.max(windowMs * 2, 3600000));
 
-    const doc = await col.findOne({ _id });
-    if (!doc || now - doc.windowStart > windowMs) {
-        await col.updateOne({ _id }, { $set: { windowStart: now, count: 1, expiresAt } }, { upsert: true });
-        return true;
-    }
-    if (doc.count >= limit) {
-        return false;
-    }
-    await col.updateOne({ _id }, { $inc: { count: 1 }, $set: { expiresAt } });
-    return true;
+    const result = await col.findOneAndUpdate(
+        { _id },
+        { $inc: { count: 1 }, $setOnInsert: { expiresAt } },
+        { upsert: true, returnDocument: 'after' }
+    );
+    const count = result?.value ? result.value.count : result?.count;
+    return count <= limit;
 }
 
 module.exports = { getDb, withCors, capStr, escapeHtml, checkRateLimit, getClientIp, isValidIndianPhone, isValidName };

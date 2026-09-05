@@ -17,7 +17,7 @@ import { generateGrahaEssays } from '../backend/utils/grahaEssays.js';
 import hindiTermsPkg from '../backend/utils/hindiTerms.js';
 const { nakshatraHi, deityHi, varnaHi, vashyaHi, ganaHi, nadiHi, yoniHi, lordHi } = hindiTermsPkg;
 import { findMuhurat, CATEGORY_RULES, tithiNumberOf, varaNumberOf } from '../backend/utils/muhuratEngine.js';
-import { isValidIndianPhone, isValidName } from '../backend/_db.js';
+import { isValidIndianPhone, isValidName, checkRateLimit } from '../backend/_db.js';
 import { computeVedicChartData } from '../backend/agents/kundli-preanalyzer.js';
 import { computeFullKundliReport, SIGN_NAMES } from '../backend/utils/fullKundliReport.js';
 import { calculateVastuScore, scoreRoom, ROOM_RULES, DIRECTIONS as VASTU_DIRECTIONS } from '../backend/utils/vastuEngine.js';
@@ -55,7 +55,7 @@ console.log('\x1b[1m\x1b[36m====================================================
 // -------------------------------------------------------------
 // SUITE 1: VEDIC KUNDLI EPHEMERIS MATHEMATICAL BENCHMARK
 // -------------------------------------------------------------
-console.log('\x1b[1m\x1b[33m[1/21] Testing Vedic Kundli Ephemeris Calculation Engine...\x1b[0m');
+console.log('\x1b[1m\x1b[33m[1/22] Testing Vedic Kundli Ephemeris Calculation Engine...\x1b[0m');
 
 try {
     const benchmark = calculateInstantKundli({
@@ -99,7 +99,7 @@ try {
 // -------------------------------------------------------------
 // SUITE 2: GLOBAL DYNAMIC PANCHANG ENGINE
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[2/21] Testing Global Dynamic Panchang & Solar Ephemeris...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[2/22] Testing Global Dynamic Panchang & Solar Ephemeris...\x1b[0m');
 
 try {
     const panchang = calculateGlobalPanchang({
@@ -134,7 +134,7 @@ try {
 // -------------------------------------------------------------
 // SUITE 3: FRONTEND MODULES & CORE COMPONENTS INTEGRITY
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[3/21] Testing Frontend Pages & Critical Components...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[3/22] Testing Frontend Pages & Critical Components...\x1b[0m');
 
 const criticalComponents = [
     'src/App.jsx',
@@ -166,7 +166,7 @@ for (const compPath of criticalComponents) {
 // -------------------------------------------------------------
 // SUITE 4: SERVERLESS API AGENTS & ROUTES
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[4/21] Testing Backend API Microservices & Agent Routes...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[4/22] Testing Backend API Microservices & Agent Routes...\x1b[0m');
 
 const apiRoutes = [
     'backend/agents/kundli-preanalyzer.js',
@@ -196,7 +196,7 @@ for (const routePath of apiRoutes) {
 // -------------------------------------------------------------
 // SUITE 5: PRODUCTION BUILD & SEO ARTIFACTS
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[5/21] Testing Production Distribution & Pre-Rendered Pages...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[5/22] Testing Production Distribution & Pre-Rendered Pages...\x1b[0m');
 
 const distPath = path.join(projectRoot, 'dist');
 if (fs.existsSync(distPath)) {
@@ -215,7 +215,7 @@ if (fs.existsSync(distPath)) {
 // -------------------------------------------------------------
 // SUITE 6: DIVISIONAL CHARTS (D2, D3, D7, D9, D12, D30)
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[6/21] Testing Divisional Chart (Varga) Calculators...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[6/22] Testing Divisional Chart (Varga) Calculators...\x1b[0m');
 
 // D2 Hora: odd sign 0-15deg->Leo(5), 15-30deg->Cancer(4); even sign reversed
 assert(d2Hora(0) === 5, 'D2: 0° Aries (odd, 1st half) -> Leo');
@@ -275,7 +275,7 @@ assert(signAndOffset(720).signNum === 1, 'signAndOffset: 720° (2 full circles) 
 // -------------------------------------------------------------
 // SUITE 7: VIMSHOTTARI DASHA
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[7/21] Testing Vimshottari Dasha Engine...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[7/22] Testing Vimshottari Dasha Engine...\x1b[0m');
 
 assert(VIMSHOTTARI_ORDER.length === 9, 'Vimshottari: DASHA_ORDER has all 9 planets');
 assert(Object.values(VIMSHOTTARI_YEARS).reduce((a, b) => a + b, 0) === 120, 'Vimshottari: planetary years sum to exactly 120');
@@ -300,7 +300,7 @@ for (let i = 0; i < vim2.mahadashas.length - 1; i++) {
 // -------------------------------------------------------------
 // SUITE 8: YOGINI DASHA
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[8/21] Testing Yogini Dasha Engine...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[8/22] Testing Yogini Dasha Engine...\x1b[0m');
 
 assert(YOGINI_ORDER.length === 8, 'Yogini: YOGINI_ORDER has all 8 Yoginis');
 assert(Object.values(YOGINI_YEARS).reduce((a, b) => a + b, 0) === 36, 'Yogini: planetary years sum to exactly 36');
@@ -319,7 +319,7 @@ assert(yogTotalYears > 34 && yogTotalYears < 36, 'Yogini: reference chart total 
 // -------------------------------------------------------------
 // SUITE 9: SADE SATI TIMELINE
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[9/21] Testing Shani Sade Sati / Dhaiya Timeline...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[9/22] Testing Shani Sade Sati / Dhaiya Timeline...\x1b[0m');
 
 const sade1 = calculateSadeSatiTimeline(4, new Date('1994-02-23'), 100); // Moon in Cancer(4)
 assert(sade1.sadeSatiPeriods.length > 0, 'Sade Sati: reference chart (Moon in Cancer) finds Sade Sati periods across 100 years');
@@ -346,7 +346,7 @@ if (risingPeriods.length >= 2) {
 // -------------------------------------------------------------
 // SUITE 10: JAIMINI SYSTEM (Karakas, Karakamsha, Avasthas)
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[10/21] Testing Jaimini System (Chara Karakas & Avasthas)...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[10/22] Testing Jaimini System (Chara Karakas & Avasthas)...\x1b[0m');
 
 // Baladi Avastha - full verified 7-planet worked example
 assert(baladiAvastha(17, 2) === 'Yuva', 'Jaimini Baladi: Sun-analog 17° even sign -> Yuva (verified example)');
@@ -377,7 +377,7 @@ for (let i = 0; i < karakaTest.length - 1; i++) {
 // -------------------------------------------------------------
 // SUITE 11: JAIMINI CHARA DASHA
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[11/21] Testing Jaimini Chara Dasha...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[11/22] Testing Jaimini Chara Dasha...\x1b[0m');
 
 assert(signCount(1, 1, 'forward') === 12, 'Chara Dasha signCount: same sign -> 12 (max duration)');
 assert(signCount(1, 2, 'forward') === 1, 'Chara Dasha signCount: Aries->Taurus forward -> 1');
@@ -397,7 +397,7 @@ assert(cd.mahadashas.every(m => m.antardashas.length === 12), 'Chara Dasha: ever
 // -------------------------------------------------------------
 // SUITE 12: TAJIK VARSHPHAL
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[12/21] Testing Tajik Varshphal (Annual Chart) Engine...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[12/22] Testing Tajik Varshphal (Annual Chart) Engine...\x1b[0m');
 
 assert(calculateMuntha(3, 32) === 11, 'Tajik Muntha: (Lagna 3 + 32 completed years) mod 12 -> 11');
 assert(calculateMuntha(11, 1) === 12, 'Tajik Muntha: (Lagna 11 + 1) mod 12 = 0 -> wraps to 12');
@@ -417,7 +417,7 @@ assert(mudda[0].lord === 'Saturn', 'Tajik Mudda Dasha: starts from the specified
 // -------------------------------------------------------------
 // SUITE 13: LAL KITAB SYSTEM
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[13/21] Testing Lal Kitab System...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[13/22] Testing Lal Kitab System...\x1b[0m');
 
 assert(LALKITAB_ORDER.length === 9, 'Lal Kitab: DASHA_ORDER has all 9 planets');
 const lk35 = calculateLalKitab35YearDasha('mercury', new Date('1994-02-23'));
@@ -443,7 +443,7 @@ assert(getRemedies('saturn', 'hi').length >= 3, 'Lal Kitab Remedies: Hindi remed
 // -------------------------------------------------------------
 // SUITE 14: LIFE PREDICTIONS & GRAHA STRENGTH LOGIC
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[14/21] Testing Life Predictions & Planetary Strength Logic...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[14/22] Testing Life Predictions & Planetary Strength Logic...\x1b[0m');
 
 // strengthOf: own/exalted/debilitated/neutral for all 7 classical planets
 assert(strengthOf('sun', 5) === 'own', 'Strength: Sun in Leo(5) -> own');
@@ -492,7 +492,7 @@ assert(predictionsEn[9].text.toLowerCase().includes('doctor'), 'Life Predictions
 // -------------------------------------------------------------
 // SUITE 15: GRAHA (PLANET) ESSAYS
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[15/21] Testing 9 Graha Individual Essays...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[15/22] Testing 9 Graha Individual Essays...\x1b[0m');
 
 const essaysHi = generateGrahaEssays(refReport, 'hi');
 const essaysEn = generateGrahaEssays(refReport, 'en');
@@ -505,7 +505,7 @@ assert(!essaysHi.some(e => /\b(mercury|saturn|jupiter|venus|mars)\b/i.test(e.tex
 // -------------------------------------------------------------
 // SUITE 16: HINDI TRANSLATION LOOKUP (hindiTerms.js)
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[16/21] Testing Hindi Term Translation Lookup...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[16/22] Testing Hindi Term Translation Lookup...\x1b[0m');
 
 assert(nakshatraHi('Pushya') === 'पुष्य', 'hindiTerms: nakshatraHi("Pushya") -> पुष्य');
 assert(nakshatraHi('Ashwini') === 'अश्विनी', 'hindiTerms: nakshatraHi("Ashwini") -> अश्विनी');
@@ -523,7 +523,7 @@ assert(lordHi('UnknownLord') === 'UnknownLord', 'hindiTerms: unknown lord falls 
 // -------------------------------------------------------------
 // SUITE 17: MUHURAT ENGINE
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[17/21] Testing Muhurat Engine (Tithi/Vara parsing & category rules)...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[17/22] Testing Muhurat Engine (Tithi/Vara parsing & category rules)...\x1b[0m');
 
 assert(tithiNumberOf('Krishna Shashthi') === 6, 'Muhurat: tithiNumberOf parses "Krishna Shashthi" -> 6');
 assert(tithiNumberOf('Shukla Panchami') === 5, 'Muhurat: tithiNumberOf parses "Shukla Panchami" -> 5');
@@ -546,7 +546,7 @@ assert(muhuratScan.matches.every(m => !CATEGORY_RULES.vivah.avoidVaraNums.includ
 // -------------------------------------------------------------
 // SUITE 18: INPUT VALIDATION (backend/_db.js) - regression tests for the real spam bug
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[18/21] Testing Server-Side Phone/Name Validation (anti-spam regression)...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[18/22] Testing Server-Side Phone/Name Validation (anti-spam regression)...\x1b[0m');
 
 // The exact malicious data from the real bug report
 assert(isValidIndianPhone('8454070784548989494') === false, 'Validation: the exact reported 19-digit spam phone is rejected');
@@ -584,7 +584,7 @@ assert(isValidName('@#$%') === false, 'Validation: pure symbol "name" -> rejecte
 // -------------------------------------------------------------
 // SUITE 19: CROSS-VERIFICATION AGAINST THE REAL REFERENCE PRINTED BOOKLET
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[19/21] Cross-checking the full pipeline against the reference physical Kundli...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[19/22] Cross-checking the full pipeline against the reference physical Kundli...\x1b[0m');
 
 // Abhishek Raj, 23 Feb 1994, 14:20, Marhaura, Bihar - matched against the
 // real printed Kundli booklet the user shared earlier this session.
@@ -607,7 +607,7 @@ assert(Math.abs((refDashaTotalYears + refDashaPreBirthElapsed) - 120) < 0.01, 'R
 // -------------------------------------------------------------
 // SUITE 20: VASTU SCORE ENGINE
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[20/21] Testing Vastu Score Engine (form-based, verified classical rules)...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[20/22] Testing Vastu Score Engine (form-based, verified classical rules)...\x1b[0m');
 
 assert(VASTU_DIRECTIONS.length === 8, 'Vastu: all 8 directions defined');
 assert(Object.keys(ROOM_RULES).length === 5, 'Vastu: exactly 5 room-types scored (matching the well-corroborated rule set)');
@@ -643,7 +643,7 @@ assert(scoreRoom('kitchen', 'INVALID') === null, 'Vastu scoreRoom: an invalid di
 // -------------------------------------------------------------
 // SUITE 21: SHADBALA & BHAVA BALA (PARTIAL - Sthana+Dig+Naisargika)
 // -------------------------------------------------------------
-console.log('\n\x1b[1m\x1b[33m[21/21] Testing Shadbala & Bhava Bala (verified worked examples)...\x1b[0m');
+console.log('\n\x1b[1m\x1b[33m[21/22] Testing Shadbala & Bhava Bala (verified worked examples)...\x1b[0m');
 
 // Uchcha Bala - verified worked example: Sun at 72° (12° Gemini), debilitation 190° -> 39.3
 assert(Math.abs(uchchaBala('sun', 72) - 39.33) < 0.1, 'Shadbala Uchcha: Sun at 12° Gemini -> 39.3 Virupas (verified worked example)');
@@ -685,6 +685,58 @@ for (let h = 1; h <= 12; h++) houseLordsTest[h] = SIGN_LORD[refReport.houseData[
 const bhavaBalaTest = calculateBhavaBala(shadbalaTest, houseLordsTest);
 assert(Object.keys(bhavaBalaTest).length === 12, 'Bhava Bala: all 12 houses scored for the reference chart');
 assert(Object.values(bhavaBalaTest).every(v => v.totalVirupas >= 0), 'Bhava Bala: no house scores negative (Bhavadhipati + Dig are both non-negative by construction)');
+
+// -------------------------------------------------------------
+// SUITE 22: RATE LIMITER CONCURRENCY (regression test for a real race condition)
+// -------------------------------------------------------------
+console.log('\n\x1b[1m\x1b[33m[22/22] Testing checkRateLimit() under concurrent load...\x1b[0m');
+
+// A realistic in-memory mock matching MongoDB's actual atomicity and
+// snapshot-return semantics (findOneAndUpdate's result is a snapshot
+// taken at that specific atomic operation, not a live mutable reference -
+// getting this wrong in a mock would hide the very race condition this
+// suite exists to catch, or falsely report one that isn't there).
+class MockRateLimitCollection {
+    constructor() { this.docs = new Map(); }
+    async createIndex() { return true; }
+    async findOneAndUpdate(filter, update) {
+        let doc = this.docs.get(filter._id);
+        if (!doc) doc = { _id: filter._id, count: 0, ...(update.$setOnInsert || {}) };
+        doc = { ...doc, count: doc.count + (update.$inc?.count || 0) };
+        this.docs.set(filter._id, doc);
+        return doc;
+    }
+}
+
+const rlCol = new MockRateLimitCollection();
+const rlDb = { collection: () => rlCol };
+const rlReq = { headers: { 'x-forwarded-for': '203.0.113.5' } };
+
+const concurrentResults = await Promise.all(
+    Array.from({ length: 10 }, () => checkRateLimit(rlDb, rlReq, 'suite22-route', { limit: 5, windowMs: 600000 }))
+);
+const allowedCount = concurrentResults.filter(Boolean).length;
+assert(allowedCount === 5, `Rate limiter: exactly 5 of 10 truly-concurrent requests allowed through at limit=5 (regression test for the check-then-act race condition fixed this session) - got ${allowedCount}`);
+assert(concurrentResults.slice(0, 5).every(Boolean) && concurrentResults.slice(5).every(r => !r), 'Rate limiter: the first 5 concurrent requests succeed and the remaining 5 are blocked, in order');
+
+// Sequential behavior (the common case) still works correctly too
+const rlCol2 = new MockRateLimitCollection();
+const rlDb2 = { collection: () => rlCol2 };
+const seqResults = [];
+for (let i = 0; i < 7; i++) {
+    seqResults.push(await checkRateLimit(rlDb2, rlReq, 'suite22-seq', { limit: 5, windowMs: 600000 }));
+}
+assert(seqResults.filter(Boolean).length === 5, 'Rate limiter: sequential requests also correctly stop allowing after exactly 5 (limit=5)');
+assert(seqResults[0] === true && seqResults[6] === false, 'Rate limiter: 1st sequential request allowed, 7th (beyond limit) blocked');
+
+// Different IPs/routes must not share a rate-limit bucket
+const rlCol3 = new MockRateLimitCollection();
+const rlDb3 = { collection: () => rlCol3 };
+const req1 = { headers: { 'x-forwarded-for': '198.51.100.1' } };
+const req2 = { headers: { 'x-forwarded-for': '198.51.100.2' } };
+for (let i = 0; i < 5; i++) await checkRateLimit(rlDb3, req1, 'suite22-iso', { limit: 5, windowMs: 600000 });
+const otherIpAllowed = await checkRateLimit(rlDb3, req2, 'suite22-iso', { limit: 5, windowMs: 600000 });
+assert(otherIpAllowed === true, 'Rate limiter: a different IP is not blocked by another IP\'s exhausted limit on the same route');
 
 // Faladesh (interpretation text) generation
 const shadbalaFaladeshTest = generateShadbalaFaladesh(shadbalaTest, 'en');
