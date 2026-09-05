@@ -4,7 +4,7 @@ import servicesData from '../data/services.json';
 import { useLanguage } from '../context/LanguageContext';
 import useSEO from '../hooks/useSEO';
 import { breadcrumbJsonLd, faqJsonLd, combineJsonLd } from '../utils/seo';
-import { Search, X, MessageCircle, Globe2, Landmark, CheckCircle2 } from 'lucide-react';
+import { Search, X, MessageCircle, Globe2, Landmark, CheckCircle2, Heart, Home as HomeIcon, Baby, Briefcase, CalendarHeart, ArrowRight } from 'lucide-react';
 
 export default function Services() {
     const { t, lang } = useLanguage();
@@ -196,6 +196,44 @@ export default function Services() {
                                 <MessageCircle size={15} style={{ verticalAlign: '-3px', marginRight: '0.35rem' }} />{t('पूछताछ करें', 'Inquire Now')}
                             </a>
                         </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Shubh Muhurat - a distinct paid tool (₹151), not a pooja/ritual,
+                so it doesn't belong in the "Inquiry Only, No Charges" special-
+                services section above, and it isn't a services.json/
+                ServiceDetail entry either since its real booking flow already
+                lives at /muhurat (category picker + Panchang-based date
+                scan + report), not the generic service-detail template. */}
+            <section className="section" style={{ background: 'var(--navy-950)' }}>
+                <div className="container">
+                    <div className="text-center">
+                        <span className="section-label" style={{ justifyContent: 'center', color: 'var(--gold-400)' }}>
+                            <CalendarHeart size={14} style={{ marginRight: '0.4rem' }} />{t('ज्योतिष टूल', 'Astrology Tool')}
+                        </span>
+                        <h2 className="section-title" style={{ color: 'white' }}>{t('शुभ मुहूर्त — सही तिथि चुनें', 'Shubh Muhurat - Choose the Right Date')}</h2>
+                        <p style={{ color: 'var(--warm-200)', maxWidth: 600, margin: '0.5rem auto 0' }}>
+                            {t('विवाह, गृह प्रवेश, नामकरण एवं व्यापार आरंभ हेतु पंचांग-आधारित शुभ मुहूर्त — केवल ₹151।', 'Panchang-based auspicious dates for Marriage, Griha Pravesh, Naamkaran, and Business Launch - just ₹151.')}
+                        </p>
+                    </div>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem', marginTop: '2rem', maxWidth: 760, marginLeft: 'auto', marginRight: 'auto' }}>
+                        {[
+                            { Icon: Heart, hi: 'विवाह मुहूर्त', en: 'Marriage Muhurat' },
+                            { Icon: HomeIcon, hi: 'गृह प्रवेश मुहूर्त', en: 'Griha Pravesh Muhurat' },
+                            { Icon: Baby, hi: 'नामकरण मुहूर्त', en: 'Naamkaran Muhurat' },
+                            { Icon: Briefcase, hi: 'व्यापार आरंभ मुहूर्त', en: 'Business Launch Muhurat' },
+                        ].map((cat, i) => (
+                            <Link to="/muhurat" key={i} style={{ background: 'rgba(255,255,255,0.05)', borderRadius: 'var(--radius-lg)', padding: '1.25rem 1rem', textAlign: 'center', display: 'block', textDecoration: 'none', transition: 'background var(--dur-fast) var(--ease-out)' }}>
+                                <cat.Icon size={26} style={{ color: 'var(--gold-400)', marginBottom: '0.6rem' }} />
+                                <div style={{ color: 'white', fontSize: '0.88rem', fontWeight: 700 }}>{t(cat.hi, cat.en)}</div>
+                            </Link>
+                        ))}
+                    </div>
+                    <div className="text-center" style={{ marginTop: '1.75rem' }}>
+                        <Link to="/muhurat" className="btn btn-primary btn-lg">
+                            {t('मुहूर्त जांचें', 'Check Muhurat')} <ArrowRight size={16} style={{ marginLeft: '0.4rem', verticalAlign: '-2px' }} />
+                        </Link>
                     </div>
                 </div>
             </section>
