@@ -1,5 +1,6 @@
 import { useParams, Link, Navigate } from 'react-router-dom';
 import servicesData from '../data/services.json';
+import blogData from '../data/blog.json';
 import { useLanguage } from '../context/LanguageContext';
 import useSEO from '../hooks/useSEO';
 import { breadcrumbJsonLd, serviceJsonLd, faqJsonLd, combineJsonLd } from '../utils/seo';
@@ -20,6 +21,13 @@ export default function ServiceDetail() {
     const enDescription = isAstrology
         ? 'Best Astrologer in Kashi, Varanasi - Dr. Umang Nath Sharma offers kundli analysis, dosh remedies, marriage matching, online or in person.'
         : `Book ${service.nameEn} in Kashi, Varanasi with Pt. Umang Nath Sharma - authentic Vedic pooja, available online or in person.`;
+
+    // Bidirectional internal-linking: blog posts already link back to their
+    // service page, but no service page linked forward to its blog content -
+    // a real, one-way gap for both SEO (Google favors topic-clusters linking
+    // both ways) and users who land here first and might want the deeper
+    // article before booking.
+    const relatedPosts = blogData.filter(p => p.serviceId === service.id);
 
     const faqItems = [
         {
@@ -167,8 +175,22 @@ export default function ServiceDetail() {
                         ))}
                     </div>
 
+                    {relatedPosts.length > 0 && (
+                        <div style={{ maxWidth: '720px', margin: '3rem auto 0' }}>
+                            <h2 style={{ textAlign: 'center', marginBottom: '1.25rem', fontFamily: 'var(--font-heading)' }}>{t('इस विषय पर और पढ़ें', 'Read More on This Topic')}</h2>
+                            <div style={{ display: 'grid', gap: '0.75rem' }}>
+                                {relatedPosts.map(post => (
+                                    <Link key={post.id} to={`/blog/${post.id}`} style={{ display: 'block', padding: '1rem 1.25rem', background: 'var(--cream)', borderRadius: 'var(--radius-md)', textDecoration: 'none' }}>
+                                        <div style={{ fontWeight: 700, color: 'var(--navy-900)' }}>{t(post.title, post.titleEn)}</div>
+                                        <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>{t(post.excerpt, post.excerptEn)}</div>
+                                    </Link>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
                     <div style={{ textAlign: 'center', marginTop: '3rem' }}>
-                        <Link to="/services" className="btn btn-outline">
+                        <Link to="/services" className="btn btn-outline-dark">
                             ← {t('सभी सेवाएं देखें', 'View All Services')}
                         </Link>
                     </div>

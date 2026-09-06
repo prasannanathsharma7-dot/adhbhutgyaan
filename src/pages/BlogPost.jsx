@@ -152,6 +152,11 @@ export default function BlogPost() {
                                 <p>{t('काशी के अनुभवी पंडितों द्वारा शास्त्रोक्त विधि से सम्पूर्ण पूजन कार्य। अभी WhatsApp पर संपर्क करें!', 'Complete pooja rituals performed authentically by experienced Pandits of Kashi. Contact us on WhatsApp now!')}</p>
                                 <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', justifyContent: 'center' }}>
                                     {post.serviceId && (
+                                        <Link to={`/services/${post.serviceId}`} className="btn btn-outline-dark">
+                                            {t('पूरी जानकारी एवं मूल्य देखें', 'View Full Details & Pricing')}
+                                        </Link>
+                                    )}
+                                    {post.serviceId && (
                                         <Link to={`/booking?service=${post.serviceId}`} className="btn btn-primary">
                                             <img src="/images/logo.png" alt="" className="inline-logo" /> {t('यह पूजा बुक करें', 'Book This Pooja')}
                                         </Link>
