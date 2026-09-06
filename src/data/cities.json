@@ -358,5 +358,200 @@
     "slug": "sydney",
     "name": "सिडनी",
     "nameEn": "Sydney, Australia"
+  },
+  {
+    "slug": "birgunj",
+    "name": "बीरगंज",
+    "nameEn": "Birgunj, Nepal"
+  },
+  {
+    "slug": "dharan",
+    "name": "धरान",
+    "nameEn": "Dharan, Nepal"
+  },
+  {
+    "slug": "nepalgunj",
+    "name": "नेपालगंज",
+    "nameEn": "Nepalgunj, Nepal"
+  },
+  {
+    "slug": "butwal",
+    "name": "बुटवल",
+    "nameEn": "Butwal, Nepal"
+  },
+  {
+    "slug": "vacoas-phoenix",
+    "name": "वाकोस-फीनिक्स",
+    "nameEn": "Vacoas-Phoenix, Mauritius"
+  },
+  {
+    "slug": "curepipe",
+    "name": "क्यूरपाइप",
+    "nameEn": "Curepipe, Mauritius"
+  },
+  {
+    "slug": "quatre-bornes",
+    "name": "क्वात्रे बोर्नेस",
+    "nameEn": "Quatre Bornes, Mauritius"
+  },
+  {
+    "slug": "rose-hill",
+    "name": "रोज़ हिल",
+    "nameEn": "Beau Bassin-Rose Hill, Mauritius"
+  },
+  {
+    "slug": "san-fernando",
+    "name": "सैन फर्नांडो",
+    "nameEn": "San Fernando, Trinidad"
+  },
+  {
+    "slug": "arima",
+    "name": "अरीमा",
+    "nameEn": "Arima, Trinidad"
+  },
+  {
+    "slug": "couva",
+    "name": "कूवा",
+    "nameEn": "Couva, Trinidad"
+  },
+  {
+    "slug": "linden-guyana",
+    "name": "लिंडेन",
+    "nameEn": "Linden, Guyana"
+  },
+  {
+    "slug": "new-amsterdam-guyana",
+    "name": "न्यू एम्स्टर्डम",
+    "nameEn": "New Amsterdam, Guyana"
+  },
+  {
+    "slug": "lautoka",
+    "name": "लाउतोका",
+    "nameEn": "Lautoka, Fiji"
+  },
+  {
+    "slug": "labasa",
+    "name": "लाबासा",
+    "nameEn": "Labasa, Fiji"
+  },
+  {
+    "slug": "ba-fiji",
+    "name": "बा",
+    "nameEn": "Ba, Fiji"
+  },
+  {
+    "slug": "edison-nj",
+    "name": "एडिसन",
+    "nameEn": "Edison, New Jersey, USA"
+  },
+  {
+    "slug": "fremont-bay-area",
+    "name": "फ्रीमोंट (बे एरिया)",
+    "nameEn": "Fremont, Bay Area, USA"
+  },
+  {
+    "slug": "new-york-city",
+    "name": "न्यूयॉर्क शहर",
+    "nameEn": "New York City, USA"
+  },
+  {
+    "slug": "chicago",
+    "name": "शिकागो",
+    "nameEn": "Chicago, USA"
+  },
+  {
+    "slug": "houston",
+    "name": "ह्यूस्टन",
+    "nameEn": "Houston, USA"
+  },
+  {
+    "slug": "dallas",
+    "name": "डलास",
+    "nameEn": "Dallas, USA"
+  },
+  {
+    "slug": "los-angeles",
+    "name": "लॉस एंजिल्स",
+    "nameEn": "Los Angeles, USA"
+  },
+  {
+    "slug": "washington-dc",
+    "name": "वाशिंगटन डीसी",
+    "nameEn": "Washington DC, USA"
+  },
+  {
+    "slug": "atlanta",
+    "name": "अटलांटा",
+    "nameEn": "Atlanta, USA"
+  },
+  {
+    "slug": "leicester",
+    "name": "लीसेस्टर",
+    "nameEn": "Leicester, UK"
+  },
+  {
+    "slug": "wembley-harrow",
+    "name": "वेम्बली-हैरो",
+    "nameEn": "Wembley & Harrow, UK"
+  },
+  {
+    "slug": "birmingham",
+    "name": "बर्मिंघम",
+    "nameEn": "Birmingham, UK"
+  },
+  {
+    "slug": "manchester",
+    "name": "मैनचेस्टर",
+    "nameEn": "Manchester, UK"
+  },
+  {
+    "slug": "bradford",
+    "name": "ब्रैडफ़ोर्ड",
+    "nameEn": "Bradford, UK"
+  },
+  {
+    "slug": "brampton",
+    "name": "ब्रैम्पटन",
+    "nameEn": "Brampton, Canada"
+  },
+  {
+    "slug": "mississauga",
+    "name": "मिसिसॉगा",
+    "nameEn": "Mississauga, Canada"
+  },
+  {
+    "slug": "surrey-bc",
+    "name": "सरे",
+    "nameEn": "Surrey, BC, Canada"
+  },
+  {
+    "slug": "vancouver",
+    "name": "वैंकूवर",
+    "nameEn": "Vancouver, Canada"
+  },
+  {
+    "slug": "calgary",
+    "name": "कैलगरी",
+    "nameEn": "Calgary, Canada"
+  },
+  {
+    "slug": "melbourne",
+    "name": "मेलबर्न",
+    "nameEn": "Melbourne, Australia"
+  },
+  {
+    "slug": "perth",
+    "name": "पर्थ",
+    "nameEn": "Perth, Australia"
+  },
+  {
+    "slug": "brisbane",
+    "name": "ब्रिस्बेन",
+    "nameEn": "Brisbane, Australia"
+  },
+  {
+    "slug": "adelaide",
+    "name": "एडिलेड",
+    "nameEn": "Adelaide, Australia"
   }
 ]
