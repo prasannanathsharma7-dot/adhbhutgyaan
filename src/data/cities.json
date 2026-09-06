@@ -248,5 +248,35 @@
     "slug": "visakhapatnam",
     "name": "विशाखापत्तनम",
     "nameEn": "Visakhapatnam"
+  },
+  {
+    "slug": "kathmandu",
+    "name": "काठमांडू",
+    "nameEn": "Kathmandu"
+  },
+  {
+    "slug": "pokhara",
+    "name": "पोखरा",
+    "nameEn": "Pokhara"
+  },
+  {
+    "slug": "lalitpur",
+    "name": "ललितपुर",
+    "nameEn": "Lalitpur"
+  },
+  {
+    "slug": "bhaktapur",
+    "name": "भक्तपुर",
+    "nameEn": "Bhaktapur"
+  },
+  {
+    "slug": "janakpur",
+    "name": "जनकपुर",
+    "nameEn": "Janakpur"
+  },
+  {
+    "slug": "biratnagar",
+    "name": "विराटनगर",
+    "nameEn": "Biratnagar"
   }
 ]
