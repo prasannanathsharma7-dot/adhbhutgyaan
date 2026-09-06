@@ -1,10 +1,252 @@
 [
-  { "slug": "delhi", "name": "दिल्ली", "nameEn": "Delhi" },
-  { "slug": "mumbai", "name": "मुंबई", "nameEn": "Mumbai" },
-  { "slug": "bangalore", "name": "बेंगलुरु", "nameEn": "Bangalore" },
-  { "slug": "pune", "name": "पुणे", "nameEn": "Pune" },
-  { "slug": "hyderabad", "name": "हैदराबाद", "nameEn": "Hyderabad" },
-  { "slug": "chennai", "name": "चेन्नई", "nameEn": "Chennai" },
-  { "slug": "kolkata", "name": "कोलकाता", "nameEn": "Kolkata" },
-  { "slug": "ahmedabad", "name": "अहमदाबाद", "nameEn": "Ahmedabad" }
+  {
+    "slug": "delhi",
+    "name": "दिल्ली",
+    "nameEn": "Delhi"
+  },
+  {
+    "slug": "mumbai",
+    "name": "मुंबई",
+    "nameEn": "Mumbai"
+  },
+  {
+    "slug": "bangalore",
+    "name": "बेंगलुरु",
+    "nameEn": "Bangalore"
+  },
+  {
+    "slug": "hyderabad",
+    "name": "हैदराबाद",
+    "nameEn": "Hyderabad"
+  },
+  {
+    "slug": "chennai",
+    "name": "चेन्नई",
+    "nameEn": "Chennai"
+  },
+  {
+    "slug": "kolkata",
+    "name": "कोलकाता",
+    "nameEn": "Kolkata"
+  },
+  {
+    "slug": "pune",
+    "name": "पुणे",
+    "nameEn": "Pune"
+  },
+  {
+    "slug": "ahmedabad",
+    "name": "अहमदाबाद",
+    "nameEn": "Ahmedabad"
+  },
+  {
+    "slug": "surat",
+    "name": "सूरत",
+    "nameEn": "Surat"
+  },
+  {
+    "slug": "jaipur",
+    "name": "जयपुर",
+    "nameEn": "Jaipur"
+  },
+  {
+    "slug": "lucknow",
+    "name": "लखनऊ",
+    "nameEn": "Lucknow"
+  },
+  {
+    "slug": "kanpur",
+    "name": "कानपुर",
+    "nameEn": "Kanpur"
+  },
+  {
+    "slug": "nagpur",
+    "name": "नागपुर",
+    "nameEn": "Nagpur"
+  },
+  {
+    "slug": "indore",
+    "name": "इंदौर",
+    "nameEn": "Indore"
+  },
+  {
+    "slug": "bhopal",
+    "name": "भोपाल",
+    "nameEn": "Bhopal"
+  },
+  {
+    "slug": "patna",
+    "name": "पटना",
+    "nameEn": "Patna"
+  },
+  {
+    "slug": "vadodara",
+    "name": "वडोदरा",
+    "nameEn": "Vadodara"
+  },
+  {
+    "slug": "ghaziabad",
+    "name": "गाज़ियाबाद",
+    "nameEn": "Ghaziabad"
+  },
+  {
+    "slug": "noida",
+    "name": "नोएडा",
+    "nameEn": "Noida"
+  },
+  {
+    "slug": "chandigarh",
+    "name": "चंडीगढ़",
+    "nameEn": "Chandigarh"
+  },
+  {
+    "slug": "agra",
+    "name": "आगरा",
+    "nameEn": "Agra"
+  },
+  {
+    "slug": "nashik",
+    "name": "नासिक",
+    "nameEn": "Nashik"
+  },
+  {
+    "slug": "faridabad",
+    "name": "फरीदाबाद",
+    "nameEn": "Faridabad"
+  },
+  {
+    "slug": "meerut",
+    "name": "मेरठ",
+    "nameEn": "Meerut"
+  },
+  {
+    "slug": "rajkot",
+    "name": "राजकोट",
+    "nameEn": "Rajkot"
+  },
+  {
+    "slug": "amritsar",
+    "name": "अमृतसर",
+    "nameEn": "Amritsar"
+  },
+  {
+    "slug": "coimbatore",
+    "name": "कोयंबटूर",
+    "nameEn": "Coimbatore"
+  },
+  {
+    "slug": "prayagraj",
+    "name": "प्रयागराज",
+    "nameEn": "Prayagraj"
+  },
+  {
+    "slug": "ranchi",
+    "name": "राँची",
+    "nameEn": "Ranchi"
+  },
+  {
+    "slug": "raipur",
+    "name": "रायपुर",
+    "nameEn": "Raipur"
+  },
+  {
+    "slug": "jodhpur",
+    "name": "जोधपुर",
+    "nameEn": "Jodhpur"
+  },
+  {
+    "slug": "guwahati",
+    "name": "गुवाहाटी",
+    "nameEn": "Guwahati"
+  },
+  {
+    "slug": "dehradun",
+    "name": "देहरादून",
+    "nameEn": "Dehradun"
+  },
+  {
+    "slug": "gurugram",
+    "name": "गुरुग्राम",
+    "nameEn": "Gurugram"
+  },
+  {
+    "slug": "thane",
+    "name": "ठाणे",
+    "nameEn": "Thane"
+  },
+  {
+    "slug": "mathura",
+    "name": "मथुरा",
+    "nameEn": "Mathura"
+  },
+  {
+    "slug": "haridwar",
+    "name": "हरिद्वार",
+    "nameEn": "Haridwar"
+  },
+  {
+    "slug": "rishikesh",
+    "name": "ऋषिकेश",
+    "nameEn": "Rishikesh"
+  },
+  {
+    "slug": "ujjain",
+    "name": "उज्जैन",
+    "nameEn": "Ujjain"
+  },
+  {
+    "slug": "ayodhya",
+    "name": "अयोध्या",
+    "nameEn": "Ayodhya"
+  },
+  {
+    "slug": "puri",
+    "name": "पुरी",
+    "nameEn": "Puri"
+  },
+  {
+    "slug": "bhubaneswar",
+    "name": "भुवनेश्वर",
+    "nameEn": "Bhubaneswar"
+  },
+  {
+    "slug": "mysuru",
+    "name": "मैसूरु",
+    "nameEn": "Mysuru"
+  },
+  {
+    "slug": "madurai",
+    "name": "मदुरै",
+    "nameEn": "Madurai"
+  },
+  {
+    "slug": "tirupati",
+    "name": "तिरुपति",
+    "nameEn": "Tirupati"
+  },
+  {
+    "slug": "vijayawada",
+    "name": "विजयवाड़ा",
+    "nameEn": "Vijayawada"
+  },
+  {
+    "slug": "gwalior",
+    "name": "ग्वालियर",
+    "nameEn": "Gwalior"
+  },
+  {
+    "slug": "jabalpur",
+    "name": "जबलपुर",
+    "nameEn": "Jabalpur"
+  },
+  {
+    "slug": "kota",
+    "name": "कोटा",
+    "nameEn": "Kota"
+  },
+  {
+    "slug": "visakhapatnam",
+    "name": "विशाखापत्तनम",
+    "nameEn": "Visakhapatnam"
+  }
 ]
