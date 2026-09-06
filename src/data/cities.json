@@ -278,5 +278,35 @@
     "slug": "biratnagar",
     "name": "विराटनगर",
     "nameEn": "Biratnagar"
+  },
+  {
+    "slug": "port-louis",
+    "name": "पोर्ट लुइस",
+    "nameEn": "Port Louis, Mauritius"
+  },
+  {
+    "slug": "port-of-spain",
+    "name": "पोर्ट ऑफ स्पेन",
+    "nameEn": "Port of Spain, Trinidad"
+  },
+  {
+    "slug": "chaguanas",
+    "name": "चागुआनास",
+    "nameEn": "Chaguanas, Trinidad"
+  },
+  {
+    "slug": "georgetown-guyana",
+    "name": "जॉर्जटाउन",
+    "nameEn": "Georgetown, Guyana"
+  },
+  {
+    "slug": "suva",
+    "name": "सुवा",
+    "nameEn": "Suva, Fiji"
+  },
+  {
+    "slug": "nadi",
+    "name": "नाडी",
+    "nameEn": "Nadi, Fiji"
   }
 ]
