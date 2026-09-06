@@ -35,6 +35,7 @@ if (!existsSync(join(DIST, 'index.html'))) {
 const template = readFileSync(join(DIST, 'index.html'), 'utf-8');
 const blogData = JSON.parse(readFileSync(join(ROOT, 'src/data/blog.json'), 'utf-8'));
 const servicesData = JSON.parse(readFileSync(join(ROOT, 'src/data/services.json'), 'utf-8'));
+const citiesData = JSON.parse(readFileSync(join(ROOT, 'src/data/cities.json'), 'utf-8'));
 
 function breadcrumbJsonLd(items) {
     return {
@@ -291,7 +292,23 @@ for (const post of blogData) {
     });
 }
 
-// ---- Individual service pages (one route per pooja, from services.json) ----
+// ---- City-specific landing pages (one route per city, from cities.json) ----
+// Targets "pandit for pooja in [city]" style long-tail local search intent
+// for people outside Kashi - genuinely served by the site's existing
+// online/at-Kashi/pandit-travels-to-you delivery model, not a new service.
+for (const c of citiesData) {
+    routes.push({
+        path: `/pandit-for-pooja/${c.slug}`,
+        title: `Book Pooja from ${c.nameEn} — Kashi Pandits | Adhbhut Gyaan`,
+        description: `Book authentic Kashi Pandits for pooja while living in ${c.nameEn} - online with live video, or Pandit ji comes to your home.`,
+        jsonLd: combineJsonLd(
+            breadcrumbJsonLd([
+                { name: 'Home', path: '/' },
+                { name: `Pooja in ${c.nameEn}`, path: `/pandit-for-pooja/${c.slug}` },
+            ])
+        ),
+    });
+}
 // Each pooja gets its own indexable URL so it can rank independently for
 // long-tail, service-specific searches (e.g. "rudrabhishek in kashi",
 // "astrology in varanasi") instead of competing with the other 10 poojas on

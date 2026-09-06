@@ -1,0 +1,10 @@
+[
+  { "slug": "delhi", "name": "दिल्ली", "nameEn": "Delhi" },
+  { "slug": "mumbai", "name": "मुंबई", "nameEn": "Mumbai" },
+  { "slug": "bangalore", "name": "बेंगलुरु", "nameEn": "Bangalore" },
+  { "slug": "pune", "name": "पुणे", "nameEn": "Pune" },
+  { "slug": "hyderabad", "name": "हैदराबाद", "nameEn": "Hyderabad" },
+  { "slug": "chennai", "name": "चेन्नई", "nameEn": "Chennai" },
+  { "slug": "kolkata", "name": "कोलकाता", "nameEn": "Kolkata" },
+  { "slug": "ahmedabad", "name": "अहमदाबाद", "nameEn": "Ahmedabad" }
+]
