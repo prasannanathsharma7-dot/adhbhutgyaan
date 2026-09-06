@@ -308,5 +308,55 @@
     "slug": "nadi",
     "name": "नाडी",
     "nameEn": "Nadi, Fiji"
+  },
+  {
+    "slug": "kochi",
+    "name": "कोच्चि",
+    "nameEn": "Kochi"
+  },
+  {
+    "slug": "thiruvananthapuram",
+    "name": "तिरुवनंतपुरम",
+    "nameEn": "Thiruvananthapuram"
+  },
+  {
+    "slug": "jamshedpur",
+    "name": "जमशेदपुर",
+    "nameEn": "Jamshedpur"
+  },
+  {
+    "slug": "siliguri",
+    "name": "सिलीगुड़ी",
+    "nameEn": "Siliguri"
+  },
+  {
+    "slug": "aurangabad",
+    "name": "औरंगाबाद",
+    "nameEn": "Aurangabad"
+  },
+  {
+    "slug": "jalandhar",
+    "name": "जालंधर",
+    "nameEn": "Jalandhar"
+  },
+  {
+    "slug": "new-jersey",
+    "name": "न्यू जर्सी",
+    "nameEn": "New Jersey, USA"
+  },
+  {
+    "slug": "london",
+    "name": "लंदन",
+    "nameEn": "London, UK"
+  },
+  {
+    "slug": "toronto",
+    "name": "टोरंटो",
+    "nameEn": "Toronto, Canada"
+  },
+  {
+    "slug": "sydney",
+    "name": "सिडनी",
+    "nameEn": "Sydney, Australia"
   }
 ]
