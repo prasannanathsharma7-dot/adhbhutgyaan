@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import servicesData from '../data/services.json';
 import { useLanguage } from '../context/LanguageContext';
-import { triptych, videoClips, youtubeUploadsPlaylistId, youtubeChannelId } from '../data/media';
+import { triptych, videoClips, pressHighlights, youtubeUploadsPlaylistId, youtubeChannelId } from '../data/media';
 import useSEO from '../hooks/useSEO';
 import { localBusinessJsonLd, combineJsonLd } from '../utils/seo';
 import DailyPanchangCard from '../components/DailyPanchangCard';
@@ -240,6 +240,26 @@ export default function Home() {
                                 <img src={`/images/icons/${h.img}.jpg`} alt="" width="52" height="52" loading="lazy" style={{ width: '52px', height: '52px', borderRadius: '50%', objectFit: 'cover', margin: '0 auto 0.5rem' }} />
                                 <div className="stat-label" style={{ fontWeight: 700, color: 'var(--gold-300)', marginBottom: '0.35rem' }}>{t(h.label, h.labelEn)}</div>
                                 <div className="stat-label" style={{ fontSize: '0.8rem' }}>{t(h.desc, h.descEn)}</div>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Newest, highest-impact recognition - featured prominently
+                        here on the homepage rather than only living on the
+                        About page, since a sitting PM's photo and a major
+                        national news-channel interview are exactly the kind
+                        of credibility signal most visitors would otherwise
+                        never scroll deep enough into About Us to see. */}
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.25rem', marginTop: '2.5rem' }}>
+                        {[pressHighlights[1], pressHighlights[0], pressHighlights[7]].map(item => (
+                            <div key={item.src} style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(212,168,67,0.25)' }}>
+                                <div style={{ position: 'relative' }}>
+                                    <img src={item.src} alt={t(item.capHi, item.capEn)} width="400" height="300" loading="lazy" style={{ width: '100%', height: '220px', objectFit: 'cover', display: 'block' }} />
+                                    <span style={{ position: 'absolute', top: '0.6rem', left: '0.6rem', background: 'var(--gold-500)', color: 'var(--navy-950)', fontSize: '0.7rem', fontWeight: 800, padding: '0.25rem 0.65rem', borderRadius: '999px' }}>
+                                        {t(item.badge, item.badgeEn)}
+                                    </span>
+                                </div>
+                                <p style={{ padding: '0.9rem 1rem', margin: 0, color: 'var(--warm-200)', fontSize: '0.85rem', lineHeight: 1.5 }}>{t(item.capHi, item.capEn)}</p>
                             </div>
                         ))}
                     </div>
