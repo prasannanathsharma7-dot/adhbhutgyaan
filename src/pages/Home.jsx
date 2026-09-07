@@ -10,7 +10,7 @@ import UpcomingMuhuratWidget from '../components/UpcomingMuhuratWidget';
 import VideoTestimonials from '../components/VideoTestimonials';
 import { heritageSummary, testimonials } from '../data/heritage';
 import FlagIcon from '../components/FlagIcon';
-import { SquarePlay, XCircle, CheckCircle2 } from 'lucide-react';
+import { SquarePlay, XCircle, CheckCircle2, Mic } from 'lucide-react';
 
 function useInView() {
     const ref = useRef();
@@ -604,6 +604,43 @@ export default function Home() {
                         <a href={`https://www.youtube.com/channel/${youtubeChannelId}`} target="_blank" rel="noreferrer" className="btn btn-primary">
                             <SquarePlay size={16} style={{ verticalAlign: '-3px', marginRight: '0.35rem' }} />{t('YouTube पर सब्सक्राइब करें', 'Subscribe on YouTube')}
                         </a>
+                    </div>
+
+                    {/* Media interviews - distinct from the ceremony-footage
+                        clips above (different content-type: press/media
+                        interviews of Pt. Umang Nath Sharma, not our own
+                        ritual recordings), so kept as its own labeled
+                        sub-section rather than mixed into videoClips. */}
+                    <div style={{ marginTop: '3rem', paddingTop: '2.5rem', borderTop: '1px solid rgba(255,255,255,0.12)' }}>
+                        <div className="text-center fade-up">
+                            <span className="section-label" style={{ justifyContent: 'center' }}>
+                                <Mic size={14} style={{ marginRight: '0.4rem' }} />{t('मीडिया साक्षात्कार', 'Media Interviews')}
+                            </span>
+                            <h3 style={{ color: 'var(--gold-300)', marginTop: '0.4rem' }}>{t('पंडित उमंग नाथ शर्मा के साक्षात्कार', 'Interviews with Pt. Umang Nath Sharma')}</h3>
+                        </div>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', marginTop: '1.75rem' }}>
+                            {[
+                                { id: 'mFPuEkcM2oU' },
+                                { id: 'Xrawsif2bNs' },
+                                { id: 'v0JYx-KoB9k' },
+                            ].map((v, i) => (
+                                <div key={v.id} style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', background: 'rgba(255,255,255,0.05)' }}>
+                                    <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0 }}>
+                                        <iframe
+                                            src={`https://www.youtube.com/embed/${v.id}`}
+                                            title={`Interview ${i + 1} with Pt. Umang Nath Sharma`}
+                                            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 0 }}
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                            allowFullScreen
+                                            loading="lazy"
+                                        />
+                                    </div>
+                                    <p style={{ padding: '0.85rem 1rem', margin: 0, color: 'var(--warm-200)', fontSize: '0.88rem' }}>
+                                        {t('साक्षात्कार', 'Interview')} {i + 1} — {t('पंडित उमंग नाथ शर्मा', 'Pt. Umang Nath Sharma')}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </section>
