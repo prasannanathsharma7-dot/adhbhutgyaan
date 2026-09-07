@@ -43,4 +43,7 @@ export const gallery = [
     { src: '/images/gallery/microtec-office-opening.jpg', capHi: 'माइक्रोटेक ग्रुप के नए हेड ऑफिस का उद्घाटन', capEn: 'Inauguration of MicroTec Group\\'s New Head Office' },
     { src: '/images/gallery/grand-opening-head-office.jpg', capHi: 'हेड ऑफिस का भव्य उद्घाटन — मुख्य अतिथि डॉ. उमंग नाथ शर्मा', capEn: 'Grand Opening of Head Office — Chief Guest Dr. Umang Nath Sharma' },
     { src: '/images/gallery/umang-with-pm-modi.jpg', capHi: 'डॉ. उमंग नाथ शर्मा प्रधानमंत्री श्री नरेन्द्र मोदी जी के साथ', capEn: 'Dr. Umang Nath Sharma with PM Narendra Modi' },
+    { src: '/images/gallery/umang-with-daya-shankar-mishra-1.jpg', capHi: 'डॉ. उमंग नाथ शर्मा राज्य मंत्री (स्वतंत्र प्रभार), आयुष विभाग, उत्तर प्रदेश सरकार, डॉ. दयाशंकर मिश्र के साथ', capEn: 'Dr. Umang Nath Sharma with Dr. Daya Shankar Mishra, Hon\\'ble Minister of State (Independent Charge), AYUSH, Government of Uttar Pradesh' },
+    { src: '/images/gallery/umang-with-sp-spokesperson.jpg', capHi: 'डॉ. उमंग नाथ शर्मा मनोज राय धूपचंडी के साथ — राष्ट्रीय प्रवक्ता, समाजवादी पार्टी एवं पूर्व राज्य मंत्री', capEn: 'Dr. Umang Nath Sharma with Manoj Rai Dhoopchandi — National Spokesperson, Samajwadi Party & Former Minister of State' },
+    { src: '/images/gallery/daya-shankar-mishra-puja.jpg', capHi: 'डॉ. दयाशंकर मिश्र, राज्य मंत्री (स्वतंत्र प्रभार), आयुष विभाग, उत्तर प्रदेश सरकार — पूजा स्थल पर', capEn: 'Dr. Daya Shankar Mishra, Hon\\'ble Minister of State (Independent Charge), AYUSH, Government of Uttar Pradesh — at the family shrine' },
 ];
