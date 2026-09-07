@@ -54,7 +54,13 @@ function extractFaqPairs(content) {
 export default function BlogPost() {
     const { slug } = useParams();
     const pageRef = useInView();
-    const post = blogData.find(p => p.id === slug);
+    // Matches either the primary English slug or the Hindi-alias slug -
+    // e.g. /blog/rudrabhishek-puja-benefits and /blog/रुद्राभिषेक-पूजा both
+    // resolve to the same post. The canonical URL set below always uses
+    // post.id (the English slug) regardless of which one matched, so
+    // Google attributes both to a single indexed page rather than
+    // treating them as duplicate content.
+    const post = blogData.find(p => p.id === slug || p.slugHi === slug);
     const { t, lang } = useLanguage();
 
     const faqPairs = post ? extractFaqPairs(post.content) : [];
