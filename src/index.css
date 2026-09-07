@@ -1650,6 +1650,11 @@ h3 {
     border-color: #25D366;
 }
 
+.social-link.justdial:hover {
+    background: #E52B20;
+    border-color: #E52B20;
+}
+
 .social-link.phone:hover {
     background: var(--gold-500);
     border-color: var(--gold-500);

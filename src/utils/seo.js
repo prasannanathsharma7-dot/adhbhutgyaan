@@ -99,6 +99,7 @@ export function localBusinessJsonLd() {
             'https://www.facebook.com/share/1ELXmyQUWx/',
             'https://www.instagram.com/adhbhutgyaan369',
             'https://youtube.com/@adhbhutgyaan4911',
+            'https://www.justdial.com/Varanasi/Pt-Umang-Nath-Sharma-Naibasti-Nati-Imli/0542PX542-X542-221231232206-Q8Q2_BZDET',
         ],
         address: {
             '@type': 'PostalAddress',
