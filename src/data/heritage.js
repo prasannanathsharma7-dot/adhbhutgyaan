@@ -10,7 +10,7 @@ export const generations = [
         nameEn: 'Mahamahopadhyaya Pt. Ayodhya Nath Sharma',
         era: '19वीं शताब्दी — The Genesis',
         eraEn: '19th Century — The Genesis',
-        img: '/images/heritage/signboard-1.jpg',
+        img: '/images/heritage/ayodhya-nath-portrait.jpg',
         body: 'काशी में संस्कृत विद्वता और ज्योतिषीय प्रामाणिकता के एक युगपुरुष। बनारस हिंदू विश्वविद्यालय (BHU) की भूमि पूजन कराने का पावन दायित्व इन्हीं को सौंपा गया था। ब्रिटिश शासन द्वारा परखे जाने पर भी इनकी भविष्यवाणियाँ सटीक सिद्ध हुईं, जिससे प्रशासन ने इनकी पाठशाला को औपचारिक मान्यता दी और वाराणसी के एक प्रमुख मार्ग का नाम ही "महामहोपाध्याय पं. अयोध्या नाथ शर्मा मार्ग" रख दिया — जो आज भी विद्यमान है।',
         bodyEn: 'A titan of Sanskrit scholarship and astrological precision in sacred Varanasi. He was entrusted with performing the Bhoomi Pujan for Banaras Hindu University (BHU). When British officials tested his craft with skepticism, his accurate predictions transmuted colonial derision into institutional reverence — the administration formally recognized his Pathshala and named an arterial road after him: "Mahamahopadhyaya Pt. Ayodhya Nath Sharma Marg", a landmark that stands today.',
     },

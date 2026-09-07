@@ -39,4 +39,8 @@ export const gallery = [
     { src: '/images/heritage/pooja-session-2.jpg', capHi: 'अंतरराष्ट्रीय भक्त सत्र', capEn: 'International Devotee Session' },
     { src: '/images/heritage/signboard-1.jpg', capHi: 'पं. अयोध्या नाथ शर्मा मार्ग — वाराणसी', capEn: 'Named Road, Varanasi' },
     { src: '/images/heritage/signboard-2.jpg', capHi: 'ऐतिहासिक मार्ग चिन्ह', capEn: 'Historic Street Sign' },
+    { src: '/images/gallery/umang-parents-tribute.jpg', capHi: 'डॉ. उमंग नाथ शर्मा एवं श्रीमती शर्मा — पूज्य पिता जी को श्रद्धांजलि', capEn: 'Dr. Umang Nath Sharma & Mrs. Sharma — Paying Tribute to Late Father' },
+    { src: '/images/gallery/microtec-office-opening.jpg', capHi: 'माइक्रोटेक ग्रुप के नए हेड ऑफिस का उद्घाटन', capEn: 'Inauguration of MicroTec Group\\'s New Head Office' },
+    { src: '/images/gallery/grand-opening-head-office.jpg', capHi: 'हेड ऑफिस का भव्य उद्घाटन — मुख्य अतिथि डॉ. उमंग नाथ शर्मा', capEn: 'Grand Opening of Head Office — Chief Guest Dr. Umang Nath Sharma' },
+    { src: '/images/gallery/umang-with-pm-modi.jpg', capHi: 'डॉ. उमंग नाथ शर्मा प्रधानमंत्री श्री नरेन्द्र मोदी जी के साथ', capEn: 'Dr. Umang Nath Sharma with PM Narendra Modi' },
 ];
