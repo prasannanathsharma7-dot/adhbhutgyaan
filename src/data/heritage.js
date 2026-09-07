@@ -20,7 +20,7 @@ export const generations = [
         nameEn: 'Pandit Shambhu Nath Sharma',
         era: '20वीं शताब्दी — वैश्विक राजदूत',
         eraEn: '20th Century — The Global Ambassador',
-        img: '/images/heritage/shambhu-nath-portrait.jpg',
+        img: '/images/heritage/shambhu-nath-portrait-v2.jpg',
         body: 'सन् 1962 में बिहार और राँची के राजगुरु के रूप में औपचारिक मान्यता प्राप्त। प्रधानमंत्री इंदिरा गांधी और भारत के भूतपूर्व उपराष्ट्रपति श्री बी.डी. जत्ती जैसी विभूतियों को आध्यात्मिक व ज्योतिषीय मार्गदर्शन दिया। सन् 1971 में 50 से अधिक देशों के गणमान्य अतिथि व साधक इनसे मिलने स्वयं भारत आए। फ्रांस के महावाणिज्यदूत श्री Jacques Guepratte सहित यूरोप और उत्तर अमेरिका के अनेक नागरिकों ने इन्हें "प्रबुद्ध आत्मा" कहकर सम्मानित किया। कामदा काली मंदिर की स्थापना व निर्धन संस्कृत विद्यार्थियों को छात्रवृत्ति प्रदान करना इनकी परोपकारिता का प्रमाण है।',
         bodyEn: 'Formally appointed Raj Guru of Bihar and Ranchi in 1962. Trusted confidant providing spiritual and astrological guidance to Prime Minister Indira Gandhi and former Vice President of India, Mr. B.D. Jatti. In 1971, dignitaries and seekers from 50 nations personally traveled to India to seek his presence, with diplomats including the Consul General of France, Mr. Jacques Guepratte, hailing him an "Enlightened Soul." His philanthropy included founding the Kamda Kali Mandir and funding scholarships for underprivileged Sanskrit students.',
     },
