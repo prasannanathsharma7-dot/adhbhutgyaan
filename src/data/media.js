@@ -22,7 +22,7 @@ export const youtubeUploadsPlaylistId = 'UU' + youtubeChannelId.slice(2);
 // in the general gallery grid.
 export const pressHighlights = [
     { src: '/images/heritage/aajtak-interview.jpg', badge: 'आज तक', badgeEn: 'Aaj Tak', capHi: 'आज तक डिजिटल पर डॉ. उमंग नाथ शर्मा का विशेष साक्षात्कार — वाराणसी से राशिफल एवं ज्योतिषीय विश्लेषण', capEn: "Dr. Umang Nath Sharma's exclusive interview on Aaj Tak Digital — horoscope insights and astrological analysis, live from Varanasi" },
-    { src: '/images/gallery/umang-with-pm-modi.jpg', badge: 'प्रधानमंत्री', badgeEn: 'Prime Minister', capHi: 'डॉ. उमंग नाथ शर्मा प्रधानमंत्री श्री नरेन्द्र मोदी जी के साथ', capEn: 'Dr. Umang Nath Sharma with Prime Minister Narendra Modi' },
+    { src: '/images/gallery/umang-with-pm-modi-v2.jpg', badge: 'प्रधानमंत्री', badgeEn: 'Prime Minister', capHi: 'डॉ. उमंग नाथ शर्मा प्रधानमंत्री श्री नरेन्द्र मोदी जी के साथ', capEn: 'Dr. Umang Nath Sharma with Prime Minister Narendra Modi' },
     { src: '/images/gallery/grand-opening-head-office.jpg', badge: 'मुख्य अतिथि', badgeEn: 'Chief Guest', capHi: 'हेड ऑफिस के भव्य उद्घाटन में मुख्य अतिथि के रूप में डॉ. उमंग नाथ शर्मा', capEn: 'Dr. Umang Nath Sharma as Chief Guest at the Grand Opening of the Head Office' },
     { src: '/images/gallery/microtec-office-opening.jpg', badge: 'उद्घाटन', badgeEn: 'Inauguration', capHi: 'माइक्रोटेक ग्रुप के नए हेड ऑफिस का उद्घाटन करते डॉ. उमंग नाथ शर्मा', capEn: "Dr. Umang Nath Sharma inaugurating MicroTec Group's new Head Office" },
     { src: '/images/heritage/shambhu-with-jatti.jpg', badge: 'राजनयिक', badgeEn: 'Diplomatic', capHi: 'भारत के भूतपूर्व उपराष्ट्रपति श्री बी.डी. जत्ती के साथ पं. शम्भु नाथ शर्मा', capEn: 'Pt. Shambhu Nath Sharma with former Vice President of India, B.D. Jatti' },
