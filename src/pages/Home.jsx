@@ -432,7 +432,7 @@ export default function Home() {
                     <div className="text-center">
                         <span className="section-label" style={{ justifyContent: 'center', color: 'var(--gold-400)' }}>{t('क्यों अद्भुत ज्ञान', 'Why Adhbhut Gyaan')}</span>
                         <h2 className="section-title" style={{ color: 'white' }}>{t('सामान्य पूजा-सेवाओं से हम कैसे अलग हैं', 'How We\'re Different From a Typical Pooja Service')}</h2>
-                        <p style={{ color: 'var(--warm-200)', maxWidth: 640, margin: '0.75rem auto 0' }}>{t('बनारस हिंदू विश्वविद्यालय एवं संस्कृत विद्यापीठ से शिक्षित पंडितगण — पूरे भारत में पूजा सामग्री डिलीवरी सहित।', 'Pandits educated at Banaras Hindu University and Sanskrit Vidyapeeth - with pooja samagri delivery available across India.')}</p>
+                        <p style={{ color: 'var(--warm-200)', maxWidth: 640, margin: '0.75rem auto 0' }}>{t('बनारस हिंदू विश्वविद्यालय (BHU) एवं सम्पूर्णानन्द संस्कृत विश्वविद्यालय से शिक्षित पंडितगण — पूरे भारत में पूजा सामग्री डिलीवरी सहित।', 'Pandits educated at Banaras Hindu University (BHU) & Sampurnanand Sanskrit Vishwavidyalaya - with pooja samagri delivery available across India.')}</p>
                     </div>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', marginTop: '2rem', maxWidth: 900, marginLeft: 'auto', marginRight: 'auto' }}>
                         {[
