@@ -5,7 +5,7 @@
 const { getDb, withCors, escapeHtml } = require('../_db');
 const { sendMail } = require('../_email');
 const { requireAgentAuth } = require('../utils/agent-auth');
-const { calculateGlobalPanchang } = require('../utils/panchang-engine');
+const { calculateGlobalPanchang, todayIST } = require('../utils/panchang-engine');
 
 // Varanasi Astronomical Coordinates
 const VARANASI_LAT = 25.3176;
@@ -25,7 +25,10 @@ const IST_OFFSET_HOURS = 5.5;
  */
 function calculateVaranasiPanchang(targetDate) {
     return calculateGlobalPanchang({
-        date: targetDate ? new Date(targetDate) : new Date(),
+        // If no explicit date is given, resolve "today" as today's IST
+        // calendar date (not `new Date()`'s raw UTC-anchored instant) -
+        // see todayIST() in utils/panchang-engine.js for why this matters.
+        date: targetDate ? new Date(targetDate) : new Date(todayIST()),
         latitude: VARANASI_LAT,
         longitude: VARANASI_LNG,
         cityName: 'Varanasi (Kashi)',
@@ -165,7 +168,7 @@ module.exports = async (req, res) => {
     }
 
     try {
-        const targetDate = req.query?.date || req.body?.date || new Date().toISOString().slice(0, 10);
+        const targetDate = req.query?.date || req.body?.date || todayIST();
 
         // 1. Calculate Varanasi Panchang
         const panchang = calculateVaranasiPanchang(targetDate);

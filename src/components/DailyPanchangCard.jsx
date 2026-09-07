@@ -10,7 +10,9 @@ export default function DailyPanchangCard() {
     const [copied, setCopied] = useState(false);
 
     useEffect(() => {
-        const todayStr = new Date().toISOString().slice(0, 10);
+        // IST calendar date, not UTC - see todayIST() in utils/astroEngine.js
+        // for why this matters (server/API runs in UTC).
+        const todayStr = new Date(Date.now() + 5.5 * 3600000).toISOString().slice(0, 10);
         fetch(`/api/agents/daily-panchang-cron?date=${todayStr}`)
             .then(res => res.json())
             .then(data => {
@@ -24,7 +26,7 @@ export default function DailyPanchangCard() {
             .finally(() => setLoading(false));
     }, []);
 
-    const dateFormatted = panchang?.dateFormatted || new Date().toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    const dateFormatted = panchang?.dateFormatted || new Date().toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Kolkata' });
     const tithiName = panchang?.tithi?.name || 'Shukla Trayodashi';
     const tithiPaksha = panchang?.tithi?.paksha || 'Shukla Paksha';
     const nakshatraName = panchang?.nakshatra?.name || 'Pushya';

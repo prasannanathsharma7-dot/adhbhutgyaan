@@ -101,6 +101,20 @@ export const CHOGHADIYA_INFO = {
 /**
  * Formats minutes from midnight into 12-hour AM/PM string safely.
  */
+// Today's calendar date in India (IST, UTC+5:30) as a 'YYYY-MM-DD' string.
+// `new Date().toISOString().slice(0, 10)` gives the UTC calendar date, which
+// is a DIFFERENT (earlier) date than the IST calendar date for the first
+// 5.5 hours of every IST day (12:00 AM - 5:29 AM IST). On a server running
+// in UTC (Vercel/Cloud Run both default to UTC), that means every visitor
+// checking the Panchang between midnight and ~5:30 AM IST was being shown
+// the WRONG DAY's entire Panchang (Tithi, Vaar, everything) - not just a
+// minor mismatch. This adds the IST offset to the current instant BEFORE
+// reading off the calendar date, which is correct regardless of the
+// server's own timezone.
+export function todayIST() {
+    return new Date(Date.now() + 5.5 * 3600000).toISOString().slice(0, 10);
+}
+
 export function formatMinutesToTime(mins) {
     if (isNaN(mins)) return '06:00 AM';
     let normalized = Math.round(mins) % 1440;
@@ -287,13 +301,18 @@ export function calculateGlobalPanchang({
         });
 
         // 5. Vedic 5 Limbs Calculation - real Sun/Moon sidereal (Lahiri) positions,
-        // evaluated at local noon of the target date at the given location's
-        // timezone offset (the previous version used a fake epochDays%30-style
-        // formula with no actual connection to the Sun/Moon's real positions).
-        const localNoonUTC = new Date(Date.UTC(
-            targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate(), 12, 0, 0
-        ) - (validTz * 3600000));
-        const sid = getSiderealLongitudes(localNoonUTC);
+        // evaluated at LOCAL SUNRISE of the target date (the previous version
+        // sampled local noon instead, which is not how printed Panchangs like
+        // the Kashi/Rishikesh Panchang work: the day's Tithi/Nakshatra/Yoga/
+        // Karana/Rashi are the values prevailing at sunrise (सूर्योदयकालीन),
+        // not at midday. Sampling at noon instead of sunrise silently produces
+        // the wrong limb on any day where a limb changes between sunrise and
+        // noon - a common, hard-to-notice source of mismatches against a real
+        // panchang).
+        const sunriseUTC = new Date(Date.UTC(
+            targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate(), 0, 0, 0
+        ) - (validTz * 3600000) + (sunrise * 60000));
+        const sid = getSiderealLongitudes(sunriseUTC);
 
         const tithiDiff = ((sid.moon - sid.sun) % 360 + 360) % 360;
         const tithiIndex = Math.min(29, Math.floor(tithiDiff / 12));

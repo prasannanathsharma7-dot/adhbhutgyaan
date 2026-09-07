@@ -100,6 +100,13 @@ const CHOGHADIYA_INFO = {
     Udveg: { quality: 'Ashanti (Agitation/Worry)', type: 'Inauspicious', badge: '🟡' },
 };
 
+// Today's calendar date in India (IST, UTC+5:30) as a 'YYYY-MM-DD' string.
+// Same fix as src/utils/astroEngine.js's todayIST() - see comment there.
+// The backend cron/API runs on a UTC server, so this matters even more here.
+function todayIST() {
+    return new Date(Date.now() + 5.5 * 3600000).toISOString().slice(0, 10);
+}
+
 function formatMinutesToTime(mins) {
     if (isNaN(mins)) return '06:00 AM';
     let normalized = Math.round(mins) % 1440;
@@ -228,12 +235,14 @@ function calculateGlobalPanchang({
         };
     });
 
-    // 5 Limbs (Panchang) - real Sun/Moon sidereal (Lahiri) positions at local
-    // noon, same formulas the live website's astroEngine.js uses.
-    const localNoonUTC = new Date(Date.UTC(
-        targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate(), 12, 0, 0
-    ) - (validTz * 3600000));
-    const sid = getSiderealLongitudes(localNoonUTC);
+    // 5 Limbs (Panchang) - real Sun/Moon sidereal (Lahiri) positions at LOCAL
+    // SUNRISE (सूर्योदयकालीन), matching printed Panchangs (Kashi/Rishikesh
+    // Panchang) instead of a midday snapshot. Same formulas + same anchor as
+    // the live website's astroEngine.js - keep both in sync.
+    const sunriseUTC = new Date(Date.UTC(
+        targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate(), 0, 0, 0
+    ) - (validTz * 3600000) + (sunrise * 60000));
+    const sid = getSiderealLongitudes(sunriseUTC);
 
     const tithiDiff = ((sid.moon - sid.sun) % 360 + 360) % 360;
     const tithiIndex = Math.min(29, Math.floor(tithiDiff / 12));
@@ -295,4 +304,4 @@ function calculateGlobalPanchang({
     };
 }
 
-module.exports = { calculateGlobalPanchang, calculateSolarGeometry, formatMinutesToTime };
+module.exports = { calculateGlobalPanchang, calculateSolarGeometry, formatMinutesToTime, todayIST };

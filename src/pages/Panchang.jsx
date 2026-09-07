@@ -4,7 +4,7 @@ import { useLanguage } from '../context/LanguageContext';
 import useSEO from '../hooks/useSEO';
 import { breadcrumbJsonLd, combineJsonLd } from '../utils/seo';
 import { Search, MapPin, CalendarDays, CheckCircle2, XCircle, Globe, Sunrise, Sunset, Sun, Moon, ScrollText, Star, Sparkles, Flower2, Share2, Copy, MessageCircle, CalendarCheck, Clock } from 'lucide-react';
-import { calculateGlobalPanchang } from '../utils/astroEngine';
+import { calculateGlobalPanchang, todayIST } from '../utils/astroEngine';
 
 // Default Kashi Anchor (Guaranteed Fallback)
 const VARANASI_DEFAULT = {
@@ -20,7 +20,7 @@ export default function Panchang() {
     const { t } = useLanguage();
 
     // Date State
-    const [selectedDate, setSelectedDate] = useState(() => new Date().toISOString().slice(0, 10));
+    const [selectedDate, setSelectedDate] = useState(() => todayIST());
 
     // Location State
     const [location, setLocation] = useState(VARANASI_DEFAULT);
@@ -240,18 +240,18 @@ export default function Panchang() {
         try {
             const current = new Date(selectedDate);
             if (isNaN(current.getTime())) {
-                setSelectedDate(new Date().toISOString().slice(0, 10));
+                setSelectedDate(todayIST());
                 return;
             }
             current.setDate(current.getDate() + days);
             setSelectedDate(current.toISOString().slice(0, 10));
         } catch {
-            setSelectedDate(new Date().toISOString().slice(0, 10));
+            setSelectedDate(todayIST());
         }
     };
 
     const resetToToday = () => {
-        setSelectedDate(new Date().toISOString().slice(0, 10));
+        setSelectedDate(todayIST());
     };
 
     // WhatsApp Share Payload Formatter
