@@ -199,8 +199,10 @@ function computeVedicChartData(birthDateStr, birthTimeStr, birthPlaceStr, lat = 
 
     // Real current Saturn transit position (was previously hardcoded to Rashi 11 /
     // Aquarius regardless of date, which made Sade Sati results wrong for anyone
-    // analyzed after Saturn moved signs).
-    const currentSaturnRashi = getSignNum(getSiderealLongitudes(new Date()).saturn);
+    // analyzed after Saturn moved signs). IST-adjusted "now" - though Saturn
+    // moves so slowly (~1 sign per 2.5 years) that this only matters within a
+    // few hours of an actual sign change.
+    const currentSaturnRashi = getSignNum(getSiderealLongitudes(new Date(Date.now() + 5.5 * 3600000)).saturn);
     const sadeSatiDistance = ((currentSaturnRashi - moonSignNum + 12) % 12);
     let sadeSatiPhase = 'No Active Sade Sati';
     if (sadeSatiDistance === 11) sadeSatiPhase = 'Sade Sati Phase 1 (Rising Phase / Aarohi)';
@@ -405,7 +407,7 @@ async function handleRequest(req, res) {
             }
         }
 
-        const effectiveDate = targetDoc?.birthDate || targetDoc?.dob || birthDate || new Date().toISOString().slice(0, 10);
+        const effectiveDate = targetDoc?.birthDate || targetDoc?.dob || birthDate || new Date(Date.now() + 5.5 * 3600000).toISOString().slice(0, 10);
         const effectiveTime = targetDoc?.birthTime || targetDoc?.tob || birthTime;
         const effectivePlace = targetDoc?.birthPlace || targetDoc?.pob || birthPlace;
         const effectiveConcern = targetDoc?.notes || targetDoc?.concern || concern;

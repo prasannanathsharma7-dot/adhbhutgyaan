@@ -276,7 +276,7 @@ export function calculateInstantKundli({ birthDate, birthTime, birthPlace, name,
         const nowJD = (Date.now() / 86400000) + 2440587.5;
         const nowT = (nowJD - 2451545.0) / 36525;
         const nowAyanamsa = 23.85655556 + (1.39604167 * nowT) + (0.000308 * nowT * nowT);
-        const currentSaturnRashi = getSignNum(normalizeDeg(getTropicalLongitudes(new Date()).saturn - nowAyanamsa));
+        const currentSaturnRashi = getSignNum(normalizeDeg(getTropicalLongitudes(new Date(Date.now() + 5.5 * 3600000)).saturn - nowAyanamsa));
         const dist = ((currentSaturnRashi - moonSignNum + 12) % 12);
         let sadeSatiActive = false;
         let sadeSatiText = 'Shani Transit Shanta (No Active Sade Sati)';

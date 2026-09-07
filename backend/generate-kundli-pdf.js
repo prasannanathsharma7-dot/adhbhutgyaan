@@ -730,7 +730,10 @@ module.exports = async (req, res) => {
         );
         y += 36;
 
-        const currentYear = new Date().getUTCFullYear();
+        // IST calendar year, not UTC - avoids a once-a-year edge case where the
+        // Varshphal (annual chart) would use the previous year for the first
+        // 5.5 hours of a new IST year (server runs in UTC).
+        const currentYear = new Date(Date.now() + 5.5 * 3600000).getUTCFullYear();
         const vp = findVarshaPravesh(R.planetLongitudes.sun, R.utcDate, currentYear);
         const completedYears = currentYear - R.utcDate.getUTCFullYear();
         const vLagnaLon = calculateVarshaLagna(vp, Number(lat), Number(lng));
