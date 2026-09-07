@@ -96,7 +96,7 @@ export function localBusinessJsonLd() {
         email: 'astrokashi369@gmail.com',
         priceRange: '₹₹',
         sameAs: [
-            'https://www.facebook.com/share/1GAD1LMAq5/',
+            'https://www.facebook.com/share/1ELXmyQUWx/',
             'https://www.instagram.com/adhbhutgyaan369',
             'https://youtube.com/@adhbhutgyaan4911',
         ],
