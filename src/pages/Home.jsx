@@ -453,7 +453,7 @@ export default function Home() {
                                             className="icon-service-link"
                                             style={{ color: 'var(--whatsapp-dark)' }}
                                         >
-                                            {t('WhatsApp बुक करें', 'WhatsApp Book')}
+                                            {t('WhatsApp पर बुक करें', 'Book via WhatsApp')}
                                         </a>
                                         <span style={{ color: 'var(--border-light)' }}>|</span>
                                         <Link to={`/services/${service.id}`} className="icon-service-link">{t('विधि व महत्व', 'Know More')} →</Link>
@@ -685,7 +685,7 @@ export default function Home() {
                             <span className="section-label" style={{ justifyContent: 'center' }}>
                                 <Mic size={14} style={{ marginRight: '0.4rem' }} />{t('मीडिया साक्षात्कार', 'Media Interviews')}
                             </span>
-                            <h3 style={{ color: 'var(--gold-300)', marginTop: '0.4rem' }}>{t('पंडित उमंग नाथ शर्मा के साक्षात्कार', 'Interviews with Pt. Umang Nath Sharma')}</h3>
+                            <h3 style={{ color: 'var(--gold-300)', marginTop: '0.4rem' }}>{t('डॉ. उमंग नाथ शर्मा के साक्षात्कार', 'Interviews with Dr. Umang Nath Sharma')}</h3>
                         </div>
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', marginTop: '1.75rem' }}>
                             {[
@@ -697,7 +697,7 @@ export default function Home() {
                                     <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0 }}>
                                         <iframe
                                             src={`https://www.youtube.com/embed/${v.id}`}
-                                            title={`Interview ${i + 1} with Pt. Umang Nath Sharma`}
+                                            title={`Interview ${i + 1} with Dr. Umang Nath Sharma`}
                                             style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 0 }}
                                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                             allowFullScreen
@@ -705,7 +705,7 @@ export default function Home() {
                                         />
                                     </div>
                                     <p style={{ padding: '0.85rem 1rem', margin: 0, color: 'var(--warm-200)', fontSize: '0.88rem' }}>
-                                        {t('साक्षात्कार', 'Interview')} {i + 1} — {t('पंडित उमंग नाथ शर्मा', 'Pt. Umang Nath Sharma')}
+                                        {t('साक्षात्कार', 'Interview')} {i + 1} — {t('डॉ. उमंग नाथ शर्मा', 'Dr. Umang Nath Sharma')}
                                     </p>
                                 </div>
                             ))}

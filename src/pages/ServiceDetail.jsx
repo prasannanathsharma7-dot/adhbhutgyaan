@@ -20,7 +20,7 @@ export default function ServiceDetail() {
     const isAstrology = service.id === 'astrology-consultation';
     const enDescription = isAstrology
         ? 'Best Astrologer in Kashi, Varanasi - Dr. Umang Nath Sharma offers kundli analysis, dosh remedies, marriage matching, online or in person.'
-        : `Book ${service.nameEn} in Kashi, Varanasi with Pt. Umang Nath Sharma - authentic Vedic pooja, available online or in person.`;
+        : `Book ${service.nameEn} in Kashi, Varanasi with Dr. Umang Nath Sharma - authentic Vedic pooja, available online or in person.`;
 
     // Bidirectional internal-linking: blog posts already link back to their
     // service page, but no service page linked forward to its blog content -
