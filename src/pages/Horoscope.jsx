@@ -52,8 +52,8 @@ function getBhakootResult(rashiA, rashiB, t) {
         return { tier: 'good', label: t('सप्तम — पूरक स्वभाव', 'Opposition — Complementary Natures'),
             note: t('विपरीत गुण, जो संतुलन व आकर्षण दोनों ला सकते हैं।', 'Contrasting qualities that can bring both balance and strong attraction.') };
     }
-    return { tier: 'good', label: t('सामान्य मेल', 'Good Match'),
-        note: t('संतुलित संबंध की संभावना — व्यक्तिगत कुंडली विवरण से अधिक स्पष्टता मिलेगी।', 'A workable, balanced pairing — a personal Kundli reading will give a fuller picture.') };
+    return { tier: 'good', label: t('सामान्य मेल', 'Moderate Match'),
+        note: t('संतुलित संबंध की संभावना — व्यक्तिगत कुंडली विवरण से अधिक स्पष्टता मिलेगी।', 'A workable, balanced pairing — a personal Kundli reading will provide a fuller picture.') };
 }
 
 export default function Horoscope() {
