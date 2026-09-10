@@ -626,7 +626,7 @@ export default function Home() {
                         <div className="text-center fade-up">
                             <h3 style={{ fontSize: '1.3rem', marginBottom: '0.4rem' }}>{t('भक्तों की आवाज़ में (वीडियो)', "In Devotees' Own Voice (Video)")}</h3>
                             <p style={{ color: 'var(--text-secondary)', maxWidth: 560, margin: '0 auto', fontSize: '0.9rem' }}>
-                                {t('शीघ्र ही, हमारे भक्तों के वास्तविक अनुभव — उन्हीं की आवाज़ में।', "Coming soon: our devotees' real experiences, in their own voice.")}
+                                {t('हमारे भक्तों के वास्तविक अनुभव — उन्हीं की आवाज़ में।', "Our devotees' real experiences, in their own voice.")}
                             </p>
                         </div>
                         <div style={{ marginTop: '1.75rem' }}>
