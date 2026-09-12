@@ -3,17 +3,16 @@ import { Play, Quote } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
 // REAL + PLACEHOLDER MIX:
-// Entry 1 is a genuine devotee testimonial clip supplied by the business.
-// Entries 2-3 remain deliberate template placeholders (no video src, no
-// invented name/city/quote presented as if real) until further real,
-// consented clips are supplied - reusing ceremony footage or inventing
-// names here would misrepresent what those clips actually show.
+// Entries 1-2 are genuine devotee testimonial clips supplied by the
+// business. Entry 3 remains a deliberate template placeholder (no video
+// src, no invented name/city/quote presented as if real) until a
+// further real, consented clip is supplied.
 //
-// NOTE on entry 1: the video's spoken content was not transcribed when
-// added, so no quote text is asserted for it - the clip speaks for
-// itself. Add `quoteHi`/`quoteEn` (and `name`/`city`, with the devotee's
-// consent) once those details are confirmed, rather than paraphrasing
-// what the devotee might have said.
+// NOTE on entries 1-2: neither clip's spoken content was transcribed
+// when added, so no quote text is asserted for either - the clips
+// speak for themselves. Add `quoteHi`/`quoteEn` (and `name`/`city`,
+// with the devotee's consent) once those details are confirmed, rather
+// than paraphrasing what the devotee might have said.
 const TESTIMONIALS = [
     {
         id: 1,
@@ -24,7 +23,15 @@ const TESTIMONIALS = [
         quoteHi: null,
         quoteEn: null,
     },
-    { id: 2, video: null, poster: '/images/gallery/devi-puja-phal.jpg', name: null, city: null, quoteHi: null, quoteEn: null },
+    {
+        id: 2,
+        video: '/videos/testimonial-2.mp4',
+        poster: '/images/testimonials/testimonial-2-poster.jpg',
+        name: null,
+        city: null,
+        quoteHi: null,
+        quoteEn: null,
+    },
     { id: 3, video: null, poster: '/images/gallery/group-puja.jpg', name: null, city: null, quoteHi: null, quoteEn: null },
 ];
 
