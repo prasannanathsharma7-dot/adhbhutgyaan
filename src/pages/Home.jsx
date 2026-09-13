@@ -8,6 +8,7 @@ import { localBusinessJsonLd, combineJsonLd } from '../utils/seo';
 import DailyPanchangCard from '../components/DailyPanchangCard';
 import UpcomingMuhuratWidget from '../components/UpcomingMuhuratWidget';
 import VideoTestimonials from '../components/VideoTestimonials';
+import QuickNav from '../components/QuickNav';
 import { heritageSummary, testimonials } from '../data/heritage';
 import FlagIcon from '../components/FlagIcon';
 import { SquarePlay, XCircle, CheckCircle2, Mic, Coffee, Sparkle, MessageCircleQuestion, Gem } from 'lucide-react';
@@ -106,6 +107,8 @@ export default function Home() {
                     </div>
                 </div>
             </section>
+
+            <QuickNav />
 
             <UpcomingMuhuratWidget />
 
@@ -227,7 +230,7 @@ export default function Home() {
                 and covered by international media) lives on the About page;
                 this teaser surfaces it here so visitors see it without
                 having to scroll deep into About Us. */}
-            <section className="section section-dark">
+            <section className="section section-dark" id="legacy">
                 <div className="container">
                     <div className="text-center">
                         <span className="section-label" style={{ justifyContent: 'center' }}>{t('विरासत', 'Our Legacy')}</span>
@@ -311,7 +314,7 @@ export default function Home() {
             </section>
 
             {/* LIVE DAILY PANCHANG & SHUBH MUHURAT */}
-            <section className="section" style={{ paddingTop: '1rem', paddingBottom: '2.5rem' }}>
+            <section className="section" id="panchang" style={{ paddingTop: '1rem', paddingBottom: '2.5rem' }}>
                 <div className="container">
                     <DailyPanchangCard />
                 </div>
