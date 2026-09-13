@@ -270,7 +270,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                     <h1 style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', color: 'white', margin: '0.5rem 0' }}>
                         {t('निःशुल्क वैदिक जन्म कुंडली एवं ग्रह विश्लेषण', 'Free Vedic Kundli & Planetary Analysis')}
                     </h1>
-                    <p className="subtitle" style={{ maxWidth: '680px', margin: '0.5rem auto 0', color: 'rgba(255,255,255,0.85)', fontSize: '1rem' }}>
+                    <p className="subtitle" style={{ maxWidth: '680px', margin: '0.5rem auto 0', color: 'rgba(255,255,255,0.85)', fontSize: '1rem' }} role="heading" aria-level="2">
                         {t(
                             'लाहिड़ी अयनांश एवं गणितीय ज्योतिष गणना — त्वरित लग्न चार्ट, ग्रह बल एवं दोष विश्लेषण।',
                             'Authentic Lahiri Ayanamsa & Mathematical Astro Engine — Instant high-precision Kundli, planetary strengths & dosha analysis.'

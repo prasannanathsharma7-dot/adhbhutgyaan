@@ -108,7 +108,7 @@ export default function Services() {
                                     padding: '0.65rem 1.2rem', borderRadius: 'var(--radius-xl)',
                                     border: c.id === selectedConcern ? 'none' : '1px solid var(--border-gold)',
                                     background: c.id === selectedConcern ? 'var(--gold-600)' : 'white',
-                                    color: c.id === selectedConcern ? 'white' : 'var(--gold-700)',
+                                    color: c.id === selectedConcern ? 'white' : 'var(--gold-800)',
                                     fontWeight: 600, fontSize: '0.9rem', cursor: 'pointer',
                                 }}
                             >
@@ -131,7 +131,7 @@ export default function Services() {
                                     >
                                         <img src={`/images/${s.image}`} alt={s.nameEn} width="64" height="64" style={{ borderRadius: 'var(--radius-md)', objectFit: 'cover', flexShrink: 0 }} />
                                         <div>
-                                            <div style={{ fontWeight: 700, color: 'var(--gold-700)' }}>{lang === 'hi' ? s.name : s.nameEn}</div>
+                                            <div style={{ fontWeight: 700, color: 'var(--gold-800)' }}>{lang === 'hi' ? s.name : s.nameEn}</div>
                                             <div style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>{t('विवरण देखें →', 'View Details →')}</div>
                                         </div>
                                     </Link>

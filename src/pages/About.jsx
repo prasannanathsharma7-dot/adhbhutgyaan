@@ -52,7 +52,7 @@ export default function About() {
                         <a
                             key={item.id}
                             href={`#${item.id}`}
-                            style={{ flexShrink: 0, fontSize: '0.82rem', fontWeight: 600, color: 'var(--gold-700)', background: 'white', border: '1px solid var(--border-gold)', padding: '0.4rem 0.9rem', borderRadius: 'var(--radius-xl)', textDecoration: 'none' }}
+                            style={{ flexShrink: 0, fontSize: '0.82rem', fontWeight: 600, color: 'var(--gold-800)', background: 'white', border: '1px solid var(--border-gold)', padding: '0.4rem 0.9rem', borderRadius: 'var(--radius-xl)', textDecoration: 'none' }}
                         >
                             {item.label}
                         </a>
@@ -129,7 +129,7 @@ export default function About() {
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.75rem' }}>
                         {pressHighlights.map(item => (
                             <div key={item.src} style={{ position: 'relative', borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: 'var(--shadow-lg)', border: '1px solid var(--border-gold)', background: 'white' }}>
-                                <div style={{ position: 'absolute', top: '0.9rem', left: '0.9rem', zIndex: 2, background: 'var(--gold-600)', color: 'white', fontWeight: 700, fontSize: '0.75rem', padding: '0.3rem 0.8rem', borderRadius: 'var(--radius-xl)', letterSpacing: '0.02em' }}>
+                                <div style={{ position: 'absolute', top: '0.9rem', left: '0.9rem', zIndex: 2, background: 'var(--gold-600)', color: 'var(--navy-950)', fontWeight: 700, fontSize: '0.75rem', padding: '0.3rem 0.8rem', borderRadius: 'var(--radius-xl)', letterSpacing: '0.02em' }}>
                                     {t(item.badge, item.badgeEn)}
                                 </div>
                                 <img src={item.src} alt={item.badgeEn} loading="lazy" style={{ width: '100%', height: '260px', objectFit: 'cover', display: 'block' }} />
@@ -238,7 +238,7 @@ export default function About() {
                     <div className="text-center">
                         <span className="section-label">{t('अंतरराष्ट्रीय प्रशंसापत्र', 'International Testimonials')}</span>
                         <h2 className="section-title">{t('चार दशकों से भक्तों का विश्वास', "Devotees' Trust for Four Decades")}</h2>
-                        <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>{t('1979 से संरक्षित', 'Preserved Since 1979')}</p>
+                        <p style={{ color: 'var(--text-secondary)', marginTop: '0.5rem' }}>{t('1979 से संरक्षित', 'Preserved Since 1979')}</p>
                     </div>
                     <div className="om-divider">ॐ</div>
                     <p style={{ textAlign: 'center', maxWidth: '760px', margin: '0 auto 1.25rem', color: 'var(--text-secondary)', lineHeight: 1.8 }}>
@@ -248,14 +248,14 @@ export default function About() {
                         )}
                     </p>
                     <div style={{ display: 'flex', justifyContent: 'center', gap: '0.6rem', flexWrap: 'wrap', marginBottom: '2.5rem' }}>
-                        <span style={{ background: 'var(--gold-50)', border: '1px solid var(--border-gold)', color: 'var(--gold-700)', fontWeight: 700, fontSize: '0.85rem', padding: '0.4rem 1rem', borderRadius: 'var(--radius-xl)' }}>
+                        <span style={{ background: 'var(--gold-50)', border: '1px solid var(--border-gold)', color: 'var(--gold-800)', fontWeight: 700, fontSize: '0.85rem', padding: '0.4rem 1rem', borderRadius: 'var(--radius-xl)' }}>
                             ✉️ {testimonials.length} {t('पत्र', 'Letters')}
                         </span>
-                        <span style={{ background: 'var(--gold-50)', border: '1px solid var(--border-gold)', color: 'var(--gold-700)', fontWeight: 700, fontSize: '0.85rem', padding: '0.4rem 1rem', borderRadius: 'var(--radius-xl)', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
+                        <span style={{ background: 'var(--gold-50)', border: '1px solid var(--border-gold)', color: 'var(--gold-800)', fontWeight: 700, fontSize: '0.85rem', padding: '0.4rem 1rem', borderRadius: 'var(--radius-xl)', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
                             <span style={{ display: 'inline-flex', gap: '0.25rem' }}>{testimonialFlags.map(f => <FlagIcon key={f} flag={f} />)}</span>
                             {testimonialFlags.length}+ {t('देश', 'Countries')}
                         </span>
-                        <span style={{ background: 'var(--gold-50)', border: '1px solid var(--border-gold)', color: 'var(--gold-700)', fontWeight: 700, fontSize: '0.85rem', padding: '0.4rem 1rem', borderRadius: 'var(--radius-xl)' }}>
+                        <span style={{ background: 'var(--gold-50)', border: '1px solid var(--border-gold)', color: 'var(--gold-800)', fontWeight: 700, fontSize: '0.85rem', padding: '0.4rem 1rem', borderRadius: 'var(--radius-xl)' }}>
                             📅 1979–1983
                         </span>
                     </div>
@@ -289,14 +289,14 @@ export default function About() {
                                 <div style={{ borderTop: '1px dashed var(--border-gold)', paddingTop: '0.7rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                     <FlagIcon flag={tst.flag || '🌐'} style={{ width: '22px', height: '17px' }} />
                                     <div>
-                                        <div style={{ fontWeight: 700, color: 'var(--gold-700)', fontSize: '0.9rem' }}>{tst.name}</div>
+                                        <div style={{ fontWeight: 700, color: 'var(--gold-800)', fontSize: '0.9rem' }}>{tst.name}</div>
                                         <div style={{ color: 'var(--text-muted)', fontSize: '0.78rem' }}>{tst.place}</div>
                                     </div>
                                 </div>
                             </div>
                         ))}
                     </div>
-                    <p style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.8rem', marginTop: '1.5rem', fontStyle: 'italic' }}>
+                    <p style={{ textAlign: 'center', color: 'var(--text-secondary)', fontSize: '0.8rem', marginTop: '1.5rem', fontStyle: 'italic' }}>
                         {t(
                             'मूल पत्रों से लिया गया, भाषा को थोड़ा सरल किया गया है। पूर्ण पते गोपनीयता हेतु संक्षिप्त किए गए हैं।',
                             'Adapted from original letters; full street addresses abbreviated for privacy.'
@@ -316,14 +316,14 @@ export default function About() {
                     </div>
                     <div className="om-divider">ॐ</div>
                     <div style={{ display: 'flex', justifyContent: 'center', gap: '0.6rem', flexWrap: 'wrap', marginBottom: '2.5rem' }}>
-                        <span style={{ background: 'white', border: '1px solid var(--border-gold)', color: 'var(--gold-700)', fontWeight: 700, fontSize: '0.85rem', padding: '0.4rem 1rem', borderRadius: 'var(--radius-xl)' }}>
+                        <span style={{ background: 'white', border: '1px solid var(--border-gold)', color: 'var(--gold-800)', fontWeight: 700, fontSize: '0.85rem', padding: '0.4rem 1rem', borderRadius: 'var(--radius-xl)' }}>
                             ✉️ {moreTestimonials.length} {t('पत्र', 'Letters')}
                         </span>
-                        <span style={{ background: 'white', border: '1px solid var(--border-gold)', color: 'var(--gold-700)', fontWeight: 700, fontSize: '0.85rem', padding: '0.4rem 1rem', borderRadius: 'var(--radius-xl)', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
+                        <span style={{ background: 'white', border: '1px solid var(--border-gold)', color: 'var(--gold-800)', fontWeight: 700, fontSize: '0.85rem', padding: '0.4rem 1rem', borderRadius: 'var(--radius-xl)', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
                             <span style={{ display: 'inline-flex', gap: '0.25rem' }}>{moreTestimonialFlags.map(f => <FlagIcon key={f} flag={f} />)}</span>
                             {moreTestimonialFlags.length}+ {t('देश', 'Countries')}
                         </span>
-                        <span style={{ background: 'white', border: '1px solid var(--border-gold)', color: 'var(--gold-700)', fontWeight: 700, fontSize: '0.85rem', padding: '0.4rem 1rem', borderRadius: 'var(--radius-xl)' }}>
+                        <span style={{ background: 'white', border: '1px solid var(--border-gold)', color: 'var(--gold-800)', fontWeight: 700, fontSize: '0.85rem', padding: '0.4rem 1rem', borderRadius: 'var(--radius-xl)' }}>
                             📅 1973–1982
                         </span>
                     </div>
@@ -351,14 +351,14 @@ export default function About() {
                                 <div style={{ borderTop: '1px dashed var(--border-gold)', paddingTop: '0.7rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                     <FlagIcon flag={tst.flag} style={{ width: '22px', height: '17px' }} />
                                     <div>
-                                        <div style={{ fontWeight: 700, color: 'var(--gold-700)', fontSize: '0.9rem' }}>{tst.name}</div>
+                                        <div style={{ fontWeight: 700, color: 'var(--gold-800)', fontSize: '0.9rem' }}>{tst.name}</div>
                                         <div style={{ color: 'var(--text-muted)', fontSize: '0.78rem' }}>{tst.place}</div>
                                     </div>
                                 </div>
                             </div>
                         ))}
                     </div>
-                    <p style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.8rem', marginTop: '1.5rem', fontStyle: 'italic' }}>
+                    <p style={{ textAlign: 'center', color: 'var(--text-secondary)', fontSize: '0.8rem', marginTop: '1.5rem', fontStyle: 'italic' }}>
                         {t(
                             'मूल पत्रों से लिया गया, भाषा को थोड़ा सरल किया गया है। पूर्ण पते गोपनीयता हेतु संक्षिप्त किए गए हैं।',
                             'Adapted from original letters; full street addresses abbreviated for privacy.'
@@ -460,7 +460,7 @@ export default function About() {
                                     'Banaras (Varanasi) stands among the oldest cities on Earth, revered as the spiritual capital of Hinduism. This sacred city on the banks of the Ganga is home to the Kashi Vishwanath Temple, the resplendent Ganga Aarti at Dashashwamedh Ghat, and countless other temples.'
                                 )}
                             </p>
-                            <p style={{ color: 'var(--gold-700)', fontWeight: 600, fontStyle: 'italic' }}>
+                            <p style={{ color: 'var(--gold-800)', fontWeight: 600, fontStyle: 'italic' }}>
                                 {t('"काशी में जो पूजा होती है, उसका फल सर्वोत्तम होता है।"', '"A pooja performed in Kashi yields the most auspicious results."')}
                             </p>
                         </div>

@@ -68,7 +68,7 @@ export default function Footer() {
                     </div>
 
                     <div>
-                        <h4 className="footer-heading">{t('त्वरित लिंक', 'Quick Links')}</h4>
+                        <h3 className="footer-heading">{t('त्वरित लिंक', 'Quick Links')}</h3>
                         <div className="footer-links">
                             <Link to="/"><Home size={15} /> {t('होम', 'Home')}</Link>
                             <Link to="/services"><img src="/images/logo.png" alt="" className="inline-logo" /> {t('सेवाएं', 'Services')}</Link>
@@ -82,7 +82,7 @@ export default function Footer() {
                     </div>
 
                     <div>
-                        <h4 className="footer-heading">{t('पूजा सेवाएं', 'Pooja Services')}</h4>
+                        <h3 className="footer-heading">{t('पूजा सेवाएं', 'Pooja Services')}</h3>
                         <div className="footer-links">
                             <Link to="/services/rudrabhishek">{t('रुद्राभिषेक', 'Rudrabhishek')}</Link>
                             <Link to="/services/shree-suktam">{t('श्री सूक्तम्', 'Shree Suktam')}</Link>
@@ -93,7 +93,7 @@ export default function Footer() {
                     </div>
 
                     <div>
-                        <h4 className="footer-heading">{t('अपडेट पाएं', 'Stay Updated')}</h4>
+                        <h3 className="footer-heading">{t('अपडेट पाएं', 'Stay Updated')}</h3>
                         <p style={{ fontSize: '0.85rem', color: 'var(--warm-300)', marginBottom: '0.75rem' }}>
                             {t('नए ब्लॉग लेख एवं पूजा जानकारी सीधे अपने ईमेल पर पाएं।', 'Get new blog articles and pooja updates straight to your inbox.')}
                         </p>
@@ -113,7 +113,7 @@ export default function Footer() {
                                 <button
                                     type="submit"
                                     disabled={status === 'loading'}
-                                    style={{ flexShrink: 0, padding: '0.55rem 1.1rem', borderRadius: 'var(--radius-md)', border: 'none', background: 'var(--gold-600)', color: 'white', fontWeight: 600, fontSize: '0.85rem', cursor: 'pointer' }}
+                                    style={{ flexShrink: 0, padding: '0.55rem 1.1rem', borderRadius: 'var(--radius-md)', border: 'none', background: 'var(--gold-600)', color: 'var(--navy-950)', fontWeight: 600, fontSize: '0.85rem', cursor: 'pointer' }}
                                 >
                                     {status === 'loading' ? '...' : t('सदस्यता लें', 'Subscribe')}
                                 </button>
@@ -125,7 +125,7 @@ export default function Footer() {
                     </div>
 
                     <div>
-                        <h4 className="footer-heading">{t('संपर्क करें', 'Contact Us')}</h4>
+                        <h3 className="footer-heading">{t('संपर्क करें', 'Contact Us')}</h3>
                         <div className="footer-contact-item">
                             <span className="footer-contact-icon"><MapPin size={16} /></span>
                             <span>J11/19, Pt Umang Nath Sharma, Nati Imli Rd<br/>Ishwargangi, Varanasi, UP 221001</span>

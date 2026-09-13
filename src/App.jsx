@@ -104,11 +104,20 @@ function App() {
                 </Suspense>
             </main>
             <Footer />
-            <WhatsAppFloat />
-            <Suspense fallback={null}>
-                <ChatWidget />
-            </Suspense>
-            <BackToTop />
+            {/* WhatsAppFloat/ChatWidget/BackToTop are fixed-position UI
+                controls outside the page's main content-flow - wrapped in
+                a labeled region so they're not orphaned outside any
+                landmark (axe-core flagged this: "Some page content is
+                not contained by landmarks"). The wrapper div itself has
+                no layout effect since all 3 children remain
+                position:fixed regardless of their DOM parent. */}
+            <div role="region" aria-label="Floating action buttons">
+                <WhatsAppFloat />
+                <Suspense fallback={null}>
+                    <ChatWidget />
+                </Suspense>
+                <BackToTop />
+            </div>
         </ErrorBoundary>
     );
 }

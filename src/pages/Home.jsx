@@ -536,7 +536,7 @@ export default function Home() {
             {/* Featured In - compact press strip, links to full showcase on About page */}
             <section className="section" style={{ paddingTop: '2rem', paddingBottom: '2rem' }}>
                 <div className="container">
-                    <p style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.04em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>
+                    <p style={{ textAlign: 'center', color: 'var(--text-secondary)', fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.04em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>
                         {t('मीडिया एवं मान्यता', 'As Featured In')}
                     </p>
                     <Link to="/about#press" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 'clamp(1rem, 4vw, 2.5rem)', textDecoration: 'none' }}>

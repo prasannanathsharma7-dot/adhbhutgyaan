@@ -91,25 +91,25 @@ export default function DailyPanchangCard() {
             {/* Main Panchang Grid */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '0.75rem', marginBottom: '1.25rem' }}>
                 <div style={{ background: 'var(--warm-100)', padding: '0.85rem 0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-light)', textAlign: 'center' }}>
-                    <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', display: 'block', textTransform: 'uppercase' }}>{t('तिथि', 'Tithi')}</span>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', display: 'block', textTransform: 'uppercase' }}>{t('तिथि', 'Tithi')}</span>
                     <strong style={{ fontSize: '0.92rem', color: 'var(--navy-900)', display: 'block', marginTop: '0.15rem' }}>{tithiName}</strong>
                     <span style={{ fontSize: '0.7rem', color: 'var(--gold-800)' }}>{tithiPaksha}</span>
                 </div>
 
                 <div style={{ background: 'var(--warm-100)', padding: '0.85rem 0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-light)', textAlign: 'center' }}>
-                    <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', display: 'block', textTransform: 'uppercase' }}>{t('नक्षत्र', 'Nakshatra')}</span>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', display: 'block', textTransform: 'uppercase' }}>{t('नक्षत्र', 'Nakshatra')}</span>
                     <strong style={{ fontSize: '0.92rem', color: 'var(--navy-900)', display: 'block', marginTop: '0.15rem' }}>{nakshatraName}</strong>
                     <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary)' }}>Lord: {nakshatraLord}</span>
                 </div>
 
                 <div style={{ background: 'var(--warm-100)', padding: '0.85rem 0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-light)', textAlign: 'center' }}>
-                    <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', display: 'block', textTransform: 'uppercase' }}>{t('योग', 'Yoga')}</span>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', display: 'block', textTransform: 'uppercase' }}>{t('योग', 'Yoga')}</span>
                     <strong style={{ fontSize: '0.92rem', color: 'var(--navy-900)', display: 'block', marginTop: '0.15rem' }}>{yogaName}</strong>
                     <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary)' }}>Vedic Yoga</span>
                 </div>
 
                 <div style={{ background: 'var(--warm-100)', padding: '0.85rem 0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-light)', textAlign: 'center' }}>
-                    <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', display: 'block', textTransform: 'uppercase' }}>{t('चंद्र राशि', 'Moon Sign')}</span>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', display: 'block', textTransform: 'uppercase' }}>{t('चंद्र राशि', 'Moon Sign')}</span>
                     <strong style={{ fontSize: '0.92rem', color: 'var(--navy-900)', display: 'block', marginTop: '0.15rem' }}>{chandraRashi}</strong>
                     <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary)' }}>Chandra Gochar</span>
                 </div>

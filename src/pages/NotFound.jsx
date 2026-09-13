@@ -18,13 +18,13 @@ export default function NotFound() {
             <div className="container text-center">
                 <div className="hero-om" style={{ color: 'var(--gold-500)', marginBottom: '1rem' }}>ॐ</div>
                 <h1 style={{ fontSize: 'clamp(2rem, 6vw, 3rem)', marginBottom: '0.75rem' }}>404</h1>
-                <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem', fontSize: '1.1rem' }}>
+                <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem', fontSize: '1.1rem', fontWeight: 400 }} role="heading" aria-level="2">
                     {t('क्षमा करें, यह पृष्ठ नहीं मिला।', "Sorry, we couldn't find that page.")}
                 </p>
                 <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '2rem' }}>
                     <Link to="/" className="btn btn-primary">{t('होम पर जाएं', 'Go to Home')}</Link>
-                    <Link to="/services" className="btn btn-outline">{t('सेवाएं देखें', 'View Services')}</Link>
-                    <Link to="/contact" className="btn btn-outline">{t('संपर्क करें', 'Contact Us')}</Link>
+                    <Link to="/services" className="btn btn-outline-dark">{t('सेवाएं देखें', 'View Services')}</Link>
+                    <Link to="/contact" className="btn btn-outline-dark">{t('संपर्क करें', 'Contact Us')}</Link>
                 </div>
             </div>
         </div>
