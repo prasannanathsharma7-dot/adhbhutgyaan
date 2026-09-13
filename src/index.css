@@ -3253,3 +3253,20 @@ h3 {
     background: linear-gradient(90deg, var(--gold-600), var(--gold-400));
     transition: width 0.1s linear;
 }
+
+/* ===== Loading spinner (button in-progress states) ===== */
+@keyframes icon-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* .spin is the name Muhurat.jsx's Loader2 icon already referenced before
+   this fix - that reference existed but no matching CSS rule did, so
+   its "spinner" was rendering as a static, non-rotating icon. Defining
+   it here (rather than only adding the new .icon-spin name) fixes that
+   pre-existing bug too. Both names point to the same animation; .spin
+   is the one to use going forward for consistency. */
+.icon-spin,
+.spin {
+    animation: icon-spin 0.9s linear infinite;
+}

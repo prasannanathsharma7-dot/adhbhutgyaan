@@ -389,7 +389,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                 </div>
 
                                 <button type="submit" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', padding: '0.85rem', fontSize: '1rem' }} disabled={status === 'calculating'}>
-                                    {status === 'calculating' ? t('स्थान खोजा जा रहा है एवं वैदिक गणना की जा रही है...', 'Locating city & calculating Vedic chart...') : <><Zap size={16} style={{ verticalAlign: '-3px', marginRight: '0.3rem' }} />{t('निःशुल्क कुंडली रिपोर्ट तुरंत देखें', 'Generate Free Kundli Analysis')}</>}
+                                    {status === 'calculating' ? <><RefreshCw size={16} className="spin" style={{ verticalAlign: '-3px', marginRight: '0.4rem' }} />{t('स्थान खोजा जा रहा है एवं वैदिक गणना की जा रही है...', 'Locating city & calculating Vedic chart...')}</> : <><Zap size={16} style={{ verticalAlign: '-3px', marginRight: '0.3rem' }} />{t('निःशुल्क कुंडली रिपोर्ट तुरंत देखें', 'Generate Free Kundli Analysis')}</>}
                                 </button>
                             </form>
                         </div>
