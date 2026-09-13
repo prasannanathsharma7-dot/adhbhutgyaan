@@ -3235,3 +3235,21 @@ h3 {
         padding: 0.35rem 0.7rem;
     }
 }
+
+/* ===== Scroll Progress Indicator ===== */
+.scroll-progress-track {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    z-index: 1001;
+    background: transparent;
+    pointer-events: none;
+}
+
+.scroll-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold-600), var(--gold-400));
+    transition: width 0.1s linear;
+}

@@ -1,6 +1,7 @@
 import { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import ScrollProgress from './components/ScrollProgress';
 import Footer from './components/Footer';
 import WhatsAppFloat from './components/WhatsAppFloat';
 import BackToTop from './components/BackToTop';
@@ -72,6 +73,7 @@ function App() {
             <ScrollToTop />
             <a href="#main-content" className="skip-link">Skip to content</a>
             <Navbar />
+            <ScrollProgress />
             <main id="main-content" tabIndex={-1}>
                 <Suspense fallback={<PageLoader />}>
                     <Routes>
