@@ -24,7 +24,12 @@ export default function Navbar() {
         setToolsOpen(false);
     }, [location]);
 
-    // Close the "Astrology Tools" dropdown when clicking anywhere outside it.
+    // Close the "Astrology Tools" dropdown when clicking anywhere outside it,
+    // or on Escape - keyboard users need a way out of an open dropdown that
+    // doesn't involve tabbing through every item inside it. Focus returns to
+    // the trigger button so the keyboard user isn't left stranded past a
+    // closed menu, matching the same pattern already used for the mobile
+    // menu below.
     useEffect(() => {
         if (!toolsOpen) return;
         const handleClick = (e) => {
@@ -32,8 +37,18 @@ export default function Navbar() {
                 setToolsOpen(false);
             }
         };
+        const handleKey = (e) => {
+            if (e.key === 'Escape') {
+                setToolsOpen(false);
+                toolsRef.current?.querySelector('.nav-dropdown-trigger')?.focus();
+            }
+        };
         document.addEventListener('mousedown', handleClick);
-        return () => document.removeEventListener('mousedown', handleClick);
+        window.addEventListener('keydown', handleKey);
+        return () => {
+            document.removeEventListener('mousedown', handleClick);
+            window.removeEventListener('keydown', handleKey);
+        };
     }, [toolsOpen]);
 
     // Close the mobile menu on Escape and send focus back to the toggle button,
