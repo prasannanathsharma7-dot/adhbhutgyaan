@@ -1299,11 +1299,61 @@ h3 {
     .hero-stat {
         text-align: center;
     }
-    /* Reserve space below the stats row so the fixed WhatsApp + AI-chat
-       buttons (bottom-right corner) never overlap the last stat on first
-       paint, before the user has scrolled at all. */
+}
+
+/* On short mobile viewports the hero's natural content height (om icon +
+   circular image + heading + description + buttons + stats) genuinely
+   exceeds the viewport (confirmed: 1039px content in an 844px viewport on
+   a 390x844 device) - min-height:100vh does not clip it, so the stats
+   row lands whatever height that overflow puts it at, which on some
+   devices is exactly where the fixed WhatsApp + AI-chat buttons sit
+   (bottom-right, ~155px tall). A trailing padding-bottom on .hero or
+   .hero-stats does not fix this - it only pushes the *next* section
+   further down, since the stats' own position is already fixed by
+   everything above it in normal flow. The actual fix is to compact the
+   vertical spacing of what's above the stats row, so the stats land
+   higher up with real clearance before the button zone. */
+@media (max-width: 860px) and (max-height: 900px) {
+    .hero-visual-ring {
+        width: clamp(130px, 32vw, 180px);
+        height: clamp(130px, 32vw, 180px);
+    }
+    .hero-om {
+        margin-bottom: 0.5rem;
+    }
+    .hero-visual {
+        margin-bottom: 0.75rem;
+    }
+    .hero-title-hindi {
+        margin-bottom: 0.25rem;
+    }
+    .hero-desc {
+        margin-bottom: 1rem;
+    }
+    .hero-actions {
+        margin-bottom: 1rem;
+    }
     .hero-stats {
-        padding-bottom: clamp(90px, 22vw, 120px);
+        margin-top: 0.75rem;
+        padding-bottom: 20px;
+    }
+}
+
+/* Very short viewports (e.g. iPhone SE at 667px, many budget Android
+   devices around 720-740px) still overflow even with the compaction
+   above, since that tier removes a fixed amount of height rather than
+   one that scales with how short the viewport actually is - verified
+   iPhone SE still had 165px of overflow after the 900px-tier styles.
+   Hiding the decorative circular image (the single largest element,
+   ~130px+margin) is the most reliable way to close the remaining gap
+   across this whole range without further incremental tuning, since
+   it's the least essential element for someone on a very small screen. */
+@media (max-width: 860px) and (max-height: 750px) {
+    .hero-visual {
+        display: none;
+    }
+    .hero-om {
+        margin-bottom: 0.4rem;
     }
 }
 
