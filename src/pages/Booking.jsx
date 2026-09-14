@@ -15,6 +15,7 @@ export default function Booking() {
     const { t, lang } = useLanguage();
     const [activeClip, setActiveClip] = useState(null);
     const heroVideoRef = useRef(null);
+    const wizardStepsRef = useRef(null);
 
     useSEO({
         title: t('पूजा बुक करें | Adhbhut Gyaan', 'Book a Pooja | Adhbhut Gyaan'),
@@ -69,7 +70,23 @@ export default function Booking() {
         }
     }, [preServiceId, prePkgName]);
 
-    const goToStep = (n) => { setStep(n); window.scrollTo({ top: 200, behavior: 'smooth' }); };
+    // Was previously a hardcoded window.scrollTo({top: 200}) - a real user
+    // test showed this left the "Meet Us Before You Book" video/gallery
+    // section still largely on screen after clicking Next, with the actual
+    // next step rendered well below the fold and no indication anything
+    // had happened. Scroll to the wizard-steps container's real position
+    // instead, offset for the fixed navbar so the step indicator isn't
+    // hidden underneath it.
+    const goToStep = (n) => {
+        setStep(n);
+        requestAnimationFrame(() => {
+            if (!wizardStepsRef.current) return;
+            const navbar = document.querySelector('.navbar');
+            const offset = (navbar?.offsetHeight || 70) + 12;
+            const top = wizardStepsRef.current.getBoundingClientRect().top + window.scrollY - offset;
+            window.scrollTo({ top, behavior: 'smooth' });
+        });
+    };
 
     const saveBookingToServer = async () => {
         setSaveStatus('saving');
@@ -323,7 +340,7 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
             <section className="section">
                 <div className="container" style={{ maxWidth: 900, margin: '0 auto' }}>
                     {/* Steps */}
-                    <div className="wizard-steps" role="list">
+                    <div className="wizard-steps" role="list" ref={wizardStepsRef}>
                         {steps.map((label, i) => (
                             <div
                                 key={i}
