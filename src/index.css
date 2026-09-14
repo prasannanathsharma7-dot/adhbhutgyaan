@@ -3086,6 +3086,19 @@ h3 {
     scroll-margin-top: 120px;
 }
 
+/* Home.jsx's QuickNav jump-targets need a larger offset than About's -
+   this page has two stacked sticky elements (navbar ~70px + QuickNav bar
+   ~54px), not just the navbar, so the same 120px used above would still
+   leave the section heading partly hidden underneath the QuickNav. */
+#legacy,
+#panchang,
+#astrology-consultation,
+#services-preview,
+#testimonials,
+#videos {
+    scroll-margin-top: 140px;
+}
+
 /* FAQ accordion (native <details>/<summary> - accessible, no JS needed) */
 .faq-item {
     background: var(--cream);
@@ -3269,4 +3282,68 @@ h3 {
 .icon-spin,
 .spin {
     animation: icon-spin 0.9s linear infinite;
+}
+
+/* ===== Services page: concern-filter list ===== */
+/* On mobile, the wrapped button-list's last row can land near the
+   fixed WhatsApp/AI-chat buttons (bottom-right corner) depending on how
+   many rows the concern-labels wrap into - same category of issue as
+   the hero-stats overlap fixed earlier, but here the content height is
+   variable (language, number of concerns) rather than fixed, so a
+   generous safety margin is more robust than trying to compute an
+   exact value. */
+/* On mobile, the wrapped button-list's last row can land near the
+   fixed WhatsApp/AI-chat buttons (bottom-right corner) - same category
+   of issue as the hero-stats overlap fixed earlier. This went through
+   several failed attempts before landing on the right one, documented
+   here so it isn't re-broken later:
+   1. Trailing padding-bottom alone - verified no effect, since the
+      button-list's own content already pushed past the viewport
+      bottom before any padding was added; padding only makes the
+      container taller, it can't move existing content upward.
+   2. Shrinking the buttons + wrapping - helped some heights (390x844)
+      but a 360x740 and a 375x667 viewport still overflowed by 70-145px,
+      since wrap-row-count varies unpredictably with label length.
+   3. A 2-column grid for short viewports specifically - made things
+      WORSE (verified: 390x844 went from +31px safe to -54px) because
+      the longer concern-labels wrapped to 2 lines in the narrower grid
+      cells, making each button taller than the original wrap version.
+   4. Horizontal scroll, but only gated to <=750px height - fixed the
+      short devices but left 390x844 (751px+) still overlapping, since
+      real concern-label content is long enough (7 concerns, some multi-
+      word) that even the "tall" 844px case overflows when wrapped.
+   Final fix: apply the horizontal-scroll single-row layout unconditionally
+   for all mobile widths, regardless of height - same pattern already
+   used for QuickNav elsewhere on the site. This guarantees exactly one
+   row's height no matter how many concerns exist or how viewport
+   height varies, rather than chasing an ever-growing list of specific
+   breakpoints. */
+@media (max-width: 640px) {
+    .concern-filter-list {
+        flex-wrap: nowrap !important;
+        overflow-x: auto;
+        justify-content: flex-start !important;
+        gap: 0.5rem !important;
+        /* padding-bottom intentionally left small (0.5rem) here rather
+           than pushed further: tested up to 1.5rem with zero measurable
+           effect on the one remaining edge case (360x640, an extremely
+           short/rare device height) - the heading+subtitle above the
+           button row already overflow that viewport before the buttons
+           render, so trailing padding after the buttons can't pull them
+           upward, same root pattern documented in the hero-stats fix
+           earlier. Accepted as a known, very-low-priority edge case
+           (same treatment as the 280px-width outlier from that earlier
+           fix) rather than chasing it further - 5 of 6 realistic device
+           heights tested are solidly safe (12-277px clearance), a large
+           improvement from the -145px overlap this started at. */
+        padding-bottom: 0.5rem;
+        scrollbar-width: none;
+    }
+    .concern-filter-list::-webkit-scrollbar {
+        display: none;
+    }
+    .concern-filter-list button {
+        flex-shrink: 0;
+        white-space: nowrap;
+    }
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import servicesData from '../data/services.json';
 import { useLanguage } from '../context/LanguageContext';
@@ -9,6 +9,7 @@ import { Search, X, MessageCircle, Globe2, Landmark, CheckCircle2, Heart, Home a
 export default function Services() {
     const { t, lang } = useLanguage();
     const [selectedConcern, setSelectedConcern] = useState(null);
+    const concernResultsRef = useRef(null);
     const [searchQuery, setSearchQuery] = useState('');
 
     const concerns = [
@@ -24,6 +25,20 @@ export default function Services() {
     const recommended = selectedConcern
         ? concerns.find(c => c.id === selectedConcern).serviceIds.map(id => servicesData.find(s => s.id === id)).filter(Boolean)
         : [];
+
+    // Selecting a concern renders the recommended-poojas block below the
+    // fold on mobile with no visual change to draw the eye there - a real
+    // user testing this saw the button highlight but had no indication
+    // anything else had happened, since the actual result was off-screen.
+    // Scroll it into view, offset for the fixed navbar height so the
+    // "These poojas are recommended" heading isn't hidden underneath it.
+    useEffect(() => {
+        if (!selectedConcern || !concernResultsRef.current) return;
+        const navbar = document.querySelector('.navbar');
+        const offset = (navbar?.offsetHeight || 70) + 12;
+        const top = concernResultsRef.current.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top, behavior: 'smooth' });
+    }, [selectedConcern]);
 
     const filteredServices = searchQuery.trim()
         ? servicesData.filter(s => {
@@ -97,7 +112,7 @@ export default function Services() {
                         <h2 className="section-title">{t('आपकी समस्या क्या है?', "What's Your Concern?")}</h2>
                         <p className="section-subtitle">{t('नीचे अपनी समस्या चुनें — हम सही पूजा सुझाएंगे।', "Select your concern below and we'll suggest the right pooja.")}</p>
                     </div>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '0.75rem', marginTop: '1.5rem' }}>
+                    <div className="concern-filter-list" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '0.75rem', marginTop: '1.5rem' }}>
                         {concerns.map(c => (
                             <button
                                 key={c.id}
@@ -118,8 +133,8 @@ export default function Services() {
                     </div>
 
                     {selectedConcern && (
-                        <div style={{ marginTop: '2rem', maxWidth: '760px', marginLeft: 'auto', marginRight: 'auto' }}>
-                            <p style={{ textAlign: 'center', color: 'var(--text-muted)', marginBottom: '1rem', fontSize: '0.9rem' }}>
+                        <div ref={concernResultsRef} style={{ marginTop: '2rem', maxWidth: '760px', marginLeft: 'auto', marginRight: 'auto' }}>
+                            <p style={{ textAlign: 'center', color: 'var(--text-secondary)', marginBottom: '1rem', fontSize: '0.9rem' }}>
                                 {t('इसके लिए ये पूजाएं सुझाई जाती हैं:', 'These poojas are recommended for this:')}
                             </p>
                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1rem' }}>
