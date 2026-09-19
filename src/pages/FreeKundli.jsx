@@ -501,8 +501,21 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                             </div>
                         </div>
 
+                        <nav className="result-section-nav no-print" aria-label={t('कुंडली रिपोर्ट के भाग', 'Kundli report sections')}>
+                            {[
+                                { id: 'kundli-chart', hi: 'कुंडली', en: 'Chart' },
+                                { id: 'kundli-doshas', hi: 'दोष', en: 'Doshas' },
+                                { id: 'kundli-lucky', hi: 'शुभ तत्व', en: 'Lucky Factors' },
+                                { id: 'kundli-forecast', hi: 'भविष्य फल', en: 'Forecast' },
+                                { id: 'kundli-pdf', hi: 'PDF', en: 'PDF' },
+                                { id: 'kundli-consult', hi: 'परामर्श', en: 'Consultation' },
+                            ].map(item => (
+                                <a key={item.id} href={`#${item.id}`}>{t(item.hi, item.en)}</a>
+                            ))}
+                        </nav>
+
                         {/* SECTION 1: LAGNA CHART & PLANETARY POSITIONS */}
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '1.5rem', marginBottom: '2rem', alignItems: 'start' }}>
+                        <div id="kundli-chart" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '1.5rem', marginBottom: '2rem', alignItems: 'start' }}>
                             {/* North Indian SVG Chart */}
                             <NorthIndianChart
                                 houseData={kundliResult.houseData}
@@ -554,7 +567,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                         </div>
 
                         {/* SECTION 2: ASTRO HEALTH VERDICT & CORE DOSHA MATRIX */}
-                        <div className="kundli-report-card" style={{ background: 'white', borderRadius: 'var(--radius-lg)', padding: '1.5rem', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-md)', marginBottom: '1.5rem' }}>
+                        <div id="kundli-doshas" className="kundli-report-card" style={{ background: 'white', borderRadius: 'var(--radius-lg)', padding: '1.5rem', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-md)', marginBottom: '1.5rem' }}>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '1.25rem', borderBottom: '1px solid var(--border-light)', paddingBottom: '0.75rem' }}>
                                 <h3 style={{ margin: 0, fontSize: '1.15rem', color: 'var(--navy-900)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                                     <Shield size={17} style={{ verticalAlign: '-3px', marginRight: '0.35rem' }} />{t('ग्रह दोष विश्लेषण (Astro Health & Dosha Matrix)', 'Core Vedic Doshas Detected')}
@@ -629,7 +642,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                         </div>
 
                         {/* SECTION 3: LUCKY ATTRIBUTES & ELEMENTAL STRENGTHS */}
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '0.85rem', marginBottom: '1.5rem' }}>
+                        <div id="kundli-lucky" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '0.85rem', marginBottom: '1.5rem' }}>
                             <div className="kundli-report-card" style={{ background: 'white', padding: '0.9rem 0.75rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-sm)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', gap: '0.4rem', minHeight: '85px' }}>
                                 <span style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--navy-900)', background: 'var(--warm-100)', padding: '0.2rem 0.6rem', borderRadius: 'var(--radius-full)', letterSpacing: '0.5px' }}>
                                     {t('शुभ रत्न (GEMSTONE)', 'LUCKY GEMSTONE')}
@@ -677,15 +690,11 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                         </div>
 
                         {/* SECTION 4: LOCKED PREMIUM FUTURE TIMELINE CARDS (THE CURIOSITY HOOK) */}
-                        <div className="no-print" style={{ marginBottom: '2rem' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
-                                <h3 style={{ margin: 0, fontSize: '1.25rem', color: 'var(--navy-950)' }}>
-                                    <Lock size={17} style={{ verticalAlign: '-3px', marginRight: '0.35rem' }} />{t('प्रीमियम भविष्य फल एवं समय चक्र (Locked Timeline Analysis)', 'Premium 5-8 Year Future Forecast (Locked)')}
-                                </h3>
-                                <span style={{ background: 'var(--gold-100)', color: 'var(--gold-800)', fontSize: '0.72rem', fontWeight: 700, padding: '0.2rem 0.6rem', borderRadius: '999px' }}>
-                                    Pandit Ji Exclusive
-                                </span>
-                            </div>
+                        <details className="content-drawer no-print" id="kundli-forecast" style={{ marginBottom: '2rem' }}>
+                            <summary>
+                                <span><Lock size={17} /> {t('प्रीमियम 5–8 वर्ष भविष्य फल', 'Premium 5–8 Year Forecast')}</span>
+                                <small>{t('3 विषय — खोलें', '3 topics — expand')}</small>
+                            </summary>
 
                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(290px, 1fr))', gap: '1rem' }}>
                                 {/* Locked Card 1: 5-8 Year Career & Wealth Timeline */}
@@ -754,13 +763,13 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </details>
 
                         {/* Full 24-Page PDF - now free (no charge, no WhatsApp
                             round-trip needed): directly downloadable using the
                             same birth details and language/numeral settings
                             currently shown on screen. */}
-                        <div style={{
+                        <div id="kundli-pdf" style={{
                             background: 'linear-gradient(135deg, var(--gold-50), white)', border: '2px solid var(--gold-500)',
                             borderRadius: 'var(--radius-xl)', padding: 'clamp(1.5rem, 4vw, 2.25rem)', margin: '1.5rem 0',
                             textAlign: 'center',
@@ -799,6 +808,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
 
                         {/* SECTION 5: LUXURY HIGH-CONVERSION CONSULTATION ACTION CENTER */}
                         <div
+                            id="kundli-consult"
                             className="no-print"
                             style={{
                                 background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',

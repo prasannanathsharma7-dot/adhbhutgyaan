@@ -12,6 +12,7 @@ import QuickNav from '../components/QuickNav';
 import { heritageSummary, testimonials } from '../data/heritage';
 import FlagIcon from '../components/FlagIcon';
 import EvidenceGallery from '../components/EvidenceGallery';
+import ProgressiveGrid from '../components/ProgressiveGrid';
 import { SquarePlay, XCircle, CheckCircle2, Mic, Coffee, Sparkle, MessageCircleQuestion, Gem } from 'lucide-react';
 
 function useInView() {
@@ -252,7 +253,7 @@ export default function Home() {
                         so visitors can inspect the full certificate and published
                         press records without first navigating to About Us. */}
                     <div style={{ marginTop: '2.5rem' }}>
-                        <EvidenceGallery items={[pressHighlights[7], pressHighlights[5], pressHighlights[6]]} t={t} theme="dark" compact />
+                        <EvidenceGallery items={[pressHighlights[7], pressHighlights[5], pressHighlights[6]]} t={t} theme="dark" compact mobileRail />
                     </div>
 
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', marginTop: '2.5rem' }}>
@@ -417,8 +418,13 @@ export default function Home() {
                         <p className="section-subtitle">{t('काशी (बनारस) के मनीषी पंडितों द्वारा शास्त्रोक्त विधि-विधान से समस्त प्रकार की पूजा, पाठ, जप और हवन सम्पन्न करवाएं।', 'Avail every form of pooja, paath, jaap and havan, performed by erudite Pandits of Kashi (Banaras) in strict accordance with authentic Vedic methods.')}</p>
                     </div>
                     <div className="om-divider">ॐ</div>
-                    <div className="icon-service-grid">
-                        {servicesData.map((service, i) => {
+                    <ProgressiveGrid
+                        items={servicesData}
+                        initialCount={6}
+                        mobileRail
+                        className="icon-service-grid"
+                        itemKey={(service) => service.id}
+                        renderItem={(service, i) => {
                             const images = {
                                 'vipreet-pratyangira': 'service-vipreet-pratyangira',
                                 'mahavidya-paath': 'service-mahavidya-paath',
@@ -433,7 +439,7 @@ export default function Home() {
                                 'astrology-consultation': 'service-astrology-consultation',
                             };
                             return (
-                                <div className={`icon-service-card fade-up stagger-${(i % 5) + 1}`} key={service.id}>
+                                <div className={`icon-service-card fade-up stagger-${(i % 5) + 1}`}>
                                     <img src={`/images/icons/${images[service.id] || 'service-astrology-consultation'}.jpg`} alt="" width="64" height="64" loading="lazy" className="icon-service-icon-img" />
                                     <h3 className="icon-service-title">{lang === 'hi' ? service.name : service.nameEn}</h3>
                                     <p className="icon-service-desc">{lang === 'hi' ? service.shortDesc : (service.shortDescEn || service.shortDesc)}</p>
@@ -451,8 +457,8 @@ export default function Home() {
                                     </div>
                                 </div>
                             );
-                        })}
-                    </div>
+                        }}
+                    />
                     <div className="text-center" style={{ marginTop: '2rem' }}>
                         <Link to="/services" className="btn btn-gold">{t('सभी सेवाएं देखें →', 'View All Services →')}</Link>
                     </div>
@@ -549,8 +555,8 @@ export default function Home() {
                         <span className="section-label">{t('भक्तों के अनुभव', 'Devotee Experiences')}</span>
                         <h2 className="section-title">{t('हमारे भक्तगण क्या कहते हैं', 'In Our Devotees\' Own Words')}</h2>
                     </div>
-                    <div className="testimonials-grid">
-                        {(liveReviews || [
+                    <ProgressiveGrid
+                        items={liveReviews || [
                             {
                                 text: t('बनारस से दूर रहकर भी काशी के पंडित जी द्वारा इतनी शुद्ध विधि से पूजा करवा पाना बहुत अच्छा अनुभव रहा। पूरे परिवार को शांति मिली।', 'Even while living far from Banaras, having the pooja performed so authentically by a Kashi Pandit was a wonderful experience. Our whole family found peace.'),
                                 name: 'राजेश शर्मा', loc: t('दिल्ली, भारत', 'Delhi, India'), av: 'र', rating: 5,
@@ -563,14 +569,19 @@ export default function Home() {
                                 text: t('अमेरिका में रहते हुए हमारे गृह प्रवेश के लिए प्रामाणिक काशी पंडित मिलना मुश्किल था। इनकी ऑनलाइन सेवा अद्भुत रही — बिल्कुल बनारस में होने जैसा अनुभव!', 'Being in the US, I missed having authentic Kashi pandits for our Griha Pravesh. Their online service was incredible — felt like being right in Banaras!'),
                                 name: 'Priya Gupta', loc: t('न्यू जर्सी, अमेरिका', 'New Jersey, USA'), av: 'P', rating: 5,
                             },
-                        ]).map((tst, i) => {
+                        ]}
+                        initialCount={3}
+                        mobileRail
+                        className="testimonials-grid"
+                        itemKey={(item, index) => item._id || `${item.name}-${index}`}
+                        renderItem={(tst, i) => {
                             // Live reviews from the API use {name, text, rating, location, serviceName};
                             // static fallback uses {name, text, loc, av, rating}.
                             const displayLoc = tst.loc || tst.location || tst.serviceName || '';
                             const displayAv = tst.av || (tst.name || '?').trim().charAt(0).toUpperCase();
                             const stars = '★'.repeat(tst.rating || 5) + '☆'.repeat(5 - (tst.rating || 5));
                             return (
-                                <div className={`testimonial-card fade-up stagger-${i + 1}`} key={tst._id || i}>
+                                <div className={`testimonial-card fade-up stagger-${(i % 5) + 1}`}>
                                     <div className="testimonial-stars">{stars}</div>
                                     <div className="testimonial-quote">"</div>
                                     <p className="testimonial-text">{tst.text}</p>
@@ -583,8 +594,8 @@ export default function Home() {
                                     </div>
                                 </div>
                             );
-                        })}
-                    </div>
+                        }}
+                    />
 
                     <div className="text-center" style={{ marginTop: '2rem', background: 'var(--cream)', borderRadius: 'var(--radius-lg)', padding: '1.5rem', maxWidth: 560, marginLeft: 'auto', marginRight: 'auto' }}>
                         <p style={{ marginBottom: '0.9rem', fontSize: '0.9rem' }}>
@@ -637,16 +648,21 @@ export default function Home() {
                     </div>
                     <div className="om-divider">ॐ</div>
 
-                    <div className="video-showcase-grid" style={{ marginBottom: '2.5rem' }}>
-                        {videoClips.map(clip => (
-                            <div className="video-showcase-card" key={clip.src}>
+                    <ProgressiveGrid
+                        items={videoClips}
+                        initialCount={2}
+                        mobileRail
+                        className="video-showcase-grid"
+                        itemKey={(clip) => clip.src}
+                        renderItem={(clip) => (
+                            <div className="video-showcase-card">
                                 <video controls preload="none" poster={clip.poster} playsInline>
                                     <source src={clip.src} type="video/mp4" />
                                 </video>
                                 <p className="video-showcase-caption">{t(clip.capHi, clip.capEn)}</p>
                             </div>
-                        ))}
-                    </div>
+                        )}
+                    />
 
                     <h3 style={{ textAlign: 'center', color: 'var(--gold-300)', marginBottom: '1rem', fontFamily: 'var(--font-hindi)' }}>
                         {t('हमारे YouTube चैनल पर और देखें', 'See More on Our YouTube Channel')}
@@ -671,13 +687,11 @@ export default function Home() {
                         interviews of Pt. Umang Nath Sharma, not our own
                         ritual recordings), so kept as its own labeled
                         sub-section rather than mixed into videoClips. */}
-                    <div style={{ marginTop: '3rem', paddingTop: '2.5rem', borderTop: '1px solid rgba(255,255,255,0.12)' }}>
-                        <div className="text-center fade-up">
-                            <span className="section-label" style={{ justifyContent: 'center' }}>
-                                <Mic size={14} style={{ marginRight: '0.4rem' }} />{t('मीडिया साक्षात्कार', 'Media Interviews')}
-                            </span>
-                            <h3 style={{ color: 'var(--gold-300)', marginTop: '0.4rem' }}>{t('डॉ. उमंग नाथ शर्मा के साक्षात्कार', 'Interviews with Dr. Umang Nath Sharma')}</h3>
-                        </div>
+                    <details className="content-drawer content-drawer-dark" style={{ marginTop: '3rem' }}>
+                        <summary>
+                            <span><Mic size={17} /> {t('डॉ. उमंग नाथ शर्मा के मीडिया साक्षात्कार', 'Media Interviews with Dr. Umang Nath Sharma')}</span>
+                            <small>{t('3 वीडियो — खोलें', '3 videos — expand')}</small>
+                        </summary>
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', marginTop: '1.75rem' }}>
                             {[
                                 { id: 'mFPuEkcM2oU' },
@@ -701,7 +715,7 @@ export default function Home() {
                                 </div>
                             ))}
                         </div>
-                    </div>
+                    </details>
                 </div>
             </section>
 

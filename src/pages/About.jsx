@@ -5,6 +5,7 @@ import { SquarePlay } from 'lucide-react';
 import useSEO from '../hooks/useSEO';
 import { breadcrumbJsonLd, combineJsonLd } from '../utils/seo';
 import EvidenceGallery from '../components/EvidenceGallery';
+import ProgressiveGrid from '../components/ProgressiveGrid';
 
 import { generations, heritageSummary, testimonials, testimonialFlags, moreTestimonials, moreTestimonialFlags } from '../data/heritage';
 import FlagIcon from '../components/FlagIcon';
@@ -15,6 +16,44 @@ const values = [
     { img: 'devotee-heart', title: 'भक्त सेवा', titleEn: 'Devotee First', desc: 'भक्तों का कल्याण ही हमारी सर्वोच्च प्राथमिकता', descEn: "Devotees' wellbeing remains our foremost priority" },
     { img: 'global-reach', title: 'वैश्विक पहुँच', titleEn: 'Global Reach', desc: 'देश-विदेश में कहीं भी, काशी की सेवा आपके निकट', descEn: "Kashi's service, delivered wherever you may be in the world" },
 ];
+
+function ArchiveLetterCard({ testimonial, t }) {
+    return (
+        <article style={{
+            position: 'relative',
+            height: '100%',
+            background: 'linear-gradient(165deg, #FFFCF5 0%, var(--cream) 100%)',
+            border: '1px solid var(--border-light)',
+            borderRadius: 'var(--radius-lg)',
+            padding: '1.5rem',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.75rem',
+            boxShadow: 'var(--shadow-lg)',
+            overflow: 'hidden',
+        }}>
+            <div aria-hidden="true" style={{
+                position: 'absolute', top: 0, left: 0, right: 0, height: '6px',
+                background: 'repeating-linear-gradient(-45deg, #B8860B 0 10px, #fff 10px 20px, #8B0000 20px 30px, #fff 30px 40px)',
+                opacity: 0.55,
+            }} />
+            {testimonial.notable && (
+                <div style={{ alignSelf: 'flex-start', background: 'var(--dark-100)', color: 'var(--gold-300)', fontSize: '0.7rem', fontWeight: 700, padding: '0.25rem 0.7rem', borderRadius: 'var(--radius-xl)', letterSpacing: '0.02em' }}>
+                    🎖️ {t(testimonial.notableHi, testimonial.notableEn)}
+                </div>
+            )}
+            <span aria-hidden="true" style={{ fontSize: '1.8rem', color: 'var(--gold-400)', lineHeight: 1, fontFamily: 'var(--font-heading)' }}>&ldquo;</span>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', lineHeight: 1.7, flex: 1, fontStyle: 'italic' }}>{t(testimonial.quoteHi, testimonial.quoteEn)}</p>
+            <div style={{ borderTop: '1px dashed var(--border-gold)', paddingTop: '0.7rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <FlagIcon flag={testimonial.flag || '🌐'} style={{ width: '22px', height: '17px' }} />
+                <div>
+                    <div style={{ fontWeight: 700, color: 'var(--gold-800)', fontSize: '0.9rem' }}>{testimonial.name}</div>
+                    <div style={{ color: 'var(--text-muted)', fontSize: '0.78rem' }}>{testimonial.place}</div>
+                </div>
+            </div>
+        </article>
+    );
+}
 
 export default function About() {
     const { t, lang } = useLanguage();
@@ -130,7 +169,7 @@ export default function About() {
                     <p style={{ textAlign: 'center', maxWidth: 680, margin: '0 auto 1.75rem', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
                         {t('प्रत्येक प्रमाण पर क्लिक करके मूल दस्तावेज़ अथवा फोटो को बिना काटे पूर्ण आकार में देखें।', 'Open any item to inspect the original document or photograph at full size, without cropping.')}
                     </p>
-                    <EvidenceGallery items={pressHighlights} t={t} />
+                    <EvidenceGallery items={pressHighlights} t={t} mobileRail />
                 </div>
             </section>
 
@@ -253,43 +292,14 @@ export default function About() {
                             📅 1979–1983
                         </span>
                     </div>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.75rem' }}>
-                        {testimonials.map((tst, i) => (
-                            <div key={i} style={{
-                                position: 'relative',
-                                background: 'linear-gradient(165deg, #FFFCF5 0%, var(--cream) 100%)',
-                                border: '1px solid var(--border-light)',
-                                borderRadius: 'var(--radius-lg)',
-                                padding: '1.5rem',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: '0.75rem',
-                                boxShadow: 'var(--shadow-lg)',
-                                overflow: 'hidden',
-                            }}>
-                                {/* Airmail stripe - evokes the original international letters */}
-                                <div style={{
-                                    position: 'absolute', top: 0, left: 0, right: 0, height: '6px',
-                                    background: 'repeating-linear-gradient(-45deg, #B8860B 0 10px, #fff 10px 20px, #8B0000 20px 30px, #fff 30px 40px)',
-                                    opacity: 0.55,
-                                }} />
-                                {tst.notable && (
-                                    <div style={{ alignSelf: 'flex-start', background: 'var(--dark-100)', color: 'var(--gold-300)', fontSize: '0.7rem', fontWeight: 700, padding: '0.25rem 0.7rem', borderRadius: 'var(--radius-xl)', letterSpacing: '0.02em' }}>
-                                        🎖️ {t(tst.notableHi, tst.notableEn)}
-                                    </div>
-                                )}
-                                <span style={{ fontSize: '1.8rem', color: 'var(--gold-400)', lineHeight: 1, fontFamily: 'var(--font-heading)' }}>&ldquo;</span>
-                                <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', lineHeight: 1.7, flex: 1, fontStyle: 'italic' }}>{t(tst.quoteHi, tst.quoteEn)}</p>
-                                <div style={{ borderTop: '1px dashed var(--border-gold)', paddingTop: '0.7rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                    <FlagIcon flag={tst.flag || '🌐'} style={{ width: '22px', height: '17px' }} />
-                                    <div>
-                                        <div style={{ fontWeight: 700, color: 'var(--gold-800)', fontSize: '0.9rem' }}>{tst.name}</div>
-                                        <div style={{ color: 'var(--text-muted)', fontSize: '0.78rem' }}>{tst.place}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                    <ProgressiveGrid
+                        items={testimonials}
+                        initialCount={6}
+                        mobileRail
+                        className="archive-letter-grid"
+                        itemKey={(item) => `${item.name}-${item.place}`}
+                        renderItem={(item) => <ArchiveLetterCard testimonial={item} t={t} />}
+                    />
                     <p style={{ textAlign: 'center', color: 'var(--text-secondary)', fontSize: '0.8rem', marginTop: '1.5rem', fontStyle: 'italic' }}>
                         {t(
                             'परिवार के संरक्षित मूल पत्र-संग्रह से लिप्यंतरित; भाषा को थोड़ा सरल किया गया है और पूर्ण पते गोपनीयता हेतु संक्षिप्त हैं।',
@@ -321,37 +331,14 @@ export default function About() {
                             📅 1973–1982
                         </span>
                     </div>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.75rem' }}>
-                        {moreTestimonials.map((tst, i) => (
-                            <div key={i} style={{
-                                position: 'relative',
-                                background: 'linear-gradient(165deg, #FFFCF5 0%, var(--cream) 100%)',
-                                border: '1px solid var(--border-light)',
-                                borderRadius: 'var(--radius-lg)',
-                                padding: '1.5rem',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: '0.75rem',
-                                boxShadow: 'var(--shadow-lg)',
-                                overflow: 'hidden',
-                            }}>
-                                <div style={{
-                                    position: 'absolute', top: 0, left: 0, right: 0, height: '6px',
-                                    background: 'repeating-linear-gradient(-45deg, #B8860B 0 10px, #fff 10px 20px, #8B0000 20px 30px, #fff 30px 40px)',
-                                    opacity: 0.55,
-                                }} />
-                                <span style={{ fontSize: '1.8rem', color: 'var(--gold-400)', lineHeight: 1, fontFamily: 'var(--font-heading)' }}>&ldquo;</span>
-                                <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', lineHeight: 1.7, flex: 1, fontStyle: 'italic' }}>{t(tst.quoteHi, tst.quoteEn)}</p>
-                                <div style={{ borderTop: '1px dashed var(--border-gold)', paddingTop: '0.7rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                    <FlagIcon flag={tst.flag} style={{ width: '22px', height: '17px' }} />
-                                    <div>
-                                        <div style={{ fontWeight: 700, color: 'var(--gold-800)', fontSize: '0.9rem' }}>{tst.name}</div>
-                                        <div style={{ color: 'var(--text-muted)', fontSize: '0.78rem' }}>{tst.place}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                    <ProgressiveGrid
+                        items={moreTestimonials}
+                        initialCount={6}
+                        mobileRail
+                        className="archive-letter-grid"
+                        itemKey={(item) => `${item.name}-${item.place}`}
+                        renderItem={(item) => <ArchiveLetterCard testimonial={item} t={t} />}
+                    />
                     <p style={{ textAlign: 'center', color: 'var(--text-secondary)', fontSize: '0.8rem', marginTop: '1.5rem', fontStyle: 'italic' }}>
                         {t(
                             'परिवार के संरक्षित मूल पत्र-संग्रह से लिप्यंतरित; भाषा को थोड़ा सरल किया गया है और पूर्ण पते गोपनीयता हेतु संक्षिप्त हैं।',
@@ -369,14 +356,19 @@ export default function About() {
                         <h2 className="section-title">{t('हमारी यात्रा के क्षण', 'Moments from Our Journey')}</h2>
                     </div>
                     <div className="om-divider">ॐ</div>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem' }}>
-                        {gallery.map(item => (
-                            <div key={item.src} style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', border: '1px solid var(--border-light)', background: 'var(--cream)' }}>
+                    <ProgressiveGrid
+                        items={gallery}
+                        initialCount={6}
+                        mobileRail
+                        className="heritage-gallery-grid"
+                        itemKey={(item) => item.src}
+                        renderItem={(item) => (
+                            <div style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', border: '1px solid var(--border-light)', background: 'var(--cream)' }}>
                                 <img src={item.src} alt={item.capEn} loading="lazy" style={{ width: '100%', height: '220px', objectFit: 'cover', display: 'block' }} />
                                 <p style={{ padding: '0.75rem 1rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{t(item.capHi, item.capEn)}</p>
                             </div>
-                        ))}
-                    </div>
+                        )}
+                    />
                 </div>
             </section>
 
@@ -390,16 +382,21 @@ export default function About() {
                     </div>
                     <div className="om-divider">ॐ</div>
 
-                    <div className="video-showcase-grid" style={{ marginBottom: '2.5rem' }}>
-                        {videoClips.map(clip => (
-                            <div className="video-showcase-card" key={clip.src}>
+                    <ProgressiveGrid
+                        items={videoClips}
+                        initialCount={2}
+                        mobileRail
+                        className="video-showcase-grid"
+                        itemKey={(clip) => clip.src}
+                        renderItem={(clip) => (
+                            <div className="video-showcase-card">
                                 <video controls preload="none" poster={clip.poster} playsInline>
                                     <source src={clip.src} type="video/mp4" />
                                 </video>
                                 <p className="video-showcase-caption">{t(clip.capHi, clip.capEn)}</p>
                             </div>
-                        ))}
-                    </div>
+                        )}
+                    />
 
                     <h3 style={{ textAlign: 'center', color: 'var(--gold-300)', marginBottom: '1rem', fontFamily: 'var(--font-hindi)' }}>
                         {t('हमारे YouTube चैनल पर अधिक देखें', 'Explore Further on Our YouTube Channel')}

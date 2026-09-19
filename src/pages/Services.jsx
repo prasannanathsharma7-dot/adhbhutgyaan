@@ -5,6 +5,7 @@ import { useLanguage } from '../context/LanguageContext';
 import useSEO from '../hooks/useSEO';
 import { breadcrumbJsonLd, faqJsonLd, combineJsonLd } from '../utils/seo';
 import { Search, X, MessageCircle, Globe2, Landmark, CheckCircle2, Heart, Home as HomeIcon, Baby, Briefcase, CalendarHeart, ArrowRight } from 'lucide-react';
+import ProgressiveGrid from '../components/ProgressiveGrid';
 
 export default function Services() {
     const { t, lang } = useLanguage();
@@ -295,9 +296,14 @@ export default function Services() {
                         </p>
                     )}
 
-                    <div className="service-browse-grid">
-                        {filteredServices.map(service => (
-                            <div key={service.id} className="service-browse-card" style={{ display: 'flex', flexDirection: 'column' }}>
+                    <ProgressiveGrid
+                        items={filteredServices}
+                        initialCount={6}
+                        resetKey={searchQuery}
+                        className="service-browse-grid"
+                        itemKey={(service) => service.id}
+                        renderItem={(service) => (
+                            <div className="service-browse-card" style={{ display: 'flex', flexDirection: 'column' }}>
                                 <Link to={`/services/${service.id}`} style={{ display: 'flex', alignItems: 'center', gap: '1rem', flex: 1 }}>
                                     <picture>
                                         <source type="image/avif" srcSet={`/images/${service.image.replace('.jpg', '.avif')}`} />
@@ -319,8 +325,8 @@ export default function Services() {
                                     <MessageCircle size={13} /> {t('WhatsApp पर सीधे बुक करें', 'Book Directly on WhatsApp')}
                                 </a>
                             </div>
-                        ))}
-                    </div>
+                        )}
+                    />
 
                     {filteredServices.length === 0 && (
                         <div style={{ textAlign: 'center', marginTop: '1.5rem' }}>

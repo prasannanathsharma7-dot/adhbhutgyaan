@@ -148,7 +148,7 @@ export default function PanditProfile() {
                             {t('डॉक्टरेट प्रमाणपत्र और प्रकाशित मीडिया रिकॉर्ड को पूर्ण आकार में देखने के लिए किसी भी कार्ड पर क्लिक करें।', 'Open any card to view the doctorate certificate and published media records at full size.')}
                         </p>
                     </div>
-                    <EvidenceGallery items={[pressHighlights[7], pressHighlights[5], pressHighlights[6]]} t={t} compact />
+                    <EvidenceGallery items={[pressHighlights[7], pressHighlights[5], pressHighlights[6]]} t={t} compact mobileRail />
                 </div>
             </section>
 

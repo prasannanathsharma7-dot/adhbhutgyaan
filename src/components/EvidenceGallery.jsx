@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Expand, X } from 'lucide-react';
 
-export default function EvidenceGallery({ items, t, theme = 'light', compact = false }) {
+export default function EvidenceGallery({ items, t, theme = 'light', compact = false, mobileRail = false }) {
     const [activeIndex, setActiveIndex] = useState(null);
     const closeButtonRef = useRef(null);
     const activeItem = activeIndex === null ? null : items[activeIndex];
@@ -25,7 +25,7 @@ export default function EvidenceGallery({ items, t, theme = 'light', compact = f
 
     return (
         <>
-            <div className={`evidence-grid ${compact ? 'evidence-grid-compact' : ''} evidence-${theme}`}>
+            <div className={`evidence-grid ${compact ? 'evidence-grid-compact' : ''} ${mobileRail ? 'evidence-grid-mobile-rail' : ''} evidence-${theme}`}>
                 {items.map((item, index) => (
                     <button
                         type="button"
@@ -43,6 +43,12 @@ export default function EvidenceGallery({ items, t, theme = 'light', compact = f
                     </button>
                 ))}
             </div>
+
+            {mobileRail && items.length > 1 && (
+                <p className="progressive-swipe-hint" aria-hidden="true">
+                    {t('← सभी प्रमाण देखने के लिए स्वाइप करें →', '← Swipe to inspect all evidence →')}
+                </p>
+            )}
 
             {activeItem && (
                 <div
