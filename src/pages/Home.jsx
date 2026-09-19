@@ -131,13 +131,13 @@ export default function Home() {
             </section>
 
             {/* HOW IT WORKS — 3-Step Process Flow */}
-            <section className="section" style={{ paddingTop: '2.5rem', paddingBottom: '1rem' }}>
+            <section className="section home-process-section" style={{ paddingTop: '2.5rem', paddingBottom: '1rem' }}>
                 <div className="container">
                     <div className="text-center">
                         <span className="section-label" style={{ justifyContent: 'center' }}>{t('प्रक्रिया', 'How It Works')}</span>
                         <h2 className="section-title">{t('तीन सरल चरणों में पूजा', 'Your Pooja, in 3 Simple Steps')}</h2>
                     </div>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem', marginTop: '2rem', position: 'relative' }}>
+                    <div className="process-flow" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem', marginTop: '2rem', position: 'relative' }}>
                         {[
                             {
                                 num: '1',
@@ -155,8 +155,8 @@ export default function Home() {
                                 desc: t('पूजा का वीडियो प्रमाण WhatsApp पर प्राप्त करें एवं प्रसाद अपने पते पर मंगवाएं।', 'Receive video proof of your pooja on WhatsApp, and have prasad delivered to your address.'),
                             },
                         ].map((step, i) => (
-                            <div key={step.num} className={`fade-up stagger-${i + 1}`} style={{ position: 'relative', background: 'white', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-lg)', padding: '1.75rem 1.5rem', textAlign: 'center' }}>
-                                <div style={{
+                            <div key={step.num} className={`process-card fade-up stagger-${i + 1}`} style={{ position: 'relative', background: 'white', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-lg)', padding: '1.75rem 1.5rem', textAlign: 'center' }}>
+                                <div className="process-step-number" style={{
                                     width: '48px', height: '48px', margin: '0 auto 1rem', borderRadius: '50%',
                                     background: 'linear-gradient(135deg, var(--gold-400), var(--gold-600))', color: 'var(--navy-950)',
                                     display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.4rem', fontWeight: 800,
@@ -173,10 +173,10 @@ export default function Home() {
             </section>
 
             {/* VEDIC TRUST & AUTHENTICITY BADGES */}
-            <section className="section" style={{ paddingTop: '2.5rem', paddingBottom: '1rem' }}>
+            <section className="section home-trust-section" style={{ paddingTop: '2.5rem', paddingBottom: '1rem' }}>
                 <div className="container">
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem' }}>
-                        <div style={{ background: 'white', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-lg)', padding: '1.4rem', boxShadow: 'var(--shadow-sm)', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+                    <div className="trust-strip" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem' }}>
+                        <div className="trust-card" style={{ background: 'white', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-lg)', padding: '1.4rem', boxShadow: 'var(--shadow-sm)', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
                             <img src="/images/icons/vedic-manuscript.jpg" alt="" width="48" height="48" loading="lazy" style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-md)', objectFit: 'cover', flexShrink: 0 }} />
                             <div>
                                 <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: 'var(--navy-900)' }}>
@@ -188,7 +188,7 @@ export default function Home() {
                             </div>
                         </div>
 
-                        <div style={{ background: 'white', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-lg)', padding: '1.4rem', boxShadow: 'var(--shadow-sm)', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+                        <div className="trust-card" style={{ background: 'white', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-lg)', padding: '1.4rem', boxShadow: 'var(--shadow-sm)', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
                             <img src="/images/icons/ganga-rituals.jpg" alt="" width="48" height="48" loading="lazy" style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-md)', objectFit: 'cover', flexShrink: 0 }} />
                             <div>
                                 <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: 'var(--navy-900)' }}>
@@ -200,7 +200,7 @@ export default function Home() {
                             </div>
                         </div>
 
-                        <div style={{ background: 'white', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-lg)', padding: '1.4rem', boxShadow: 'var(--shadow-sm)', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+                        <div className="trust-card" style={{ background: 'white', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-lg)', padding: '1.4rem', boxShadow: 'var(--shadow-sm)', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
                             <img src="/images/icons/live-video-pooja.jpg" alt="" width="48" height="48" loading="lazy" style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-md)', objectFit: 'cover', flexShrink: 0 }} />
                             <div>
                                 <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: 'var(--navy-900)' }}>
@@ -212,7 +212,7 @@ export default function Home() {
                             </div>
                         </div>
 
-                        <div style={{ background: 'white', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-lg)', padding: '1.4rem', boxShadow: 'var(--shadow-sm)', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+                        <div className="trust-card" style={{ background: 'white', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-lg)', padding: '1.4rem', boxShadow: 'var(--shadow-sm)', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
                             <img src="/images/icons/astrologer-analysis.jpg" alt="" width="48" height="48" loading="lazy" style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-md)', objectFit: 'cover', flexShrink: 0 }} />
                             <div>
                                 <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: 'var(--navy-900)' }}>
