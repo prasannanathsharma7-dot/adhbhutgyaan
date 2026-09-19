@@ -4,13 +4,14 @@ import { gallery, pressHighlights, triptych, videoClips, youtubeUploadsPlaylistI
 import { SquarePlay } from 'lucide-react';
 import useSEO from '../hooks/useSEO';
 import { breadcrumbJsonLd, combineJsonLd } from '../utils/seo';
+import EvidenceGallery from '../components/EvidenceGallery';
 
 import { generations, heritageSummary, testimonials, testimonialFlags, moreTestimonials, moreTestimonialFlags } from '../data/heritage';
 import FlagIcon from '../components/FlagIcon';
 
 const values = [
     { img: 'vedic-manuscript', title: 'शास्त्रोक्त विधि', titleEn: 'Authentic Vedic Methods', desc: 'प्रत्येक पूजा शुद्ध एवं शास्त्रोक्त विधि से सम्पन्न', descEn: 'Every pooja performed with impeccable, time-honored precision' },
-    { img: 'handshake-trust', title: 'विश्वास एवं पारदर्शिता', titleEn: 'Trust & Transparency', desc: 'कोई छिपा हुआ शुल्क नहीं', descEn: 'No concealed costs, ever' },
+    { img: 'handshake-trust', title: 'विश्वास एवं पारदर्शिता', titleEn: 'Trust & Transparency', desc: 'पुष्टि से पहले सेवा का दायरा एवं प्रक्रिया स्पष्ट', descEn: 'Scope and process clarified before confirmation' },
     { img: 'devotee-heart', title: 'भक्त सेवा', titleEn: 'Devotee First', desc: 'भक्तों का कल्याण ही हमारी सर्वोच्च प्राथमिकता', descEn: "Devotees' wellbeing remains our foremost priority" },
     { img: 'global-reach', title: 'वैश्विक पहुँच', titleEn: 'Global Reach', desc: 'देश-विदेश में कहीं भी, काशी की सेवा आपके निकट', descEn: "Kashi's service, delivered wherever you may be in the world" },
 ];
@@ -126,17 +127,10 @@ export default function About() {
                         <h2 className="section-title">{t('विश्व स्तर पर सम्मानित', 'Recognized on the World Stage')}</h2>
                     </div>
                     <div className="om-divider">ॐ</div>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.75rem' }}>
-                        {pressHighlights.map(item => (
-                            <div key={item.src} style={{ position: 'relative', borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: 'var(--shadow-lg)', border: '1px solid var(--border-gold)', background: 'white' }}>
-                                <div style={{ position: 'absolute', top: '0.9rem', left: '0.9rem', zIndex: 2, background: 'var(--gold-600)', color: 'var(--navy-950)', fontWeight: 700, fontSize: '0.75rem', padding: '0.3rem 0.8rem', borderRadius: 'var(--radius-xl)', letterSpacing: '0.02em' }}>
-                                    {t(item.badge, item.badgeEn)}
-                                </div>
-                                <img src={item.src} alt={item.badgeEn} loading="lazy" style={{ width: '100%', height: '260px', objectFit: 'cover', display: 'block' }} />
-                                <p style={{ padding: '1rem 1.1rem', fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{t(item.capHi, item.capEn)}</p>
-                            </div>
-                        ))}
-                    </div>
+                    <p style={{ textAlign: 'center', maxWidth: 680, margin: '0 auto 1.75rem', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
+                        {t('प्रत्येक प्रमाण पर क्लिक करके मूल दस्तावेज़ अथवा फोटो को बिना काटे पूर्ण आकार में देखें।', 'Open any item to inspect the original document or photograph at full size, without cropping.')}
+                    </p>
+                    <EvidenceGallery items={pressHighlights} t={t} />
                 </div>
             </section>
 
@@ -218,9 +212,9 @@ export default function About() {
                 <div className="container">
                     <div className="stats-grid">
                         {[
-                            { num: '400+', label: t('वर्षों का अनुभव', 'Years of Experience') },
-                            { num: '1,000,000+', label: t('सफल पूजन', 'Poojas Performed') },
-                            { num: '100,000+', label: t('संतुष्ट भक्तगण', 'Happy Devotees') },
+                            { num: '400+', label: t('वर्षों की पारिवारिक वैदिक परंपरा', 'Years of Family Vedic Tradition') },
+                            { num: '3', label: t('प्रलेखित पीढ़ियाँ', 'Documented Generations') },
+                            { num: '1973+', label: t('से संरक्षित अंतरराष्ट्रीय पत्र', 'International Letters Preserved Since') },
                             { num: '50+', label: t('पूजा प्रकार', 'Service Types') },
                         ].map(s => (
                             <div className="stat-card" key={s.num}>
@@ -243,8 +237,8 @@ export default function About() {
                     <div className="om-divider">ॐ</div>
                     <p style={{ textAlign: 'center', maxWidth: '760px', margin: '0 auto 1.25rem', color: 'var(--text-secondary)', lineHeight: 1.8 }}>
                         {t(
-                            '1979 से 1983 के बीच दुनिया भर से आए साधकों ने पं. शम्भु नाथ शर्मा को धन्यवाद-पत्र लिखे। इनमें से कुछ मूल पत्र, उनके नाम और स्थान सहित, यहाँ प्रस्तुत हैं।',
-                            'Between 1979 and 1983, seekers from around the world wrote letters of gratitude to Pandit Shambhu Nath Sharma. A selection of these original testimonials, with names and locations as given, is presented below.'
+                            '1979 से 1983 के बीच दुनिया भर से आए साधकों ने पं. शम्भु नाथ शर्मा को धन्यवाद-पत्र लिखे। नीचे संरक्षित मूल पत्र-संग्रह से तैयार किए गए विश्वसनीय लिप्यंतरण, पत्रों में दिए नाम और स्थान सहित प्रस्तुत हैं।',
+                            'Between 1979 and 1983, seekers from around the world wrote letters of gratitude to Pandit Shambhu Nath Sharma. Faithful transcriptions from the preserved original archive are presented below with the names and locations recorded in those letters.'
                         )}
                     </p>
                     <div style={{ display: 'flex', justifyContent: 'center', gap: '0.6rem', flexWrap: 'wrap', marginBottom: '2.5rem' }}>
@@ -298,8 +292,8 @@ export default function About() {
                     </div>
                     <p style={{ textAlign: 'center', color: 'var(--text-secondary)', fontSize: '0.8rem', marginTop: '1.5rem', fontStyle: 'italic' }}>
                         {t(
-                            'मूल पत्रों से लिया गया, भाषा को थोड़ा सरल किया गया है। पूर्ण पते गोपनीयता हेतु संक्षिप्त किए गए हैं।',
-                            'Adapted from original letters; full street addresses abbreviated for privacy.'
+                            'परिवार के संरक्षित मूल पत्र-संग्रह से लिप्यंतरित; भाषा को थोड़ा सरल किया गया है और पूर्ण पते गोपनीयता हेतु संक्षिप्त हैं।',
+                            "Transcribed from the family's preserved original letter archive; language lightly simplified and full street addresses abbreviated for privacy."
                         )}
                     </p>
                 </div>
@@ -360,8 +354,8 @@ export default function About() {
                     </div>
                     <p style={{ textAlign: 'center', color: 'var(--text-secondary)', fontSize: '0.8rem', marginTop: '1.5rem', fontStyle: 'italic' }}>
                         {t(
-                            'मूल पत्रों से लिया गया, भाषा को थोड़ा सरल किया गया है। पूर्ण पते गोपनीयता हेतु संक्षिप्त किए गए हैं।',
-                            'Adapted from original letters; full street addresses abbreviated for privacy.'
+                            'परिवार के संरक्षित मूल पत्र-संग्रह से लिप्यंतरित; भाषा को थोड़ा सरल किया गया है और पूर्ण पते गोपनीयता हेतु संक्षिप्त हैं।',
+                            "Transcribed from the family's preserved original letter archive; language lightly simplified and full street addresses abbreviated for privacy."
                         )}
                     </p>
                 </div>

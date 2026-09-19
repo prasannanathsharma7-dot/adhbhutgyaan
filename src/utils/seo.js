@@ -132,11 +132,6 @@ export function localBusinessJsonLd() {
             opens: '07:00',
             closes: '21:00',
         },
-        aggregateRating: {
-            '@type': 'AggregateRating',
-            ratingValue: '4.8',
-            reviewCount: '58',
-        },
     };
 }
 

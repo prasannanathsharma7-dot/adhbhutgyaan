@@ -11,6 +11,7 @@ import VideoTestimonials from '../components/VideoTestimonials';
 import QuickNav from '../components/QuickNav';
 import { heritageSummary, testimonials } from '../data/heritage';
 import FlagIcon from '../components/FlagIcon';
+import EvidenceGallery from '../components/EvidenceGallery';
 import { SquarePlay, XCircle, CheckCircle2, Mic, Coffee, Sparkle, MessageCircleQuestion, Gem } from 'lucide-react';
 
 function useInView() {
@@ -217,7 +218,7 @@ export default function Home() {
                                     {t('वास्तविक ज्योतिषी विश्लेषण', 'Real Astrologer Analysis')}
                                 </h3>
                                 <p style={{ margin: '0.35rem 0 0', fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
-                                    {t('कोई ऑटोमेटेड सॉफ्टवेयर नहीं — डॉ. उमang नाथ शर्मा द्वारा व्यक्तिगत कुंडली परीक्षण।', 'Zero generic computer bot readings. Hand-analyzed Janam Patrika from Kashi.')}
+                                    {t('निःशुल्क डिजिटल उपकरण सामान्य मार्गदर्शन हेतु हैं; व्यक्तिगत कुंडली एवं परामर्श डॉ. उमंग नाथ शर्मा द्वारा समीक्षा किए जाते हैं।', 'Free digital tools provide general guidance; personal Kundli analysis and consultations are reviewed by Dr. Umang Nath Sharma.')}
                                 </p>
                             </div>
                         </div>
@@ -247,24 +248,11 @@ export default function Home() {
                         ))}
                     </div>
 
-                    {/* Newest, highest-impact recognition - featured prominently
-                        here on the homepage rather than only living on the
-                        About page, since a sitting PM's photo and a major
-                        national news-channel interview are exactly the kind
-                        of credibility signal most visitors would otherwise
-                        never scroll deep enough into About Us to see. */}
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.25rem', marginTop: '2.5rem' }}>
-                        {[pressHighlights[1], pressHighlights[0], pressHighlights[7]].map(item => (
-                            <div key={item.src} style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(212,168,67,0.25)' }}>
-                                <div style={{ position: 'relative' }}>
-                                    <img src={item.src} alt={t(item.capHi, item.capEn)} width="400" height="300" loading="lazy" style={{ width: '100%', height: '220px', objectFit: 'cover', display: 'block' }} />
-                                    <span style={{ position: 'absolute', top: '0.6rem', left: '0.6rem', background: 'var(--gold-500)', color: 'var(--navy-950)', fontSize: '0.7rem', fontWeight: 800, padding: '0.25rem 0.65rem', borderRadius: '999px' }}>
-                                        {t(item.badge, item.badgeEn)}
-                                    </span>
-                                </div>
-                                <p style={{ padding: '0.9rem 1rem', margin: 0, color: 'var(--warm-200)', fontSize: '0.85rem', lineHeight: 1.5 }}>{t(item.capHi, item.capEn)}</p>
-                            </div>
-                        ))}
+                    {/* Primary documentary evidence is featured on the homepage
+                        so visitors can inspect the full certificate and published
+                        press records without first navigating to About Us. */}
+                    <div style={{ marginTop: '2.5rem' }}>
+                        <EvidenceGallery items={[pressHighlights[7], pressHighlights[5], pressHighlights[6]]} t={t} theme="dark" compact />
                     </div>
 
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', marginTop: '2.5rem' }}>

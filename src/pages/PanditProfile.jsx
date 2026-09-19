@@ -3,11 +3,13 @@ import { useLanguage } from '../context/LanguageContext';
 import useSEO from '../hooks/useSEO';
 import { breadcrumbJsonLd, combineJsonLd } from '../utils/seo';
 import { MessageCircle, MapPin, Clock, Award, BookOpen, Landmark, ShieldCheck, Sparkles } from 'lucide-react';
+import EvidenceGallery from '../components/EvidenceGallery';
+import { pressHighlights } from '../data/media';
 
 const WHATSAPP_NUMBER = '919278148269';
 
 export default function PanditProfile() {
-    const { t, lang } = useLanguage();
+    const { t } = useLanguage();
 
     useSEO({
         title: t(
@@ -34,6 +36,19 @@ export default function PanditProfile() {
                 url: 'https://www.adhbhutgyaan.com/pt-umang-nath-sharma',
                 worksFor: { '@id': 'https://www.adhbhutgyaan.com/#business' },
                 address: { '@type': 'PostalAddress', addressLocality: 'Varanasi', addressRegion: 'Uttar Pradesh', addressCountry: 'IN' },
+                sameAs: [
+                    'https://www.facebook.com/share/1ELXmyQUWx/',
+                    'https://www.instagram.com/adhbhutgyaan369',
+                    'https://youtube.com/@adhbhutgyaan4911',
+                    'https://www.justdial.com/Varanasi/Pt-Umang-Nath-Sharma-Naibasti-Nati-Imli/0542PX542-X542-221231232206-Q8Q2_BZDET',
+                ],
+                hasCredential: {
+                    '@type': 'EducationalOccupationalCredential',
+                    name: 'Doctor of Philosophy in Astrology',
+                    credentialCategory: 'Degree',
+                    recognizedBy: { '@type': 'Organization', name: 'Maryland State University, USA' },
+                    url: 'https://www.adhbhutgyaan.com/images/heritage/phd-certificate.jpg',
+                },
             }
         ),
     });
@@ -49,12 +64,6 @@ export default function PanditProfile() {
         { icon: Landmark, text: t('400+ वर्षों की वंशानुगत काशी परंपरा', '400+ Years Hereditary Kashi Lineage') },
         { icon: Award, text: t('"डॉक्टर ऑफ एस्ट्रोलॉजी" — मैरीलैंड स्टेट यूनिवर्सिटी, USA', 'Doctor of Astrology — Maryland State University, USA') },
         { icon: BookOpen, text: t('2019 में जापान के Hulu TV द्वारा वृत्तचित्र का विषय', 'Subject of a 2019 Documentary by Japan\u2019s Hulu TV') },
-    ];
-
-    const mediaMentions = [
-        { img: 'press-bbc', label: 'BBC London', note: t('पारिवारिक परंपरा पर', "On the family's tradition") },
-        { img: 'press-newspaper', label: t('दैनिक जागरण', 'Dainik Jagran'), note: t('वृत्तचित्र व परंपरा पर रिपोर्ट', 'Coverage of the documentary & tradition') },
-        { img: 'us-doctorate', label: t('अमेरिकी डॉक्टरेट', 'American Doctorate'), note: 'Maryland State University' },
     ];
 
     const pillars = [
@@ -129,20 +138,17 @@ export default function PanditProfile() {
                 </div>
             </section>
 
-            {/* MEDIA MENTIONS STRIP */}
-            <section style={{ background: 'var(--warm-100)', padding: '1.5rem 0', borderBottom: '1px solid var(--border-light)' }}>
+            {/* CLICKABLE, FULL-SIZE CREDENTIAL EVIDENCE */}
+            <section style={{ background: 'var(--warm-100)', padding: 'clamp(2rem, 5vw, 3.5rem) 0', borderBottom: '1px solid var(--border-light)' }}>
                 <div className="container">
-                    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 'clamp(1.5rem, 5vw, 3rem)' }}>
-                        {mediaMentions.map((m, i) => (
-                            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                                <img src={`/images/icons/${m.img}.jpg`} alt="" width="36" height="36" loading="lazy" style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover', border: '1px solid var(--border-gold)' }} />
-                                <div>
-                                    <div style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--navy-900)' }}>{m.label}</div>
-                                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{m.note}</div>
-                                </div>
-                            </div>
-                        ))}
+                    <div className="text-center" style={{ marginBottom: '1.5rem' }}>
+                        <span className="section-label" style={{ justifyContent: 'center' }}>{t('प्रमाणित परिचय', 'Credentials & Documentary Evidence')}</span>
+                        <h2 className="section-title" style={{ fontSize: 'clamp(1.35rem, 3vw, 2rem)' }}>{t('दस्तावेज़ स्वयं देखें', 'Inspect the Original Evidence')}</h2>
+                        <p style={{ color: 'var(--text-secondary)', maxWidth: 680, margin: '0.5rem auto 0', lineHeight: 1.65 }}>
+                            {t('डॉक्टरेट प्रमाणपत्र और प्रकाशित मीडिया रिकॉर्ड को पूर्ण आकार में देखने के लिए किसी भी कार्ड पर क्लिक करें।', 'Open any card to view the doctorate certificate and published media records at full size.')}
+                        </p>
                     </div>
+                    <EvidenceGallery items={[pressHighlights[7], pressHighlights[5], pressHighlights[6]]} t={t} compact />
                 </div>
             </section>
 

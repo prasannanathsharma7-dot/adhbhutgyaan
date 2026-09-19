@@ -2,11 +2,8 @@ import { useState } from 'react';
 import { Play, Quote } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
-// REAL + PLACEHOLDER MIX:
-// Entries 1-2 are genuine devotee testimonial clips supplied by the
-// business. Entry 3 remains a deliberate template placeholder (no video
-// src, no invented name/city/quote presented as if real) until a
-// further real, consented clip is supplied.
+// Both entries are genuine devotee testimonial clips supplied by the
+// business. Keep this section real-only: do not render empty placeholders.
 //
 // NOTE on entries 1-2: neither clip's spoken content was transcribed
 // when added, so no quote text is asserted for either - the clips
@@ -32,18 +29,15 @@ const TESTIMONIALS = [
         quoteHi: null,
         quoteEn: null,
     },
-    { id: 3, video: null, poster: '/images/gallery/group-puja.jpg', name: null, city: null, quoteHi: null, quoteEn: null },
 ];
 
 function TestimonialCard({ item }) {
     const { t } = useLanguage();
     const [playing, setPlaying] = useState(false);
-    const hasRealVideo = Boolean(item.video);
-
     return (
         <div className="testimonial-video-card">
             <div className="testimonial-video-frame">
-                {playing && hasRealVideo ? (
+                {playing ? (
                     // Lazy-loaded: the <video> element (and its network
                     // request) only mounts once the user actually clicks
                     // play, not on initial page load.
@@ -52,17 +46,14 @@ function TestimonialCard({ item }) {
                     <button
                         type="button"
                         className="testimonial-video-thumb"
-                        onClick={() => hasRealVideo && setPlaying(true)}
+                        onClick={() => setPlaying(true)}
                         aria-label={t('वीडियो चलाएं', 'Play video')}
-                        style={{ cursor: hasRealVideo ? 'pointer' : 'default' }}
+                        style={{ cursor: 'pointer' }}
                     >
                         <img src={item.poster} alt="" loading="lazy" />
                         <span className="testimonial-video-play">
                             <Play size={22} fill="white" />
                         </span>
-                        {!hasRealVideo && (
-                            <span className="testimonial-video-soon-badge">{t('शीघ्र आ रहा है', 'Coming Soon')}</span>
-                        )}
                     </button>
                 )}
             </div>
@@ -71,16 +62,12 @@ function TestimonialCard({ item }) {
                 <p className="testimonial-video-quote">
                     {item.quoteHi || item.quoteEn
                         ? t(item.quoteHi, item.quoteEn)
-                        : hasRealVideo
-                            ? t('इस भक्त का अनुभव — उन्हीं की आवाज़ में सुनें।', "This devotee's experience — hear it in their own words.")
-                            : t('वास्तविक भक्त प्रतिक्रिया शीघ्र जोड़ी जाएगी।', "Real devotee feedback will be added here soon.")}
+                        : t('इस भक्त का सत्यापित वीडियो अनुभव — उन्हीं की आवाज़ में सुनें।', "A verified video experience from this devotee — hear it in their own words.")}
                 </p>
                 <p className="testimonial-video-name">
                     {item.name
                         ? `${item.name}${item.city ? `, ${item.city}` : ''}`
-                        : hasRealVideo
-                            ? t('अद्भुत ज्ञान के भक्त', 'An Adhbhut Gyaan devotee')
-                            : t('भक्त — नाम शीघ्र', 'Devotee — name coming soon')}
+                        : t('सत्यापित अद्भुत ज्ञान भक्त', 'Verified Adhbhut Gyaan devotee')}
                 </p>
             </div>
         </div>
