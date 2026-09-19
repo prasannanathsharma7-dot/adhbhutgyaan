@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams, useSearchParams, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import useSEO from '../hooks/useSEO';
 import { CheckCircle2, MessageCircle, ShieldCheck } from 'lucide-react';
@@ -7,8 +7,10 @@ import { CheckCircle2, MessageCircle, ShieldCheck } from 'lucide-react';
 export default function MuhuratReport() {
     const { t } = useLanguage();
     const { orderId } = useParams();
-    const [searchParams] = useSearchParams();
-    const adminKey = searchParams.get('admin_key');
+    const adminKey = (() => {
+        try { return sessionStorage.getItem('ag_admin_key') || ''; }
+        catch { return ''; }
+    })();
     const [data, setData] = useState(null);
     const [error, setError] = useState('');
 
@@ -21,8 +23,9 @@ export default function MuhuratReport() {
     });
 
     useEffect(() => {
-        const url = `/api/muhurat-booking?orderId=${orderId}${adminKey ? `&admin_key=${encodeURIComponent(adminKey)}` : ''}`;
-        fetch(url)
+        fetch(`/api/muhurat-booking?orderId=${encodeURIComponent(orderId)}`, {
+            headers: adminKey ? { 'x-admin-key': adminKey } : {},
+        })
             .then(res => res.json())
             .then(json => {
                 if (!json.ok) { setError(json.error); return; }

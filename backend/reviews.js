@@ -3,7 +3,7 @@ const { getDb, withCors, capStr, escapeHtml, checkRateLimit, isValidIndianPhone,
 const { notifyAdmin } = require('./_notify');
 
 function isAdmin(req) {
-    const providedKey = req.headers['x-admin-key'] || req.query.key;
+    const providedKey = req.headers['x-admin-key'];
     const envKey = (process.env.ADMIN_KEY || '').trim();
     // Trim both sides defensively - a trailing/leading space or newline
     // accidentally included when pasting the value into Vercel's env-var
@@ -92,7 +92,7 @@ module.exports = async (req, res) => {
 
     // ---- List reviews ----
     // Public (no/invalid admin key): only approved reviews, public-safe fields.
-    // Admin (valid x-admin-key / ?key=): all reviews, all fields, optional ?status= filter.
+    // Admin (valid x-admin-key header): all reviews, all fields, optional ?status= filter.
     if (req.method === 'GET') {
         const admin = isAdmin(req);
         const limit = Math.min(parseInt(req.query.limit, 10) || (admin ? 50 : 6), 200);

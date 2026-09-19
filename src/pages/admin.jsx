@@ -112,18 +112,6 @@ export default function Admin() {
 
     const [key, setKey] = useState(() => {
         try {
-            if (typeof window !== 'undefined') {
-                const params = new URLSearchParams(window.location.search);
-                const urlKey = params.get('key') || params.get('auth') || params.get('secret');
-                if (urlKey && urlKey.trim()) {
-                    const cleanKey = urlKey.trim();
-                    try {
-                        sessionStorage.setItem('ag_admin_key', cleanKey);
-                        sessionStorage.setItem('ag_admin_auth', cleanKey);
-                    } catch { /* ignore */ }
-                    return cleanKey;
-                }
-            }
             return sessionStorage.getItem('ag_admin_key') || '';
         } catch {
             return '';
@@ -354,6 +342,9 @@ export default function Admin() {
                                 <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
                                     {it.mode ? `Mode: ${it.mode} · ` : ''}{it.preferredDate ? `Date: ${it.preferredDate} · ` : ''}{fmtDate(it.createdAt)}
                                 </div>
+                                <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
+                                    {it.reference ? `Ref: ${it.reference} · ` : ''}Source: {it.source || 'website'}
+                                </div>
                                 {it.notes && <p style={{ fontSize: '0.9rem', marginTop: '0.5rem' }}>{it.notes}</p>}
                                 <div style={{ marginTop: '0.75rem', display: 'flex', gap: '0.6rem', alignItems: 'center', flexWrap: 'wrap' }}>
                                     <StatusSelect
@@ -394,7 +385,7 @@ export default function Admin() {
                                     {fmtDate(it.createdAt)}
                                 </div>
                                 <div style={{ marginTop: '0.75rem', display: 'flex', gap: '0.6rem', alignItems: 'center', flexWrap: 'wrap' }}>
-                                    <a href={`/muhurat/report/${it._id}?admin_key=${encodeURIComponent(key)}`} target="_blank" rel="noreferrer" className="btn btn-outline-dark" style={{ padding: '0.35rem 0.8rem', fontSize: '0.85rem' }}>
+                                    <a href={`/muhurat/report/${it._id}`} className="btn btn-outline-dark" style={{ padding: '0.35rem 0.8rem', fontSize: '0.85rem' }}>
                                         🔗 View Report
                                     </a>
                                     <StatusSelect

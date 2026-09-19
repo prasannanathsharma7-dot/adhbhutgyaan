@@ -15,7 +15,7 @@ const { getDb, withCors, capStr, checkRateLimit, isValidIndianPhone, isValidName
 const { findMuhurat, CATEGORY_RULES } = require('./utils/muhuratEngine');
 
 function isAdmin(req) {
-    const providedKey = req.headers['x-admin-key'] || req.query.admin_key || req.query.key;
+    const providedKey = req.headers['x-admin-key'];
     const envKey = (process.env.ADMIN_KEY || '').trim();
     // Trim both sides defensively - a trailing/leading space or newline
     // accidentally included when pasting the value into Vercel's env-var
@@ -124,7 +124,7 @@ module.exports = async (req, res) => {
             // key just grants the SAME view without needing to be the
             // person who created the order, e.g. so the team can open the
             // link Pandit ji himself was sent. No extra data is unlocked
-            // by admin_key beyond what the orderId link already shows.
+            // by an admin header beyond what the orderId link already shows.
             const isAdminView = isAdmin(req);
 
             return res.status(200).json({

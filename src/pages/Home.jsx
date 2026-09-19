@@ -88,9 +88,9 @@ export default function Home() {
                         </div>
                         <div className="hero-stats">
                             {[
-                                { num: '400+', label: t('वर्षों का अनुभव', 'Years of Experience') },
-                                { num: '1,000,000+', label: t('सफल पूजन', 'Poojas Performed') },
-                                { num: '100,000+', label: t('संतुष्ट भक्तगण', 'Happy Devotees') },
+                                { num: '400+', label: t('वर्षों की पारिवारिक वैदिक परंपरा', 'Years of Family Vedic Tradition') },
+                                { num: '3', label: t('सेवा की पीढ़ियाँ', 'Generations of Service') },
+                                { num: '1-on-1', label: t('व्यक्तिगत मार्गदर्शन', 'Personal Guidance') },
                                 { num: '50+', label: t('पूजा प्रकार', 'Service Types') },
                             ].map(s => (
                                 <div className="hero-stat" key={s.num}>
@@ -489,7 +489,7 @@ export default function Home() {
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', marginTop: '2rem', maxWidth: 900, marginLeft: 'auto', marginRight: 'auto' }}>
                         {[
                             { badHi: 'पूजा का कोई प्रमाण नहीं मिलता', badEn: 'No proof the pooja actually happened', goodHi: 'लाइव वीडियो कॉल + फोटो/वीडियो प्रमाण हर पूजा के साथ', goodEn: 'Live video call + photo/video proof with every pooja' },
-                            { badHi: 'कीमत अस्पष्ट, बाद में छुपे शुल्क', badEn: 'Vague pricing, hidden charges revealed later', goodHi: 'पारदर्शी मूल्य — बुकिंग से पहले ही स्पष्ट', goodEn: 'Transparent pricing, clear before you book' },
+                            { badHi: 'प्रक्रिया और सामग्री की अस्पष्ट जानकारी', badEn: 'Unclear process and inclusions', goodHi: 'पुष्टि से पहले प्रक्रिया और सामग्री स्पष्ट', goodEn: 'Process and inclusions clarified before confirmation' },
                             { badHi: 'पंडित की योग्यता असत्यापित', badEn: "Pandit's credentials are unverified", goodHi: 'काशी की 400+ वर्षों की तीन-पीढ़ी वैदिक विरासत', goodEn: "400+ years, three generations of Kashi's Vedic lineage" },
                             { badHi: 'सिर्फ एक ही विकल्प — ऑनलाइन या कुछ नहीं', badEn: 'Only one option - online or nothing', goodHi: '3 पारदर्शी विकल्प: ऑनलाइन, काशी में, अथवा आपके द्वार पर', goodEn: '3 transparent options: online, at Kashi, or at your doorstep' },
                         ].map((item, i) => (
@@ -725,7 +725,7 @@ export default function Home() {
                 <div className="cta-overlay" />
                 <div className="cta-content container">
                     <div className="hero-om" style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>ॐ</div>
-                    <h2 className="cta-title fade-up">{t('आज ही पूजा बुक करें', 'Book Your Pooja Today')}</h2>
+                    <h2 className="cta-title fade-up">{t('अपनी पूजा के लिए अनुरोध भेजें', 'Request Your Pooja')}</h2>
                     <p className="cta-subtitle fade-up">
                         {t(
                             <>काशी के अनुभवसम्पन्न पंडितों से शास्त्रोक्त विधि-विधान द्वारा पूजा सम्पन्न करवाएं।<br />WhatsApp पर तत्काल बुकिंग उपलब्ध।</>,
@@ -733,7 +733,7 @@ export default function Home() {
                         )}
                     </p>
                     <div className="cta-actions fade-up">
-                        <Link to="/booking" className="btn btn-primary btn-lg">📅 {t('अभी बुक करें', 'Book Now')}</Link>
+                        <Link to="/booking" className="btn btn-primary btn-lg">📅 {t('उपलब्धता पूछें', 'Check Availability')}</Link>
                         <a href={`https://wa.me/919278148269?text=${encodeURIComponent(t('नमस्कार!', 'Hello!'))}`} target="_blank" rel="noreferrer" className="btn btn-whatsapp btn-lg">💬 {t('WhatsApp पर बात करें', 'Chat on WhatsApp')}</a>
                     </div>
                 </div>

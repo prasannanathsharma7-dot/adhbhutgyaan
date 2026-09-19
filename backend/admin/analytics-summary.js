@@ -6,7 +6,7 @@ const { getDb, withCors } = require('../_db');
 
 /**
  * Validates admin credentials against ADMIN_SECRET_KEY or ADMIN_KEY.
- * Supports x-admin-auth header, x-admin-key header, Bearer Authorization, or query param.
+ * Supports x-admin-auth header, x-admin-key header, or Bearer Authorization.
  */
 function isAuthorized(req) {
     const secretKey = process.env.ADMIN_SECRET_KEY || process.env.ADMIN_KEY;
@@ -15,11 +15,7 @@ function isAuthorized(req) {
     const authHeader = req.headers['x-admin-auth'] || req.headers['x-admin-key'] || req.headers['authorization'];
     let provided = '';
 
-    if (authHeader) {
-        provided = authHeader.replace(/^Bearer\s+/i, '').trim();
-    } else if (req.query && (req.query.key || req.query.secret || req.query.auth)) {
-        provided = (req.query.key || req.query.secret || req.query.auth).toString().trim();
-    }
+    if (authHeader) provided = authHeader.replace(/^Bearer\s+/i, '').trim();
 
     return provided === secretKey;
 }

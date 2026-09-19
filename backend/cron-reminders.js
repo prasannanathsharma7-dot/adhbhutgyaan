@@ -15,10 +15,13 @@ function tomorrowDateString() {
 }
 
 module.exports = async (req, res) => {
-    // Vercel signs cron requests with this header - reject anything else so
-    // this endpoint can't be used to spam reminders on demand.
+    // Prefer Vercel's Authorization: Bearer CRON_SECRET authentication. The
+    // x-vercel-cron fallback is only used when no secret has been configured.
     const isVercelCron = req.headers['x-vercel-cron'] !== undefined;
-    if (!isVercelCron && req.query.key !== process.env.ADMIN_KEY) {
+    const bearer = (req.headers.authorization || '').replace(/^Bearer\s+/i, '').trim();
+    const cronSecret = (process.env.CRON_SECRET || process.env.ADMIN_KEY || '').trim();
+    const authorized = cronSecret ? bearer === cronSecret : isVercelCron;
+    if (!authorized) {
         res.status(401).json({ ok: false, error: 'Unauthorized' });
         return;
     }

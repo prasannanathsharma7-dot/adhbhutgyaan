@@ -4,7 +4,7 @@ const { sendMail } = require('./_email');
 const { notifyAdmin } = require('./_notify');
 
 function isAdmin(req) {
-    const providedKey = req.headers['x-admin-key'] || req.query.key;
+    const providedKey = req.headers['x-admin-key'];
     const envKey = (process.env.ADMIN_KEY || '').trim();
     // Trim both sides defensively - a trailing/leading space or newline
     // accidentally included when pasting the value into Vercel's env-var

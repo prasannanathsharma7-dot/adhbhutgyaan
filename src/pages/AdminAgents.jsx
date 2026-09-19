@@ -14,21 +14,9 @@ const AGENTS = [
 export default function AdminAgents() {
     useSEO({ title: 'AI Automation Suite | Adhbhut Gyaan Admin', noindex: true });
 
-    // Authentication from URL parameter or Session Storage
+    // Keep the admin key in this browser tab only; never accept it in a URL.
     const [adminKey, setAdminKey] = useState(() => {
         try {
-            if (typeof window !== 'undefined') {
-                const params = new URLSearchParams(window.location.search);
-                const urlKey = params.get('key') || params.get('auth') || params.get('secret');
-                if (urlKey && urlKey.trim()) {
-                    const cleanKey = urlKey.trim();
-                    try {
-                        sessionStorage.setItem('ag_admin_key', cleanKey);
-                        sessionStorage.setItem('ag_admin_auth', cleanKey);
-                    } catch { /* ignore */ }
-                    return cleanKey;
-                }
-            }
             return sessionStorage.getItem('ag_admin_key') || sessionStorage.getItem('ag_admin_auth') || '';
         } catch {
             return '';

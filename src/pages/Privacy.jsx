@@ -22,7 +22,7 @@ export default function Privacy() {
                 <div className="container">
                     <div className="breadcrumb"><Link to="/">{t('होम', 'Home')}</Link><span>›</span><span>{t('गोपनीयता नीति', 'Privacy Policy')}</span></div>
                     <h1>{t('गोपनीयता नीति', 'Privacy Policy')}</h1>
-                    <p className="subtitle">{t('अंतिम अद्यतन: अगस्त 2026', 'Last updated: August 2026')}</p>
+                    <p className="subtitle">{t('अंतिम अद्यतन: सितंबर 2026', 'Last updated: September 2026')}</p>
                 </div>
             </header>
 
@@ -52,8 +52,8 @@ export default function Privacy() {
                         </h2>
                         <p style={{ marginBottom: '1rem' }}>
                             {t(
-                                'जब आप बुकिंग फ़ॉर्म सबमिट करते हैं, तो आपकी दी गई जानकारी एक WhatsApp संदेश के रूप में सीधे हमारे व्यावसायिक नंबर पर भेजी जाती है, ताकि हम आपसे पूजा की पुष्टि, मूल्य और उपलब्धता के बारे में संपर्क कर सकें। हम यह जानकारी किसी तीसरे पक्ष को नहीं बेचते या साझा नहीं करते। हम इस जानकारी को किसी सर्वर डेटाबेस में संग्रहीत नहीं करते — यह केवल WhatsApp के माध्यम से भेजी जाती है, जो स्वयं WhatsApp/Meta की अपनी गोपनीयता नीति के अंतर्गत आता है।',
-                                "When you submit a booking form, the details you provide are sent as a WhatsApp message directly to our business number, so we can contact you about confirming your pooja, pricing, and availability. We do not sell or share this information with any third party. We do not store this information in any server database ourselves — it is only transmitted via WhatsApp, which is separately governed by WhatsApp/Meta's own privacy policy."
+                                'जब आप बुकिंग या संपर्क फ़ॉर्म सबमिट करते हैं, तो आपकी दी गई जानकारी हमारे सुरक्षित डेटाबेस में सहेजी जाती है और हमारी टीम को ईमेल या WhatsApp द्वारा सूचित किया जा सकता है। इसका उपयोग केवल आपकी पूछताछ संभालने, तिथि व उपलब्धता की पुष्टि करने और सेवा संबंधी संचार के लिए किया जाता है। हम आपकी जानकारी बेचते नहीं हैं। WhatsApp/Meta और ईमेल प्रदाताओं द्वारा संसाधित जानकारी उनकी अपनी गोपनीयता नीतियों के अंतर्गत भी आती है।',
+                                'When you submit a booking or contact form, the information you provide is stored in our secured database and our team may be notified by email or WhatsApp. We use it only to handle your enquiry, confirm dates and availability, and communicate about the requested service. We do not sell your information. Information processed by WhatsApp/Meta and email providers is also subject to their respective privacy policies.'
                             )}
                         </p>
 
@@ -62,8 +62,8 @@ export default function Privacy() {
                         </h2>
                         <p style={{ marginBottom: '1rem' }}>
                             {t(
-                                'हमारी वेबसाइट आपकी भाषा वरीयता (हिंदी/English) को याद रखने के लिए आपके ब्राउज़र में स्थानीय रूप से एक सेटिंग सहेजती है। यह जानकारी हमारे किसी सर्वर पर नहीं भेजी जाती।',
-                                'Our website saves your language preference (Hindi/English) locally in your browser so it remembers your choice. This information is not sent to any of our servers.'
+                                'हमारी वेबसाइट भाषा वरीयता जैसी सेटिंग आपके ब्राउज़र में सहेजती है। बुकिंग के समय, अभियान स्रोत (जैसे UTM टैग), रेफर करने वाली वेबसाइट का डोमेन और लैंडिंग पेज जैसी सीमित तकनीकी जानकारी भी दर्ज की जा सकती है, ताकि हमें समझ आए कि पूछताछ कहाँ से आई।',
+                                'Our website saves settings such as your language preference in your browser. When a booking enquiry is submitted, limited attribution data such as campaign tags, the referring website domain, and the landing page may also be recorded so we can understand where the enquiry came from.'
                             )}
                         </p>
 
@@ -72,8 +72,8 @@ export default function Privacy() {
                         </h2>
                         <p style={{ marginBottom: '1rem' }}>
                             {t(
-                                'चूंकि आपकी जानकारी WhatsApp पर भेजी जाती है, आप किसी भी समय हमसे उस बातचीत को हटाने का अनुरोध कर सकते हैं। यदि आपने हमें ईमेल किया है, तो आप उसी ईमेल पर हमसे संपर्क करके अपनी जानकारी हटाने का अनुरोध कर सकते हैं।',
-                                'Since your information is sent to us via WhatsApp, you can ask us at any time to delete that conversation. If you have emailed us, you can contact us at the same email address to request deletion of your information.'
+                                'आप किसी भी समय हमसे संपर्क करके अपनी पूछताछ से जुड़ी व्यक्तिगत जानकारी को देखने, सुधारने या हटाने का अनुरोध कर सकते हैं। कानूनी, सुरक्षा या रिकॉर्ड-रखाव की आवश्यकता होने पर कुछ जानकारी सीमित अवधि तक रखी जा सकती है।',
+                                'You may contact us at any time to request access to, correction of, or deletion of personal information connected with your enquiry. Some information may be retained for a limited period where required for legal, security, or record-keeping purposes.'
                             )}
                         </p>
 
