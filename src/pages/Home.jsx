@@ -75,6 +75,10 @@ export default function Home() {
                 <div className="hero-overlay" />
                 <div className="hero-content">
                     <div className="hero-text">
+                        <div className="hero-kicker">
+                            <span className="hero-kicker-dot" />
+                            {t('काशी से लाइव • विश्वभर में सेवा', 'Live from Kashi • Serving Worldwide')}
+                        </div>
                         <div className="hero-om">ॐ</div>
                         <h1 className="hero-title-hindi">{t('अद्भुत ज्ञान', 'Adhbhut Gyaan')}</h1>
                         <p className="hero-title-en"><Link to="/pt-umang-nath-sharma" style={{ color: 'inherit' }}>{t('पं. उमंग नाथ शर्मा', 'Pt. Umang Nath Sharma')}</Link> {t('— काशी, वाराणसी', '— Kashi, Varanasi')}</p>
@@ -87,6 +91,11 @@ export default function Home() {
                         <div className="hero-actions">
                             <Link to="/services" className="btn btn-primary btn-lg"><img src="/images/logo.png" alt="" className="inline-logo" width="512" height="512" /> {t('सेवाएं देखें', 'View Services')}</Link>
                             <a href={`https://wa.me/919278148269?text=${encodeURIComponent(t('नमस्कार! मैं पूजा बुक करना चाहता हूँ।', 'Hello! I would like to book a pooja.'))}`} target="_blank" rel="noreferrer" className="btn btn-outline btn-lg">💬 {t('WhatsApp करें', 'WhatsApp Us')}</a>
+                        </div>
+                        <div className="hero-assurance-row" aria-label={t('सेवा की विशेषताएं', 'Service assurances')}>
+                            <span>✓ {t('नाम व गोत्र से संकल्प', 'Sankalp with Name & Gotra')}</span>
+                            <span>✓ {t('लाइव वीडियो विकल्प', 'Live Video Option')}</span>
+                            <span>✓ {t('पूजा प्रमाण', 'Pooja Proof')}</span>
                         </div>
                         <div className="hero-stats">
                             {[
@@ -103,8 +112,16 @@ export default function Home() {
                         </div>
                     </div>
                     <div className="hero-visual">
-                        <div className="hero-visual-ring">
-                            <img src="/images/gallery/devi-shringar.jpg" alt={t('माँ का पुष्प श्रृंगार — काशी', 'Floral adornment of the Goddess — Kashi')} width="640" height="640" loading="lazy" />
+                        <div className="hero-visual-stage">
+                            <img className="hero-visual-main" src="/images/gallery/havan-group.jpg" alt={t('काशी में सम्पन्न सामूहिक हवन', 'Collective havan performed in Kashi')} width="1280" height="720" loading="eager" />
+                            <div className="hero-visual-mini">
+                                <img src="/images/gallery/devi-shringar.jpg" alt={t('माँ का पुष्प श्रृंगार — काशी', 'Floral adornment of the Goddess — Kashi')} width="640" height="640" loading="lazy" />
+                            </div>
+                            <div className="hero-proof-card">
+                                <span className="hero-proof-mark">४००+</span>
+                                <span>{t('वर्षों की पारिवारिक वैदिक परम्परा', 'Years of family Vedic tradition')}</span>
+                            </div>
+                            <div className="hero-location-chip">✦ {t('काशी • वाराणसी', 'Kashi • Varanasi')}</div>
                         </div>
                     </div>
                 </div>
@@ -115,8 +132,15 @@ export default function Home() {
             <UpcomingMuhuratWidget />
 
             {/* TRIPTYCH */}
-            <section className="section" style={{ paddingBottom: 0 }}>
+            <section className="section home-paths-section">
                 <div className="container">
+                    <div className="home-editorial-heading fade-up">
+                        <div>
+                            <span className="section-label">{t('अपना मार्ग चुनें', 'Choose Your Path')}</span>
+                            <h2 className="section-title">{t('श्रद्धा, समाधान और मार्गदर्शन', 'Faith, Remedies & Guidance')}</h2>
+                        </div>
+                        <p>{t('पूजा, ज्योतिष और काशी की परम्परा—जिस उद्देश्य से आए हैं, वहीं से अपनी यात्रा आरम्भ करें।', 'Pooja, astrology and the living tradition of Kashi—begin with what brings you here today.')}</p>
+                    </div>
                     <div className="triptych">
                         {triptych.map(item => (
                             <Link className="triptych-card" key={item.capEn} to={item.link}>
@@ -131,13 +155,15 @@ export default function Home() {
             </section>
 
             {/* HOW IT WORKS — 3-Step Process Flow */}
-            <section className="section home-process-section" style={{ paddingTop: '2.5rem', paddingBottom: '1rem' }}>
-                <div className="container">
-                    <div className="text-center">
-                        <span className="section-label" style={{ justifyContent: 'center' }}>{t('प्रक्रिया', 'How It Works')}</span>
+            <section className="section home-process-section">
+                <div className="container home-process-layout">
+                    <div className="home-process-intro">
+                        <span className="section-label">{t('प्रक्रिया', 'How It Works')}</span>
                         <h2 className="section-title">{t('तीन सरल चरणों में पूजा', 'Your Pooja, in 3 Simple Steps')}</h2>
+                        <p className="section-subtitle">{t('पहली बातचीत से पूजा के प्रमाण तक—हर चरण स्पष्ट और व्यक्तिगत रखा जाता है।', 'From the first conversation to your pooja proof, every step stays clear and personal.')}</p>
+                        <Link to="/booking" className="btn btn-outline-dark">{t('अपनी पूजा शुरू करें', 'Start Your Request')} →</Link>
                     </div>
-                    <div className="process-flow" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem', marginTop: '2rem', position: 'relative' }}>
+                    <div className="process-flow">
                         {[
                             {
                                 num: '1',
@@ -155,17 +181,14 @@ export default function Home() {
                                 desc: t('पूजा का वीडियो प्रमाण WhatsApp पर प्राप्त करें एवं प्रसाद अपने पते पर मंगवाएं।', 'Receive video proof of your pooja on WhatsApp, and have prasad delivered to your address.'),
                             },
                         ].map((step, i) => (
-                            <div key={step.num} className={`process-card fade-up stagger-${i + 1}`} style={{ position: 'relative', background: 'white', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-lg)', padding: '1.75rem 1.5rem', textAlign: 'center' }}>
-                                <div className="process-step-number" style={{
-                                    width: '48px', height: '48px', margin: '0 auto 1rem', borderRadius: '50%',
-                                    background: 'linear-gradient(135deg, var(--gold-400), var(--gold-600))', color: 'var(--navy-950)',
-                                    display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.4rem', fontWeight: 800,
-                                    fontFamily: 'var(--font-heading)', boxShadow: 'var(--shadow-md)',
-                                }}>
+                            <div key={step.num} className={`process-card fade-up stagger-${i + 1}`}>
+                                <div className="process-step-number">
                                     {step.num}
                                 </div>
-                                <h3 style={{ fontSize: '1.05rem', marginBottom: '0.5rem' }}>{step.title}</h3>
-                                <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: 1.6, margin: 0 }}>{step.desc}</p>
+                                <div>
+                                    <h3>{step.title}</h3>
+                                    <p>{step.desc}</p>
+                                </div>
                             </div>
                         ))}
                     </div>
@@ -173,10 +196,10 @@ export default function Home() {
             </section>
 
             {/* VEDIC TRUST & AUTHENTICITY BADGES */}
-            <section className="section home-trust-section" style={{ paddingTop: '2.5rem', paddingBottom: '1rem' }}>
+            <section className="home-trust-section">
                 <div className="container">
-                    <div className="trust-strip" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem' }}>
-                        <div className="trust-card" style={{ background: 'white', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-lg)', padding: '1.4rem', boxShadow: 'var(--shadow-sm)', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+                    <div className="trust-strip">
+                        <div className="trust-card">
                             <img src="/images/icons/vedic-manuscript.jpg" alt="" width="48" height="48" loading="lazy" style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-md)', objectFit: 'cover', flexShrink: 0 }} />
                             <div>
                                 <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: 'var(--navy-900)' }}>
@@ -188,7 +211,7 @@ export default function Home() {
                             </div>
                         </div>
 
-                        <div className="trust-card" style={{ background: 'white', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-lg)', padding: '1.4rem', boxShadow: 'var(--shadow-sm)', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+                        <div className="trust-card">
                             <img src="/images/icons/ganga-rituals.jpg" alt="" width="48" height="48" loading="lazy" style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-md)', objectFit: 'cover', flexShrink: 0 }} />
                             <div>
                                 <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: 'var(--navy-900)' }}>
@@ -200,7 +223,7 @@ export default function Home() {
                             </div>
                         </div>
 
-                        <div className="trust-card" style={{ background: 'white', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-lg)', padding: '1.4rem', boxShadow: 'var(--shadow-sm)', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+                        <div className="trust-card">
                             <img src="/images/icons/live-video-pooja.jpg" alt="" width="48" height="48" loading="lazy" style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-md)', objectFit: 'cover', flexShrink: 0 }} />
                             <div>
                                 <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: 'var(--navy-900)' }}>
@@ -212,7 +235,7 @@ export default function Home() {
                             </div>
                         </div>
 
-                        <div className="trust-card" style={{ background: 'white', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-lg)', padding: '1.4rem', boxShadow: 'var(--shadow-sm)', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+                        <div className="trust-card">
                             <img src="/images/icons/astrologer-analysis.jpg" alt="" width="48" height="48" loading="lazy" style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-md)', objectFit: 'cover', flexShrink: 0 }} />
                             <div>
                                 <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: 'var(--navy-900)' }}>
@@ -410,7 +433,7 @@ export default function Home() {
             </section>
 
             {/* SERVICES PREVIEW */}
-            <section className="section" id="services-preview">
+            <section className="section home-services-section" id="services-preview">
                 <div className="container">
                     <div className="text-center fade-up">
                         <span className="section-label">{t('हमारी सेवाएं', 'Our Services')}</span>
@@ -549,7 +572,7 @@ export default function Home() {
             </section>
 
             {/* TESTIMONIALS */}
-            <section className="section" id="testimonials">
+            <section className="section home-testimonials-section" id="testimonials">
                 <div className="container">
                     <div className="text-center fade-up">
                         <span className="section-label">{t('भक्तों के अनुभव', 'Devotee Experiences')}</span>
@@ -597,7 +620,7 @@ export default function Home() {
                         }}
                     />
 
-                    <div className="text-center" style={{ marginTop: '2rem', background: 'var(--cream)', borderRadius: 'var(--radius-lg)', padding: '1.5rem', maxWidth: 560, marginLeft: 'auto', marginRight: 'auto' }}>
+                    <div className="text-center google-review-card">
                         <p style={{ marginBottom: '0.9rem', fontSize: '0.9rem' }}>
                             {t('क्या आपने हमारी सेवा का अनुभव लिया है? Google पर अपनी समीक्षा साझा करें — इससे अन्य भक्तों को हम तक पहुँचने में मदद मिलती है।', 'Have you experienced our service? Share your review on Google - it helps other devotees find us.')}
                         </p>
@@ -624,7 +647,7 @@ export default function Home() {
                         section using a similar video-grid layout, which made all
                         three run together visually rather than reading as
                         distinct, purposeful sections. */}
-                    <div style={{ marginTop: '3rem', paddingTop: '2.5rem', borderTop: '1px solid var(--border-light)' }}>
+                    <div className="testimonial-video-panel">
                         <div className="text-center fade-up">
                             <h3 style={{ fontSize: '1.3rem', marginBottom: '0.4rem' }}>{t('भक्तों की आवाज़ में (वीडियो)', "In Devotees' Own Voice (Video)")}</h3>
                             <p style={{ color: 'var(--text-secondary)', maxWidth: 560, margin: '0 auto', fontSize: '0.9rem' }}>
