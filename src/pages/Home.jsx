@@ -272,11 +272,25 @@ export default function Home() {
                         ))}
                     </div>
 
-                    {/* Primary documentary evidence is featured on the homepage
-                        so visitors can inspect the full certificate and published
-                        press records without first navigating to About Us. */}
-                    <div style={{ marginTop: '2.5rem' }}>
-                        <EvidenceGallery items={[pressHighlights[7], pressHighlights[5], pressHighlights[6]]} t={t} theme="dark" compact mobileRail />
+                    {/* Keep the homepage to the strongest, clearest proofs: current
+                        national media, a public photograph, the academic credential,
+                        and the dated BBC press record. The complete archive remains
+                        available on About so this section stays decisive, not dense. */}
+                    <div className="home-evidence-showcase">
+                        <div className="home-evidence-heading">
+                            <div>
+                                <span>{t('चुनिंदा प्रमाण', 'Featured Evidence')}</span>
+                                <h3>{t('देखें, परखें, फिर विश्वास करें', 'Inspect the Proof, Then Decide')}</h3>
+                            </div>
+                            <p>{t('किसी भी प्रमाण पर क्लिक करके मूल फोटो या दस्तावेज़ बिना काटे देखें।', 'Open any item to inspect the original photograph or document without cropping.')}</p>
+                        </div>
+                        <EvidenceGallery
+                            items={[pressHighlights[0], pressHighlights[1], pressHighlights[7], pressHighlights[5]]}
+                            t={t}
+                            theme="dark"
+                            compact
+                            mobileRail
+                        />
                     </div>
 
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', marginTop: '2.5rem' }}>

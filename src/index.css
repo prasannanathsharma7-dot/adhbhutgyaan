@@ -4826,6 +4826,94 @@ p,
     justify-content: flex-start !important;
 }
 
+/* Homepage evidence: strongest public proofs first, large enough to inspect. */
+.home-evidence-showcase {
+    margin-top: 2.75rem;
+    padding: clamp(1.2rem, 3vw, 2rem);
+    background: rgba(255,255,255,0.035);
+    border: 1px solid rgba(212,168,67,0.2);
+    border-radius: clamp(1.1rem, 2vw, 1.6rem);
+}
+
+.home-evidence-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 0.75fr);
+    align-items: end;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.home-evidence-heading span {
+    display: block;
+    margin-bottom: 0.35rem;
+    color: var(--gold-400);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.17em;
+    text-transform: uppercase;
+}
+
+.home-evidence-heading h3 {
+    margin: 0;
+    color: white;
+    font-size: clamp(1.35rem, 2.8vw, 2rem);
+}
+
+.home-evidence-heading p {
+    max-width: 470px;
+    margin: 0 0 0.15rem auto;
+    color: var(--warm-300);
+    font-size: 0.86rem;
+    line-height: 1.7;
+}
+
+.home-evidence-showcase .evidence-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.home-evidence-showcase .evidence-card {
+    display: grid;
+    grid-template-columns: minmax(190px, 0.95fr) minmax(0, 1.05fr);
+    min-height: 290px;
+    background: rgba(255,255,255,0.055);
+    border-color: rgba(212,168,67,0.28);
+    border-radius: 1rem;
+    box-shadow: 0 18px 42px rgba(0,0,0,0.18);
+}
+
+.home-evidence-showcase .evidence-image-shell,
+.home-evidence-showcase .evidence-grid-compact .evidence-image-shell {
+    height: 100%;
+    min-height: 290px;
+    padding: 0.85rem;
+    background: rgba(0,0,0,0.32);
+}
+
+.home-evidence-showcase .evidence-image-shell img {
+    object-fit: contain;
+    object-position: center;
+}
+
+.home-evidence-showcase .evidence-caption {
+    display: flex;
+    align-items: center;
+    padding: 1.35rem;
+    color: var(--warm-100);
+    font-size: 0.92rem;
+    line-height: 1.7;
+}
+
+.home-evidence-showcase .evidence-badge {
+    top: 0.8rem;
+    left: 0.8rem;
+}
+
+.home-evidence-showcase .evidence-expand {
+    right: 0.8rem;
+    bottom: 0.8rem;
+}
+
 /* Social proof is now a composed section; videos no longer show clipped neighbours. */
 .home-testimonials-section {
     background:
@@ -4933,6 +5021,16 @@ p,
     .testimonial-video-panel .testimonial-video-grid {
         grid-template-columns: 1fr;
     }
+
+    .home-evidence-showcase .evidence-card {
+        grid-template-columns: 1fr;
+    }
+
+    .home-evidence-showcase .evidence-image-shell,
+    .home-evidence-showcase .evidence-grid-compact .evidence-image-shell {
+        height: 280px;
+        min-height: 280px;
+    }
 }
 
 @media (max-width: 860px) {
@@ -5000,7 +5098,8 @@ p,
     }
 
     .home-editorial-heading,
-    .home-process-layout {
+    .home-process-layout,
+    .home-evidence-heading {
         grid-template-columns: 1fr;
     }
 
@@ -5009,6 +5108,14 @@ p,
     }
 
     .home-editorial-heading > p {
+        margin-left: 0;
+    }
+
+    .home-evidence-heading {
+        gap: 0.75rem;
+    }
+
+    .home-evidence-heading p {
         margin-left: 0;
     }
 
@@ -5080,6 +5187,33 @@ p,
         min-height: 270px;
         width: 100%;
         flex: none;
+    }
+
+    .home-evidence-showcase {
+        padding: 1rem;
+    }
+
+    .home-evidence-showcase .evidence-grid-mobile-rail {
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: min(86vw, 390px);
+        grid-template-columns: none;
+        gap: 0.9rem;
+        margin-inline: -0.4rem;
+        padding: 0.35rem 0.4rem 0.9rem;
+        overflow-x: auto;
+    }
+
+    .home-evidence-showcase .evidence-card {
+        display: grid;
+        grid-template-columns: 1fr;
+        min-height: 0;
+    }
+
+    .home-evidence-showcase .evidence-image-shell,
+    .home-evidence-showcase .evidence-grid-compact .evidence-image-shell {
+        height: 245px;
+        min-height: 245px;
     }
 }
 
