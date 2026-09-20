@@ -144,7 +144,12 @@ export default function Home() {
                     <div className="triptych">
                         {triptych.map(item => (
                             <Link className="triptych-card" key={item.capEn} to={item.link}>
-                                <img src={item.src} alt={item.capEn} loading="lazy" />
+                                <img
+                                    src={item.src}
+                                    alt={item.capEn}
+                                    loading="lazy"
+                                    style={item.imagePosition ? { objectPosition: item.imagePosition } : undefined}
+                                />
                                 <div className="triptych-overlay">
                                     <span className="triptych-caption">{t(item.capHi, item.capEn)} <span className="arrow">›</span></span>
                                 </div>
