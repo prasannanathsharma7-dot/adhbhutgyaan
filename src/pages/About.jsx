@@ -225,19 +225,19 @@ export default function About() {
                     <div className="om-divider">ॐ</div>
 
                     {generations.map((g, i) => (
-                        <div key={g.gen} className="about-story" style={{ marginBottom: i === generations.length - 1 ? 0 : 'clamp(2.5rem, 6vw, 4rem)' }}>
+                        <div key={g.gen} className={`about-story generation-story generation-${g.gen}`} style={{ marginBottom: i === generations.length - 1 ? 0 : 'clamp(2.5rem, 6vw, 4rem)' }}>
                             {i % 2 === 0 ? (
                                 <>
-                                    <div className="about-image">
-                                        <img src={g.img} alt={g.nameEn} loading="lazy" style={{ objectFit: 'cover' }} />
+                                    <div className="about-image generation-image">
+                                        <img src={g.img} alt={g.nameEn} loading="lazy" />
                                     </div>
                                     <GenText g={g} t={t} lang={lang} />
                                 </>
                             ) : (
                                 <>
                                     <GenText g={g} t={t} lang={lang} />
-                                    <div className="about-image">
-                                        <img src={g.img} alt={g.nameEn} loading="lazy" style={{ objectFit: 'cover' }} />
+                                    <div className="about-image generation-image">
+                                        <img src={g.img} alt={g.nameEn} loading="lazy" />
                                     </div>
                                 </>
                             )}
@@ -467,7 +467,7 @@ export default function About() {
 
 function GenText({ g, t, lang }) {
     return (
-        <div>
+        <div className="generation-copy">
             <span className="section-label" style={{ display: 'inline-block', marginBottom: '0.5rem' }}>{t(`पीढ़ी ${g.gen}`, `Generation ${g.gen}`)}</span>
             {g.gen === 'III' && (
                 <span style={{ display: 'inline-block', marginLeft: '0.6rem', fontSize: '0.7rem', fontWeight: 700, color: 'var(--navy-950)', background: 'linear-gradient(135deg, var(--gold-400), var(--gold-600))', padding: '0.2rem 0.7rem', borderRadius: 'var(--radius-xl)', verticalAlign: 'middle' }}>

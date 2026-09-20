@@ -4826,6 +4826,115 @@ p,
     justify-content: flex-start !important;
 }
 
+/* About lineage portraits: preserve the complete archival photograph and
+   prevent either grid column from forcing horizontal overflow. */
+.generation-story {
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    gap: clamp(2rem, 5vw, 4.5rem);
+    padding: clamp(1rem, 2.5vw, 2rem);
+    background: rgba(255,255,255,0.5);
+    border: 1px solid rgba(196,154,44,0.18);
+    border-radius: clamp(1.1rem, 2vw, 1.75rem);
+    box-shadow: 0 18px 50px rgba(13,16,48,0.08);
+}
+
+.generation-story > * {
+    min-width: 0;
+}
+
+.generation-image {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    min-height: 430px;
+    padding: clamp(0.65rem, 1.6vw, 1rem);
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 50% 42%, rgba(255,255,255,0.9), transparent 58%),
+        linear-gradient(145deg, #eee4d5, #fffaf1);
+    border: 1px solid rgba(196,154,44,0.24);
+    border-radius: 1.15rem;
+    box-shadow: 0 20px 45px rgba(13,16,48,0.12);
+}
+
+.generation-image img,
+.about-story .generation-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 540px;
+    object-fit: contain;
+    object-position: center;
+    border-radius: 0.7rem;
+}
+
+.generation-I .generation-image {
+    aspect-ratio: 4 / 5;
+}
+
+.generation-II .generation-image {
+    aspect-ratio: 5 / 4;
+}
+
+.generation-III .generation-image {
+    aspect-ratio: 3 / 2;
+}
+
+.generation-copy {
+    max-width: 630px;
+}
+
+.generation-copy p {
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 1080px) {
+    .generation-story {
+        grid-template-columns: 1fr;
+        gap: 1.75rem;
+        max-width: 820px;
+        margin-inline: auto;
+    }
+
+    .generation-story .generation-image {
+        order: -1;
+    }
+
+    .generation-image,
+    .generation-I .generation-image,
+    .generation-II .generation-image,
+    .generation-III .generation-image {
+        min-height: 0;
+        aspect-ratio: auto;
+    }
+
+    .generation-image img,
+    .about-story .generation-image img {
+        max-height: 620px;
+    }
+
+    .generation-copy {
+        max-width: none;
+    }
+}
+
+@media (max-width: 560px) {
+    .generation-story {
+        margin-inline: -0.25rem;
+        padding: 0.75rem;
+        border-radius: 1rem;
+    }
+
+    .generation-image {
+        padding: 0.45rem;
+        border-radius: 0.85rem;
+    }
+
+    .generation-copy {
+        padding: 0.25rem 0.35rem 0.6rem;
+    }
+}
+
 /* Homepage evidence: strongest public proofs first, large enough to inspect. */
 .home-evidence-showcase {
     margin-top: 2.75rem;
