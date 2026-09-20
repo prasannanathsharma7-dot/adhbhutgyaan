@@ -56,7 +56,7 @@ export default function Home() {
     return (
         <div ref={pageRef}>
             {/* HERO */}
-            <section className="hero" id="hero">
+            <section className="hero hero-classic" id="hero">
                 <div className="hero-bg">
                     <picture>
                         <source
@@ -75,10 +75,6 @@ export default function Home() {
                 <div className="hero-overlay" />
                 <div className="hero-content">
                     <div className="hero-text">
-                        <div className="hero-kicker">
-                            <span className="hero-kicker-dot" />
-                            {t('काशी से लाइव • विश्वभर में सेवा', 'Live from Kashi • Serving Worldwide')}
-                        </div>
                         <div className="hero-om">ॐ</div>
                         <h1 className="hero-title-hindi">{t('अद्भुत ज्ञान', 'Adhbhut Gyaan')}</h1>
                         <p className="hero-title-en"><Link to="/pt-umang-nath-sharma" style={{ color: 'inherit' }}>{t('पं. उमंग नाथ शर्मा', 'Pt. Umang Nath Sharma')}</Link> {t('— काशी, वाराणसी', '— Kashi, Varanasi')}</p>
@@ -91,11 +87,6 @@ export default function Home() {
                         <div className="hero-actions">
                             <Link to="/services" className="btn btn-primary btn-lg"><img src="/images/logo.png" alt="" className="inline-logo" width="512" height="512" /> {t('सेवाएं देखें', 'View Services')}</Link>
                             <a href={`https://wa.me/919278148269?text=${encodeURIComponent(t('नमस्कार! मैं पूजा बुक करना चाहता हूँ।', 'Hello! I would like to book a pooja.'))}`} target="_blank" rel="noreferrer" className="btn btn-outline btn-lg">💬 {t('WhatsApp करें', 'WhatsApp Us')}</a>
-                        </div>
-                        <div className="hero-assurance-row" aria-label={t('सेवा की विशेषताएं', 'Service assurances')}>
-                            <span>✓ {t('नाम व गोत्र से संकल्प', 'Sankalp with Name & Gotra')}</span>
-                            <span>✓ {t('लाइव वीडियो विकल्प', 'Live Video Option')}</span>
-                            <span>✓ {t('पूजा प्रमाण', 'Pooja Proof')}</span>
                         </div>
                         <div className="hero-stats">
                             {[
@@ -112,16 +103,8 @@ export default function Home() {
                         </div>
                     </div>
                     <div className="hero-visual">
-                        <div className="hero-visual-stage">
-                            <img className="hero-visual-main" src="/images/gallery/havan-group.jpg" alt={t('काशी में सम्पन्न सामूहिक हवन', 'Collective havan performed in Kashi')} width="1280" height="720" loading="eager" />
-                            <div className="hero-visual-mini">
-                                <img src="/images/gallery/devi-shringar.jpg" alt={t('माँ का पुष्प श्रृंगार — काशी', 'Floral adornment of the Goddess — Kashi')} width="640" height="640" loading="lazy" />
-                            </div>
-                            <div className="hero-proof-card">
-                                <span className="hero-proof-mark">४००+</span>
-                                <span>{t('वर्षों की पारिवारिक वैदिक परम्परा', 'Years of family Vedic tradition')}</span>
-                            </div>
-                            <div className="hero-location-chip">✦ {t('काशी • वाराणसी', 'Kashi • Varanasi')}</div>
+                        <div className="hero-visual-ring">
+                            <img src="/images/gallery/devi-shringar.jpg" alt={t('माँ का पुष्प श्रृंगार — काशी', 'Floral adornment of the Goddess — Kashi')} width="640" height="640" loading="lazy" />
                         </div>
                     </div>
                 </div>
