@@ -4,7 +4,7 @@ const { sendMail } = require('./_email');
 const { notifyAdmin } = require('./_notify');
 
 function isAdmin(req) {
-    const providedKey = req.headers['x-admin-key'] || req.query.key;
+    const providedKey = req.headers['x-admin-key'];
     const envKey = (process.env.ADMIN_KEY || '').trim();
     // Trim both sides defensively - a trailing/leading space or newline
     // accidentally included when pasting the value into Vercel's env-var
@@ -52,7 +52,12 @@ module.exports = async (req, res) => {
                 return;
             }
 
+            const bookingId = new ObjectId();
+            const reference = `AG-${new Date().getUTCFullYear()}-${bookingId.toString().slice(-6).toUpperCase()}`;
+            const attribution = body.attribution && typeof body.attribution === 'object' ? body.attribution : {};
             const doc = {
+                _id: bookingId,
+                reference,
                 name,
                 phone,
                 email: capStr(body.email, 200),
@@ -60,12 +65,21 @@ module.exports = async (req, res) => {
                 serviceName: capStr(body.serviceName, 200),
                 packageName: capStr(body.packageName, 200),
                 mode: capStr(body.mode, 50), // online / offline / location / temple
+                birthDate: capStr(body.birthDate, 50),
                 preferredDate: capStr(body.preferredDate, 50),
+                preferredSlot: capStr(body.preferredSlot, 50),
                 address: capStr(body.address, 500),
                 notes: capStr(body.notes, 2000),
                 language: capStr(body.language, 10),
                 status: 'new', // new -> contacted -> confirmed -> completed -> cancelled
-                source: 'website',
+                source: capStr(body.source, 100) || 'website',
+                attribution: {
+                    utmSource: capStr(attribution.utmSource, 100),
+                    utmMedium: capStr(attribution.utmMedium, 100),
+                    utmCampaign: capStr(attribution.utmCampaign, 150),
+                    landingPath: capStr(attribution.landingPath, 500),
+                    referrerHost: capStr(attribution.referrerHost, 200),
+                },
                 createdAt: new Date(),
             };
             const result = await db.collection('bookings').insertOne(doc);
@@ -87,11 +101,14 @@ module.exports = async (req, res) => {
                     <p><b>Package:</b> ${escapeHtml(doc.packageName) || '-'}</p>
                     <p><b>Mode:</b> ${escapeHtml(doc.mode) || '-'}</p>
                     <p><b>Preferred Date:</b> ${escapeHtml(doc.preferredDate) || 'To be decided'}</p>
+                    ${doc.preferredSlot ? `<p><b>Preferred Slot:</b> ${escapeHtml(doc.preferredSlot)}</p>` : ''}
+                    ${doc.birthDate ? `<p><b>Birth Date:</b> ${escapeHtml(doc.birthDate)}</p>` : ''}
+                    <p><b>Lead Source:</b> ${escapeHtml(doc.source)}</p>
                     ${doc.address ? `<p><b>Address:</b> ${escapeHtml(doc.address)}</p>` : ''}
                     ${doc.notes ? `<p><b>Notes:</b> ${escapeHtml(doc.notes)}</p>` : ''}
-                    <p style="color:#888;font-size:12px;">Booking ID: ${result.insertedId}</p>
+                    <p style="color:#888;font-size:12px;">Reference: ${reference} · Booking ID: ${result.insertedId}</p>
                 `,
-                whatsappText: `🙏 New Booking Enquiry\n\nName: ${doc.name}\nPhone: ${doc.phone}\nService: ${doc.serviceName || '-'}\nPackage: ${doc.packageName || '-'}\nMode: ${doc.mode || '-'}\nDate: ${doc.preferredDate || 'To be decided'}${doc.address ? `\nAddress: ${doc.address}` : ''}${doc.notes ? `\nNotes: ${doc.notes}` : ''}`,
+                whatsappText: `🙏 New Booking Enquiry\n\nReference: ${reference}\nName: ${doc.name}\nPhone: ${doc.phone}\nService: ${doc.serviceName || '-'}\nPackage: ${doc.packageName || '-'}\nMode: ${doc.mode || '-'}\nPreferred Date: ${doc.preferredDate || 'To be decided'}${doc.preferredSlot ? `\nPreferred Slot: ${doc.preferredSlot}` : ''}${doc.birthDate ? `\nBirth Date: ${doc.birthDate}` : ''}\nSource: ${doc.source}${doc.address ? `\nAddress: ${doc.address}` : ''}${doc.notes ? `\nNotes: ${doc.notes}` : ''}`,
             });
 
             if (doc.email) {
@@ -102,6 +119,7 @@ module.exports = async (req, res) => {
                         <h2>Namaste ${escapeHtml(doc.name)} 🙏</h2>
                         <p>We have received your booking enquiry for <b>${escapeHtml(doc.serviceName) || 'a pooja'}</b>.</p>
                         <p>Our team will contact you on WhatsApp or phone at <b>${escapeHtml(doc.phone)}</b> within 24 hours to confirm the date, pricing, and further details.</p>
+                        <p><b>Reference:</b> ${reference}</p>
                         <p><b>Preferred Date:</b> ${escapeHtml(doc.preferredDate) || 'To be decided with the Pandit'}</p>
                         <p>If you need to reach us urgently, WhatsApp us at <a href="https://wa.me/919278148269">+91 92781 48269</a>.</p>
                         <br/>
@@ -110,7 +128,7 @@ module.exports = async (req, res) => {
                 });
             }
 
-            res.status(201).json({ ok: true, id: result.insertedId });
+            res.status(201).json({ ok: true, id: result.insertedId, reference });
         } catch (err) {
             console.error('bookings API error:', err);
             res.status(500).json({ ok: false, error: 'Server error. Please try again or contact us directly.' });
@@ -119,8 +137,8 @@ module.exports = async (req, res) => {
     }
 
     if (req.method === 'GET') {
-        // Lightweight admin protection: pass the same key set in Vercel env var ADMIN_KEY,
-        // either as header 'x-admin-key' or query string '?key=...'.
+        // Admin credentials are accepted in a request header only so secrets do
+        // not leak into URLs, browser history, referrers, or server access logs.
         if (!isAdmin(req)) {
             res.status(401).json({ ok: false, error: 'Unauthorized' });
             return;

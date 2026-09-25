@@ -9,7 +9,8 @@
  * - process.env.CRON_SECRET
  * - process.env.SHEET_SYNC_SECRET
  *
- * Supports headers: x-admin-auth, x-admin-key, x-agent-key, x-vercel-cron, Authorization Bearer, or query params.
+ * Supports headers: x-admin-auth, x-admin-key, x-agent-key, x-vercel-cron,
+ * Authorization Bearer, or request-body credentials for trusted webhooks.
  */
 function validateAgentAuth(req) {
     const adminSecret = (process.env.ADMIN_SECRET_KEY || process.env.ADMIN_KEY || '').trim();
@@ -34,14 +35,12 @@ function validateAgentAuth(req) {
 
     if (authHeader) {
         providedToken = authHeader.replace(/^Bearer\s+/i, '').trim();
-    } else if (req.query && (req.query.key || req.query.secret || req.query.auth || req.query.token)) {
-        providedToken = (req.query.key || req.query.secret || req.query.auth || req.query.token).toString().trim();
     } else if (req.body && (req.body.secret || req.body.token || req.body.auth || req.body.apiKey)) {
         providedToken = (req.body.secret || req.body.token || req.body.auth || req.body.apiKey).toString().trim();
     }
 
     if (!providedToken) {
-        return { authorized: false, reason: 'Missing authentication credentials in headers, query, or body.' };
+        return { authorized: false, reason: 'Missing authentication credentials in headers or body.' };
     }
 
     // Compare against allowed secrets

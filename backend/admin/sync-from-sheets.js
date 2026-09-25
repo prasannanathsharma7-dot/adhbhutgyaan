@@ -15,8 +15,6 @@ function isAuthorized(req) {
 
     if (authHeader) {
         provided = authHeader.replace(/^Bearer\s+/i, '').trim();
-    } else if (req.query && (req.query.key || req.query.secret || req.query.token)) {
-        provided = (req.query.key || req.query.secret || req.query.token).toString().trim();
     } else if (req.body && (req.body.secret || req.body.token || req.body.auth)) {
         provided = (req.body.secret || req.body.token || req.body.auth).toString().trim();
     }

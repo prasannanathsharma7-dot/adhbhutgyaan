@@ -8,6 +8,29 @@ import { breadcrumbJsonLd, combineJsonLd } from '../utils/seo';
 import BirthDetailsInput from '../components/BirthDetailsInput';
 import { Smartphone, Landmark, Home as HomeIcon, Star, AlertTriangle, CheckCircle2, MessageCircle, Phone, Mail, FileText, CalendarClock, Video, Gift } from 'lucide-react';
 
+// Captures lead-source data (UTM params from ad campaigns, or the referring
+// site) at the moment someone submits a booking, so the team can see which
+// marketing channel each enquiry actually came from.
+function getLeadAttribution() {
+    if (typeof window === 'undefined') return { source: 'website' };
+
+    const params = new URLSearchParams(window.location.search);
+    const utmSource = params.get('utm_source') || '';
+    let referrerHost = '';
+    try {
+        referrerHost = document.referrer ? new URL(document.referrer).hostname : '';
+    } catch { /* ignore malformed referrers */ }
+
+    return {
+        source: utmSource || referrerHost || 'direct',
+        utmSource,
+        utmMedium: params.get('utm_medium') || '',
+        utmCampaign: params.get('utm_campaign') || '',
+        landingPath: `${window.location.pathname}${window.location.search}`,
+        referrerHost,
+    };
+}
+
 export default function Booking() {
     const [searchParams] = useSearchParams();
     const preServiceId = searchParams.get('service');
@@ -32,6 +55,7 @@ export default function Booking() {
     const [selectedPkg, setSelectedPkg] = useState(null);
     const [form, setForm] = useState({ name: '', phone: '', email: '', date: '', address: '', notes: '', mode: '', preferredDate: '', preferredSlot: '' });
     const [saveStatus, setSaveStatus] = useState('idle'); // idle | saving | saved | error
+    const [bookingReference, setBookingReference] = useState('');
     const [errors, setErrors] = useState({});
 
     const modeOptions = [
@@ -90,7 +114,9 @@ export default function Booking() {
 
     const saveBookingToServer = async () => {
         setSaveStatus('saving');
+        setBookingReference('');
         try {
+            const attribution = getLeadAttribution();
             const res = await fetch('/api/bookings', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -102,13 +128,23 @@ export default function Booking() {
                     serviceName: selectedService ? `${selectedService.name} (${selectedService.nameEn})` : '',
                     packageName: selectedPkg ? `${selectedPkg.name} (${selectedPkg.nameEn})` : '',
                     mode: form.mode,
-                    preferredDate: form.date,
+                    birthDate: form.date,
+                    preferredDate: form.preferredDate,
+                    preferredSlot: form.preferredSlot,
                     address: form.address,
                     notes: form.notes,
                     language: lang,
+                    source: attribution.source,
+                    attribution,
                 }),
             });
-            setSaveStatus(res.ok ? 'saved' : 'error');
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) {
+                setSaveStatus('error');
+                return;
+            }
+            setBookingReference(data.reference || '');
+            setSaveStatus('saved');
         } catch {
             // Network/DB issue - fail silently. WhatsApp/Call/Email still work regardless.
             setSaveStatus('error');
@@ -190,7 +226,6 @@ export default function Booking() {
         saveBookingToServer();
     };
 
-    const dateNotSet = t('पंडित जी से तय होगी', 'To be decided with the Pandit');
     const modeLabel = activeModeOptions.find(m => m.v === form.mode)?.label || '';
 
     const whatsAppMsg = selectedService && selectedPkg ? `🙏 *${isAstrology ? t('नमस्कार! नई ज्योतिष परामर्श पूछताछ', 'Hello! New Astrology Consultation Enquiry') : t('नमस्कार! नई पूजा पूछताछ', 'Hello! New Pooja Enquiry')}*
@@ -200,10 +235,11 @@ export default function Booking() {
 *${t('जाप/पाठ', 'Jaap/Paath')}:* ${selectedPkg.paathCount}
 *${t('माध्यम', 'Mode')}:* ${modeLabel}
 ${form.preferredDate ? `*${t('इच्छित मुहूर्त तिथि', 'Preferred Muhurat Date')}:* ${form.preferredDate}${form.preferredSlot ? ` (${muhuratSlots.find(s => s.v === form.preferredSlot)?.label} - ${muhuratSlots.find(s => s.v === form.preferredSlot)?.time})` : ''}` : ''}
+${bookingReference ? `*${t('संदर्भ संख्या', 'Reference')}:* ${bookingReference}` : ''}
 
 *${t('नाम', 'Name')}:* ${form.name}
 *${t('फ़ोन', 'Phone')}:* ${form.phone}
-*${t('तिथि', 'Date')}:* ${form.date || dateNotSet}
+${form.date ? `*${t('जन्म तिथि', 'Birth Date')}:* ${form.date}` : ''}
 ${form.address ? `*${t('पता', 'Address')}:* ${form.address}` : ''}
 ${form.notes ? `*${t('विशेष', 'Notes')}:* ${form.notes}` : ''}
 
@@ -216,10 +252,11 @@ ${t('पैकेज', 'Package')}: ${selectedPkg.name} (${selectedPkg.nameEn})
 ${t('जाप/पाठ', 'Jaap/Paath')}: ${selectedPkg.paathCount}
 ${t('माध्यम', 'Mode')}: ${modeLabel}
 ${form.preferredDate ? `${t('इच्छित मुहूर्त तिथि', 'Preferred Muhurat Date')}: ${form.preferredDate}${form.preferredSlot ? ` (${muhuratSlots.find(s => s.v === form.preferredSlot)?.label} - ${muhuratSlots.find(s => s.v === form.preferredSlot)?.time})` : ''}` : ''}
+${bookingReference ? `${t('संदर्भ संख्या', 'Reference')}: ${bookingReference}` : ''}
 
 ${t('नाम', 'Name')}: ${form.name}
 ${t('फ़ोन', 'Phone')}: ${form.phone}
-${t('तिथि', 'Date')}: ${form.date || dateNotSet}
+${form.date ? `${t('जन्म तिथि', 'Birth Date')}: ${form.date}` : ''}
 ${form.address ? `${t('पता', 'Address')}: ${form.address}` : ''}
 ${form.notes ? `${t('विशेष', 'Notes')}: ${form.notes}` : ''}
 
@@ -566,9 +603,16 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                                 </p>
                             )}
                             {saveStatus === 'saved' && (
-                                <p style={{ textAlign: 'center', fontSize: '0.8rem', color: 'var(--whatsapp)', marginBottom: '1rem' }}>
-                                    <CheckCircle2 size={14} style={{ verticalAlign: '-2px', marginRight: '0.3rem' }} />{t('आपकी पूछताछ सुरक्षित रूप से दर्ज हो गई है', 'Your enquiry has been securely recorded')}
-                                </p>
+                                <div style={{ textAlign: 'center', color: 'var(--whatsapp)', margin: '0 auto 1rem', maxWidth: 600 }} role="status">
+                                    <p style={{ fontSize: '0.85rem', marginBottom: bookingReference ? '0.45rem' : 0 }}>
+                                        <CheckCircle2 size={14} style={{ verticalAlign: '-2px', marginRight: '0.3rem' }} />{t('आपकी पूछताछ सुरक्षित रूप से दर्ज हो गई है', 'Your enquiry has been securely recorded')}
+                                    </p>
+                                    {bookingReference && (
+                                        <p style={{ display: 'inline-block', background: '#f0fdf4', border: '1px solid #86efac', borderRadius: 'var(--radius-md)', padding: '0.45rem 0.8rem', fontSize: '0.82rem', fontWeight: 700, margin: 0 }}>
+                                            {t('संदर्भ संख्या', 'Reference')}: {bookingReference}
+                                        </p>
+                                    )}
+                                </div>
                             )}
                             {saveStatus === 'error' && (
                                 <p style={{ textAlign: 'center', fontSize: '0.8rem', color: 'var(--gold-700)', background: 'var(--gold-50)', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-md)', padding: '0.6rem 0.9rem', marginBottom: '1rem', maxWidth: 600, marginLeft: 'auto', marginRight: 'auto' }}>
@@ -600,7 +644,7 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                                         {t('अपनी तिथि/समय पक्का आरक्षित करने हेतु आप ₹101 अथवा ₹501 का टोकन WhatsApp पर UPI द्वारा भेज सकते हैं — यह पूर्णतः वैकल्पिक है, अंतिम भुगतान से समायोजित किया जाएगा।', 'To firmly reserve your date/slot, you can optionally send a ₹101 or ₹501 token via UPI on WhatsApp - this is entirely optional and will be adjusted against the final payment.')}
                                     </div>
                                     <div style={{ borderTop: '1px solid var(--border-light)', paddingTop: '1rem', marginTop: '0.5rem' }}>
-                                        {[[t('नाम', 'Name'), form.name], [t('फ़ोन', 'Phone'), form.phone], ...(form.email ? [[t('ईमेल', 'Email'), form.email]] : []), [t('तिथि', 'Date'), form.date || dateNotSet], ...(form.preferredDate ? [[t('इच्छित मुहूर्त', 'Preferred Muhurat'), `${form.preferredDate}${form.preferredSlot ? ` (${muhuratSlots.find(s => s.v === form.preferredSlot)?.label})` : ''}`]] : []), ...(form.address ? [[t('पता', 'Address'), form.address]] : []), ...(form.notes ? [[t('विशेष', 'Notes'), form.notes]] : [])].map(([k, v]) => (
+                                        {[[t('नाम', 'Name'), form.name], [t('फ़ोन', 'Phone'), form.phone], ...(form.email ? [[t('ईमेल', 'Email'), form.email]] : []), ...(form.date ? [[t('जन्म तिथि', 'Birth Date'), form.date]] : []), ...(form.preferredDate ? [[t('इच्छित मुहूर्त', 'Preferred Muhurat'), `${form.preferredDate}${form.preferredSlot ? ` (${muhuratSlots.find(s => s.v === form.preferredSlot)?.label})` : ''}`]] : []), ...(form.address ? [[t('पता', 'Address'), form.address]] : []), ...(form.notes ? [[t('विशेष', 'Notes'), form.notes]] : [])].map(([k, v]) => (
                                             <div key={k} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', fontSize: '0.9rem', gap: '1rem' }}>
                                                 <strong>{k}:</strong><span style={{ textAlign: 'right' }}>{v}</span>
                                             </div>
