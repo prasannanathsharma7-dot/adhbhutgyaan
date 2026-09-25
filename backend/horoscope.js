@@ -5,72 +5,23 @@
 //   period: 'daily' | 'monthly'
 //   rashi: mesha, vrishabha, mithuna, karka, simha, kanya, tula, vrishchika, dhanu, makara, kumbha, meena
 //
-// Generates the horoscope text once per rashi per day (or per month), via
-// Gemini, and caches it in MongoDB (collection: horoscopes) so the same
-// content is served instantly to everyone else asking that day - keeps AI
-// cost low and responses fast.
+// Generated directly from REAL current sidereal planetary positions (see
+// backend/utils/horoscope-generator.js) - not AI. This replaced an earlier
+// Gemini-AI-based version after a real user-reported bug: every model in
+// that version's fallback list had gone dead (see backend/_gemini.js's fix
+// history), so every request silently failed and fell through to a single
+// generic fallback template - all 12 rashis looked the same. A
+// Panchang/Gochar-based template has no such failure mode: it reads real
+// ephemeris data directly, so there's no external API call that can go
+// down, and the content is always grounded in this moment's actual
+// planetary transits rather than being AI-invented text.
+//
+// Cached in MongoDB (collection: horoscopes) per rashi+period+date so the
+// same content is served instantly to everyone else asking that day.
 
 const { getDb, withCors, checkRateLimit } = require('./_db');
-const { callGemini } = require('./_gemini');
 const { getSiderealLongitudes } = require('./utils/vedic-ephemeris');
-
-const RASHIS = [
-    { id: 'mesha', name: 'मेष', nameEn: 'Aries', lord: 'Mars', symbol: '♈' },
-    { id: 'vrishabha', name: 'वृषभ', nameEn: 'Taurus', lord: 'Venus', symbol: '♉' },
-    { id: 'mithuna', name: 'मिथुन', nameEn: 'Gemini', lord: 'Mercury', symbol: '♊' },
-    { id: 'karka', name: 'कर्क', nameEn: 'Cancer', lord: 'Moon', symbol: '♋' },
-    { id: 'simha', name: 'सिंह', nameEn: 'Leo', lord: 'Sun', symbol: '♌' },
-    { id: 'kanya', name: 'कन्या', nameEn: 'Virgo', lord: 'Mercury', symbol: '♍' },
-    { id: 'tula', name: 'तुला', nameEn: 'Libra', lord: 'Venus', symbol: '♎' },
-    { id: 'vrishchika', name: 'वृश्चिक', nameEn: 'Scorpio', lord: 'Mars', symbol: '♏' },
-    { id: 'dhanu', name: 'धनु', nameEn: 'Sagittarius', lord: 'Jupiter', symbol: '♐' },
-    { id: 'makara', name: 'मकर', nameEn: 'Capricorn', lord: 'Saturn', symbol: '♑' },
-    { id: 'kumbha', name: 'कुंभ', nameEn: 'Aquarius', lord: 'Saturn', symbol: '♒' },
-    { id: 'meena', name: 'मीन', nameEn: 'Pisces', lord: 'Jupiter', symbol: '♓' },
-];
-
-const HOUSE_THEMES = {
-    1: 'self, health, personality', 2: 'money, family, speech', 3: 'courage, siblings, short trips',
-    4: 'home, mother, peace of mind', 5: 'children, romance, intellect', 6: 'work, competition, health issues',
-    7: 'partnerships, marriage, business deals', 8: 'transformation, obstacles, sudden events',
-    9: 'luck, higher learning, father, dharma', 10: 'career, status, public reputation',
-    11: 'income, gains, friendships', 12: 'expenses, foreign travel, rest',
-};
-
-/**
- * Real current sidereal positions of the slow-moving planets (the ones that
- * actually drive multi-day/multi-week Rashifal themes in practice - Moon
- * changes sign every ~2.25 days so it's included for the 'today' flavor,
- * but Sun/Mars/Mercury/Venus are left out here as too fast-moving to anchor
- * a stable daily/monthly reading), expressed as the house-from-Rashi (Chandra
- * Gochar convention) for the given rashi. This grounds the AI-written text in
- * this moment's actual planetary positions instead of being astronomically
- * arbitrary content with the rashi name swapped in.
- */
-function getCurrentGocharSummary(rashiIndex, period) {
-    const sid = getSiderealLongitudes(new Date());
-    const signOf = deg => Math.floor((((deg % 360) + 360) % 360) / 30); // defensively normalize first
-    const houseFrom = planetSignIdx => ((planetSignIdx - rashiIndex + 12) % 12) + 1;
-
-    // Moon changes sign every ~2.25 days, so it's only a meaningful anchor
-    // for the DAILY reading - including it in the monthly prompt would
-    // describe a Moon transit that's already stale for most of that month
-    // (monthly text is cached for the whole calendar month, see getDateKey).
-    const planets = period === 'monthly'
-        ? []
-        : [{ name: 'Moon (Chandra)', signIdx: signOf(sid.moon) }];
-    planets.push(
-        { name: 'Jupiter (Guru)', signIdx: signOf(sid.jupiter) },
-        { name: 'Saturn (Shani)', signIdx: signOf(sid.saturn) },
-        { name: 'Rahu', signIdx: signOf(sid.rahu) },
-        { name: 'Ketu', signIdx: signOf(sid.ketu) },
-    );
-
-    return planets.map(p => {
-        const h = houseFrom(p.signIdx);
-        return `${p.name} is transiting your ${h}${h === 1 ? 'st' : h === 2 ? 'nd' : h === 3 ? 'rd' : 'th'} house (${HOUSE_THEMES[h]})`;
-    }).join('; ');
-}
+const { RASHIS, buildPanchangHoroscope } = require('./utils/horoscope-generator');
 
 function getDateKey(period) {
     const now = new Date();
@@ -80,48 +31,6 @@ function getDateKey(period) {
     const m = String(ist.getUTCMonth() + 1).padStart(2, '0');
     const d = String(ist.getUTCDate()).padStart(2, '0');
     return period === 'monthly' ? `${y}-${m}` : `${y}-${m}-${d}`;
-}
-
-function buildPrompt(rashi, period, rashiIndex) {
-    const scope = period === 'monthly' ? 'this month' : 'today';
-    const gochar = getCurrentGocharSummary(rashiIndex, period);
-    return `Write a ${period} Vedic horoscope (Rashifal) for ${rashi.nameEn} (${rashi.name}) rashi, ruled by ${rashi.lord}, for ${scope}.
-Base the reading on these REAL current planetary transits (Gochar) from this rashi - reference them naturally in the relevant paragraph rather than listing them mechanically: ${gochar}.
-Cover: career/work, money, relationships/family, and health - 1 short paragraph each (2-3 sentences).
-End with one lucky color and one lucky number for ${scope}.
-Keep it positive, practical, and specific - avoid vague filler like "things will improve". Write in Hindi with some common English words mixed in naturally (Hinglish), the way an Indian astrologer would talk to a client. Do not add any greeting or sign-off, just the horoscope content itself.`;
-}
-
-// Deliberately differentiated per-rashi so that if the Gemini call fails
-// for several rashis in a row (API key issue, quota, etc.), the fallback
-// text doesn't read as "the same horoscope with the name swapped" - a real
-// user-reported bug traced to this template being too generic before.
-const FALLBACK_FOCUS = {
-    mesha: { hi: 'नई शुरुआत और साहस से भरे कदम', en: 'bold new beginnings' },
-    vrishabha: { hi: 'धन-संचय और स्थिरता', en: 'financial stability and steady gains' },
-    mithuna: { hi: 'संवाद और नए विचारों का आदान-प्रदान', en: 'communication and fresh ideas' },
-    karka: { hi: 'परिवार और भावनात्मक जुड़ाव', en: 'family bonds and emotional security' },
-    simha: { hi: 'आत्मविश्वास और नेतृत्व क्षमता', en: 'confidence and leadership' },
-    kanya: { hi: 'व्यवस्थित योजना और कार्यकुशलता', en: 'careful planning and precision' },
-    tula: { hi: 'संतुलन और साझेदारी', en: 'balance and partnerships' },
-    vrishchika: { hi: 'गहन परिवर्तन और आंतरिक शक्ति', en: 'deep transformation and inner strength' },
-    dhanu: { hi: 'ज्ञान-विस्तार और यात्रा के योग', en: 'learning and travel opportunities' },
-    makara: { hi: 'अनुशासन और कैरियर में प्रगति', en: 'discipline and career progress' },
-    kumbha: { hi: 'नवाचार और सामाजिक जुड़ाव', en: 'innovation and social connections' },
-    meena: { hi: 'अंतर्ज्ञान और आध्यात्मिक शांति', en: 'intuition and inner peace' },
-};
-
-const LUCKY_COLORS = ['लाल', 'पीला', 'हरा', 'सफ़ेद', 'नारंगी', 'गुलाबी', 'नीला', 'सुनहरा'];
-
-function fallbackText(rashi, period) {
-    const scope = period === 'monthly' ? 'is mahine' : 'aaj';
-    const focus = FALLBACK_FOCUS[rashi.id] || { hi: 'शुभ ग्रह-गोचर', en: 'favourable transits' };
-    // Deterministic-but-varied picks (not random) so the same rashi+period+date
-    // always caches the same fallback text, rather than a fresh roll each retry.
-    const rashiIndex = Object.keys(FALLBACK_FOCUS).indexOf(rashi.id);
-    const color = LUCKY_COLORS[rashiIndex % LUCKY_COLORS.length];
-    const luckyNumber = ((rashiIndex % 9) + 1);
-    return `${rashi.name} (${rashi.nameEn}) rashi ke liye ${scope} ${focus.hi} (${focus.en}) ka samay hai, jo aapke grah-swami ${rashi.lord} se juda hai. Career mein dhairya rakhein, dhan-labh ke yog bann rahe hain. Paarivarik jeevan mein samjhauta rakhein. Swasthya ka dhyan rakhein, halka vyayam labhkari rahega. Shubh Rang: ${color} | Shubh Ank: ${luckyNumber}\n\n(Yeh ek samanya margdarshan hai. Apni sateek janam-kundli ke anusaar vishleshan ke liye Dr. Umang Nath Sharma se sampark karein.)`;
 }
 
 module.exports = async (req, res) => {
@@ -159,8 +68,9 @@ module.exports = async (req, res) => {
         const db = await getDb();
 
         // Generous limit (browsing multiple rashis/daily+monthly is normal),
-        // but still stops scripted abuse from repeatedly forcing AI generation
-        // on uncached slots.
+        // but still stops scripted abuse from repeatedly hammering uncached
+        // slots - generation is cheap now (no AI call), but the ephemeris
+        // calculation and DB write still aren't free at high volume.
         const allowed = await checkRateLimit(db, req, 'horoscope', { limit: 30, windowMs: 10 * 60 * 1000 });
         if (!allowed) {
             res.status(429).json({ ok: false, error: 'Too many requests. Please try again in a few minutes.' });
@@ -175,18 +85,9 @@ module.exports = async (req, res) => {
             return;
         }
 
-        let text;
-        let source;
-        try {
-            const rashiIndex = RASHIS.findIndex(r => r.id === rashiId);
-            const messages = [{ role: 'user', content: buildPrompt(rashi, period, rashiIndex) }];
-            text = await callGemini(messages, process.env.GEMINI_API_KEY, `${period} horoscope for ${rashi.nameEn}`);
-            source = 'ai';
-        } catch (aiErr) {
-            console.error('Horoscope AI generation failed, using fallback:', aiErr.message);
-            text = fallbackText(rashi, period);
-            source = 'fallback';
-        }
+        const sid = getSiderealLongitudes(new Date());
+        const text = buildPanchangHoroscope(rashi, period, sid, dateKey);
+        const source = 'panchang';
 
         // Cache it (best-effort - if this fails, we still return the text this time).
         try {
@@ -202,7 +103,16 @@ module.exports = async (req, res) => {
         res.status(200).json({ ok: true, rashi, period, dateKey, text, source });
     } catch (err) {
         console.error('Horoscope API error:', err);
-        res.status(200).json({ ok: true, rashi, period, dateKey, text: fallbackText(rashi, period), source: 'fallback' });
+        // Even the error path stays real-data-based: recomputing from the
+        // ephemeris directly (no DB, no cache) rather than a canned string,
+        // since the generator itself has no external dependency to fail.
+        try {
+            const sid = getSiderealLongitudes(new Date());
+            const text = buildPanchangHoroscope(rashi, period, sid, dateKey);
+            res.status(200).json({ ok: true, rashi, period, dateKey, text, source: 'panchang' });
+        } catch (innerErr) {
+            console.error('Horoscope generation error:', innerErr);
+            res.status(500).json({ ok: false, error: 'Could not generate horoscope. Please try again shortly.' });
+        }
     }
 };
-

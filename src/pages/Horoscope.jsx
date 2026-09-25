@@ -171,7 +171,7 @@ export default function Horoscope() {
                                 </p>
                             </div>
                             <p style={{ whiteSpace: 'pre-wrap', lineHeight: 1.75, fontSize: '0.95rem', color: 'var(--text-secondary)' }}>
-                                {result.text}
+                                {typeof result.text === 'object' ? t(result.text.hi, result.text.en) : result.text}
                             </p>
                             <div className="text-center" style={{ marginTop: '1.5rem' }}>
                                 <a
