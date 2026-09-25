@@ -1,11 +1,20 @@
 // Google Gemini AI Engine for Vedic Astrology Q&A & Horoscope
 // File: api/_gemini.js
 
+// Updated Sept 2026: gemini-1.5-flash, gemini-1.5-pro, and gemini-pro (the
+// old Gemini 1.0-era alias) are all already fully shut down (404 on every
+// call) - this was the actual cause of a real bug (every horoscope request
+// silently falling through to the identical fallback template, making all
+// 12 rashis look the same). gemini-2.0-flash is ALSO shut down as of June 1,
+// 2026. Current models, newest-capable first, with the auto-updating
+// "-latest" alias as a final safety net so future Google-side model
+// retirements degrade to a slightly older (but still working) model instead
+// of breaking outright the way this list previously did:
 const GEMINI_MODELS = [
-    'gemini-1.5-flash',
-    'gemini-2.0-flash',
-    'gemini-pro',
-    'gemini-1.5-pro',
+    'gemini-2.5-flash',
+    'gemini-2.5-pro',
+    'gemini-2.5-flash-lite',
+    'gemini-flash-latest',
 ];
 
 const CTA_VARIATIONS = [

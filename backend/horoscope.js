@@ -92,9 +92,36 @@ End with one lucky color and one lucky number for ${scope}.
 Keep it positive, practical, and specific - avoid vague filler like "things will improve". Write in Hindi with some common English words mixed in naturally (Hinglish), the way an Indian astrologer would talk to a client. Do not add any greeting or sign-off, just the horoscope content itself.`;
 }
 
+// Deliberately differentiated per-rashi so that if the Gemini call fails
+// for several rashis in a row (API key issue, quota, etc.), the fallback
+// text doesn't read as "the same horoscope with the name swapped" - a real
+// user-reported bug traced to this template being too generic before.
+const FALLBACK_FOCUS = {
+    mesha: { hi: 'नई शुरुआत और साहस से भरे कदम', en: 'bold new beginnings' },
+    vrishabha: { hi: 'धन-संचय और स्थिरता', en: 'financial stability and steady gains' },
+    mithuna: { hi: 'संवाद और नए विचारों का आदान-प्रदान', en: 'communication and fresh ideas' },
+    karka: { hi: 'परिवार और भावनात्मक जुड़ाव', en: 'family bonds and emotional security' },
+    simha: { hi: 'आत्मविश्वास और नेतृत्व क्षमता', en: 'confidence and leadership' },
+    kanya: { hi: 'व्यवस्थित योजना और कार्यकुशलता', en: 'careful planning and precision' },
+    tula: { hi: 'संतुलन और साझेदारी', en: 'balance and partnerships' },
+    vrishchika: { hi: 'गहन परिवर्तन और आंतरिक शक्ति', en: 'deep transformation and inner strength' },
+    dhanu: { hi: 'ज्ञान-विस्तार और यात्रा के योग', en: 'learning and travel opportunities' },
+    makara: { hi: 'अनुशासन और कैरियर में प्रगति', en: 'discipline and career progress' },
+    kumbha: { hi: 'नवाचार और सामाजिक जुड़ाव', en: 'innovation and social connections' },
+    meena: { hi: 'अंतर्ज्ञान और आध्यात्मिक शांति', en: 'intuition and inner peace' },
+};
+
+const LUCKY_COLORS = ['लाल', 'पीला', 'हरा', 'सफ़ेद', 'नारंगी', 'गुलाबी', 'नीला', 'सुनहरा'];
+
 function fallbackText(rashi, period) {
     const scope = period === 'monthly' ? 'is mahine' : 'aaj';
-    return `${rashi.name} (${rashi.nameEn}) rashi ke liye ${scope} grah-gochar shubh sanket de rahe hain. Career mein dhairya rakhein, dhan-labh ke yog bann rahe hain. Paarivarik jeevan mein samjhauta rakhein. Swasthya ka dhyan rakhein, halka vyayam labhkari rahega. Shubh Rang: Peela | Shubh Ank: ${rashi.id.length + 1}\n\n(Yeh ek samanya margdarshan hai. Apni sateek janam-kundli ke anusaar vishleshan ke liye Dr. Umang Nath Sharma se sampark karein.)`;
+    const focus = FALLBACK_FOCUS[rashi.id] || { hi: 'शुभ ग्रह-गोचर', en: 'favourable transits' };
+    // Deterministic-but-varied picks (not random) so the same rashi+period+date
+    // always caches the same fallback text, rather than a fresh roll each retry.
+    const rashiIndex = Object.keys(FALLBACK_FOCUS).indexOf(rashi.id);
+    const color = LUCKY_COLORS[rashiIndex % LUCKY_COLORS.length];
+    const luckyNumber = ((rashiIndex % 9) + 1);
+    return `${rashi.name} (${rashi.nameEn}) rashi ke liye ${scope} ${focus.hi} (${focus.en}) ka samay hai, jo aapke grah-swami ${rashi.lord} se juda hai. Career mein dhairya rakhein, dhan-labh ke yog bann rahe hain. Paarivarik jeevan mein samjhauta rakhein. Swasthya ka dhyan rakhein, halka vyayam labhkari rahega. Shubh Rang: ${color} | Shubh Ank: ${luckyNumber}\n\n(Yeh ek samanya margdarshan hai. Apni sateek janam-kundli ke anusaar vishleshan ke liye Dr. Umang Nath Sharma se sampark karein.)`;
 }
 
 module.exports = async (req, res) => {
