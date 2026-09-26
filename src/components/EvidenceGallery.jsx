@@ -42,7 +42,7 @@ export default function EvidenceGallery({ items, t, theme = 'light', compact = f
                         <span className="evidence-image-shell">
                             <img src={item.src} alt={t(item.capHi, item.capEn)} loading="lazy" />
                             <span className="evidence-expand"><Expand size={16} /> {t('पूरा प्रमाण देखें', 'View full proof')}</span>
-                            <span className="evidence-badge">{t(item.badge, item.badgeEn)}</span>
+                            {(item.badge || item.badgeEn) && <span className="evidence-badge">{t(item.badge, item.badgeEn)}</span>}
                         </span>
                         <span className="evidence-caption">{t(item.capHi, item.capEn)}</span>
                     </button>
@@ -69,7 +69,7 @@ export default function EvidenceGallery({ items, t, theme = 'light', compact = f
                         </button>
                         <img src={activeItem.src} alt={t(activeItem.capHi, activeItem.capEn)} />
                         <div className="evidence-modal-copy">
-                            <strong>{t(activeItem.badge, activeItem.badgeEn)}</strong>
+                            {(activeItem.badge || activeItem.badgeEn) && <strong>{t(activeItem.badge, activeItem.badgeEn)}</strong>}
                             <p>{t(activeItem.capHi, activeItem.capEn)}</p>
                             <span>{t('मूल दस्तावेज़/फोटो को बिना काटे दिखाया गया है।', 'Original document/photo shown without cropping.')}</span>
                         </div>

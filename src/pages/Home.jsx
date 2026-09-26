@@ -9,6 +9,7 @@ import DailyPanchangCard from '../components/DailyPanchangCard';
 import UpcomingMuhuratWidget from '../components/UpcomingMuhuratWidget';
 import VideoTestimonials from '../components/VideoTestimonials';
 import QuickNav from '../components/QuickNav';
+import EvidenceGallery from '../components/EvidenceGallery';
 import { heritageSummary, testimonials } from '../data/heritage';
 import FlagIcon from '../components/FlagIcon';
 import { SquarePlay, XCircle, CheckCircle2, Mic, Coffee, Sparkle, MessageCircleQuestion, Gem } from 'lucide-react';
@@ -253,19 +254,7 @@ export default function Home() {
                         national news-channel interview are exactly the kind
                         of credibility signal most visitors would otherwise
                         never scroll deep enough into About Us to see. */}
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.25rem', marginTop: '2.5rem' }}>
-                        {[pressHighlights[1], pressHighlights[0], pressHighlights[7]].map(item => (
-                            <div key={item.src} style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(212,168,67,0.25)' }}>
-                                <div style={{ position: 'relative' }}>
-                                    <img src={item.src} alt={t(item.capHi, item.capEn)} width="400" height="300" loading="lazy" style={{ width: '100%', height: '220px', objectFit: 'cover', display: 'block' }} />
-                                    <span style={{ position: 'absolute', top: '0.6rem', left: '0.6rem', background: 'var(--gold-500)', color: 'var(--navy-950)', fontSize: '0.7rem', fontWeight: 800, padding: '0.25rem 0.65rem', borderRadius: '999px' }}>
-                                        {t(item.badge, item.badgeEn)}
-                                    </span>
-                                </div>
-                                <p style={{ padding: '0.9rem 1rem', margin: 0, color: 'var(--warm-200)', fontSize: '0.85rem', lineHeight: 1.5 }}>{t(item.capHi, item.capEn)}</p>
-                            </div>
-                        ))}
-                    </div>
+                    <EvidenceGallery items={[pressHighlights[1], pressHighlights[0], pressHighlights[7]]} t={t} theme="dark" compact />
 
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', marginTop: '2.5rem' }}>
                         {testimonials.filter(tst => tst.notable).map(tst => (

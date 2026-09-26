@@ -369,14 +369,7 @@ export default function About() {
                         <h2 className="section-title">{t('हमारी यात्रा के क्षण', 'Moments from Our Journey')}</h2>
                     </div>
                     <div className="om-divider">ॐ</div>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem' }}>
-                        {gallery.map(item => (
-                            <div key={item.src} style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', border: '1px solid var(--border-light)', background: 'var(--cream)' }}>
-                                <img src={item.src} alt={item.capEn} loading="lazy" style={{ width: '100%', height: '220px', objectFit: 'cover', display: 'block' }} />
-                                <p style={{ padding: '0.75rem 1rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{t(item.capHi, item.capEn)}</p>
-                            </div>
-                        ))}
-                    </div>
+                    <EvidenceGallery items={gallery} t={t} compact />
                 </div>
             </section>
 
