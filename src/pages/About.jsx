@@ -4,6 +4,7 @@ import { gallery, pressHighlights, triptych, videoClips, youtubeUploadsPlaylistI
 import { SquarePlay } from 'lucide-react';
 import useSEO from '../hooks/useSEO';
 import { breadcrumbJsonLd, combineJsonLd } from '../utils/seo';
+import EvidenceGallery from '../components/EvidenceGallery';
 
 import { generations, heritageSummary, testimonials, testimonialFlags, moreTestimonials, moreTestimonialFlags } from '../data/heritage';
 import FlagIcon from '../components/FlagIcon';
@@ -126,17 +127,10 @@ export default function About() {
                         <h2 className="section-title">{t('विश्व स्तर पर सम्मानित', 'Recognized on the World Stage')}</h2>
                     </div>
                     <div className="om-divider">ॐ</div>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.75rem' }}>
-                        {pressHighlights.map(item => (
-                            <div key={item.src} style={{ position: 'relative', borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: 'var(--shadow-lg)', border: '1px solid var(--border-gold)', background: 'white' }}>
-                                <div style={{ position: 'absolute', top: '0.9rem', left: '0.9rem', zIndex: 2, background: 'var(--gold-600)', color: 'var(--navy-950)', fontWeight: 700, fontSize: '0.75rem', padding: '0.3rem 0.8rem', borderRadius: 'var(--radius-xl)', letterSpacing: '0.02em' }}>
-                                    {t(item.badge, item.badgeEn)}
-                                </div>
-                                <img src={item.src} alt={item.badgeEn} loading="lazy" style={{ width: '100%', height: '260px', objectFit: 'cover', display: 'block' }} />
-                                <p style={{ padding: '1rem 1.1rem', fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{t(item.capHi, item.capEn)}</p>
-                            </div>
-                        ))}
-                    </div>
+                    <p style={{ textAlign: 'center', color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '1.5rem' }}>
+                        {t('किसी भी प्रमाण को पूर्ण आकार में देखने के लिए उस पर क्लिक करें।', 'Open any item to inspect the original document or photograph at full size, without cropping.')}
+                    </p>
+                    <EvidenceGallery items={pressHighlights} t={t} />
                 </div>
             </section>
 
