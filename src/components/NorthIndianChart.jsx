@@ -13,7 +13,7 @@ const GLYPH_TO_KEY = {
     Ju: 'jupiter', Ve: 'venus', Sa: 'saturn', Ra: 'rahu', Ke: 'ketu',
 };
 
-export default function NorthIndianChart({ houseData, devoteeName, lagnaName, numeralSystem = 'latin', lang = 'hi' }) {
+export default function NorthIndianChart({ houseData, devoteeName, lagnaName, numeralSystem = 'latin', lang = 'hi', chartTitleHi = 'जन्म लग्न कुण्डली (Lagna Chart)', chartTitleEn = 'Lagna Chart' }) {
     if (!houseData) return null;
 
     // The chart's house boxes are small, fixed-size SVG regions - full
@@ -49,7 +49,7 @@ export default function NorthIndianChart({ houseData, devoteeName, lagnaName, nu
         <div style={{ maxWidth: '420px', margin: '0 auto', background: '#fffefb', padding: '1rem', borderRadius: 'var(--radius-lg)', border: '2px solid var(--border-gold)', boxShadow: '0 10px 25px rgba(212,168,67,0.15)' }}>
             <div style={{ textAlign: 'center', marginBottom: '0.5rem', borderBottom: '1px solid var(--border-light)', paddingBottom: '0.4rem' }}>
                 <strong style={{ fontSize: '0.95rem', color: 'var(--navy-950)', display: 'block' }}>
-                    ✦ जन्म लग्न कुण्डली (Lagna Chart) ✦
+                    ✦ {lang === 'hi' ? chartTitleHi : chartTitleEn} ✦
                 </strong>
                 <span style={{ fontSize: '0.75rem', color: 'var(--gold-800)', fontWeight: 600 }}>
                     {devoteeName} · {lagnaName}

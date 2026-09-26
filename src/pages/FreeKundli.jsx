@@ -9,7 +9,7 @@ import NorthIndianChart from '../components/NorthIndianChart';
 import { calculateInstantKundli } from '../utils/kundliEngine';
 import KundaliSettingsBar from '../components/KundaliSettingsBar';
 import { DEFAULT_KUNDALI_SETTINGS, formatNumeral, formatHouseNumber } from '../utils/astrologyI18n';
-import { Droplet, Flame, Mountain, Wind, Sparkles, Zap, MapPin, Printer, RefreshCw, Orbit, Shield, Gem, Coins, Palette, Hash, TrendingUp, Heart, Wand2, MessageCircle, CalendarDays, AlertTriangle, CheckCircle2, Hourglass, Lock, Star, FileText } from 'lucide-react';
+import { Droplet, Flame, Mountain, Wind, Sparkles, Zap, MapPin, Printer, RefreshCw, Orbit, Shield, Gem, Coins, Palette, Hash, TrendingUp, Heart, Wand2, MessageCircle, CalendarDays, AlertTriangle, CheckCircle2, Hourglass, Lock, Star, FileText, Sun, Moon as MoonIcon } from 'lucide-react';
 
 function getElementIcon(element = '') {
     const el = String(element).toLowerCase();
@@ -58,6 +58,7 @@ export default function FreeKundli() {
     const [status, setStatus] = useState('idle'); // idle | calculating | ready
     const [kundliResult, setKundliResult] = useState(null);
     const [kundliSettings, setKundliSettings] = useState(DEFAULT_KUNDALI_SETTINGS);
+    const [chartView, setChartView] = useState('lagna'); // lagna | chandra | surya
 
     useSEO({
         title: t('फ्री कुंडली — निःशुल्क जन्म कुंडली एवं जन्म पत्रिका ऑनलाइन | Adhbhut Gyaan', 'Free Kundli Online — Free Janam Kundli & Horoscope by Date of Birth | Adhbhut Gyaan'),
@@ -193,6 +194,7 @@ export default function FreeKundli() {
 
     const handleReset = () => {
         setKundliResult(null);
+        setChartView('lagna');
         setStatus('idle');
         window.scrollTo({ top: 200, behavior: 'smooth' });
     };
@@ -502,14 +504,40 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                         </div>
 
                         {/* SECTION 1: LAGNA CHART & PLANETARY POSITIONS */}
+                        <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '1.25rem' }} role="tablist" aria-label={t('कुंडली प्रकार चुनें', 'Choose chart type')}>
+                            {[
+                                { id: 'lagna', hi: 'लग्न कुंडली', en: 'Lagna Kundali', Icon: Star },
+                                { id: 'chandra', hi: 'चंद्र कुंडली', en: 'Chandra Kundali', Icon: MoonIcon },
+                                { id: 'surya', hi: 'सूर्य कुंडली', en: 'Surya Kundali', Icon: Sun },
+                            ].map(tab => (
+                                <button
+                                    key={tab.id}
+                                    type="button"
+                                    role="tab"
+                                    aria-selected={chartView === tab.id}
+                                    onClick={() => setChartView(tab.id)}
+                                    className={chartView === tab.id ? 'btn btn-primary' : 'btn btn-outline-dark'}
+                                    style={{ fontSize: '0.85rem', padding: '0.5rem 1.1rem', borderRadius: 'var(--radius-full)' }}
+                                >
+                                    <tab.Icon size={14} style={{ verticalAlign: '-2px', marginRight: '0.35rem' }} />{t(tab.hi, tab.en)}
+                                </button>
+                            ))}
+                        </div>
+                        <p style={{ textAlign: 'center', color: 'var(--text-secondary)', fontSize: '0.82rem', marginBottom: '1.5rem' }}>
+                            {chartView === 'lagna' && t('लग्न (उदय राशि) को प्रथम भाव मानकर बनी कुंडली — सबसे सामान्य रूप से उपयोग की जाने वाली कुंडली।', 'Chart with the Ascendant (rising sign) as the 1st house - the most commonly used chart.')}
+                            {chartView === 'chandra' && t('चंद्र राशि को प्रथम भाव मानकर बनी कुंडली — मन, भावनाओं व मानसिक प्रवृत्तियों के विश्लेषण हेतु।', 'Chart with the Moon sign as the 1st house - used for analyzing the mind, emotions, and mental tendencies.')}
+                            {chartView === 'surya' && t('सूर्य राशि को प्रथम भाव मानकर बनी कुंडली — आत्मबल, पिता व करियर के विश्लेषण हेतु।', 'Chart with the Sun sign as the 1st house - used for analyzing willpower, father, and career.')}
+                        </p>
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '1.5rem', marginBottom: '2rem', alignItems: 'start' }}>
                             {/* North Indian SVG Chart */}
                             <NorthIndianChart
-                                houseData={kundliResult.houseData}
+                                houseData={chartView === 'chandra' ? kundliResult.chandraHouseData : chartView === 'surya' ? kundliResult.suryaHouseData : kundliResult.houseData}
                                 devoteeName={kundliResult.devoteeName}
-                                lagnaName={kundliResult.lagna.rashi}
+                                lagnaName={chartView === 'chandra' ? kundliResult.moon.rashi : chartView === 'surya' ? kundliResult.planets.find(p => p.glyph === 'Su')?.rashi.name : kundliResult.lagna.rashi}
                                 numeralSystem={kundliSettings.numeralSystem}
                                 lang={kundliSettings.lang}
+                                chartTitleHi={chartView === 'chandra' ? 'चंद्र कुण्डली (Chandra Kundali)' : chartView === 'surya' ? 'सूर्य कुण्डली (Surya Kundali)' : undefined}
+                                chartTitleEn={chartView === 'chandra' ? 'Chandra Kundali' : chartView === 'surya' ? 'Surya Kundali' : undefined}
                             />
 
                             {/* Planetary Positions Table */}

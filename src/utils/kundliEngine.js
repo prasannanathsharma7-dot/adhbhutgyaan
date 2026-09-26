@@ -228,6 +228,39 @@ export function calculateInstantKundli({ birthDate, birthTime, birthPlace, name,
             };
         }
 
+        // Chandra Kundali (Moon chart) and Surya Kundali (Sun chart): the
+        // same 9 planets, re-counted into houses from the Moon's or Sun's
+        // own sign instead of the Lagna (Ascendant) - the classical
+        // alternate charts every North Indian astrologer reads alongside
+        // the Lagna chart, distinct from the Lagna chart itself (which
+        // this component already built above) and from the D1 "Rashi"
+        // chart used elsewhere in this codebase's PDF report (which fixes
+        // Aries as the 1st house always, a different convention again).
+        // Reuses the same 9 sign-numbers already computed above (rather
+        // than re-deriving them from the planets array) paired with each
+        // planet's glyph, so buildHouseDataFrom() is just the getHouse()
+        // formula above generalized to any reference sign.
+        const planetSignNums = [
+            { glyph: 'Su', signNum: sunSignNum }, { glyph: 'Mo', signNum: moonSignNum },
+            { glyph: 'Ma', signNum: marsSignNum }, { glyph: 'Me', signNum: mercSignNum },
+            { glyph: 'Ju', signNum: jupSignNum }, { glyph: 'Ve', signNum: venSignNum },
+            { glyph: 'Sa', signNum: satSignNum }, { glyph: 'Ra', signNum: rahuSignNum },
+            { glyph: 'Ke', signNum: ketuSignNum },
+        ];
+        const buildHouseDataFrom = (referenceSignNum) => {
+            const hd = {};
+            for (let h = 1; h <= 12; h++) {
+                const rashiId = ((referenceSignNum + h - 2) % 12) + 1;
+                const planetsInHouse = planetSignNums
+                    .filter(p => ((p.signNum - referenceSignNum + 12) % 12) + 1 === h)
+                    .map(p => p.glyph);
+                hd[h] = { houseNumber: h, rashiId, rashiName: RASHIS[rashiId - 1].short, planets: planetsInHouse };
+            }
+            return hd;
+        };
+        const chandraHouseData = buildHouseDataFrom(moonSignNum);
+        const suryaHouseData = buildHouseDataFrom(sunSignNum);
+
         // 6. Dosha Calculations
         const marsFromLagna = getHouse(marsSignNum);
         const marsFromMoon = ((marsSignNum - moonSignNum + 12) % 12) + 1;
@@ -344,6 +377,8 @@ export function calculateInstantKundli({ birthDate, birthTime, birthPlace, name,
             },
             planets,
             houseData,
+            chandraHouseData,
+            suryaHouseData,
             doshas: {
                 manglik: {
                     hasDosh: isManglik,
