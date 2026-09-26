@@ -48,7 +48,7 @@ export default function VastuScore() {
                     <h1 style={{ color: 'white', fontSize: 'clamp(1.8rem, 5vw, 2.6rem)', margin: '0.5rem 0' }}>
                         {t('अपने घर का निःशुल्क वास्तु स्कोर पाएं', "Get Your Home's Free Vastu Score")}
                     </h1>
-                    <p style={{ color: 'var(--warm-200)', maxWidth: '620px', margin: '0 auto' }}>
+                    <p style={{ color: 'var(--warm-200)', maxWidth: '620px', margin: '0 auto' }} role="heading" aria-level="2">
                         {t('मुख्य द्वार, रसोई, पूजा घर, शयन कक्ष एवं शौचालय की दिशा बताएं — शास्त्रोक्त वास्तु नियमों पर आधारित तुरंत विश्लेषण।', "Tell us the direction of your Main Door, Kitchen, Pooja Room, Bedroom, and Toilet - get an instant analysis based on classical Vastu Shastra principles.")}
                     </p>
                 </div>
@@ -60,8 +60,9 @@ export default function VastuScore() {
                         <div style={{ background: 'var(--cream)', borderRadius: 'var(--radius-lg)', padding: '1.75rem' }}>
                             {Object.entries(ROOM_RULES).map(([roomKey, rule]) => (
                                 <div className="form-group" key={roomKey}>
-                                    <label className="form-label">{lang === 'hi' ? rule.nameHi : rule.nameEn}</label>
+                                    <label className="form-label" htmlFor={`vastu-${roomKey}`}>{lang === 'hi' ? rule.nameHi : rule.nameEn}</label>
                                     <select
+                                        id={`vastu-${roomKey}`}
                                         className="form-select"
                                         value={placements[roomKey]}
                                         onChange={e => setPlacements(p => ({ ...p, [roomKey]: e.target.value }))}
@@ -134,7 +135,7 @@ export default function VastuScore() {
                             </button>
                         </div>
                     )}
-                    <p style={{ textAlign: 'center', fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '1.5rem' }}>
+                    <p style={{ textAlign: 'center', fontSize: '0.78rem', color: 'var(--text-secondary)', marginTop: '1.5rem' }}>
                         {t('* यह विश्लेषण 5 प्रमुख कक्षों पर आधारित सामान्य मार्गदर्शन है, संपूर्ण 16-ज़ोन शास्त्रोक्त गणना नहीं — सटीक एवं व्यक्तिगत विश्लेषण हेतु परामर्श लें।', '* This is general guidance based on 5 key rooms, not a full 16-zone classical calculation - consult for a precise, personalized analysis.')}
                     </p>
                 </div>
