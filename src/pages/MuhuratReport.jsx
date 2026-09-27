@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams, useSearchParams, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import useSEO from '../hooks/useSEO';
 import { CheckCircle2, MessageCircle, ShieldCheck } from 'lucide-react';
@@ -7,8 +7,6 @@ import { CheckCircle2, MessageCircle, ShieldCheck } from 'lucide-react';
 export default function MuhuratReport() {
     const { t } = useLanguage();
     const { orderId } = useParams();
-    const [searchParams] = useSearchParams();
-    const adminKey = searchParams.get('admin_key');
     const [data, setData] = useState(null);
     const [error, setError] = useState('');
 
@@ -21,15 +19,26 @@ export default function MuhuratReport() {
     });
 
     useEffect(() => {
-        const url = `/api/muhurat-booking?orderId=${orderId}${adminKey ? `&admin_key=${encodeURIComponent(adminKey)}` : ''}`;
-        fetch(url)
+        // Admin key travels as a request header, never a URL query param -
+        // query strings get written to browser history, server access logs,
+        // and any analytics/proxy layer in front of the site, none of which
+        // should ever see an admin credential (see the site-wide security
+        // fix this header-only pattern was rolled out for). The admin
+        // dashboard (admin.jsx) already keeps the key in sessionStorage once
+        // entered there, so a same-tab-origin "View Report" link picks it up
+        // automatically with nothing sensitive in the URL; opening this link
+        // in a fresh browser/session simply shows the regular devotee view.
+        let adminKey = '';
+        try { adminKey = sessionStorage.getItem('ag_admin_key') || ''; } catch { /* ignore */ }
+        const headers = adminKey ? { 'x-admin-key': adminKey } : {};
+        fetch(`/api/muhurat-booking?orderId=${orderId}`, { headers })
             .then(res => res.json())
             .then(json => {
                 if (!json.ok) { setError(json.error); return; }
                 setData(json);
             })
             .catch(() => setError(t('रिपोर्ट लोड करने में त्रुटि हुई', 'Failed to load the report')));
-    }, [orderId, adminKey]);
+    }, [orderId]);
 
     if (error) {
         return (

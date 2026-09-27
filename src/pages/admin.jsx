@@ -394,7 +394,7 @@ export default function Admin() {
                                     {fmtDate(it.createdAt)}
                                 </div>
                                 <div style={{ marginTop: '0.75rem', display: 'flex', gap: '0.6rem', alignItems: 'center', flexWrap: 'wrap' }}>
-                                    <a href={`/muhurat/report/${it._id}?admin_key=${encodeURIComponent(key)}`} target="_blank" rel="noreferrer" className="btn btn-outline-dark" style={{ padding: '0.35rem 0.8rem', fontSize: '0.85rem' }}>
+                                    <a href={`/muhurat/report/${it._id}`} target="_blank" rel="noreferrer" className="btn btn-outline-dark" style={{ padding: '0.35rem 0.8rem', fontSize: '0.85rem' }}>
                                         🔗 View Report
                                     </a>
                                     <StatusSelect
