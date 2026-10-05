@@ -15,8 +15,8 @@ export default function PanditProfile() {
             'Dr. Umang Nath Sharma — Vedic Astrologer & Priest, Kashi | Adhbhut Gyaan'
         ),
         description: t(
-            'डॉ. उमंग नाथ शर्मा — 400+ वर्षों की काशी वैदिक परंपरा के तीसरी पीढ़ी के वाहक, मैरीलैंड स्टेट यूनिवर्सिटी (USA) से "डॉक्टर ऑफ एस्ट्रोलॉजी"। कुंडली विश्लेषण, ग्रह दोष निवारण एवं प्रामाणिक कर्मकांड।',
-            'Dr. Umang Nath Sharma — 3rd-generation bearer of a 400+ year Kashi Vedic lineage, conferred "Doctor of Astrology" by Maryland State University, USA. Kundli analysis, planetary dosha remedies & authentic Vedic rites.'
+            'डॉ. उमंग नाथ शर्मा — 400+ वर्षों की काशी वैदिक परंपरा के तीसरी पीढ़ी के वाहक। कुंडली विश्लेषण, ग्रह दोष निवारण एवं प्रामाणिक कर्मकांड।',
+            'Dr. Umang Nath Sharma — 3rd-generation bearer of a 400+ year Kashi Vedic lineage. Kundli analysis, dosha remedies & authentic Vedic rites.'
         ),
         path: '/pt-umang-nath-sharma',
         jsonLd: combineJsonLd(
@@ -190,7 +190,7 @@ export default function PanditProfile() {
                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '0.75rem' }}>
                                 <Clock size={14} /> {t('प्रातः 9 बजे - मध्याह्न 12 बजे', '9 AM - 12 PM')}
                             </div>
-                            <a href="https://www.google.com/maps/search/?api=1&query=J11%2F19%2C+Nati+Imli+Rd%2C+Ishwargangi%2C+Varanasi" target="_blank" rel="noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', marginTop: '1rem', fontSize: '0.88rem', fontWeight: 700, color: 'var(--gold-700)' }}>
+                            <a href="https://www.google.com/maps/search/?api=1&query=J11%2F19%2C+Nati+Imli+Rd%2C+Ishwargangi%2C+Varanasi" target="_blank" rel="noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', marginTop: '1rem', fontSize: '0.88rem', fontWeight: 700, color: 'var(--gold-800)' }}>
                                 <MapPin size={14} /> {t('Google मैप्स पर देखें', 'View on Google Maps')}
                             </a>
                         </div>

@@ -5,6 +5,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { gallery, videoClips } from '../data/media';
 import useSEO from '../hooks/useSEO';
 import { breadcrumbJsonLd, combineJsonLd } from '../utils/seo';
+import { getPackagePrice, formatINR } from '../config/pricing';
 import BirthDetailsInput from '../components/BirthDetailsInput';
 import { Smartphone, Landmark, Home as HomeIcon, Star, AlertTriangle, CheckCircle2, MessageCircle, Phone, Mail, FileText, CalendarClock, Video, Gift } from 'lucide-react';
 
@@ -232,6 +233,7 @@ export default function Booking() {
 
 *${t('सेवा', 'Service')}:* ${selectedService.name} (${selectedService.nameEn})
 *${t('पैकेज', 'Package')}:* ${selectedPkg.name} (${selectedPkg.nameEn})
+${getPackagePrice(selectedPkg) ? `*${t('मूल्य', 'Price')}:* ${formatINR(getPackagePrice(selectedPkg))}` : ''}
 *${t('जाप/पाठ', 'Jaap/Paath')}:* ${selectedPkg.paathCount}
 *${t('माध्यम', 'Mode')}:* ${modeLabel}
 ${form.preferredDate ? `*${t('इच्छित मुहूर्त तिथि', 'Preferred Muhurat Date')}:* ${form.preferredDate}${form.preferredSlot ? ` (${muhuratSlots.find(s => s.v === form.preferredSlot)?.label} - ${muhuratSlots.find(s => s.v === form.preferredSlot)?.time})` : ''}` : ''}
@@ -249,6 +251,7 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
 
 ${t('सेवा', 'Service')}: ${selectedService.name} (${selectedService.nameEn})
 ${t('पैकेज', 'Package')}: ${selectedPkg.name} (${selectedPkg.nameEn})
+${getPackagePrice(selectedPkg) ? `${t('मूल्य', 'Price')}: ${formatINR(getPackagePrice(selectedPkg))}` : ''}
 ${t('जाप/पाठ', 'Jaap/Paath')}: ${selectedPkg.paathCount}
 ${t('माध्यम', 'Mode')}: ${modeLabel}
 ${form.preferredDate ? `${t('इच्छित मुहूर्त तिथि', 'Preferred Muhurat Date')}: ${form.preferredDate}${form.preferredSlot ? ` (${muhuratSlots.find(s => s.v === form.preferredSlot)?.label} - ${muhuratSlots.find(s => s.v === form.preferredSlot)?.time})` : ''}` : ''}
@@ -442,6 +445,11 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                                         {lang === 'hi' && <div className="package-name-en">{pkg.nameEn}</div>}
                                         <div className="package-count">{lang === 'hi' ? pkg.paathCount : (pkg.paathCountEn || pkg.paathCount)}</div>
                                         <div className="package-includes">{t('शामिल', 'Includes')}: {lang === 'hi' ? pkg.includes : (pkg.includesEn || pkg.includes)}</div>
+                                        {getPackagePrice(pkg) ? (
+                                            <div className="package-price">{formatINR(getPackagePrice(pkg))}</div>
+                                        ) : (
+                                            <div className="package-price package-price-contact">{t('मूल्य हेतु संपर्क करें', 'Contact for pricing')}</div>
+                                        )}
                                     </div>
                                 ))}
                             </div>
@@ -623,11 +631,12 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                                 <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
                                     <img src={`/images/${selectedService.image}`} alt={selectedService.nameEn} style={{ width: '120px', height: '120px', borderRadius: '50%', objectFit: 'cover', border: '3px solid var(--gold-400)', margin: '0 auto 1rem auto', display: 'block' }} />
                                     <h3 style={{ fontFamily: 'var(--font-hindi)', marginTop: '0.5rem' }}>{lang === 'hi' ? selectedService.name : selectedService.nameEn}</h3>
-                                    {lang === 'hi' && <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>{selectedService.nameEn}</p>}
+                                    {lang === 'hi' && <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>{selectedService.nameEn}</p>}
                                 </div>
                                 <div style={{ borderTop: '1px solid var(--border-light)', paddingTop: '1.25rem' }}>
                                     {[
                                         [t('पैकेज', 'Package'), `${selectedPkg.name} (${selectedPkg.nameEn})`],
+                                        ...(getPackagePrice(selectedPkg) ? [[t('मूल्य', 'Price'), formatINR(getPackagePrice(selectedPkg))]] : []),
                                         [t('जाप/पाठ', 'Jaap/Paath'), selectedPkg.paathCount],
                                         [t('शामिल', 'Includes'), selectedPkg.includes],
                                         [t('माध्यम', 'Mode'), modeLabel],

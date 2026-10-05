@@ -194,7 +194,7 @@ button:focus-visible,
     --whatsapp-dark: #0D6459;
     --text-primary: #0D1030;
     --text-secondary: #4A4F72;
-    --text-muted: #6E7396;
+    --text-muted: #5C6184;
     --text-light: #FFF8F0;
     --border-light: rgba(196, 154, 44, 0.2);
     --border-gold: rgba(196, 154, 44, 0.5);
@@ -1103,7 +1103,7 @@ h3 {
 
 .package-name-en {
     font-size: 0.8rem;
-    color: var(--text-muted);
+    color: var(--text-secondary);
     margin-bottom: 1rem;
 }
 
@@ -1116,10 +1116,25 @@ h3 {
 
 .package-includes {
     font-size: 0.85rem;
-    color: var(--text-muted);
+    color: var(--text-secondary);
     margin-bottom: 1.5rem;
     padding-bottom: 1.5rem;
     border-bottom: 1px solid var(--border-light);
+}
+
+.package-price {
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--navy-950);
+    margin-bottom: 1.25rem;
+}
+
+.package-price-contact {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--gold-800);
 }
 
 /* ===== Hero ===== */
@@ -2609,11 +2624,16 @@ h3 {
         align-items: stretch;
         justify-content: flex-start;
         padding: 0.6rem 1rem 1.25rem;
-        transition: transform var(--dur-normal) var(--ease-out), opacity var(--dur-normal) var(--ease-out);
+        /* visibility:hidden (delayed until the fade finishes) removes the closed
+           menu's links from keyboard tab order and the accessibility tree -
+           opacity/pointer-events alone left 9 invisible links tabbable ahead of
+           the hamburger button. */
+        transition: transform var(--dur-normal) var(--ease-out), opacity var(--dur-normal) var(--ease-out), visibility 0s linear var(--dur-normal);
         gap: 0.4rem;
         transform: translateY(-8px);
         opacity: 0;
         pointer-events: none;
+        visibility: hidden;
         border-bottom: 1px solid var(--border-light);
         box-shadow: var(--shadow-lg);
         z-index: 999;
@@ -2623,6 +2643,8 @@ h3 {
         transform: translateY(0);
         opacity: 1;
         pointer-events: auto;
+        visibility: visible;
+        transition: transform var(--dur-normal) var(--ease-out), opacity var(--dur-normal) var(--ease-out), visibility 0s;
     }
 
     .nav-links a {
@@ -2878,7 +2900,7 @@ h3 {
 }
 
 .blog-card-link {
-    color: var(--gold-500);
+    color: var(--gold-800);
     font-weight: 600;
     font-size: 0.9rem;
     display: flex;

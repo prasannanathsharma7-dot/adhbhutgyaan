@@ -225,8 +225,8 @@ export default function Panchang() {
             `Today's Panchang — ${cityName} (${dateFormatted}) | Shubh Muhurat, Rahu Kaal & Choghadiya`
         ),
         description: t(
-            `${cityName} का आज का पंचांग एवं शुभ मुहूर्त: सूर्योदय ${panchangData?.solar?.sunrise || '05:45 AM'}, सूर्यास्त ${panchangData?.solar?.sunset || '06:30 PM'}, तिथि ${panchangData?.tithi?.name || 'Shukla Pratipada'}, नक्षत्र ${panchangData?.nakshatra?.name || 'Ashwini'}, अभिजित मुहूर्त ${panchangData?.muhurats?.abhijit || '11:45 AM - 12:35 PM'}, राहु काल ${panchangData?.inauspicious?.rahuKaal || '04:30 PM - 06:00 PM'} एवं चौघड़िया।`,
-            `Today's Panchang & Shubh Muhurat for ${cityName}: Sunrise ${panchangData?.solar?.sunrise || '05:45 AM'}, Sunset ${panchangData?.solar?.sunset || '06:30 PM'}, Tithi ${panchangData?.tithi?.name || 'Shukla Pratipada'}, Nakshatra ${panchangData?.nakshatra?.name || 'Ashwini'}, Abhijit Muhurat ${panchangData?.muhurats?.abhijit || '11:45 AM - 12:35 PM'}, Rahu Kaal ${panchangData?.inauspicious?.rahuKaal || '04:30 PM - 06:00 PM'} & Choghadiya.`
+            `${cityName} का आज का पंचांग — तिथि ${panchangData?.tithi?.name || 'Shukla Pratipada'}, नक्षत्र ${panchangData?.nakshatra?.name || 'Ashwini'}, सूर्योदय ${panchangData?.solar?.sunrise || '05:45 AM'}, अभिजित मुहूर्त, राहु काल एवं चौघड़िया।`,
+            `Today's Panchang for ${cityName}: Tithi ${panchangData?.tithi?.name || 'Shukla Pratipada'}, Nakshatra ${panchangData?.nakshatra?.name || 'Ashwini'}, sunrise ${panchangData?.solar?.sunrise || '05:45 AM'}, Abhijit Muhurat, Rahu Kaal & Choghadiya.`
         ),
         path: '/panchang',
         jsonLd: combineJsonLd(breadcrumbJsonLd([
@@ -383,6 +383,7 @@ export default function Panchang() {
                                 </button>
                                 <input
                                     type="date"
+                                    aria-label={t('दिनांक चुनें', 'Choose date')}
                                     className="form-input"
                                     value={selectedDate}
                                     onChange={e => setSelectedDate(e.target.value)}
@@ -438,9 +439,9 @@ export default function Panchang() {
                     {/* Left Column: 5 Limbs of Panchang */}
                     <div style={{ background: 'white', borderRadius: 'var(--radius-lg)', padding: '1.5rem', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-md)' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', paddingBottom: '0.6rem', borderBottom: '1px solid var(--border-light)' }}>
-                            <h3 style={{ margin: 0, fontSize: '1.15rem', color: 'var(--navy-900)' }}>
+                            <h2 style={{ margin: 0, fontSize: '1.15rem', color: 'var(--navy-900)' }}>
                                 <ScrollText size={16} style={{ verticalAlign: '-3px', marginRight: '0.35rem' }} />{t('पंचांग के पांच अंग', 'Five Vedic Limbs (Panchang)')}
-                            </h3>
+                            </h2>
                             <span style={{ fontSize: '0.75rem', background: 'var(--warm-100)', padding: '0.2rem 0.5rem', borderRadius: '4px', color: 'var(--navy-800)', fontWeight: 600 }}>
                                 {cityName}
                             </span>
@@ -538,9 +539,9 @@ export default function Panchang() {
                         <div>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                                 <Clock size={18} style={{ color: 'var(--gold-600)' }} />
-                                <h3 style={{ margin: 0, fontSize: '1.2rem', color: 'var(--navy-900)' }}>
+                                <h2 style={{ margin: 0, fontSize: '1.2rem', color: 'var(--navy-900)' }}>
                                     {t('आज का चौघड़िया (Day & Night Choghadiya)', 'Dynamic Choghadiya Timings')}
-                                </h3>
+                                </h2>
                             </div>
                             <p style={{ margin: 0, fontSize: '0.82rem', color: 'var(--text-muted)' }}>
                                 {t('शुभ कार्यों हेतु अमृत, शुभ, एवं लाभ चौघड़िया का चयन करें।', 'Choose Amrit, Shubh or Labh Choghadiya slots for auspicious tasks.')}
@@ -624,9 +625,9 @@ export default function Panchang() {
                         <span style={{ color: 'var(--gold-400)', fontWeight: 700, fontSize: '0.85rem', letterSpacing: '0.5px', textTransform: 'uppercase' }}>
                             <Share2 size={13} style={{ verticalAlign: '-2px', marginRight: '0.3rem' }} />{t('शेयर करें अथवा संकल्प बुक करें', 'Share Today’s Panchang & Book Sankalp')}
                         </span>
-                        <h3 style={{ margin: '0.35rem 0 0.5rem', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)', color: 'white' }}>
+                        <h2 style={{ margin: '0.35rem 0 0.5rem', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)', color: 'white' }}>
                             {t('शुभ मुहूर्त में प्रत्यक्ष लाइव वीडियो संकल्प पूजा करवाएं', 'Book Direct 1-on-1 Live WhatsApp Video Sankalp in Kashi')}
-                        </h3>
+                        </h2>
                         <p style={{ margin: 0, fontSize: '0.9rem', color: 'rgba(255,255,255,0.85)', lineHeight: 1.5 }}>
                             {t(
                                 'काशी के विद्वान पंडितों द्वारा गंगा तट पर आपके नाम एवं गोत्र से प्रत्यक्ष लाइव 1-on-1 व्हाट्सएप वीडियो कॉल पर संकल्प सम्पन्न करवाएं।',

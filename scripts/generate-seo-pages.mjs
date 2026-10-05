@@ -199,7 +199,7 @@ const routes = [
     },
     {
         path: '/panchang',
-        title: 'आज का पंचांग | शुभ मुहूर्त, राहु काल एवं चौघड़िया — Universal Dynamic Ephemeris | Adhbhut Gyaan',
+        title: 'आज का पंचांग | शुभ मुहूर्त, राहु काल एवं चौघड़िया | Adhbhut Gyaan',
         description: 'विश्व के किसी भी नगर हेतु आज का पंचांग एवं शुभ मुहूर्त: सूर्योदय-सूर्यास्त, तिथि, नक्षत्र, अभिजित मुहूर्त, राहु काल एवं चौघड़िया की वास्तविक समय गणना।',
         jsonLd: combineJsonLd(breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Daily Panchang', path: '/panchang' }])),
     },
@@ -236,13 +236,13 @@ const routes = [
     {
         path: '/privacy',
         title: 'गोपनीयता नीति | Adhbhut Gyaan',
-        description: 'हम आपकी जानकारी कैसे एकत्र और उपयोग करते हैं।',
+        description: 'अद्भुत ज्ञान वेबसाइट, पूजा बुकिंग व निःशुल्क कुंडली के उपयोग पर आपकी जानकारी कैसे एकत्र, उपयोग व सुरक्षित की जाती है।',
         jsonLd: combineJsonLd(breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Privacy Policy', path: '/privacy' }])),
     },
     {
         path: '/terms',
         title: 'नियम एवं शर्तें | Adhbhut Gyaan',
-        description: 'इस वेबसाइट के उपयोग की शर्तें।',
+        description: 'अद्भुत ज्ञान वेबसाइट, पूजा बुकिंग एवं निःशुल्क ज्योतिष टूल्स के उपयोग की शर्तें।',
         jsonLd: combineJsonLd(breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Terms of Service', path: '/terms' }])),
     },
     {

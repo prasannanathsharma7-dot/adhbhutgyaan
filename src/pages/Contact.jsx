@@ -223,8 +223,8 @@ ${form.message}`;
                                         {errors.email && <p className="form-error" style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}><AlertTriangle size={13} />{errors.email}</p>}
                                     </div>
                                     <div className="form-group">
-                                        <label className="form-label">{t('विषय', 'Subject')}</label>
-                                        <select className="form-select" value={form.subject} onChange={e => setForm({ ...form, subject: e.target.value })}>
+                                        <label className="form-label" htmlFor="contact-subject">{t('विषय', 'Subject')}</label>
+                                        <select id="contact-subject" className="form-select" value={form.subject} onChange={e => setForm({ ...form, subject: e.target.value })}>
                                             <option value="">-- {t('चुनें', 'Select')} --</option>
                                             {subjectOptions.map(o => (
                                                 <option key={o.v} value={o.v}>{lang === 'hi' ? o.hi : o.en}</option>

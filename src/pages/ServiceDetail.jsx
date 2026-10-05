@@ -1,3 +1,4 @@
+import { getPackagePrice, formatINR } from '../config/pricing';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import servicesData from '../data/services.json';
 import blogData from '../data/blog.json';
@@ -135,7 +136,7 @@ export default function ServiceDetail() {
                                 { icon: Landmark, label: t('मंदिर में', 'At a Temple') },
                             ]
                         ).map((m, i) => (
-                            <span key={i} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', background: 'var(--gold-50)', border: '1px solid var(--border-gold)', color: 'var(--gold-700)', fontWeight: 600, fontSize: '0.85rem', padding: '0.45rem 0.9rem', borderRadius: 'var(--radius-xl)' }}>
+                            <span key={i} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', background: 'var(--gold-50)', border: '1px solid var(--border-gold)', color: 'var(--gold-800)', fontWeight: 600, fontSize: '0.85rem', padding: '0.45rem 0.9rem', borderRadius: 'var(--radius-xl)' }}>
                                 <m.icon size={14} />{m.label}
                             </span>
                         ))}
@@ -150,6 +151,11 @@ export default function ServiceDetail() {
                                 {lang === 'hi' && <div className="package-name-en">{pkg.nameEn}</div>}
                                 <div className="package-count">{lang === 'hi' ? pkg.paathCount : (pkg.paathCountEn || pkg.paathCount)}</div>
                                 <div className="package-includes">{t('शामिल', 'Includes')}: {lang === 'hi' ? pkg.includes : (pkg.includesEn || pkg.includes)}</div>
+                                {getPackagePrice(pkg) ? (
+                                    <div className="package-price">{formatINR(getPackagePrice(pkg))}</div>
+                                ) : (
+                                    <div className="package-price package-price-contact">{t('मूल्य हेतु संपर्क करें', 'Contact for pricing')}</div>
+                                )}
                                 <a
                                     href={`https://wa.me/919278148269?text=${encodeURIComponent(t(
                                         `नमस्कार! मुझे "${service.name} — ${pkg.name}" के बारे में पूछताछ करनी है। कृपया अधिक जानकारी दें।`,

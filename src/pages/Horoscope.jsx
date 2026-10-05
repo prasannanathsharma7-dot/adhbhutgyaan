@@ -208,8 +208,8 @@ export default function Horoscope() {
 
                     <div style={{ maxWidth: '600px', margin: '2rem auto 0', display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'flex-end', justifyContent: 'center' }}>
                         <div style={{ flex: '1 1 200px' }}>
-                            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.4rem', color: 'var(--navy-900)' }}>{t('पहली राशि', 'First Rashi')}</label>
-                            <select
+                            <label htmlFor="compare-rashi-1" style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.4rem', color: 'var(--navy-900)' }}>{t('पहली राशि', 'First Rashi')}</label>
+                            <select id="compare-rashi-1"
                                 value={rashiA}
                                 onChange={(e) => setRashiA(e.target.value)}
                                 style={{ width: '100%', padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-gold)', background: 'white', fontSize: '0.95rem' }}
@@ -221,8 +221,8 @@ export default function Horoscope() {
                             </select>
                         </div>
                         <div style={{ flex: '1 1 200px' }}>
-                            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.4rem', color: 'var(--navy-900)' }}>{t('दूसरी राशि', 'Second Rashi')}</label>
-                            <select
+                            <label htmlFor="compare-rashi-2" style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.4rem', color: 'var(--navy-900)' }}>{t('दूसरी राशि', 'Second Rashi')}</label>
+                            <select id="compare-rashi-2"
                                 value={rashiB}
                                 onChange={(e) => setRashiB(e.target.value)}
                                 style={{ width: '100%', padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-gold)', background: 'white', fontSize: '0.95rem' }}

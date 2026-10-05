@@ -8,7 +8,7 @@ export default function Privacy() {
 
     useSEO({
         title: t('गोपनीयता नीति | Adhbhut Gyaan', 'Privacy Policy | Adhbhut Gyaan'),
-        description: t('हम आपकी जानकारी कैसे एकत्र और उपयोग करते हैं।', 'How we collect and use your information.'),
+        description: t('अद्भुत ज्ञान वेबसाइट, पूजा बुकिंग व निःशुल्क कुंडली के उपयोग पर आपकी जानकारी कैसे एकत्र, उपयोग व सुरक्षित की जाती है।', 'How Adhbhut Gyaan collects, uses and protects your information when you use our website, book a pooja or generate a free kundli.'),
         path: '/privacy',
         jsonLd: combineJsonLd(breadcrumbJsonLd([
             { name: 'Home', path: '/' },

@@ -1,3 +1,4 @@
+import { getPackagePrice } from '../config/pricing';
 const SITE_URL = 'https://www.adhbhutgyaan.com';
 
 /**
@@ -78,6 +79,12 @@ export function serviceJsonLd(service, lang) {
             name: lang === 'hi' ? pkg.name : pkg.nameEn,
             description: pkg.includes,
             availability: 'https://schema.org/InStock',
+            // price/priceCurrency are only included once a real price is set
+            // (see src/data/services.json's packages[].price) - Google's own
+            // structured-data guidance is to omit the field entirely rather
+            // than send an empty/null price, since a present-but-empty price
+            // is treated as invalid markup rather than "price on request".
+            ...(getPackagePrice(pkg) ? { price: String(getPackagePrice(pkg)), priceCurrency: 'INR' } : {}),
         })),
     };
 }

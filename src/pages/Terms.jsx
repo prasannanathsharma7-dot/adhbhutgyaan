@@ -8,7 +8,7 @@ export default function Terms() {
 
     useSEO({
         title: t('नियम एवं शर्तें | Adhbhut Gyaan', 'Terms of Service | Adhbhut Gyaan'),
-        description: t('इस वेबसाइट के उपयोग की शर्तें।', 'Terms and conditions for using this website.'),
+        description: t('अद्भुत ज्ञान वेबसाइट, पूजा बुकिंग एवं निःशुल्क ज्योतिष टूल्स के उपयोग की शर्तें।', 'Terms and conditions for using the Adhbhut Gyaan website, booking pooja services and our free astrology tools.'),
         path: '/terms',
         jsonLd: combineJsonLd(breadcrumbJsonLd([
             { name: 'Home', path: '/' },
