@@ -2,6 +2,7 @@
 // File: scripts/test-system-health.mjs
 // Run via: node scripts/test-system-health.mjs or npm test
 
+import { createRequire } from 'node:module';
 import { calculateInstantKundli, RASHIS, NAKSHATRAS } from '../src/utils/kundliEngine.js';
 import { calculateGlobalPanchang, calculateSolarGeometry, formatMinutesToTime } from '../src/utils/astroEngine.js';
 import { d2Hora, d3Drekkana, d7Saptamsha, d9Navamsha, d12Dwadashamsha, d30Trimshamsha, signAndOffset } from '../backend/utils/divisionalCharts.js';
@@ -788,6 +789,37 @@ assert(bhavaBalaFaladeshTest.ranked.length === 12, 'Bhava Bala Faladesh: ranks a
 
 
 console.log('\n\x1b[1m\x1b[36m============================================================\x1b[0m');
+
+// ---- Horoscope text quality (regression guard) ----
+// A live check found two readability bugs the old "are the 12 texts different?"
+// test could not see: planet lines run together with no full stop, and the
+// monthly reading saying "today". Check every rashi, both periods, both languages.
+{
+    const req = createRequire(import.meta.url);
+    const { RASHIS: HRASHIS, buildPanchangHoroscope } = req('../backend/utils/horoscope-generator.js');
+    const { getSiderealLongitudes } = req('../backend/utils/vedic-ephemeris.js');
+    const sid = getSiderealLongitudes(new Date());
+    const problems = [];
+    const texts = new Set();
+    for (const period of ['daily', 'monthly']) {
+        for (const r of HRASHIS) {
+            const out = buildPanchangHoroscope(r, period, sid, period === 'daily' ? '2026-01-01' : '2026-01');
+            if (period === 'daily') texts.add(out.en);
+            for (const lang of ['en', 'hi']) {
+                const lines = out[lang].split('\n').filter(l => l.startsWith('\u{1F539}'));
+                if (lines.length !== 4) problems.push(`${r.id} ${period} ${lang}: ${lines.length} category lines`);
+                for (const l of lines) {
+                    if (!/[.\u0964]$/.test(l)) problems.push(`${r.id} ${period} ${lang}: line has no final stop`);
+                    if (/[a-z\u0900-\u097F] (Jupiter|Saturn|Rahu|Ketu) /.test(l.replace(/^[^:]*:\s*/, '')) && !/[.\u0964] (Jupiter|Saturn|Rahu|Ketu) /.test(l) && (l.match(/(Jupiter|Saturn|Rahu|Ketu) (is|in)/g) || []).length > 1) problems.push(`${r.id} ${period} ${lang}: planet lines run together`);
+                    if (period === 'monthly' && lang === 'en' && /\btoday\b/i.test(l)) problems.push(`${r.id} monthly English says "today"`);
+                }
+            }
+        }
+    }
+    assert(problems.length === 0, 'horoscope text: 24 readings are well-formed (stops, 4 categories, no "today" in monthly)', problems.slice(0, 3).join(' | '));
+    assert(texts.size === 12, 'horoscope text: all 12 rashis get different daily readings', `distinct=${texts.size}`);
+}
+
 console.log(`\x1b[1mTOTAL TESTS RUN: ${totalTests} | PASSED: \x1b[32m${passedTests}\x1b[0m | FAILED: \x1b[31m${failedTests}\x1b[0m\x1b[0m`);
 console.log('\x1b[1m\x1b[36m============================================================\x1b[0m\n');
 

@@ -23,6 +23,10 @@ const { getDb, withCors, checkRateLimit } = require('./_db');
 const { getSiderealLongitudes } = require('./utils/vedic-ephemeris');
 const { RASHIS, buildPanchangHoroscope } = require('./utils/horoscope-generator');
 
+// Bump whenever the generated wording changes: cached rows from an older version
+// are then regenerated instead of being served for the rest of the day/month.
+const GEN_VERSION = 2;
+
 function getDateKey(period) {
     const now = new Date();
     // Use IST calendar date so it flips at Indian midnight, not UTC midnight.
@@ -87,7 +91,7 @@ module.exports = async (req, res) => {
         // this check those stale rows would keep being served for the rest of
         // their day - or the rest of the MONTH for 'monthly' entries - even
         // after this generator is deployed.
-        if (cached && cached.source === 'panchang' && cached.text && typeof cached.text === 'object') {
+        if (cached && cached.source === 'panchang' && cached.genVersion === GEN_VERSION && cached.text && typeof cached.text === 'object') {
             res.status(200).json({ ok: true, rashi, period, dateKey, text: cached.text, source: 'cache' });
             return;
         }
@@ -100,7 +104,7 @@ module.exports = async (req, res) => {
         try {
             await col.updateOne(
                 { _id: cacheId },
-                { $set: { text, rashiId, period, dateKey, createdAt: new Date(), source } },
+                { $set: { text, rashiId, period, dateKey, createdAt: new Date(), source, genVersion: GEN_VERSION } },
                 { upsert: true }
             );
         } catch (cacheErr) {

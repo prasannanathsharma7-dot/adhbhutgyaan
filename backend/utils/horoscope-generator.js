@@ -143,19 +143,19 @@ const CATEGORY_LABEL = {
 // without ever repeating verbatim within the same day for a given rashi.
 const NEUTRAL_LINES = {
     career: [
-        { hi: 'कार्यक्षेत्र में स्थिरता बनी रहेगी, निरंतरता बनाए रखें।', en: 'Work stays on a steady footing today - keep up your consistent effort.' },
+        { hi: 'कार्यक्षेत्र में स्थिरता बनी रहेगी, निरंतरता बनाए रखें।', en: 'Work stays on a steady footing - keep up your consistent effort.' },
         { hi: 'कार्यक्षेत्र में सामान्य प्रगति के संकेत हैं, धैर्य रखें।', en: 'Work shows ordinary, steady progress - patience serves you well.' },
     ],
     money: [
-        { hi: 'आर्थिक स्थिति सामान्य रहेगी, अनावश्यक व्यय से बचें।', en: 'Finances stay steady - it is a good day to avoid unnecessary spending.' },
-        { hi: 'धन संबंधी मामलों में सामान्य स्थिरता रहेगी।', en: 'Money matters remain on an even, stable footing today.' },
+        { hi: 'आर्थिक स्थिति सामान्य रहेगी, अनावश्यक व्यय से बचें।', en: 'Finances stay steady - a good time to avoid unnecessary spending.' },
+        { hi: 'धन संबंधी मामलों में सामान्य स्थिरता रहेगी।', en: 'Money matters remain on an even, stable footing.' },
     ],
     relationships: [
-        { hi: 'पारिवारिक व सामाजिक जीवन में सामान्य सामंजस्य बना रहेगा।', en: 'Family and social life stay on an even, harmonious note today.' },
+        { hi: 'पारिवारिक व सामाजिक जीवन में सामान्य सामंजस्य बना रहेगा।', en: 'Family and social life stay on an even, harmonious note.' },
         { hi: 'रिश्तों में सामान्य समझ व सहयोग बना रहेगा।', en: 'Relationships continue with ordinary understanding and cooperation.' },
     ],
     health: [
-        { hi: 'स्वास्थ्य सामान्य रहेगा, हल्का व्यायाम लाभकारी रहेगा।', en: 'Health stays steady - light exercise will serve you well today.' },
+        { hi: 'स्वास्थ्य सामान्य रहेगा, हल्का व्यायाम लाभकारी रहेगा।', en: 'Health stays steady - light exercise will serve you well.' },
         { hi: 'ऊर्जा का स्तर सामान्य रहेगा, नियमित दिनचर्या बनाए रखें।', en: 'Energy levels stay average - maintaining your regular routine helps.' },
     ],
 };
@@ -165,6 +165,11 @@ const LUCKY_COLORS = [
     { hi: 'सफ़ेद', en: 'White' }, { hi: 'नारंगी', en: 'Orange' }, { hi: 'गुलाबी', en: 'Pink' },
     { hi: 'आसमानी नीला', en: 'Sky Blue' }, { hi: 'सुनहरा', en: 'Golden' },
 ];
+
+// Planet lines are written without a final full stop so they can slot into a
+// sentence; when several are joined into one paragraph each must end properly,
+// otherwise they run together ("...contentment Rahu in your gains house...").
+const endSentence = (s, hindi) => (/[.\u0964!?]$/.test(s.trim()) ? s.trim() : s.trim() + (hindi ? '\u0964' : '.'));
 
 function houseFrom(fromSignIdx, planetSignIdx) {
     return ((planetSignIdx - fromSignIdx + 12) % 12) + 1;
@@ -234,8 +239,8 @@ function buildPanchangHoroscope(rashi, period, sid, dateKey) {
             const pick = seededPick(`${rashi.id}:${period}:${dateKey}:${cat}`, NEUTRAL_LINES[cat].length);
             hits.push(NEUTRAL_LINES[cat][pick]);
         }
-        categoryParas.hi[cat] = hits.map(h => h.hi).join(' ');
-        categoryParas.en[cat] = hits.map(h => h.en).join(' ');
+        categoryParas.hi[cat] = hits.map(h => endSentence(h.hi, true)).join(' ');
+        categoryParas.en[cat] = hits.map(h => endSentence(h.en, false)).join(' ');
     }
 
     const moonLine = housesByPlanet.moon ? GOCHAR_EFFECTS.moon[housesByPlanet.moon] : null;
@@ -249,7 +254,7 @@ function buildPanchangHoroscope(rashi, period, sid, dateKey) {
     const lordNumber = { Sun: 1, Moon: 2, Mars: 9, Mercury: 5, Jupiter: 3, Venus: 6, Saturn: 8 }[rashi.lord] || 1;
     const luckyNumber = ((lordNumber + seededPick(`${rashi.id}:${period}:${dateKey}:num`, 9)) % 9) + 1;
 
-    const hi = `${moonLine ? moonLine.hi + ' ' : ''}${rashi.name} राशि के लिए ${scope.hi} ग्रह-गोचर इस प्रकार रहेंगे:
+    const hi = `${moonLine ? endSentence(moonLine.hi, true) + ' ' : ''}${rashi.name} राशि के लिए ${scope.hi} ग्रह-गोचर इस प्रकार रहेंगे:
 
 🔹 करियर: ${categoryParas.hi.career}
 🔹 धन: ${categoryParas.hi.money}
