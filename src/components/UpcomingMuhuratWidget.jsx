@@ -48,13 +48,13 @@ export default function UpcomingMuhuratWidget() {
     }, []);
 
     if (matches === null) {
-        return <section className="section muhurat-reserve" style={{ paddingTop: '1rem', paddingBottom: '1rem' }} aria-hidden="true" />;
+        return <section data-nosnapshot="true" className="section muhurat-reserve" style={{ paddingTop: '1rem', paddingBottom: '1rem' }} aria-hidden="true" />;
     }
 
     if (matches.length === 0) return null;
 
     return (
-        <section className="section" style={{ paddingTop: '1rem', paddingBottom: '1rem' }}>
+        <section data-nosnapshot="true" className="section" style={{ paddingTop: '1rem', paddingBottom: '1rem' }}>
             <div className="container">
                 <div style={{ background: 'linear-gradient(135deg, var(--navy-950), var(--navy-900))', borderRadius: 'var(--radius-xl)', padding: '1.75rem 2rem', display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap' }}>
                     <div style={{ flex: '1 1 260px' }}>

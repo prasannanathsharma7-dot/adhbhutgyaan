@@ -32,16 +32,19 @@ export default function DailyPanchangCard() {
     const [todayText, setTodayText] = useState('');
     useEffect(() => { setTodayText(new Date().toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Kolkata' })); }, []);
     const dateFormatted = panchang?.dateFormatted || todayText || '\u00A0';
-    const tithiName = panchang?.tithi?.name || 'Shukla Trayodashi';
-    const tithiPaksha = panchang?.tithi?.paksha || 'Shukla Paksha';
-    const nakshatraName = panchang?.nakshatra?.name || 'Pushya';
-    const nakshatraLord = panchang?.nakshatra?.lord || 'Saturn';
-    const yogaName = panchang?.yoga?.name || 'Ayushman';
-    const chandraRashi = panchang?.transits?.chandraRashi || 'Cancer (Karka)';
-    const abhijit = panchang?.timings?.abhijitMuhurat || '11:48 AM to 12:38 PM IST';
-    const brahma = panchang?.timings?.brahmaMuhurat || '04:18 AM to 05:04 AM IST';
-    const rahuKaal = panchang?.timings?.rahuKaal || '04:30 PM to 06:00 PM';
-    const yamaganda = panchang?.timings?.yamaganda || '12:00 PM to 01:30 PM';
+    // Until the day's real Panchang arrives (or if the request fails) show an em dash. These used to be
+    // hard-coded values for one particular day ("Shukla Trayodashi", "Pushya", Abhijit 11:48...), shown as
+    // if they were today's - visible in the first paint of every visit and permanently when the API failed.
+    const tithiName = panchang?.tithi?.name || '—';
+    const tithiPaksha = panchang?.tithi?.paksha || '—';
+    const nakshatraName = panchang?.nakshatra?.name || '—';
+    const nakshatraLord = panchang?.nakshatra?.lord || '—';
+    const yogaName = panchang?.yoga?.name || '—';
+    const chandraRashi = panchang?.transits?.chandraRashi || '—';
+    const abhijit = panchang?.timings?.abhijitMuhurat || '—';
+    const brahma = panchang?.timings?.brahmaMuhurat || '—';
+    const rahuKaal = panchang?.timings?.rahuKaal || '—';
+    const yamaganda = panchang?.timings?.yamaganda || '—';
 
     const whatsappShareText = `🕉️ *ADBHUT GYAAN — DAINIK PANCHANG (KASHI)*\n📅 *${dateFormatted}*\n📍 Varanasi (25.3176° N, 82.9739° E)\n\n📜 *Tithi:* ${tithiName} (${tithiPaksha})\n⭐ *Nakshatra:* ${nakshatraName} (Lord: ${nakshatraLord})\n✨ *Yoga:* ${yogaName} | *Chandra:* ${chandraRashi}\n\n🟢 *Shubh Abhijit Muhurat:* ${abhijit}\n🟢 *Brahma Muhurat:* ${brahma}\n🔴 *Rahu Kaal (Varjit):* ${rahuKaal}\n\n📿 Book Live WhatsApp Video Sankalp: https://www.adhbhutgyaan.com`;
 
@@ -57,7 +60,7 @@ export default function DailyPanchangCard() {
     const whatsappShareUrl = `https://wa.me/?text=${encodeURIComponent(whatsappShareText)}`;
 
     return (
-        <div style={{ background: 'white', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-xl)', padding: 'clamp(1.25rem, 3vw, 2rem)', boxShadow: 'var(--shadow-md)', position: 'relative', overflow: 'hidden' }}>
+        <div data-nosnapshot="true" style={{ background: 'white', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-xl)', padding: 'clamp(1.25rem, 3vw, 2rem)', boxShadow: 'var(--shadow-md)', position: 'relative', overflow: 'hidden' }}>
             {/* Header */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.25rem', paddingBottom: '0.85rem', borderBottom: '1px solid var(--border-light)' }}>
                 <div>

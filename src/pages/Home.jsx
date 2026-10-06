@@ -229,7 +229,7 @@ export default function Home() {
                                     {t('वास्तविक ज्योतिषी विश्लेषण', 'Real Astrologer Analysis')}
                                 </h3>
                                 <p style={{ margin: '0.35rem 0 0', fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
-                                    {t('कोई ऑटोमेटेड सॉफ्टवेयर नहीं — डॉ. उमang नाथ शर्मा द्वारा व्यक्तिगत कुंडली परीक्षण।', 'Zero generic computer bot readings. Hand-analyzed Janam Patrika from Kashi.')}
+                                    {t('कोई ऑटोमेटेड सॉफ्टवेयर नहीं — डॉ. उमंग नाथ शर्मा द्वारा व्यक्तिगत कुंडली परीक्षण।', 'Zero generic computer bot readings. Hand-analyzed Janam Patrika from Kashi.')}
                                 </p>
                             </div>
                         </div>

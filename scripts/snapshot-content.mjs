@@ -51,7 +51,9 @@ function extractMain() {
         if (node.nodeType === 3) return esc(node.textContent.replace(/\s+/g, ' '));
         if (node.nodeType !== 1) return '';
         const tag = node.tagName.toLowerCase();
-        if (SKIP.has(tag) || node.getAttribute('aria-hidden') === 'true') return '';
+        // data-nosnapshot marks content that depends on today's date (Panchang card, upcoming muhurats):
+        // frozen into static text it would show stale dates to crawlers for as long as the snapshot lives.
+        if (SKIP.has(tag) || node.getAttribute('aria-hidden') === 'true' || node.hasAttribute('data-nosnapshot')) return '';
         const cs = getComputedStyle(node);
         if (cs.display === 'none' || cs.visibility === 'hidden') return '';
         const inner = Array.from(node.childNodes).map(walk).join('');
