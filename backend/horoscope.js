@@ -80,7 +80,14 @@ module.exports = async (req, res) => {
         const col = db.collection('horoscopes');
 
         const cached = await col.findOne({ _id: cacheId });
-        if (cached) {
+        // Only trust entries written by the Panchang generator. Older entries
+        // (source 'ai', or 'fallback' - the one-template-for-every-rashi text
+        // that the previous AI-based version cached whenever its Gemini call
+        // failed) are ignored here and overwritten by the upsert below. Without
+        // this check those stale rows would keep being served for the rest of
+        // their day - or the rest of the MONTH for 'monthly' entries - even
+        // after this generator is deployed.
+        if (cached && cached.source === 'panchang' && cached.text && typeof cached.text === 'object') {
             res.status(200).json({ ok: true, rashi, period, dateKey, text: cached.text, source: 'cache' });
             return;
         }
