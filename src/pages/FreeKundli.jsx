@@ -401,7 +401,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                     <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
                         {/* Print Header */}
                         <div className="print-only-header" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
-                            <img src="/images/logo.png" alt="Adhbhut Gyaan" width="48" height="48" style={{ width: '48px', height: '48px', borderRadius: '50%', flexShrink: 0 }} />
+                            <img src="/images/logo-192.webp" alt="Adhbhut Gyaan" width="48" height="48" style={{ width: '48px', height: '48px', borderRadius: '50%', flexShrink: 0 }} />
                             <div>
                                 <h2 style={{ margin: '0 0 0.15rem', color: '#1c2150' }}>अद्भुत ज्ञान — वैदिक जन्म पत्रिका रिपोर्ट</h2>
                                 <p style={{ margin: 0, fontSize: '0.9rem', color: '#475569' }}>

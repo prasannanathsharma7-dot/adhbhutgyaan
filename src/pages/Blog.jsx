@@ -133,7 +133,7 @@ export default function Blog() {
                         {t('काशी के अनुभवी पंडितों द्वारा शास्त्रोक्त विधि से सभी प्रकार की पूजा सेवाएं उपलब्ध हैं। अभी बुक करें!', 'All kinds of pooja services are available, performed authentically by experienced Pandits of Kashi. Book now!')}
                     </p>
                     <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-                        <Link to="/booking" className="btn btn-primary btn-lg"><img src="/images/logo.png" alt="" className="inline-logo" /> {t('पूजा बुक करें', 'Book a Pooja')}</Link>
+                        <Link to="/booking" className="btn btn-primary btn-lg"><img src="/images/logo-192.webp" alt="" className="inline-logo" /> {t('पूजा बुक करें', 'Book a Pooja')}</Link>
                         <a href={`https://wa.me/919278148269?text=${encodeURIComponent(t('नमस्कार! मैं ब्लॉग पढ़कर आया हूँ, पूजा के बारे में जानना चाहता हूँ।', 'Hello! I read your blog and would like to know more about pooja services.'))}`} target="_blank" rel="noreferrer" className="btn btn-whatsapp btn-lg">💬 {t('WhatsApp करें', 'WhatsApp Us')}</a>
                     </div>
                 </div>

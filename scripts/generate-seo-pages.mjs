@@ -18,8 +18,9 @@
 // This only touches <head> metadata - it does not server-render the actual
 // page content, so it's a lower-risk, incremental step rather than full SSR.
 
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from 'node:fs';
 import { createHash } from 'node:crypto';
+import { pathToFileURL } from 'node:url';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -116,19 +117,82 @@ function esc(str) {
         .replace(/"/g, '&quot;');
 }
 
+// ---- Server-rendered HTML (src/entry-server.jsx -> dist-ssr/, built by `npm run build`) ----
+// Each page's real markup is rendered here at build time and placed inside #root, so it is
+// visible before any JavaScript arrives; the browser then hydrates it (src/main.jsx).
+// A page whose server render reports any error is left un-rendered (the app then renders
+// it client-side exactly as before) rather than shipping half a page.
+if (template.includes('id="seo-prerender"') || !template.includes('<div id="root"></div>')) {
+    throw new Error('dist/index.html was already processed by this script - run `vite build` first.');
+}
+const SSR_ENTRY = join(ROOT, 'dist-ssr', 'entry-server.mjs');
+const ssrRender = existsSync(SSR_ENTRY) ? (await import(pathToFileURL(SSR_ENTRY).href)).render : null;
+const ssrFailures = [];
+let ssrCount = 0;
+async function ssrHtml(path) {
+    if (!ssrRender) return '';
+    try {
+        const { html, errors } = await ssrRender(path);
+        if (errors.length || !/<h1[\s>]/.test(html)) { ssrFailures.push(`${path}: ${errors[0] || 'no <h1> rendered'}`); return ''; }
+        ssrCount++;
+        return html;
+    } catch (e) {
+        ssrFailures.push(`${path}: ${String(e.message).slice(0, 100)}`);
+        return '';
+    }
+}
+
+// ---- Inline CSS, and de-prioritise JavaScript (pages are server-rendered) ----
+// The one stylesheet used to be a separate render-blocking request: the browser had to download
+// the HTML, discover the <link>, then fetch the CSS before painting anything (two sequential
+// round trips - Lighthouse put the cost at ~900ms on a slow phone). Inlining it removes the
+// second trip. Each page's HTML grows by the CSS size (~12KB compressed), which is fine here:
+// after the first page, navigation is client-side and never re-downloads HTML.
+// The JS bundles are marked low priority: the page is already visible from HTML + CSS, so the
+// network should deliver the HTML, CSS, fonts and hero image first and hydration scripts next.
+const CSS_FILE = ASSET_FILES_FOR_CSS();
+function ASSET_FILES_FOR_CSS() { const f = readdirSync(join(DIST, 'assets')).find(n => /^index-.*\.css$/.test(n)); return f ? readFileSync(join(DIST, 'assets', f), 'utf-8') : ''; }
+function withInlineCssAndLowPriorityJs(html) {
+    if (CSS_FILE) html = html.replace(/<link rel="stylesheet"[^>]*href="\/assets\/index-[^"]+\.css"[^>]*>/, () => `<style>${CSS_FILE}</style>`);
+    html = html.replace(/<script type="module"([^>]*)src="\/assets\//g, (m, mid) => (mid.includes('fetchpriority') ? m : `<script type="module"${mid}fetchpriority="low" src="/assets/`));
+    html = html.replace(/<link rel="modulepreload"([^>]*)>/g, (m, mid) => (mid.includes('fetchpriority') ? m : `<link rel="modulepreload"${mid} fetchpriority="low">`));
+    return html;
+}
+
+// ---- Font preloads ----
+// Fonts are self-hosted and fingerprinted (e.g. poppins-latin-400-normal-AbC123.woff2),
+// so the preload URLs can only be known after the build. Preloading just the few
+// faces used above the fold lets the browser fetch them in parallel with the JS
+// instead of discovering them only after CSS has been parsed.
+const ASSET_FILES = readdirSync(join(DIST, 'assets'));
+const FONT_PRELOADS = ['poppins-latin-400-normal', 'poppins-latin-600-normal', 'playfair-display-latin-700-normal']
+    .map(n => ASSET_FILES.find(f => f.startsWith(n + '-') && f.endsWith('.woff2')))
+    .filter(Boolean)
+    .map(f => `<link rel="preload" as="font" type="font/woff2" href="/assets/${f}" crossorigin>`)
+    .join('\n  ');
+function withFontPreloads(html) {
+    html = html.replace(/<link rel="preload" as="font"[^>]*>\s*/g, '');
+    return html.replace('</head>', () => `  ${FONT_PRELOADS}\n</head>`);
+}
+
 // ---- Crawler-visible page text (see scripts/snapshot-content.mjs) ----
 const fileKeyFor = (p) => (p === '/' ? 'index' : p.replace(/^\//, '').replace(/\//g, '__'));
 const SITE_NAV = `<nav aria-label="Site"><a href="/">Home</a> <a href="/services">Services</a> <a href="/booking">Book Pooja</a> <a href="/about">About</a> <a href="/blog">Blog</a> <a href="/contact">Contact</a> <a href="/panchang">Daily Panchang</a> <a href="/horoscope">Horoscope</a> <a href="/free-kundli">Free Kundli</a> <a href="/muhurat">Shubh Muhurat</a> <a href="/vastu-score">Vastu Score</a> <a href="/pandit-for-pooja">Cities We Serve</a> ${servicesData.map(s => `<a href="/services/${s.id}">${esc(s.nameEn)}</a>`).join(' ')}</nav>`;
-function withPrerender(html, path) {
+async function withPrerender(html, path) {
     // Idempotent: drop any block from an earlier run (it contains no nested <div>s).
     html = html.replace(/\n?<div id="seo-prerender">[\s\S]*?<\/div>/, '');
+    const ssr = await ssrHtml(path);
     const file = join(ROOT, 'prerender', fileKeyFor(path) + '.html');
-    if (!existsSync(file)) return html;
-    const block = `<div id="root"></div>\n<div id="seo-prerender">${SITE_NAV}\n${readFileSync(file, 'utf-8')}</div>`;
+    let extra = existsSync(file) ? readFileSync(file, 'utf-8') : '';
+    // The visible server-rendered page is English, so the hidden crawler block only needs to
+    // add what the page does not already show: the Hindi text (and the site-wide link list).
+    if (ssr) extra = (extra.match(/<section lang="hi">[\s\S]*?<\/section>/) || [''])[0];
+    if (!ssr && !extra) return html;
+    const block = `<div id="root">${ssr}</div>\n<div id="seo-prerender">${SITE_NAV}\n${extra}</div>`;
     return html.replace('<div id="root"></div>', () => block);
 }
 
-function renderPage(route) {
+async function renderPage(route) {
     const { path, title, description, image, jsonLd } = route;
     const canonical = `${SITE_URL}${path}`;
     const ogImage = image || `${SITE_URL}/images/og-image.jpg`;
@@ -153,7 +217,7 @@ function renderPage(route) {
         html = html.replace('</head>', script);
     }
 
-    html = withPrerender(html, path);
+    html = withInlineCssAndLowPriorityJs(withFontPreloads(await withPrerender(html, path)));
 
     const outDir = path === '/' ? DIST : join(DIST, path.replace(/^\//, ''));
     mkdirSync(outDir, { recursive: true });
@@ -388,7 +452,7 @@ for (const service of servicesData) {
 // crawler-facing static page.
 
 for (const route of routes) {
-    renderPage(route);
+    await renderPage(route);
 }
 
 // ---- sitemap.xml, auto-generated from the SAME `routes` array above ----
@@ -441,7 +505,8 @@ writeFileSync(join(ROOT, 'public', 'sitemap.xml'), sitemapXml);
 writeFileSync(LASTMOD_FILE, JSON.stringify(lastmodCache, null, 1) + '\n');
 writeFileSync(join(DIST, 'sitemap.xml'), sitemapXml);
 // The homepage is dist/index.html itself (not cloned above) - add its crawler text in place.
-writeFileSync(join(DIST, 'index.html'), withPrerender(readFileSync(join(DIST, 'index.html'), 'utf-8'), '/'));
+writeFileSync(join(DIST, 'index.html'), withInlineCssAndLowPriorityJs(withFontPreloads(await withPrerender(readFileSync(join(DIST, 'index.html'), 'utf-8'), '/'))));
+console.log(`[seo-pages] server-rendered ${ssrCount} pages${ssrFailures.length ? `, ${ssrFailures.length} left client-rendered: ` + ssrFailures.slice(0, 6).join(' | ') : ''}`);
 
 console.log(`[seo-pages] sitemap.xml regenerated with ${routes.length + 1} URLs.`);
 

@@ -1,3 +1,19 @@
+// `?inline` makes Vite embed each (tiny) SVG as a data: URI in BOTH the browser build and the
+// server-render build, so the server HTML and the hydrating client agree on every flag's src.
+// (new URL(..., import.meta.url) is not rewritten in the server build and produced file:// paths.)
+import flag_au from 'flag-icons/flags/4x3/au.svg?inline';
+import flag_be from 'flag-icons/flags/4x3/be.svg?inline';
+import flag_ca from 'flag-icons/flags/4x3/ca.svg?inline';
+import flag_de from 'flag-icons/flags/4x3/de.svg?inline';
+import flag_es from 'flag-icons/flags/4x3/es.svg?inline';
+import flag_fr from 'flag-icons/flags/4x3/fr.svg?inline';
+import flag_gb from 'flag-icons/flags/4x3/gb.svg?inline';
+import flag_il from 'flag-icons/flags/4x3/il.svg?inline';
+import flag_ir from 'flag-icons/flags/4x3/ir.svg?inline';
+import flag_lk from 'flag-icons/flags/4x3/lk.svg?inline';
+import flag_my from 'flag-icons/flags/4x3/my.svg?inline';
+import flag_nl from 'flag-icons/flags/4x3/nl.svg?inline';
+import flag_us from 'flag-icons/flags/4x3/us.svg?inline';
 // Renders a small country flag as a real SVG image instead of a flag emoji.
 //
 // Why: flag emoji (e.g. 🇫🇷) are built from Unicode "regional indicator"
@@ -22,19 +38,19 @@ const FLAG_EMOJI_TO_ISO = {
 // Vite bundles only the specific flag SVGs actually imported below, not the
 // whole flag-icons package.
 const FLAG_SVGS = {
-    au: new URL('flag-icons/flags/4x3/au.svg', import.meta.url).href,
-    be: new URL('flag-icons/flags/4x3/be.svg', import.meta.url).href,
-    ca: new URL('flag-icons/flags/4x3/ca.svg', import.meta.url).href,
-    de: new URL('flag-icons/flags/4x3/de.svg', import.meta.url).href,
-    es: new URL('flag-icons/flags/4x3/es.svg', import.meta.url).href,
-    fr: new URL('flag-icons/flags/4x3/fr.svg', import.meta.url).href,
-    gb: new URL('flag-icons/flags/4x3/gb.svg', import.meta.url).href,
-    il: new URL('flag-icons/flags/4x3/il.svg', import.meta.url).href,
-    ir: new URL('flag-icons/flags/4x3/ir.svg', import.meta.url).href,
-    lk: new URL('flag-icons/flags/4x3/lk.svg', import.meta.url).href,
-    my: new URL('flag-icons/flags/4x3/my.svg', import.meta.url).href,
-    nl: new URL('flag-icons/flags/4x3/nl.svg', import.meta.url).href,
-    us: new URL('flag-icons/flags/4x3/us.svg', import.meta.url).href,
+    au: flag_au,
+    be: flag_be,
+    ca: flag_ca,
+    de: flag_de,
+    es: flag_es,
+    fr: flag_fr,
+    gb: flag_gb,
+    il: flag_il,
+    ir: flag_ir,
+    lk: flag_lk,
+    my: flag_my,
+    nl: flag_nl,
+    us: flag_us,
 };
 
 export default function FlagIcon({ flag, style }) {

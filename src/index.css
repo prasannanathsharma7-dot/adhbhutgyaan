@@ -1202,6 +1202,20 @@ h3 {
     overflow: hidden;
     border: 2px solid rgba(212, 168, 67, 0.5);
     box-shadow: 0 0 0 10px rgba(212, 168, 67, 0.08), 0 0 60px rgba(212, 168, 67, 0.25);
+}
+
+.hero-visual::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: clamp(220px, 26vw, 380px);
+    height: clamp(220px, 26vw, 380px);
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    box-shadow: 0 0 0 14px rgba(212, 168, 67, 0.12), 0 0 90px rgba(212, 168, 67, 0.35);
+    opacity: 0;
+    pointer-events: none;
     animation: ring-glow 4s ease-in-out infinite;
 }
 
@@ -1211,9 +1225,13 @@ h3 {
     object-fit: cover;
 }
 
+/* Performance: the ring's glow used to animate box-shadow itself, which forces a
+   repaint of the hero on every frame, forever. The peak glow now lives on a
+   pseudo-element that only fades in/out (opacity is composited on the GPU and
+   costs no repaint); the ring keeps its resting shadow. Same pulse, no repaint. */
 @keyframes ring-glow {
-    0%, 100% { box-shadow: 0 0 0 10px rgba(212, 168, 67, 0.08), 0 0 60px rgba(212, 168, 67, 0.25); }
-    50% { box-shadow: 0 0 0 14px rgba(212, 168, 67, 0.12), 0 0 90px rgba(212, 168, 67, 0.35); }
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
 }
 
 @media (max-width: 860px) {
@@ -1239,19 +1257,19 @@ h3 {
     font-size: clamp(2rem, 5vw, 3rem);
     color: var(--gold-300);
     margin-bottom: 1rem;
+    text-shadow: 0 0 20px rgba(212, 168, 67, 0.45);
     animation: glow-pulse 3s ease-in-out infinite;
 }
 
+/* Performance: opacity only (was also animating text-shadow = a repaint per frame). */
 @keyframes glow-pulse {
 
     0%,
     100% {
-        text-shadow: 0 0 10px rgba(212, 168, 67, 0.3);
         opacity: 0.8;
     }
 
     50% {
-        text-shadow: 0 0 30px rgba(212, 168, 67, 0.6), 0 0 60px rgba(212, 168, 67, 0.3);
         opacity: 1;
     }
 }
@@ -1839,6 +1857,16 @@ h3 {
     box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
     transition: all var(--dur-normal) var(--ease-out);
     cursor: pointer;
+}
+
+.whatsapp-float::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: rgba(37, 211, 102, 0.5);
+    z-index: -1;
+    pointer-events: none;
     animation: wa-pulse 2s infinite;
 }
 
@@ -2028,17 +2056,18 @@ h3 {
     }
 }
 
+/* Performance: an expanding ring made of transform+opacity on a pseudo-element
+   (composited) instead of animating box-shadow spread (repaint every frame). */
 @keyframes wa-pulse {
     0% {
-        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5)
+        transform: scale(1);
+        opacity: 0.5;
     }
 
-    70% {
-        box-shadow: 0 0 0 15px rgba(37, 211, 102, 0)
-    }
-
+    70%,
     100% {
-        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0)
+        transform: scale(1.5);
+        opacity: 0;
     }
 }
 
@@ -3598,3 +3627,12 @@ h3 {
         color: var(--warm-300);
     }
 }
+
+/* Space held for UpcomingMuhuratWidget until its dates are computed after first paint
+   (heights measured on the rendered widget; see the component for why). */
+.muhurat-reserve { min-height: 434px; }
+@media (min-width: 401px) { .muhurat-reserve { min-height: 409px; } }
+@media (min-width: 481px) { .muhurat-reserve { min-height: 330px; } }
+@media (min-width: 681px) { .muhurat-reserve { min-height: 310px; } }
+@media (min-width: 901px) { .muhurat-reserve { min-height: 234px; } }
+@media (min-width: 1101px) { .muhurat-reserve { min-height: 164px; } }

@@ -153,7 +153,7 @@ export default function BlogPost() {
                         {/* CTA Box inside article */}
                         <div className="blog-article-cta">
                             <div className="blog-article-cta-content">
-                                <img src="/images/logo.png" alt="" className="blog-article-cta-logo" />
+                                <img src="/images/logo-192.webp" alt="" className="blog-article-cta-logo" />
                                 <h3>{t('पूजा बुक करें — अद्भुत ज्ञान', 'Book a Pooja — Adhbhut Gyaan')}</h3>
                                 <p>{t('काशी के अनुभवी पंडितों द्वारा शास्त्रोक्त विधि से सम्पूर्ण पूजन कार्य। अभी WhatsApp पर संपर्क करें!', 'Complete pooja rituals performed authentically by experienced Pandits of Kashi. Contact us on WhatsApp now!')}</p>
                                 <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', justifyContent: 'center' }}>
@@ -164,7 +164,7 @@ export default function BlogPost() {
                                     )}
                                     {post.serviceId && (
                                         <Link to={`/booking?service=${post.serviceId}`} className="btn btn-primary">
-                                            <img src="/images/logo.png" alt="" className="inline-logo" /> {t('यह पूजा बुक करें', 'Book This Pooja')}
+                                            <img src="/images/logo-192.webp" alt="" className="inline-logo" /> {t('यह पूजा बुक करें', 'Book This Pooja')}
                                         </Link>
                                     )}
                                     <a href={`https://wa.me/919278148269?text=${encodeURIComponent(t('नमस्कार! मैं ब्लॉग पढ़कर आया हूँ।', 'Hello! I read your blog article.'))}`} target="_blank" rel="noreferrer" className="btn btn-whatsapp">

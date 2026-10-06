@@ -117,11 +117,10 @@ export default function ChatWidget() {
                 aria-label={t('AI वैदिक ज्योतिषी चैट खोलें', 'Open AI Astrologer Chat')}
                 aria-expanded={open}
                 style={{
-                    position: 'fixed',
-                    bottom: '24px',
-                    right: '24px',
-                    width: '60px',
-                    height: '60px',
+                    // Geometry (position/bottom/right/width/height) lives in the .chat-fab CSS
+                    // class, which stacks this button ABOVE the WhatsApp button. It used to be
+                    // hardcoded here as bottom:24px, which beat the class and put the chat
+                    // button directly on top of WhatsApp on every screen size.
                     borderRadius: '50%',
                     background: 'linear-gradient(135deg, var(--gold-600) 0%, var(--gold-700) 100%)',
                     color: 'white',
@@ -149,10 +148,11 @@ export default function ChatWidget() {
                     aria-label={t('AI वैदिक ज्योतिषी चैट', 'AI Vedic Astrologer Chat')}
                     style={{
                         position: 'fixed',
-                        bottom: '96px',
-                        right: '24px',
+                        // sits above the (now stacked) chat + WhatsApp buttons
+                        bottom: 'clamp(150px, 24vw, 170px)',
+                        right: 'clamp(15px, 3vw, 25px)',
                         width: 'min(420px, calc(100vw - 32px))',
-                        height: 'min(620px, calc(100vh - 120px))',
+                        height: 'min(620px, calc(100vh - 210px))',
                         background: 'white',
                         borderRadius: '20px',
                         boxShadow: '0 12px 40px rgba(15, 23, 42, 0.25)',

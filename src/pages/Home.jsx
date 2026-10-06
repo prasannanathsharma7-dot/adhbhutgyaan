@@ -84,7 +84,7 @@ export default function Home() {
                             )}
                         </p>
                         <div className="hero-actions">
-                            <Link to="/services" className="btn btn-primary btn-lg"><img src="/images/logo.png" alt="" className="inline-logo" width="512" height="512" /> {t('सेवाएं देखें', 'View Services')}</Link>
+                            <Link to="/services" className="btn btn-primary btn-lg"><img src="/images/logo-192.webp" alt="" className="inline-logo" width="512" height="512" /> {t('सेवाएं देखें', 'View Services')}</Link>
                             <a href={`https://wa.me/919278148269?text=${encodeURIComponent(t('नमस्कार! मैं पूजा बुक करना चाहता हूँ।', 'Hello! I would like to book a pooja.'))}`} target="_blank" rel="noreferrer" className="btn btn-outline btn-lg">💬 {t('WhatsApp करें', 'WhatsApp Us')}</a>
                         </div>
                         <div className="hero-stats">
@@ -103,7 +103,18 @@ export default function Home() {
                     </div>
                     <div className="hero-visual">
                         <div className="hero-visual-ring">
-                            <img src="/images/gallery/devi-shringar.jpg" alt={t('माँ का पुष्प श्रृंगार — काशी', 'Floral adornment of the Goddess — Kashi')} width="640" height="640" loading="lazy" />
+                            {/* Above the fold, so NOT lazy and fetched at high priority. It is shown at 128-380px, so it uses
+                                small square crops (the ring is object-fit:cover, centred) instead of the 272KB 720x1280 original. */}
+                            <img
+                                src="/images/gallery/devi-shringar-hero-360.webp"
+                                srcSet="/images/gallery/devi-shringar-hero-360.webp 360w, /images/gallery/devi-shringar-hero-720.webp 720w"
+                                sizes="(max-width: 860px) 180px, 380px"
+                                alt={t('माँ का पुष्प श्रृंगार — काशी', 'Floral adornment of the Goddess — Kashi')}
+                                width="360"
+                                height="360"
+                                fetchPriority="high"
+                                decoding="async"
+                            />
                         </div>
                     </div>
                 </div>

@@ -33,7 +33,7 @@ export default function Footer() {
                 <div className="footer-grid">
                     <div className="footer-brand">
                         <div className="footer-logo">
-                            <img src="/images/logo.png" alt="" className="logo-img" />
+                            <img src="/images/logo-192.webp" alt="" className="logo-img" />
                             <div className="logo-text">
                                 <span className="logo-main">अद्भुत ज्ञान</span>
                                 <span className="logo-sub">Adhbhut Gyaan</span>
@@ -71,7 +71,7 @@ export default function Footer() {
                         <h3 className="footer-heading">{t('त्वरित लिंक', 'Quick Links')}</h3>
                         <div className="footer-links">
                             <Link to="/"><Home size={15} /> {t('होम', 'Home')}</Link>
-                            <Link to="/services"><img src="/images/logo.png" alt="" className="inline-logo" /> {t('सेवाएं', 'Services')}</Link>
+                            <Link to="/services"><img src="/images/logo-192.webp" alt="" className="inline-logo" /> {t('सेवाएं', 'Services')}</Link>
                             <Link to="/panchang"><Sunrise size={15} /> {t('दैनिक पंचांग', 'Daily Panchang')}</Link>
                             <Link to="/booking"><CalendarDays size={15} /> {t('पूजा बुक करें', 'Book Pooja')}</Link>
                             <Link to="/free-kundli"><Sparkles size={15} /> {t('निःशुल्क कुंडली', 'Free Kundli')}</Link>
@@ -148,7 +148,7 @@ export default function Footer() {
 
                 <div className="footer-bottom">
                     <span>© 2026 {t('अद्भुत ज्ञान', 'Adhbhut Gyaan')} | Adhbhut Gyaan. {t('सर्वाधिकार सुरक्षित।', 'All rights reserved.')} · <Link to="/privacy" style={{ color: 'inherit' }}>{t('गोपनीयता नीति', 'Privacy Policy')}</Link> · <Link to="/terms" style={{ color: 'inherit' }}>{t('नियम एवं शर्तें', 'Terms')}</Link></span>
-                    <span>{t('बनारस में निर्मित', 'Made in Banaras')} <img src="/images/logo.png" alt="Banaras" className="inline-logo-sm" /></span>
+                    <span>{t('बनारस में निर्मित', 'Made in Banaras')} <img src="/images/logo-192.webp" alt="Banaras" className="inline-logo-sm" /></span>
                 </div>
             </div>
         </footer>

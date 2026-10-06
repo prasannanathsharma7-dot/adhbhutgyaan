@@ -26,7 +26,12 @@ export default function DailyPanchangCard() {
             .finally(() => setLoading(false));
     }, []);
 
-    const dateFormatted = panchang?.dateFormatted || new Date().toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Kolkata' });
+    // Today's date is only known in the browser (the page HTML is built at deploy time), so it is
+    // filled in after mount; computing it during render made server HTML and the hydrating
+    // browser disagree. Nbsp keeps the line's height until it appears.
+    const [todayText, setTodayText] = useState('');
+    useEffect(() => { setTodayText(new Date().toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Kolkata' })); }, []);
+    const dateFormatted = panchang?.dateFormatted || todayText || '\u00A0';
     const tithiName = panchang?.tithi?.name || 'Shukla Trayodashi';
     const tithiPaksha = panchang?.tithi?.paksha || 'Shukla Paksha';
     const nakshatraName = panchang?.nakshatra?.name || 'Pushya';

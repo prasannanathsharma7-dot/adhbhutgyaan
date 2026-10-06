@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { findMuhurat, CATEGORY_RULES } from '../utils/muhuratEngine';
@@ -8,25 +8,48 @@ import { CalendarHeart, ArrowRight } from 'lucide-react';
 // Muhurat, by default the most commonly-searched category) within the
 // next 60 days - real urgency from real computed astrology, not an
 // invented countdown or fake scarcity claim.
+const DAY_MS = 86400000;
+const WINDOW_DAYS = 60;
+const CHUNK_DAYS = 14;
+
 export default function UpcomingMuhuratWidget() {
     const { t, lang } = useLanguage();
-    // Computed synchronously via useState's lazy initializer (not
-    // useEffect) - this is pure client-side math (no network call), so
-    // computing it on the very first render rather than one render later
-    // avoids a real, measured Cumulative Layout Shift: the widget used to
-    // pop in ~100-300ms after initial paint, pushing all page content
-    // below it down (measured CLS 0.4, well into Google's "Poor" range;
-    // fixed to ~0 by making this synchronous).
-    const [matches] = useState(() => {
-        try {
-            const start = new Date();
-            const end = new Date(start.getTime() + 60 * 86400000);
-            const result = findMuhurat('vivah', start, end, 25.3176, 82.9739, 5.5);
-            return result.matches.slice(0, 3);
-        } catch {
-            return [];
-        }
-    });
+    // The dates depend on TODAY, so they cannot be part of the page HTML built at deploy time
+    // (it would show a stale list, and React hydration would reject the mismatch). The server
+    // HTML and the first browser render therefore both show the same reserved-height
+    // placeholder (see .muhurat-reserve in index.css - heights measured per screen width, so
+    // the page below does not jump; an earlier version that popped in late measured CLS 0.4).
+    // The real dates are computed just after, in small slices on idle time: one 60-day search
+    // used to run as a single ~100ms+ task (on a mid-range phone) in the middle of first render.
+    // Starts with the next 14 days and stops as soon as 3 dates are found.
+    const [matches, setMatches] = useState(null); // null = not computed yet
+
+    useEffect(() => {
+        let cancelled = false;
+        const start = new Date();
+        const found = [];
+        let slice = 0;
+        const later = (fn) => (typeof window.requestIdleCallback === 'function' ? window.requestIdleCallback(fn, { timeout: 1500 }) : setTimeout(fn, 60));
+        const step = () => {
+            if (cancelled) return;
+            try {
+                const from = new Date(start.getTime() + slice * CHUNK_DAYS * DAY_MS);
+                const to = new Date(Math.min(from.getTime() + (CHUNK_DAYS - 1) * DAY_MS, start.getTime() + WINDOW_DAYS * DAY_MS));
+                found.push(...findMuhurat('vivah', from, to, 25.3176, 82.9739, 5.5).matches);
+            } catch {
+                /* skip this slice */
+            }
+            slice++;
+            if (found.length >= 3 || slice * CHUNK_DAYS > WINDOW_DAYS) setMatches(found.slice(0, 3));
+            else later(step);
+        };
+        later(step);
+        return () => { cancelled = true; };
+    }, []);
+
+    if (matches === null) {
+        return <section className="section muhurat-reserve" style={{ paddingTop: '1rem', paddingBottom: '1rem' }} aria-hidden="true" />;
+    }
 
     if (matches.length === 0) return null;
 
