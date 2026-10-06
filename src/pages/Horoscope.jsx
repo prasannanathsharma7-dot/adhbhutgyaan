@@ -179,6 +179,7 @@ export default function Horoscope() {
                                     target="_blank"
                                     rel="noreferrer"
                                     className="btn btn-whatsapp"
+                                    style={{ maxWidth: '100%', whiteSpace: 'normal', lineHeight: 1.4, textAlign: 'center' }}
                                 >
                                     <MessageCircle size={14} style={{ verticalAlign: '-2px', marginRight: '0.3rem' }} />{t('सटीक परामर्श के लिए WhatsApp करें', 'WhatsApp for a Personalized Reading')}
                                 </a>

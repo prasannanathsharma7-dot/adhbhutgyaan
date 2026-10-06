@@ -2651,7 +2651,7 @@ h3 {
         width: 100%;
         font-size: 0.95rem;
         font-weight: 600;
-        color: var(--gold-700);
+        color: var(--gold-800);
         background: white;
         border: 1px solid var(--border-gold);
         padding: 0.75rem 1rem;
@@ -2663,9 +2663,36 @@ h3 {
     }
 
     .nav-links a.active {
-        background: var(--gold-600);
-        color: white;
-        border-color: var(--gold-600);
+        background: var(--gold-500);
+        color: var(--navy-950);
+        border-color: var(--gold-500);
+    }
+
+    /* The mobile menu panel is cream, but the dropdown trigger and the language
+       toggle were styled for the dark desktop navbar (light/gold text), which
+       left the EN/hi toggle at 1.33:1 contrast and the trigger at 3.8:1. */
+    .nav-links .nav-dropdown-trigger {
+        color: var(--gold-800);
+    }
+
+    .nav-links .lang-toggle {
+        background: white;
+        border-color: var(--border-gold);
+    }
+
+    .nav-links .lang-toggle span {
+        color: var(--text-secondary);
+    }
+
+    .nav-links .lang-toggle span.active {
+        color: var(--navy-950);
+        font-weight: 800;
+        background: var(--gold-100);
+        border-radius: 4px;
+    }
+
+    .nav-links .lang-toggle .lang-sep {
+        color: var(--text-muted);
     }
 
     .nav-dropdown {

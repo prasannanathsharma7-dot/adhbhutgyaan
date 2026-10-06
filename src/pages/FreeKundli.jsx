@@ -281,7 +281,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                 </div>
             </header>
 
-            <div className="container" style={{ marginTop: '-1.5rem', position: 'relative', zIndex: 10 }}>
+            <div className="container" style={{ marginTop: kundliResult ? '1.5rem' : '-1.5rem', position: 'relative', zIndex: 10 }}>
                 {/* VIEW 1: INPUT FORM */}
                 {!kundliResult ? (
                     <div style={{ maxWidth: 660, margin: '0 auto' }}>
@@ -404,7 +404,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                             <img src="/images/logo.png" alt="Adhbhut Gyaan" width="48" height="48" style={{ width: '48px', height: '48px', borderRadius: '50%', flexShrink: 0 }} />
                             <div>
                                 <h2 style={{ margin: '0 0 0.15rem', color: '#1c2150' }}>अद्भुत ज्ञान — वैदिक जन्म पत्रिका रिपोर्ट</h2>
-                                <p style={{ margin: 0, fontSize: '0.9rem', color: '#64748b' }}>
+                                <p style={{ margin: 0, fontSize: '0.9rem', color: '#475569' }}>
                                     डॉ. उमंग नाथ शर्मा · काशी ज्योतिष परंपरा · Helpline: +91 92781 48269
                                 </p>
                             </div>
@@ -545,7 +545,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                 <h3 style={{ margin: '0 0 0.75rem', fontSize: '1.05rem', color: 'var(--navy-900)', borderBottom: '1px solid var(--border-light)', paddingBottom: '0.4rem' }}>
                                     <Orbit size={17} style={{ verticalAlign: '-3px', marginRight: '0.35rem' }} />{t('ग्रह स्थिति एवं भाव विवरण (Lahiri Ephemeris)', 'Planetary Positions & Houses')}
                                 </h3>
-                                <div style={{ overflowX: 'auto', maxHeight: '340px', overflowY: 'auto' }}>
+                                <div tabIndex={0} role="region" aria-label={t('ग्रह स्थिति तालिका', 'Planetary positions table')} style={{ overflowX: 'auto', maxHeight: '340px', overflowY: 'auto' }}>
                                     <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.82rem', textAlign: 'left' }}>
                                         <thead>
                                             <tr style={{ background: 'var(--warm-100)', color: 'var(--navy-900)', borderBottom: '1px solid var(--border-light)' }}>
@@ -558,7 +558,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                         </thead>
                                         <tbody>
                                             <tr style={{ borderBottom: '1px solid #f1f5f9', background: 'var(--gold-50)', fontWeight: 700 }}>
-                                                <td style={{ padding: '0.45rem 0.6rem', color: '#c49a2c' }}><Star size={12} style={{ verticalAlign: '-2px', marginRight: '0.2rem' }} />Asc (Lagna)</td>
+                                                <td style={{ padding: '0.45rem 0.6rem', color: 'var(--gold-800)' }}><Star size={12} style={{ verticalAlign: '-2px', marginRight: '0.2rem' }} />Asc (Lagna)</td>
                                                 <td style={{ padding: '0.45rem 0.6rem' }}>{kundliResult.lagna.rashi.split(' ')[0]}</td>
                                                 <td style={{ padding: '0.45rem 0.6rem' }}>House {formatHouseNumber(1, kundliSettings.numeralSystem)}</td>
                                                 <td style={{ padding: '0.45rem 0.6rem' }}>{formatNumeral(kundliResult.lagna.deg, kundliSettings.numeralSystem)}</td>
@@ -589,7 +589,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                 </h3>
                                 <div style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
                                     <span><strong style={{ color: '#b91c1c' }}>Red</strong> = Shani / Ketu / Rahu / Mangal</span>
-                                    <span><strong style={{ color: '#c49a2c' }}>Gold</strong> = Asc (Lagna)</span>
+                                    <span><strong style={{ color: 'var(--gold-800)' }}>Gold</strong> = Asc (Lagna)</span>
                                 </div>
                             </div>
 
@@ -710,7 +710,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                 <h3 style={{ margin: 0, fontSize: '1.25rem', color: 'var(--navy-950)' }}>
                                     <Lock size={17} style={{ verticalAlign: '-3px', marginRight: '0.35rem' }} />{t('प्रीमियम भविष्य फल एवं समय चक्र (Locked Timeline Analysis)', 'Premium 5-8 Year Future Forecast (Locked)')}
                                 </h3>
-                                <span style={{ background: 'var(--gold-100)', color: 'var(--gold-800)', fontSize: '0.72rem', fontWeight: 700, padding: '0.2rem 0.6rem', borderRadius: '999px' }}>
+                                <span style={{ background: 'var(--gold-100)', color: '#6B5210', fontSize: '0.72rem', fontWeight: 700, padding: '0.2rem 0.6rem', borderRadius: '999px' }}>
                                     Pandit Ji Exclusive
                                 </span>
                             </div>
