@@ -19,6 +19,7 @@
 // page content, so it's a lower-risk, incremental step rather than full SSR.
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -99,6 +100,13 @@ function combineJsonLd(...blocks) {
 }
 
 // Escapes text for safe insertion into an HTML attribute/text node.
+// Titles longer than ~70 characters are cut off in search results. Prefer
+// "primary | suffix", fall back to just the primary part when too long.
+function capTitle(primary, suffix, max = 70) {
+    const full = suffix ? `${primary} | ${suffix}` : primary;
+    return full.length <= max ? full : primary;
+}
+
 function esc(str) {
     return (str || '')
         .toString()
@@ -106,6 +114,18 @@ function esc(str) {
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;');
+}
+
+// ---- Crawler-visible page text (see scripts/snapshot-content.mjs) ----
+const fileKeyFor = (p) => (p === '/' ? 'index' : p.replace(/^\//, '').replace(/\//g, '__'));
+const SITE_NAV = `<nav aria-label="Site"><a href="/">Home</a> <a href="/services">Services</a> <a href="/booking">Book Pooja</a> <a href="/about">About</a> <a href="/blog">Blog</a> <a href="/contact">Contact</a> <a href="/panchang">Daily Panchang</a> <a href="/horoscope">Horoscope</a> <a href="/free-kundli">Free Kundli</a> <a href="/muhurat">Shubh Muhurat</a> <a href="/vastu-score">Vastu Score</a> <a href="/pandit-for-pooja">Cities We Serve</a> ${servicesData.map(s => `<a href="/services/${s.id}">${esc(s.nameEn)}</a>`).join(' ')}</nav>`;
+function withPrerender(html, path) {
+    // Idempotent: drop any block from an earlier run (it contains no nested <div>s).
+    html = html.replace(/\n?<div id="seo-prerender">[\s\S]*?<\/div>/, '');
+    const file = join(ROOT, 'prerender', fileKeyFor(path) + '.html');
+    if (!existsSync(file)) return html;
+    const block = `<div id="root"></div>\n<div id="seo-prerender">${SITE_NAV}\n${readFileSync(file, 'utf-8')}</div>`;
+    return html.replace('<div id="root"></div>', () => block);
 }
 
 function renderPage(route) {
@@ -133,6 +153,8 @@ function renderPage(route) {
         html = html.replace('</head>', script);
     }
 
+    html = withPrerender(html, path);
+
     const outDir = path === '/' ? DIST : join(DIST, path.replace(/^\//, ''));
     mkdirSync(outDir, { recursive: true });
     writeFileSync(join(outDir, 'index.html'), html);
@@ -143,7 +165,7 @@ function renderPage(route) {
 const routes = [
     {
         path: '/services',
-        title: 'Pooja & Astrology Services in Kashi, Varanasi | हमारी पूजा सेवाएं | Adhbhut Gyaan',
+        title: 'Pooja & Astrology Services in Kashi, Varanasi | Adhbhut Gyaan',
         description: 'Book authentic pooja in Kashi, Varanasi - Rudrabhishek, Kalsarp Dosh Nivaran, Tripindi Shradh & 10+ more Vedic services by Pt. Umang Nath Sharma.',
         jsonLd: combineJsonLd(
             breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Services', path: '/services' }]),
@@ -234,6 +256,12 @@ const routes = [
         jsonLd: combineJsonLd(breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Blog', path: '/blog' }])),
     },
     {
+        path: '/pandit-for-pooja',
+        title: 'Pandit for Pooja — Cities We Serve | Adhbhut Gyaan',
+        description: "Book Kashi's pandits from India, Nepal, the USA, UK, Canada, Australia, Mauritius, Trinidad, Guyana or Fiji - live online pooja with video.",
+        jsonLd: combineJsonLd(breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Cities We Serve', path: '/pandit-for-pooja' }])),
+    },
+    {
         path: '/privacy',
         title: 'गोपनीयता नीति | Adhbhut Gyaan',
         description: 'अद्भुत ज्ञान वेबसाइट, पूजा बुकिंग व निःशुल्क कुंडली के उपयोग पर आपकी जानकारी कैसे एकत्र, उपयोग व सुरक्षित की जाती है।',
@@ -269,7 +297,7 @@ const routes = [
 for (const post of blogData) {
     routes.push({
         path: `/blog/${post.id}`,
-        title: `${post.title} | Adhbhut Gyaan`,
+        title: capTitle(post.title, 'Adhbhut Gyaan'),
         description: post.excerpt,
         image: `${SITE_URL}/images/${post.image}`,
         jsonLd: combineJsonLd(
@@ -299,7 +327,7 @@ for (const post of blogData) {
 for (const c of citiesData) {
     routes.push({
         path: `/pandit-for-pooja/${c.slug}`,
-        title: `Book Pooja from ${c.nameEn} — Kashi Pandits | Adhbhut Gyaan`,
+        title: capTitle(`Book Pooja from ${c.nameEn} — Kashi Pandits`, 'Adhbhut Gyaan'),
         description: `Book authentic Kashi Pandits for pooja while living in ${c.nameEn} - online with live video, or Pandit ji comes to your home.`,
         jsonLd: combineJsonLd(
             breadcrumbJsonLd([
@@ -323,7 +351,7 @@ for (const service of servicesData) {
 
     routes.push({
         path: `/services/${service.id}`,
-        title: isAstrology ? `Best Astrologer in Kashi, Varanasi | ${service.name} — Adhbhut Gyaan` : `${service.nameEn} in Kashi, Varanasi | ${service.name} — Adhbhut Gyaan`,
+        title: isAstrology ? capTitle('Best Astrologer in Kashi, Varanasi', service.name) : capTitle(`${service.nameEn} in Kashi, Varanasi`, service.name),
         description: enDescription,
         image: `${SITE_URL}/images/${service.image}`,
         jsonLd: combineJsonLd(
@@ -371,6 +399,26 @@ for (const route of routes) {
 // that drift structurally impossible going forward - any route added to
 // this file is automatically in the sitemap too.
 const today = new Date().toISOString().slice(0, 10);
+
+// Honest <lastmod>: previously every URL was stamped with the build date, so
+// every page claimed to have changed on every deploy. Google learns to ignore
+// lastmod from sites that do that. Now a page's date only moves when its own
+// content (title, description, crawler text) actually changes; the hash/date
+// pairs live in scripts/lastmod-cache.json, which must be COMMITTED after a
+// local run so Vercel's throwaway build disk does not forget them. Blog posts
+// start from their real publication date instead of the first-build date.
+const LASTMOD_FILE = join(ROOT, 'scripts', 'lastmod-cache.json');
+const lastmodCache = existsSync(LASTMOD_FILE) ? JSON.parse(readFileSync(LASTMOD_FILE, 'utf-8')) : {};
+function lastmodFor(path, title, description, firstSeen = today) {
+    const pre = join(ROOT, 'prerender', fileKeyFor(path) + '.html');
+    const fingerprint = JSON.stringify([title, description, existsSync(pre) ? readFileSync(pre, 'utf-8') : '']);
+    const hash = createHash('sha1').update(fingerprint).digest('hex').slice(0, 12);
+    const prev = lastmodCache[path];
+    if (!prev) lastmodCache[path] = { hash, date: firstSeen };
+    else if (prev.hash !== hash) lastmodCache[path] = { hash, date: today };
+    return lastmodCache[path].date;
+}
+const postDateFor = (path) => { const m = path.match(/^\/blog\/(.+)$/); const post = m && blogData.find(p => String(p.id) === m[1]); return post && post.date ? post.date : today; };
 const PRIORITY_OVERRIDES = { '/': '1.0', '/services': '0.9', '/booking': '0.9', '/free-kundli': '0.9' };
 // The homepage ('/') is a real gap found here: it's never in `routes` above
 // (that array only covers pages built by cloning+templating the built
@@ -381,16 +429,53 @@ const PRIORITY_OVERRIDES = { '/': '1.0', '/services': '0.9', '/booking': '0.9', 
 // array also drives the per-route page-cloning logic below, and cloning
 // index.html onto itself risks corrupting its carefully-maintained
 // static JSON-LD/meta-tags - this only touches the sitemap output.
-const homeUrl = `  <url>\n    <loc>${SITE_URL}/</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>${PRIORITY_OVERRIDES['/']}</priority>\n  </url>`;
+const HOME_LASTMOD = lastmodFor('/', 'home', 'home');
+const homeUrl = `  <url>\n    <loc>${SITE_URL}/</loc>\n    <lastmod>${HOME_LASTMOD}</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>${PRIORITY_OVERRIDES['/']}</priority>\n  </url>`;
 const sitemapUrls = routes.map(r => {
     const priority = PRIORITY_OVERRIDES[r.path] || (r.path.startsWith('/services/') ? '0.8' : r.path.startsWith('/blog/') ? '0.6' : '0.7');
     const changefreq = r.path === '/' || r.path === '/panchang' || r.path === '/horoscope' ? 'daily' : r.path.startsWith('/blog/') ? 'monthly' : 'weekly';
-    return `  <url>\n    <loc>${SITE_URL}${r.path}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
+    return `  <url>\n    <loc>${SITE_URL}${r.path}</loc>\n    <lastmod>${lastmodFor(r.path, r.title, r.description, postDateFor(r.path))}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
 }).join('\n');
 const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${homeUrl}\n${sitemapUrls}\n</urlset>\n`;
 writeFileSync(join(ROOT, 'public', 'sitemap.xml'), sitemapXml);
+writeFileSync(LASTMOD_FILE, JSON.stringify(lastmodCache, null, 1) + '\n');
 writeFileSync(join(DIST, 'sitemap.xml'), sitemapXml);
+// The homepage is dist/index.html itself (not cloned above) - add its crawler text in place.
+writeFileSync(join(DIST, 'index.html'), withPrerender(readFileSync(join(DIST, 'index.html'), 'utf-8'), '/'));
+
 console.log(`[seo-pages] sitemap.xml regenerated with ${routes.length + 1} URLs.`);
 
+
+// ---- llms.txt: a plain-language map of the site for AI assistants (llmstxt.org) ----
+// Generated from the same data as the pages so the services list cannot drift.
+// Only states what the site itself already says; no prices (not published yet).
+const llmsTxt = `# Adhbhut Gyaan
+
+> Authentic Vedic pooja and astrology services from Kashi (Varanasi), by Pt. Dr. Umang Nath Sharma - a Kashi Vedic family tradition of 400+ years. Poojas can be booked online (live video, with your own Sankalp) or in person at Kashi.
+
+## Services
+${servicesData.map(s => `- [${s.nameEn}](${SITE_URL}/services/${s.id}): ${(s.shortDescEn || '').replace(/\s+/g, ' ').trim()}`).join('\n')}
+
+## Free tools
+- [Daily Panchang](${SITE_URL}/panchang): tithi, nakshatra, Rahu Kaal, Abhijit Muhurat and Choghadiya for any city
+- [Daily and monthly Horoscope](${SITE_URL}/horoscope): for all 12 rashis, from live planetary transits
+- [Free Vedic Kundli](${SITE_URL}/free-kundli): Lagna, Chandra and Surya Kundali with planetary positions (Lahiri ayanamsa)
+- [Shubh Muhurat](${SITE_URL}/muhurat): marriage, griha pravesh, naamkaran and business launch dates
+- [Vastu Score](${SITE_URL}/vastu-score): basic Vastu analysis of a home
+
+## About
+- [About Adhbhut Gyaan](${SITE_URL}/about): lineage, press and recognition
+- [Dr. Umang Nath Sharma](${SITE_URL}/pt-umang-nath-sharma)
+- [Cities we serve](${SITE_URL}/pandit-for-pooja): online pooja from India, Nepal, USA, UK, Canada, Australia, Mauritius, Trinidad, Guyana and Fiji
+- [Blog](${SITE_URL}/blog): articles on poojas, doshas and Vedic astrology
+- [Book a pooja](${SITE_URL}/booking)
+
+## Contact
+- WhatsApp / phone: +91 92781 48269
+- Email: astrokashi369@gmail.com
+- Address: J11/19, Pt Umang Nath Sharma, Nati Imli Rd, Ishwargangi, Varanasi, UP 221001
+`;
+writeFileSync(join(ROOT, 'public', 'llms.txt'), llmsTxt);
+writeFileSync(join(DIST, 'llms.txt'), llmsTxt);
 
 console.log(`[seo-pages] done - generated ${routes.length} static pages.`);

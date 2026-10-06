@@ -33,6 +33,7 @@ const MuhuratReport = lazy(() => import('./pages/MuhuratReport'));
 const Services = lazy(() => import('./pages/Services'));
 const ServiceDetail = lazy(() => import('./pages/ServiceDetail'));
 const CityLanding = lazy(() => import('./pages/CityLanding'));
+const CityHub = lazy(() => import('./pages/CityHub'));
 const Booking = lazy(() => import('./pages/Booking'));
 const FreeKundli = lazy(() => import('./pages/FreeKundli'));
 const Panchang = lazy(() => import('./pages/Panchang'));
@@ -80,6 +81,7 @@ function App() {
                         <Route path="/" element={<Home />} />
                         <Route path="/services" element={<Services />} />
                         <Route path="/services/:id" element={<ServiceDetail />} />
+                        <Route path="/pandit-for-pooja" element={<CityHub />} />
                         <Route path="/pandit-for-pooja/:city" element={<CityLanding />} />
                         <Route path="/booking" element={<Booking />} />
                         <Route path="/free-kundli" element={<FreeKundli />} />

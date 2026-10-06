@@ -175,6 +175,14 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#080A20">
+  <!-- Crawler-visible copy of each page's text (#seo-prerender, injected at build
+       time by scripts/generate-seo-pages.mjs). Visitors with JavaScript get the
+       full React app instead, so it is hidden for them before first paint;
+       readers without JavaScript (AI crawlers, link unfurlers, basic fetchers)
+       see it as ordinary page text. If a Content-Security-Policy is added later,
+       this inline script needs a nonce/hash. -->
+  <script>document.documentElement.classList.add('js-on');</script>
+  <style>html.js-on #seo-prerender{display:none}</style>
 </head>
 <body>
   <div id="root"></div>

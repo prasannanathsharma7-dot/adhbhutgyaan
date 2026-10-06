@@ -1,0 +1,446 @@
+{
+ "delhi": {
+  "tz": null,
+  "region": "India"
+ },
+ "mumbai": {
+  "tz": null,
+  "region": "India"
+ },
+ "bangalore": {
+  "tz": null,
+  "region": "India"
+ },
+ "hyderabad": {
+  "tz": null,
+  "region": "India"
+ },
+ "chennai": {
+  "tz": null,
+  "region": "India"
+ },
+ "kolkata": {
+  "tz": null,
+  "region": "India"
+ },
+ "pune": {
+  "tz": null,
+  "region": "India"
+ },
+ "ahmedabad": {
+  "tz": null,
+  "region": "India"
+ },
+ "surat": {
+  "tz": null,
+  "region": "India"
+ },
+ "jaipur": {
+  "tz": null,
+  "region": "India"
+ },
+ "lucknow": {
+  "tz": null,
+  "region": "India"
+ },
+ "kanpur": {
+  "tz": null,
+  "region": "India"
+ },
+ "nagpur": {
+  "tz": null,
+  "region": "India"
+ },
+ "indore": {
+  "tz": null,
+  "region": "India"
+ },
+ "bhopal": {
+  "tz": null,
+  "region": "India"
+ },
+ "patna": {
+  "tz": null,
+  "region": "India"
+ },
+ "vadodara": {
+  "tz": null,
+  "region": "India"
+ },
+ "ghaziabad": {
+  "tz": null,
+  "region": "India"
+ },
+ "noida": {
+  "tz": null,
+  "region": "India"
+ },
+ "chandigarh": {
+  "tz": null,
+  "region": "India"
+ },
+ "agra": {
+  "tz": null,
+  "region": "India"
+ },
+ "nashik": {
+  "tz": null,
+  "region": "India"
+ },
+ "faridabad": {
+  "tz": null,
+  "region": "India"
+ },
+ "meerut": {
+  "tz": null,
+  "region": "India"
+ },
+ "rajkot": {
+  "tz": null,
+  "region": "India"
+ },
+ "amritsar": {
+  "tz": null,
+  "region": "India"
+ },
+ "coimbatore": {
+  "tz": null,
+  "region": "India"
+ },
+ "prayagraj": {
+  "tz": null,
+  "region": "India"
+ },
+ "ranchi": {
+  "tz": null,
+  "region": "India"
+ },
+ "raipur": {
+  "tz": null,
+  "region": "India"
+ },
+ "jodhpur": {
+  "tz": null,
+  "region": "India"
+ },
+ "guwahati": {
+  "tz": null,
+  "region": "India"
+ },
+ "dehradun": {
+  "tz": null,
+  "region": "India"
+ },
+ "gurugram": {
+  "tz": null,
+  "region": "India"
+ },
+ "thane": {
+  "tz": null,
+  "region": "India"
+ },
+ "mathura": {
+  "tz": null,
+  "region": "India"
+ },
+ "haridwar": {
+  "tz": null,
+  "region": "India"
+ },
+ "rishikesh": {
+  "tz": null,
+  "region": "India"
+ },
+ "ujjain": {
+  "tz": null,
+  "region": "India"
+ },
+ "ayodhya": {
+  "tz": null,
+  "region": "India"
+ },
+ "puri": {
+  "tz": null,
+  "region": "India"
+ },
+ "bhubaneswar": {
+  "tz": null,
+  "region": "India"
+ },
+ "mysuru": {
+  "tz": null,
+  "region": "India"
+ },
+ "madurai": {
+  "tz": null,
+  "region": "India"
+ },
+ "tirupati": {
+  "tz": null,
+  "region": "India"
+ },
+ "vijayawada": {
+  "tz": null,
+  "region": "India"
+ },
+ "gwalior": {
+  "tz": null,
+  "region": "India"
+ },
+ "jabalpur": {
+  "tz": null,
+  "region": "India"
+ },
+ "kota": {
+  "tz": null,
+  "region": "India"
+ },
+ "visakhapatnam": {
+  "tz": null,
+  "region": "India"
+ },
+ "kathmandu": {
+  "tz": "Asia/Kathmandu",
+  "region": "Nepal"
+ },
+ "pokhara": {
+  "tz": "Asia/Kathmandu",
+  "region": "Nepal"
+ },
+ "lalitpur": {
+  "tz": "Asia/Kathmandu",
+  "region": "Nepal"
+ },
+ "bhaktapur": {
+  "tz": "Asia/Kathmandu",
+  "region": "Nepal"
+ },
+ "janakpur": {
+  "tz": "Asia/Kathmandu",
+  "region": "Nepal"
+ },
+ "biratnagar": {
+  "tz": "Asia/Kathmandu",
+  "region": "Nepal"
+ },
+ "port-louis": {
+  "tz": "Indian/Mauritius",
+  "region": "Mauritius"
+ },
+ "port-of-spain": {
+  "tz": "America/Port_of_Spain",
+  "region": "Trinidad"
+ },
+ "chaguanas": {
+  "tz": "America/Port_of_Spain",
+  "region": "Trinidad"
+ },
+ "georgetown-guyana": {
+  "tz": "America/Guyana",
+  "region": "Guyana"
+ },
+ "suva": {
+  "tz": "Pacific/Fiji",
+  "region": "Fiji"
+ },
+ "nadi": {
+  "tz": "Pacific/Fiji",
+  "region": "Fiji"
+ },
+ "kochi": {
+  "tz": null,
+  "region": "India"
+ },
+ "thiruvananthapuram": {
+  "tz": null,
+  "region": "India"
+ },
+ "jamshedpur": {
+  "tz": null,
+  "region": "India"
+ },
+ "siliguri": {
+  "tz": null,
+  "region": "India"
+ },
+ "aurangabad": {
+  "tz": null,
+  "region": "India"
+ },
+ "jalandhar": {
+  "tz": null,
+  "region": "India"
+ },
+ "new-jersey": {
+  "tz": "America/New_York",
+  "region": "USA"
+ },
+ "london": {
+  "tz": "Europe/London",
+  "region": "UK"
+ },
+ "toronto": {
+  "tz": "America/Toronto",
+  "region": "Canada"
+ },
+ "sydney": {
+  "tz": "Australia/Sydney",
+  "region": "Australia"
+ },
+ "birgunj": {
+  "tz": "Asia/Kathmandu",
+  "region": "Nepal"
+ },
+ "dharan": {
+  "tz": "Asia/Kathmandu",
+  "region": "Nepal"
+ },
+ "nepalgunj": {
+  "tz": "Asia/Kathmandu",
+  "region": "Nepal"
+ },
+ "butwal": {
+  "tz": "Asia/Kathmandu",
+  "region": "Nepal"
+ },
+ "vacoas-phoenix": {
+  "tz": "Indian/Mauritius",
+  "region": "Mauritius"
+ },
+ "curepipe": {
+  "tz": "Indian/Mauritius",
+  "region": "Mauritius"
+ },
+ "quatre-bornes": {
+  "tz": "Indian/Mauritius",
+  "region": "Mauritius"
+ },
+ "rose-hill": {
+  "tz": "Indian/Mauritius",
+  "region": "Mauritius"
+ },
+ "san-fernando": {
+  "tz": "America/Port_of_Spain",
+  "region": "Trinidad"
+ },
+ "arima": {
+  "tz": "America/Port_of_Spain",
+  "region": "Trinidad"
+ },
+ "couva": {
+  "tz": "America/Port_of_Spain",
+  "region": "Trinidad"
+ },
+ "linden-guyana": {
+  "tz": "America/Guyana",
+  "region": "Guyana"
+ },
+ "new-amsterdam-guyana": {
+  "tz": "America/Guyana",
+  "region": "Guyana"
+ },
+ "lautoka": {
+  "tz": "Pacific/Fiji",
+  "region": "Fiji"
+ },
+ "labasa": {
+  "tz": "Pacific/Fiji",
+  "region": "Fiji"
+ },
+ "ba-fiji": {
+  "tz": "Pacific/Fiji",
+  "region": "Fiji"
+ },
+ "edison-nj": {
+  "tz": "America/New_York",
+  "region": "USA"
+ },
+ "fremont-bay-area": {
+  "tz": "America/Los_Angeles",
+  "region": "USA"
+ },
+ "new-york-city": {
+  "tz": "America/New_York",
+  "region": "USA"
+ },
+ "chicago": {
+  "tz": "America/Chicago",
+  "region": "USA"
+ },
+ "houston": {
+  "tz": "America/Chicago",
+  "region": "USA"
+ },
+ "dallas": {
+  "tz": "America/Chicago",
+  "region": "USA"
+ },
+ "los-angeles": {
+  "tz": "America/Los_Angeles",
+  "region": "USA"
+ },
+ "washington-dc": {
+  "tz": "America/New_York",
+  "region": "USA"
+ },
+ "atlanta": {
+  "tz": "America/New_York",
+  "region": "USA"
+ },
+ "leicester": {
+  "tz": "Europe/London",
+  "region": "UK"
+ },
+ "wembley-harrow": {
+  "tz": "Europe/London",
+  "region": "UK"
+ },
+ "birmingham": {
+  "tz": "Europe/London",
+  "region": "UK"
+ },
+ "manchester": {
+  "tz": "Europe/London",
+  "region": "UK"
+ },
+ "bradford": {
+  "tz": "Europe/London",
+  "region": "UK"
+ },
+ "brampton": {
+  "tz": "America/Toronto",
+  "region": "Canada"
+ },
+ "mississauga": {
+  "tz": "America/Toronto",
+  "region": "Canada"
+ },
+ "surrey-bc": {
+  "tz": "America/Vancouver",
+  "region": "Canada"
+ },
+ "vancouver": {
+  "tz": "America/Vancouver",
+  "region": "Canada"
+ },
+ "calgary": {
+  "tz": "America/Edmonton",
+  "region": "Canada"
+ },
+ "melbourne": {
+  "tz": "Australia/Melbourne",
+  "region": "Australia"
+ },
+ "perth": {
+  "tz": "Australia/Perth",
+  "region": "Australia"
+ },
+ "brisbane": {
+  "tz": "Australia/Brisbane",
+  "region": "Australia"
+ },
+ "adelaide": {
+  "tz": "Australia/Adelaide",
+  "region": "Australia"
+ }
+}

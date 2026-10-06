@@ -4,6 +4,7 @@ import servicesData from '../data/services.json';
 import { useLanguage } from '../context/LanguageContext';
 import useSEO from '../hooks/useSEO';
 import { breadcrumbJsonLd, combineJsonLd } from '../utils/seo';
+import CityTimeTable from '../components/CityTimeTable';
 import { MessageCircle, Video, MapPin, Home as HomeIcon, CheckCircle2 } from 'lucide-react';
 
 // Popular services to feature on every city page - a curated subset
@@ -84,6 +85,8 @@ export default function CityLanding() {
                     </div>
                 </div>
             </section>
+
+            <CityTimeTable cityInfo={cityInfo} />
 
             {/* Featured services, each linking to its real detail page */}
             <section className="section" style={{ background: 'var(--cream)' }}>

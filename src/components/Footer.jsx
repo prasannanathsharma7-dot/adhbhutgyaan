@@ -77,6 +77,7 @@ export default function Footer() {
                             <Link to="/free-kundli"><Sparkles size={15} /> {t('निःशुल्क कुंडली', 'Free Kundli')}</Link>
                             <Link to="/about"><User size={15} /> {t('हमारे बारे में', 'About')}</Link>
                             <Link to="/blog"><FileText size={15} /> {t('ब्लॉग', 'Blog')}</Link>
+                            <Link to="/pandit-for-pooja"><MapPin size={15} /> {t('हम जहाँ सेवा देते हैं', 'Cities We Serve')}</Link>
                             <Link to="/contact"><Phone size={15} /> {t('संपर्क करें', 'Contact')}</Link>
                         </div>
                     </div>

@@ -209,6 +209,25 @@ if (fs.existsSync(distPath)) {
     const kundliHtml = path.join(distPath, 'free-kundli', 'index.html');
     assert(fs.existsSync(kundliHtml), 'dist/free-kundli/index.html static SEO page exists');
 
+    // Crawler-visible text: the React app renders client-side, so without the
+    // injected #seo-prerender block a non-JavaScript reader (AI crawlers, link
+    // unfurlers) gets an empty page. Guards against the snapshot step being
+    // skipped or the injection silently breaking.
+    const textWords = (file) => {
+        const html = fs.readFileSync(file, 'utf-8');
+        const m = html.match(/<div id="seo-prerender">([\s\S]*?)<\/div>/);
+        if (!m) return { words: 0, h1: 0, links: 0 };
+        return { words: m[1].replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length, h1: (m[1].match(/<h1/g) || []).length, links: (m[1].match(/<a /g) || []).length };
+    };
+    for (const route of ['', 'services/rudrabhishek', 'blog/pitra-dosh-lakshan-nivaran', 'pandit-for-pooja/new-york-city', 'pandit-for-pooja', 'about']) {
+        const r = textWords(path.join(distPath, route, 'index.html'));
+        assert(r.words >= 150 && r.h1 >= 1 && r.links >= 10, `/${route} has crawler-visible text in raw HTML`, `words=${r.words} h1=${r.h1} links=${r.links}`);
+    }
+    assert(fs.existsSync(path.join(distPath, 'llms.txt')), 'dist/llms.txt exists');
+    const sm = fs.readFileSync(path.join(distPath, 'sitemap.xml'), 'utf-8');
+    assert(sm.includes('/pandit-for-pooja</loc>'), 'sitemap lists the city hub page');
+    assert(new Set([...sm.matchAll(/<lastmod>([^<]+)<\/lastmod>/g)].map(x => x[1])).size > 1, 'sitemap lastmod dates are not all identical');
+
     // Regression test for a real gap: the sitemap previously had 38 URLs,
     // none of which was the homepage itself (routes.map() only ever
     // covered pages built by cloning index.html, not index.html's own
