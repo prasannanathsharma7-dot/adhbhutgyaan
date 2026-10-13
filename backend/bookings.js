@@ -1,5 +1,5 @@
 const { ObjectId } = require('mongodb');
-const { getDb, withCors, capStr, escapeHtml, checkRateLimit, isValidIndianPhone, isValidName } = require('./_db');
+const { getDb, withCors, capStr, escapeHtml, checkRateLimit, isValidPhone, isValidName } = require('./_db');
 const { sendMail } = require('./_email');
 const { notifyAdmin } = require('./_notify');
 
@@ -43,7 +43,7 @@ module.exports = async (req, res) => {
                 res.status(400).json({ ok: false, error: 'name and phone are required' });
                 return;
             }
-            if (!isValidIndianPhone(phone)) {
+            if (!isValidPhone(phone)) {
                 res.status(400).json({ ok: false, error: 'phone must be a valid 10-digit Indian mobile number' });
                 return;
             }

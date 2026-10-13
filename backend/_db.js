@@ -33,17 +33,23 @@ async function getDb() {
     return cachedDb;
 }
 
-// CORS: only our own site (and Vercel preview deployments) can call these APIs from
-// browser JS. Server-to-server / curl requests have no Origin header and are unaffected.
+// CORS: only our own site can call these APIs from browser JS. Server-to-server /
+// curl requests have no Origin header and are unaffected. NOTE: we deliberately do
+// NOT allow "*.vercel.app" - anyone can register a project on that domain, so a
+// wildcard would let an attacker's page call these APIs from a visitor's browser.
+// The site calls /api/* same-origin through the Vercel rewrite, so previews work
+// without CORS; to allow a specific extra origin (e.g. one preview URL) set
+// EXTRA_ALLOWED_ORIGINS="https://a.vercel.app,https://b.vercel.app" in the backend env.
 const ALLOWED_ORIGINS = [
     'https://www.adhbhutgyaan.com',
     'https://adhbhutgyaan.com',
     'http://localhost:5173', // local dev
+    ...(process.env.EXTRA_ALLOWED_ORIGINS || '').split(',').map(o => o.trim()).filter(Boolean),
 ];
 
 function withCors(req, res) {
     const origin = req.headers.origin;
-    if (origin && (ALLOWED_ORIGINS.includes(origin) || origin.endsWith('.vercel.app'))) {
+    if (origin && ALLOWED_ORIGINS.includes(origin)) {
         res.setHeader('Access-Control-Allow-Origin', origin);
     } else {
         res.setHeader('Access-Control-Allow-Origin', ALLOWED_ORIGINS[0]);
@@ -70,6 +76,28 @@ function capStr(value, maxLen) {
 function isValidIndianPhone(phone) {
     const digits = (phone || '').toString().replace(/\D/g, '');
     return /^[6-9]\d{9}$/.test(digits);
+}
+
+// International-friendly phone check (the site serves NRIs, so an Indian-only
+// rule silently blocks them). Accepts either:
+//  - an Indian mobile: 10 digits starting 6-9, optionally written with +91 / 91 / 0 prefix, or
+//  - an international number written with an explicit "+" or "00" prefix: 8-15 digits (E.164),
+//    first digit of the country code 1-9.
+// A bare 11-19 digit string with no "+"/"00" is still rejected (that is the spam
+// pattern the original check was written to stop).
+function isValidPhone(phone) {
+    const raw = (phone || '').toString().trim();
+    if (!raw) return false;
+    const hasIntlPrefix = /^(\+|00)/.test(raw);
+    const digits = raw.replace(/\D/g, '');
+    if (hasIntlPrefix) {
+        const national = raw.startsWith('00') ? digits.slice(2) : digits;
+        if (/^91[6-9]\d{9}$/.test(national)) return true;          // +91 Indian mobile
+        return /^[1-9]\d{7,14}$/.test(national) && !/^91/.test(national);
+    }
+    if (/^[6-9]\d{9}$/.test(digits)) return true;                   // plain 10-digit Indian mobile
+    if (/^0[6-9]\d{9}$/.test(digits)) return true;                  // 0-prefixed Indian mobile
+    return false;
 }
 function isValidName(name) {
     const trimmed = (name || '').toString().trim();
@@ -153,4 +181,4 @@ async function checkRateLimit(db, req, route, { limit = 5, windowMs = 10 * 60 * 
     return count <= limit;
 }
 
-module.exports = { getDb, withCors, capStr, escapeHtml, checkRateLimit, getClientIp, isValidIndianPhone, isValidName };
+module.exports = { getDb, withCors, capStr, escapeHtml, checkRateLimit, getClientIp, isValidIndianPhone, isValidPhone, isValidName };

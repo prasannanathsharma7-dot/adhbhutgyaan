@@ -52,8 +52,8 @@ export default function Terms() {
                         </h2>
                         <p style={{ marginBottom: '1rem' }}>
                             {t(
-                                'इस वेबसाइट पर मूल्य प्रदर्शित नहीं किए जाते; सभी मूल्य पूछताछ के बाद WhatsApp या फ़ोन पर बताए जाते हैं और पूजा के प्रकार, पंडितों की संख्या, स्थान (ऑनलाइन/ऑफ़लाइन/मंदिर) के अनुसार भिन्न हो सकते हैं। इस वेबसाइट पर कोई ऑनलाइन भुगतान सुविधा उपलब्ध नहीं है।',
-                                'Prices are not displayed on this website; all pricing is shared over WhatsApp or phone after enquiry, and may vary based on the type of pooja, number of Pandits, and mode (online/offline/temple). This website does not offer any online payment facility.'
+                                'वेबसाइट (दर सूची पृष्ठ) पर दिखाई गई दरें उल्लिखित इकाई (जैसे प्रति पाठ या प्रति अनुष्ठान) के लिए हैं। आपकी आवश्यकता — पूजा का प्रकार, पंडितों की संख्या, सामग्री, स्थान (ऑनलाइन/ऑफ़लाइन/मंदिर) — के अनुसार अंतिम मूल्य बुकिंग से पहले WhatsApp या फ़ोन पर बताया जाता है। जिन सेवाओं के आगे मूल्य नहीं दिया गया है, उनके लिए पूछताछ करें। इस वेबसाइट पर कोई ऑनलाइन भुगतान सुविधा उपलब्ध नहीं है।',
+                                'Rates shown on this website (Price List page) are for the unit stated, for example per paath or per ritual. The final price for your specific requirement - type of pooja, number of Pandits, materials, and mode/location (online, offline or temple) - is confirmed with you on WhatsApp or phone before booking. For services without a listed price, please enquire. This website does not offer any online payment facility.'
                             )}
                         </p>
 

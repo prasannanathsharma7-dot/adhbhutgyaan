@@ -1,20 +1,20 @@
-// Master switch for showing prices anywhere on the site.
+// Master switch + per-package approval for showing prices on package cards,
+// in WhatsApp/email enquiry text and in Schema.org markup.
 //
-// src/data/services.json already holds a `price` on most packages, but
-// those numbers have never been published (the frontend never rendered
-// them) and several look formula-derived rather than final (e.g. 108 x 30
-// = 3240, 501 x 30 = 15030). Publishing unreviewed prices - on package
-// cards, in WhatsApp/email enquiry text, and in Google-facing Schema.org
-// markup - would be hard to walk back once crawled, so everything price-
-// related reads through this one flag instead.
+// src/data/services.json still holds DRAFT package prices that were never
+// reviewed (several look formula-derived, e.g. 108 x 30 = 3240, and some differ
+// widely from the pandit's own rate slip). A package price is shown ONLY when that
+// package also has `"priceApproved": true`. Today that is just the astrology
+// consultation (final price Rs 501, set by the owner). To publish another package
+// price: set its `price` to the FINAL amount and add `"priceApproved": true`.
 //
-// When the final price list is confirmed: update services.json, then set
-// SHOW_PRICES to true. Nothing else needs to change.
-export const SHOW_PRICES = false;
+// The broader rate list (paath/shraddh/jaap/yagya) lives in src/data/priceList.json
+// and the /price-list page - see scripts/build-price-list.mjs.
+export const SHOW_PRICES = true;
 
-/** Returns the package's price as a number only when prices are enabled and set. */
+/** Returns the package's price as a number only when prices are enabled, set AND approved. */
 export function getPackagePrice(pkg) {
-    if (!SHOW_PRICES || !pkg || !pkg.price) return null;
+    if (!SHOW_PRICES || !pkg || !pkg.price || pkg.priceApproved !== true) return null;
     return Number(pkg.price);
 }
 

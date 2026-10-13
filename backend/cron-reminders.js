@@ -15,12 +15,16 @@ function tomorrowDateString() {
 }
 
 module.exports = async (req, res) => {
-    // Prefer Vercel's Authorization: Bearer CRON_SECRET authentication. The
-    // x-vercel-cron fallback is only used when no secret has been configured.
-    const isVercelCron = req.headers['x-vercel-cron'] !== undefined;
+    // Requires `Authorization: Bearer <CRON_SECRET>` (Vercel Cron sends this
+    // automatically when CRON_SECRET is set on the Vercel project; set the same value
+    // on the backend). The old fallback trusted the mere presence of an
+    // `x-vercel-cron` header, which any client can send - removed. With no secret
+    // configured at all the endpoint now refuses every request (fail closed).
     const bearer = (req.headers.authorization || '').replace(/^Bearer\s+/i, '').trim();
     const cronSecret = (process.env.CRON_SECRET || process.env.ADMIN_KEY || '').trim();
-    const authorized = cronSecret ? bearer === cronSecret : isVercelCron;
+    const authorized = Boolean(cronSecret) && Boolean(bearer) &&
+        bearer.length === cronSecret.length &&
+        require('crypto').timingSafeEqual(Buffer.from(bearer), Buffer.from(cronSecret));
     if (!authorized) {
         res.status(401).json({ ok: false, error: 'Unauthorized' });
         return;

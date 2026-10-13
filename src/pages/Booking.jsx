@@ -8,6 +8,7 @@ import { breadcrumbJsonLd, combineJsonLd } from '../utils/seo';
 import { getPackagePrice, formatINR } from '../config/pricing';
 import BirthDetailsInput from '../components/BirthDetailsInput';
 import { Smartphone, Landmark, Home as HomeIcon, Star, AlertTriangle, CheckCircle2, MessageCircle, Phone, Mail, FileText, CalendarClock, Video, Gift } from 'lucide-react';
+import { isValidPhone, PHONE_HELP_HI, PHONE_HELP_EN } from '../utils/phone';
 
 // Captures lead-source data (UTM params from ad campaigns, or the referring
 // site) at the moment someone submits a booking, so the team can see which
@@ -158,7 +159,7 @@ export default function Booking() {
     const isStep3Valid = () => {
         const nameTrimmed = form.name.trim();
         const nameOk = nameTrimmed.length >= 3 && /^[A-Za-z\u0900-\u097F\s.]+$/.test(nameTrimmed);
-        const phoneOk = /^[6-9]\d{9}$/.test(form.phone.replace(/\D/g, ''));
+        const phoneOk = isValidPhone(form.phone);
         const addressOk = !form.address || form.address.trim().length === 0 || form.address.trim().length >= 5;
         return nameOk && phoneOk && addressOk && Boolean(form.mode);
     };
@@ -179,7 +180,7 @@ export default function Booking() {
         if (field === 'phone') {
             const phoneDigits = form.phone.replace(/\D/g, '');
             if (!phoneDigits) next.phone = t('कृपया मोबाइल नंबर लिखें', 'Please enter your phone number');
-            else if (!/^[6-9]\d{9}$/.test(phoneDigits)) next.phone = t('कृपया सही 10-अंकों का भारतीय मोबाइल नंबर लिखें', 'Please enter a valid 10-digit Indian mobile number');
+            else if (!isValidPhone(form.phone)) next.phone = t(PHONE_HELP_HI, PHONE_HELP_EN);
             else next.phone = undefined;
         }
         if (field === 'address') {
@@ -200,8 +201,8 @@ export default function Booking() {
         const phoneDigits = form.phone.replace(/\D/g, '');
         if (!phoneDigits) {
             next.phone = t('कृपया मोबाइल नंबर लिखें', 'Please enter your phone number');
-        } else if (!/^[6-9]\d{9}$/.test(phoneDigits)) {
-            next.phone = t('कृपया सही 10-अंकों का भारतीय मोबाइल नंबर लिखें', 'Please enter a valid 10-digit Indian mobile number');
+        } else if (!isValidPhone(form.phone)) {
+            next.phone = t(PHONE_HELP_HI, PHONE_HELP_EN);
         }
         if (form.address && form.address.trim().length > 0 && form.address.trim().length < 5) {
             next.address = t('कृपया पूरा पता/शहर लिखें (कम से कम 5 अक्षर)', 'Please enter a complete address/city (at least 5 characters)');

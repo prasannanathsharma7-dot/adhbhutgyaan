@@ -75,6 +75,7 @@ export default function Footer() {
                             <Link to="/panchang"><Sunrise size={15} /> {t('दैनिक पंचांग', 'Daily Panchang')}</Link>
                             <Link to="/booking"><CalendarDays size={15} /> {t('पूजा बुक करें', 'Book Pooja')}</Link>
                             <Link to="/free-kundli"><Sparkles size={15} /> {t('निःशुल्क कुंडली', 'Free Kundli')}</Link>
+                            <Link to="/price-list">{t('दर सूची', 'Price List')}</Link>
                             <Link to="/about"><User size={15} /> {t('हमारे बारे में', 'About')}</Link>
                             <Link to="/blog"><FileText size={15} /> {t('ब्लॉग', 'Blog')}</Link>
                             <Link to="/pandit-for-pooja"><MapPin size={15} /> {t('हम जहाँ सेवा देते हैं', 'Cities We Serve')}</Link>

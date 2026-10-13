@@ -27,10 +27,11 @@
         "nameEn": "Personal Consultation Session",
         "paathCount": "एक-पर-एक परामर्श सत्र",
         "includes": "कुंडली विश्लेषण एवं उपाय सहित सम्पूर्ण मार्गदर्शन।",
-        "price": null,
+        "price": 501,
         "popular": true,
         "paathCountEn": "One-on-one consultation session",
-        "includesEn": "Complete guidance including birth-chart analysis and remedial measures."
+        "includesEn": "Complete guidance including birth-chart analysis and remedial measures.",
+        "priceApproved": true
       }
     ],
     "shortDescEn": "Comprehensive birth-chart analysis, planetary-affliction remedies, and authoritative astrological guidance for life's every concern, by Dr. Umang Nath Sharma."

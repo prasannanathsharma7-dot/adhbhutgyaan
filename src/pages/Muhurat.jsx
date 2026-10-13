@@ -4,6 +4,7 @@ import { useLanguage } from '../context/LanguageContext';
 import useSEO from '../hooks/useSEO';
 import { breadcrumbJsonLd, combineJsonLd } from '../utils/seo';
 import { Heart, Home as HomeIcon, Baby, Briefcase, Sparkles, Loader2 } from 'lucide-react';
+import { isValidPhone, PHONE_HELP_HI, PHONE_HELP_EN } from '../utils/phone';
 
 const CATEGORIES = [
     { id: 'vivah', icon: Heart, nameHi: 'विवाह मुहूर्त', nameEn: 'Marriage Muhurat' },
@@ -31,7 +32,7 @@ export default function Muhurat() {
     const isFormValid = () => {
         const nameTrimmed = form.name.trim();
         const nameOk = nameTrimmed.length >= 3 && /^[A-Za-z\u0900-\u097F\s.]+$/.test(nameTrimmed);
-        const phoneOk = /^[6-9]\d{9}$/.test(form.phone.replace(/\D/g, ''));
+        const phoneOk = isValidPhone(form.phone);
         return Boolean(category) && nameOk && phoneOk;
     };
 
@@ -46,7 +47,7 @@ export default function Muhurat() {
         if (field === 'phone') {
             const phoneDigits = form.phone.replace(/\D/g, '');
             if (!phoneDigits) next.phone = t('कृपया मोबाइल नंबर लिखें', 'Please enter your phone number');
-            else if (!/^[6-9]\d{9}$/.test(phoneDigits)) next.phone = t('कृपया सही 10-अंकों का भारतीय मोबाइल नंबर लिखें', 'Please enter a valid 10-digit Indian mobile number');
+            else if (!isValidPhone(form.phone)) next.phone = t(PHONE_HELP_HI, PHONE_HELP_EN);
             else next.phone = undefined;
         }
         setFieldErrors(next);

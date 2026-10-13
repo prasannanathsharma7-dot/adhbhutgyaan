@@ -65,8 +65,8 @@ export default function Services() {
                     a: t('नहीं, हमारी अधिकतर पूजाएं ऑनलाइन (लाइव वीडियो के साथ) भी करवाई जा सकती हैं। आप विदेश में रहकर भी अपने नाम व गोत्र से पूजा करवा सकते हैं।', 'No, most of our poojas can also be performed online with a live video call. You can have the pooja performed in your name and gotra even while living abroad.'),
                 },
                 {
-                    q: t('पूजा की कीमत में क्या शामिल है?', 'What is included in the pooja price?'),
-                    a: t('पूजा मूल्य में सम्पूर्ण पूजन सामग्री, अनुभवी पंडितों की दक्षिणा और हवन (जहाँ लागू हो) शामिल है। कोई छुपा हुआ शुल्क नहीं है।', 'The price includes all pooja materials, the experienced pandits\u2019 fees, and havan where applicable. There are no hidden charges.'),
+                    q: t('दर सूची की कीमतों में क्या शामिल है?', 'What do the listed prices cover?'),
+                    a: t('दर सूची की दरें बताई गई इकाई (जैसे प्रति पाठ या प्रति अनुष्ठान) के लिए हैं। आपकी आवश्यकता — पंडितों की संख्या, सामग्री, स्थान, ऑनलाइन/ऑफ़लाइन — के अनुसार अंतिम मूल्य बुकिंग से पहले WhatsApp पर स्पष्ट बता दिया जाता है, ताकि बाद में कोई अप्रत्याशित शुल्क न आए।', 'Listed rates are for the unit shown (for example per paath or per ritual). The final price for your requirement - number of Pandits, materials, location, online or in person - is confirmed clearly on WhatsApp before you book, so there are no surprises later.'),
                 },
                 {
                     q: t('बुकिंग की पुष्टि कैसे होती है?', 'How is my booking confirmed?'),
@@ -101,6 +101,9 @@ export default function Services() {
                     </div>
                     <h1>{t('हमारी पूजा सेवाएं एवं ज्योतिष परामर्श', 'Our Pooja Services & Astrology Consultation')}</h1>
                     <p className="subtitle">{t('हमारी पवित्र पूजा सेवाएं एवं डॉ. उमंग नाथ शर्मा द्वारा प्रदत्त ज्योतिषीय परामर्श', 'Our Sacred Pooja Services & Astrology Consultation, Guided by Dr. Umang Nath Sharma')}</p>
+                    <p style={{ marginTop: '0.9rem' }}>
+                        <Link to="/price-list" className="btn btn-gold" style={{ padding: '0.5rem 1.2rem', fontSize: '0.9rem' }}>{t('पूरी दर सूची देखें →', 'View the full Price List →')}</Link>
+                    </p>
                 </div>
             </header>
 

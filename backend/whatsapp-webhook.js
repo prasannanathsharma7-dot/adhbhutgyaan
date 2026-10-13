@@ -15,6 +15,9 @@
 //      WHATSAPP_ACCESS_TOKEN   - the access token from step 2
 //      WHATSAPP_PHONE_NUMBER_ID - the Phone number ID from step 2
 //      WHATSAPP_VERIFY_TOKEN   - the same secret string you set in step 3
+//      WHATSAPP_APP_SECRET     - Meta app dashboard > App settings > Basic > "App secret".
+//                                REQUIRED: every incoming POST is rejected unless its
+//                                X-Hub-Signature-256 header matches this secret.
 //      ANTHROPIC_API_KEY       - already set for the website chatbot
 //
 // Note: the WhatsApp number used here must be dedicated to the Cloud API -
@@ -24,8 +27,38 @@
 const { getDb, capStr } = require('./_db');
 const { runAssistantTurn } = require('./_assistant');
 const { sendWhatsAppText } = require('./_whatsapp');
+const crypto = require('crypto');
 
 const MAX_HISTORY = 20; // messages of context kept per phone number
+
+// Verifies Meta's `X-Hub-Signature-256: sha256=<hmac>` header: an HMAC-SHA256 of
+// the RAW request body (the exact bytes Meta sent, not re-serialised JSON) keyed
+// with the app secret. Without this check anybody on the internet could POST a
+// forged "incoming message" and make the bot (a) spend AI credits and (b) send
+// WhatsApp messages to any phone number they name in the payload.
+// Fails closed: no secret configured => nothing is accepted.
+function verifyMetaSignature(req) {
+    const secret = (process.env.WHATSAPP_APP_SECRET || '').trim();
+    if (!secret) return { ok: false, reason: 'WHATSAPP_APP_SECRET is not configured' };
+    const header = (req.headers && req.headers['x-hub-signature-256']) || '';
+    if (!header.startsWith('sha256=')) return { ok: false, reason: 'missing or malformed signature header' };
+    const raw = req.rawBody;
+    if (!Buffer.isBuffer(raw)) return { ok: false, reason: 'raw request body unavailable' };
+    const expected = crypto.createHmac('sha256', secret).update(raw).digest();
+    let given;
+    try { given = Buffer.from(header.slice('sha256='.length), 'hex'); } catch { return { ok: false, reason: 'bad signature encoding' }; }
+    if (given.length !== expected.length || !crypto.timingSafeEqual(given, expected)) {
+        return { ok: false, reason: 'signature mismatch' };
+    }
+    return { ok: true };
+}
+
+let indexReady = false;
+async function ensureDedupeIndex(db) {
+    if (indexReady) return;
+    await db.collection('whatsapp_processed').createIndex({ messageId: 1 }, { unique: true });
+    indexReady = true;
+}
 
 module.exports = async (req, res) => {
     // ---- Webhook verification (Meta calls this once, when you save the
@@ -47,6 +80,13 @@ module.exports = async (req, res) => {
         return;
     }
 
+    const sig = verifyMetaSignature(req);
+    if (!sig.ok) {
+        console.warn('WhatsApp webhook rejected:', sig.reason);
+        res.status(401).send('Invalid signature');
+        return;
+    }
+
     // IMPORTANT: the response is sent at the END of this handler, after all
     // work is done - not immediately on receipt. On Vercel's serverless
     // runtime, execution can be frozen/terminated once a response is sent,
@@ -55,11 +95,13 @@ module.exports = async (req, res) => {
     // WhatsApp send below never completing. Meta's own retry behavior and
     // this handler's message-ID de-duplication already tolerate a reply
     // that takes a couple of extra seconds.
+    let message;
+    let replySent = false;
     try {
         const entry = req.body?.entry?.[0];
         const change = entry?.changes?.[0];
         const value = change?.value;
-        const message = value?.messages?.[0];
+        message = value?.messages?.[0];
 
         // Ignore delivery/read-status callbacks and non-text messages (image,
         // audio, sticker, etc.) - the bot only handles plain text for now.
@@ -83,15 +125,24 @@ module.exports = async (req, res) => {
 
         const db = await getDb();
 
-        // De-duplicate: Meta may redeliver the same webhook event on retry.
+        // De-duplicate + make retries safe. A unique index on messageId means two
+        // simultaneous deliveries can't both pass. The record is created as
+        // 'processing' and only becomes 'replied' after the reply was really sent;
+        // if anything fails BEFORE the reply goes out we delete the record and return
+        // 500 so Meta retries (previously the message was marked processed up-front
+        // and a failure silently lost it for good).
         const messageId = message.id;
         if (messageId) {
-            const already = await db.collection('whatsapp_processed').findOne({ messageId });
-            if (already) {
-                res.status(200).send('EVENT_RECEIVED');
-                return;
+            await ensureDedupeIndex(db);
+            try {
+                await db.collection('whatsapp_processed').insertOne({ messageId, status: 'processing', at: new Date() });
+            } catch (e) {
+                if (e && e.code === 11000) {
+                    res.status(200).send('EVENT_RECEIVED'); // duplicate delivery - already handled / in progress
+                    return;
+                }
+                throw e;
             }
-            await db.collection('whatsapp_processed').insertOne({ messageId, at: new Date() });
         }
 
         // Load this conversation's recent history (stored server-side, since
@@ -109,13 +160,28 @@ module.exports = async (req, res) => {
         );
 
         await sendWhatsAppText(from, replyText);
+        replySent = true;
+        if (messageId) {
+            await db.collection('whatsapp_processed').updateOne({ messageId }, { $set: { status: 'replied', repliedAt: new Date() } }).catch(() => {});
+        }
 
         res.status(200).send('EVENT_RECEIVED');
     } catch (err) {
         console.error('WhatsApp webhook error:', err);
-        // Still acknowledge with 200: Meta retries on non-2xx responses, and
-        // we've already de-duplicated by message ID above, but there's no
-        // reason to invite a retry storm for e.g. a transient AI API error.
-        res.status(200).send('EVENT_RECEIVED');
+        if (replySent) {
+            // The customer already got their reply; a failure in bookkeeping afterwards must not trigger a retry (that would double-reply).
+            res.status(200).send('EVENT_RECEIVED');
+            return;
+        }
+        // Not replied yet: free the dedupe slot and ask Meta to retry later.
+        try {
+            if (message && message.id) {
+                const db2 = await getDb();
+                await db2.collection('whatsapp_processed').deleteOne({ messageId: message.id });
+            }
+        } catch { /* best effort */ }
+        res.status(500).send('Temporary error - please retry');
     }
 };
+
+module.exports.verifyMetaSignature = verifyMetaSignature;

@@ -4,6 +4,7 @@ import { useLanguage } from '../context/LanguageContext';
 import useSEO from '../hooks/useSEO';
 import { breadcrumbJsonLd, combineJsonLd } from '../utils/seo';
 import { MessageCircle, Phone, Mail, MapPin, CheckCircle2, AlertTriangle } from 'lucide-react';
+import { isValidPhone, PHONE_HELP_HI, PHONE_HELP_EN } from '../utils/phone';
 
 export default function Contact() {
     const [form, setForm] = useState({ name: '', phone: '', email: '', subject: '', message: '' });
@@ -32,8 +33,8 @@ export default function Contact() {
         const phoneDigits = form.phone.replace(/\D/g, '');
         if (!phoneDigits) {
             next.phone = t('कृपया मोबाइल नंबर लिखें', 'Please enter your phone number');
-        } else if (!/^[6-9]\d{9}$/.test(phoneDigits)) {
-            next.phone = t('कृपया सही 10-अंकों का भारतीय मोबाइल नंबर लिखें', 'Please enter a valid 10-digit Indian mobile number');
+        } else if (!isValidPhone(form.phone)) {
+            next.phone = t(PHONE_HELP_HI, PHONE_HELP_EN);
         }
         if (form.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
             next.email = t('कृपया सही ईमेल पता लिखें', 'Please enter a valid email address');

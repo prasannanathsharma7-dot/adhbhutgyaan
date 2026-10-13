@@ -332,6 +332,18 @@ const routes = [
         jsonLd: combineJsonLd(breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Privacy Policy', path: '/privacy' }])),
     },
     {
+        path: '/price-list',
+        title: 'Pooja & Paath Price List - Kashi | Adhbhut Gyaan',
+        description: 'Price list for paath, shraddh, jaap, yagya and astrology consultation by the Pandits of Kashi - clear rates, confirmed on WhatsApp.',
+        jsonLd: combineJsonLd(breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Price List', path: '/price-list' }])),
+    },
+    {
+        path: '/b2b',
+        title: 'Kashi Ritual Partner Programme for Tour Operators | Adhbhut Gyaan',
+        description: 'Ground ritual partner in Varanasi for travel agencies and tour operators: Rudrabhishek, shraddh, pind daan and live sankalp poojas with video proof. Apply for partner rates.',
+        jsonLd: combineJsonLd(breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Partner Programme', path: '/b2b' }])),
+    },
+    {
         path: '/terms',
         title: 'नियम एवं शर्तें | Adhbhut Gyaan',
         description: 'अद्भुत ज्ञान वेबसाइट, पूजा बुकिंग एवं निःशुल्क ज्योतिष टूल्स के उपयोग की शर्तें।',

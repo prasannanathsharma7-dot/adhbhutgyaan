@@ -18,15 +18,15 @@ export default function AdminAgents() {
     const [adminKey, setAdminKey] = useState(() => {
         try {
             if (typeof window !== 'undefined') {
+                // SECURITY: the admin key is no longer accepted from the URL. A secret in a
+                // link ends up in browser history, server/proxy logs, Referer headers and
+                // screenshots. If an old-style link (?key= / ?auth= / ?secret=) is opened we
+                // ignore the value and strip it from the address bar; sign in with the form.
                 const params = new URLSearchParams(window.location.search);
-                const urlKey = params.get('key') || params.get('auth') || params.get('secret');
-                if (urlKey && urlKey.trim()) {
-                    const cleanKey = urlKey.trim();
-                    try {
-                        sessionStorage.setItem('ag_admin_key', cleanKey);
-                        sessionStorage.setItem('ag_admin_auth', cleanKey);
-                    } catch { /* ignore */ }
-                    return cleanKey;
+                if (params.has('key') || params.has('auth') || params.has('secret')) {
+                    ['key', 'auth', 'secret'].forEach(k => params.delete(k));
+                    const qs = params.toString();
+                    window.history.replaceState(null, '', window.location.pathname + (qs ? '?' + qs : '') + window.location.hash);
                 }
             }
             return sessionStorage.getItem('ag_admin_key') || sessionStorage.getItem('ag_admin_auth') || '';
