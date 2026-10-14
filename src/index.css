@@ -3664,3 +3664,10 @@ a.pooja-row-name:hover { color: var(--gold-700); }
   .pooja-row-price small { display: inline; margin-left: 0.35rem; }
   .pooja-row-actions { justify-self: end; }
 }
+
+/* ---- Swipe rows: card grids become a horizontal scroller on phones (keeps long pages short) ---- */
+@media (max-width: 700px) {
+  .h-scroll { display: flex !important; overflow-x: auto; scroll-snap-type: x mandatory; gap: 0.9rem !important; padding-bottom: 0.6rem; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .h-scroll::-webkit-scrollbar { display: none; }
+  .h-scroll > * { flex: 0 0 78%; max-width: 320px; scroll-snap-align: start; }
+}

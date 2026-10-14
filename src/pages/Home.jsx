@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import servicesData from '../data/services.json';
 import { useLanguage } from '../context/LanguageContext';
-import { triptych, videoClips, pressHighlights, youtubeUploadsPlaylistId, youtubeChannelId } from '../data/media';
+import { pressHighlights } from '../data/media';
 import useSEO from '../hooks/useSEO';
 import { localBusinessJsonLd, combineJsonLd } from '../utils/seo';
 import DailyPanchangCard from '../components/DailyPanchangCard';
@@ -11,8 +11,10 @@ import VideoTestimonials from '../components/VideoTestimonials';
 import QuickNav from '../components/QuickNav';
 import EvidenceGallery from '../components/EvidenceGallery';
 import { heritageSummary, testimonials } from '../data/heritage';
+import { HOME_FEATURED_SERVICES } from '../config/home';
+import { catalog } from '../catalog';
 import FlagIcon from '../components/FlagIcon';
-import { SquarePlay, XCircle, CheckCircle2, Mic, Coffee, Sparkle, MessageCircleQuestion, Gem } from 'lucide-react';
+import { XCircle, CheckCircle2 } from 'lucide-react';
 
 function useInView() {
     const ref = useRef();
@@ -33,6 +35,7 @@ export default function Home() {
     const pageRef = useInView();
     const { t, lang } = useLanguage();
     const [liveReviews, setLiveReviews] = useState(null);
+    const featuredServices = HOME_FEATURED_SERVICES.map(id => servicesData.find(sv => sv.id === id)).filter(Boolean);
 
     useEffect(() => {
         fetch('/api/reviews?limit=6')
@@ -124,22 +127,6 @@ export default function Home() {
 
             <UpcomingMuhuratWidget />
 
-            {/* TRIPTYCH */}
-            <section className="section" style={{ paddingBottom: 0 }}>
-                <div className="container">
-                    <div className="triptych">
-                        {triptych.map(item => (
-                            <Link className="triptych-card" key={item.capEn} to={item.link}>
-                                <img src={item.src} alt={item.capEn} loading="lazy" />
-                                <div className="triptych-overlay">
-                                    <span className="triptych-caption">{t(item.capHi, item.capEn)} <span className="arrow">›</span></span>
-                                </div>
-                            </Link>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
             {/* HOW IT WORKS — 3-Step Process Flow */}
             <section className="section" style={{ paddingTop: '2.5rem', paddingBottom: '1rem' }}>
                 <div className="container">
@@ -178,61 +165,6 @@ export default function Home() {
                                 <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: 1.6, margin: 0 }}>{step.desc}</p>
                             </div>
                         ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* VEDIC TRUST & AUTHENTICITY BADGES */}
-            <section className="section" style={{ paddingTop: '2.5rem', paddingBottom: '1rem' }}>
-                <div className="container">
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem' }}>
-                        <div style={{ background: 'white', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-lg)', padding: '1.4rem', boxShadow: 'var(--shadow-sm)', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                            <img src="/images/icons/vedic-manuscript.jpg" alt="" width="48" height="48" loading="lazy" style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-md)', objectFit: 'cover', flexShrink: 0 }} />
-                            <div>
-                                <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: 'var(--navy-900)' }}>
-                                    {t('४००+ वर्षों की वैदिक परम्परा', '400+ Years Vedic Lineage')}
-                                </h3>
-                                <p style={{ margin: '0.35rem 0 0', fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
-                                    {t('महामहोपाध्याय पं. अयोध्या नाथ शर्मा से डॉ. उमंग नाथ शर्मा तक तीन पीढ़ियों की विरासत।', 'Authentic hereditary Sharma tradition continuing across generations in Varanasi.')}
-                                </p>
-                            </div>
-                        </div>
-
-                        <div style={{ background: 'white', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-lg)', padding: '1.4rem', boxShadow: 'var(--shadow-sm)', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                            <img src="/images/icons/ganga-rituals.jpg" alt="" width="48" height="48" loading="lazy" style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-md)', objectFit: 'cover', flexShrink: 0 }} />
-                            <div>
-                                <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: 'var(--navy-900)' }}>
-                                    {t('१००% प्रामाणिक गंगा घाट पूजन', '100% Authentic Ganga Rituals')}
-                                </h3>
-                                <p style={{ margin: '0.35rem 0 0', fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
-                                    {t('दशाश्वमेध एवं मणिकर्णिका घाट पर शुद्ध वैदिक ब्राह्मणों द्वारा विधिपूर्वक संकल्प।', 'Solemnized on sacred Kashi Ghats with pure Gangajal, Bhasma & sacred samagri.')}
-                                </p>
-                            </div>
-                        </div>
-
-                        <div style={{ background: 'white', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-lg)', padding: '1.4rem', boxShadow: 'var(--shadow-sm)', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                            <img src="/images/icons/live-video-pooja.jpg" alt="" width="48" height="48" loading="lazy" style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-md)', objectFit: 'cover', flexShrink: 0 }} />
-                            <div>
-                                <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: 'var(--navy-900)' }}>
-                                    {t('लाइव संकल्प एवं वीडियो प्रमाण', 'Live Sankalp & Video Proof')}
-                                </h3>
-                                <p style={{ margin: '0.35rem 0 0', fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
-                                    {t('आपके नाम व गोत्र से पूजन के उपरांत वीडियो प्रमाण सीधे WhatsApp पर प्रेषित।', 'Personalized HD video proof with your Name & Gotra dispatched directly to WhatsApp.')}
-                                </p>
-                            </div>
-                        </div>
-
-                        <div style={{ background: 'white', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-lg)', padding: '1.4rem', boxShadow: 'var(--shadow-sm)', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                            <img src="/images/icons/astrologer-analysis.jpg" alt="" width="48" height="48" loading="lazy" style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-md)', objectFit: 'cover', flexShrink: 0 }} />
-                            <div>
-                                <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: 'var(--navy-900)' }}>
-                                    {t('वास्तविक ज्योतिषी विश्लेषण', 'Real Astrologer Analysis')}
-                                </h3>
-                                <p style={{ margin: '0.35rem 0 0', fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
-                                    {t('कोई ऑटोमेटेड सॉफ्टवेयर नहीं — डॉ. उमंग नाथ शर्मा द्वारा व्यक्तिगत कुंडली परीक्षण।', 'Zero generic computer bot readings. Hand-analyzed Janam Patrika from Kashi.')}
-                                </p>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </section>
@@ -371,55 +303,6 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* HIGH TEA WITH THE ASTROLOGER - a genuinely unique, premium
-                in-person experience distinct from a standard consultation
-                booking, positioned right after the consultation-section
-                since both are ways to personally engage with Dr. Umang Nath
-                Sharma, but this is an event-style offering, not a service. */}
-            <section className="section" style={{ background: 'linear-gradient(135deg, var(--navy-950), var(--navy-900))' }}>
-                <div className="container">
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2.5rem', alignItems: 'center' }}>
-                        <div>
-                            <img src="/images/heritage/umang-with-ayodhya-portrait.jpg" alt={t('डॉ. उमंग नाथ शर्मा', 'Dr. Umang Nath Sharma')} width="500" height="600" loading="lazy" style={{ width: '100%', borderRadius: 'var(--radius-xl)', boxShadow: 'var(--shadow-xl)' }} />
-                        </div>
-                        <div>
-                            <span className="section-label" style={{ color: 'var(--gold-400)' }}>
-                                <Coffee size={14} style={{ marginRight: '0.4rem' }} />{t('एक विशेष आमंत्रण', 'An Exclusive Invitation')}
-                            </span>
-                            <h2 style={{ color: 'white', marginTop: '0.5rem' }}>{t('एक असाधारण खगोलीय मिलन', 'An Exclusive Celestial Rendezvous')}</h2>
-                            <p style={{ color: 'var(--gold-300)', fontStyle: 'italic', marginTop: '0.3rem' }}>{t('वैदिक ज्योतिष, सनातन ज्ञान एवं काशी में हाई टी', 'Vedic Astrology, Time-Honored Wisdom & High Tea in Varanasi')}</p>
-                            <p style={{ color: 'var(--warm-200)', marginTop: '1rem' }}>
-                                {t(
-                                    'काशी, वह शाश्वत नगरी है जहाँ ब्रह्मांडीय ऊर्जाएं सांसारिक अस्तित्व से मिलती हैं। हम आपको डॉ. उमंग नाथ शर्मा — अद्भुत ज्ञान के मुख्य ज्योतिषी — के साथ एक विशेष हाई-टी अनुभव हेतु सादर आमंत्रित करते हैं। ज्योतिष शास्त्र पर अपनी गहन पकड़ के लिए विश्व-विख्यात, डॉ. शर्मा साधकों को ब्रह्मांडीय संरचना की अंतरंग यात्रा पर ले जाते हैं।',
-                                    "Varanasi, the eternal city of Kashi, is a spiritual landscape where cosmic energies intersect with earthly existence. We cordially invite you to an exclusive high-tea experience with Dr. Umang Nath Sharma — Chief Astrologer at Adhbhut Gyaan. Globally acclaimed for his profound command over Jyotish Shastra, Dr. Sharma leads seekers through an intimate exploration of cosmic architecture."
-                                )}
-                            </p>
-                            <div style={{ display: 'grid', gap: '0.7rem', marginTop: '1.5rem' }}>
-                                {[
-                                    { Icon: Sparkle, hi: 'रहस्यमयी काशी — नगरी का आध्यात्मिक इतिहास एक ज्योतिषी की दृष्टि से', en: 'Mystic Kashi - the city\'s spiritual history through an astrologer\'s eyes' },
-                                    { Icon: Gem, hi: 'व्यक्तिगत जन्म-कुंडली की झलक एवं वर्तमान ग्रह-दशा पर मार्गदर्शन', en: 'Personalized birth-chart micro-insights and guidance on current planetary Dashas' },
-                                    { Icon: MessageCircleQuestion, hi: 'अंतरंग प्रश्नोत्तर — सीधे विश्व-विख्यात ज्योतिषी से प्रश्न पूछने का दुर्लभ अवसर', en: 'Intimate Q&A circle - a rare chance to ask a globally recognized authority directly' },
-                                ].map((item, i) => (
-                                    <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.6rem' }}>
-                                        <item.Icon size={17} style={{ color: 'var(--gold-400)', flexShrink: 0, marginTop: '0.15rem' }} />
-                                        <span style={{ color: 'var(--warm-200)', fontSize: '0.92rem' }}>{t(item.hi, item.en)}</span>
-                                    </div>
-                                ))}
-                            </div>
-                            <p style={{ color: 'var(--warm-300)', fontSize: '0.82rem', marginTop: '1.25rem', fontStyle: 'italic' }}>
-                                💡 {t('सत्र से पूर्व अपनी सटीक जन्म-तिथि, समय एवं जन्म-स्थान तैयार रखें — तथा काशी के पारम्परिक कुल्हड़ चाय का भी आनंद लें।', 'Please have your exact date, time, and city of birth ready before the session - and yes, leave some appetite for the traditional kulhad chai.')}
-                            </p>
-                            <a
-                                href={`https://wa.me/919278148269?text=${encodeURIComponent(t('नमस्कार! मैं "हाई टी विद द एस्ट्रोलॉजर" सत्र के बारे में जानना चाहता हूं।', 'Hello! I would like to know more about the "High Tea with the Astrologer" session.'))}`}
-                                target="_blank" rel="noreferrer" className="btn btn-primary btn-lg" style={{ marginTop: '1.5rem' }}
-                            >
-                                {t('इस अनुभव हेतु पूछें', 'Enquire About This Experience')}
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
             {/* SERVICES PREVIEW */}
             <section className="section" id="services-preview">
                 <div className="container">
@@ -429,8 +312,8 @@ export default function Home() {
                         <p className="section-subtitle">{t('काशी (बनारस) के मनीषी पंडितों द्वारा शास्त्रोक्त विधि-विधान से समस्त प्रकार की पूजा, पाठ, जप और हवन सम्पन्न करवाएं।', 'Avail every form of pooja, paath, jaap and havan, performed by erudite Pandits of Kashi (Banaras) in strict accordance with authentic Vedic methods.')}</p>
                     </div>
                     <div className="om-divider">ॐ</div>
-                    <div className="icon-service-grid">
-                        {servicesData.map((service, i) => {
+                    <div className="icon-service-grid h-scroll">
+                        {featuredServices.map((service, i) => {
                             const images = {
                                 'vipreet-pratyangira': 'service-vipreet-pratyangira',
                                 'mahavidya-paath': 'service-mahavidya-paath',
@@ -466,7 +349,8 @@ export default function Home() {
                         })}
                     </div>
                     <div className="text-center" style={{ marginTop: '2rem' }}>
-                        <Link to="/services" className="btn btn-gold">{t('सभी सेवाएं देखें →', 'View All Services →')}</Link>
+                        <Link to="/services" className="btn btn-gold">{t(`सभी ${catalog.length} पूजाएं देखें →`, `View all ${catalog.length} poojas →`)}</Link>
+                        {' '}<Link to="/price-list" className="btn btn-outline-dark">{t('दर सूची', 'Price List')}</Link>
                     </div>
                 </div>
             </section>
@@ -486,7 +370,7 @@ export default function Home() {
                         <h2 className="section-title" style={{ color: 'white' }}>{t('सामान्य पूजा-सेवाओं से हम कैसे अलग हैं', 'How We\'re Different From a Typical Pooja Service')}</h2>
                         <p style={{ color: 'var(--warm-200)', maxWidth: 640, margin: '0.75rem auto 0' }}>{t('बनारस हिंदू विश्वविद्यालय (BHU) एवं सम्पूर्णानन्द संस्कृत विश्वविद्यालय से शिक्षित पंडितगण — पूरे भारत में पूजा सामग्री डिलीवरी सहित।', 'Pandits educated at Banaras Hindu University (BHU) & Sampurnanand Sanskrit Vishwavidyalaya - with pooja samagri delivery available across India.')}</p>
                     </div>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', marginTop: '2rem', maxWidth: 900, marginLeft: 'auto', marginRight: 'auto' }}>
+                    <div className="h-scroll" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', marginTop: '2rem', maxWidth: 900, marginLeft: 'auto', marginRight: 'auto' }}>
                         {[
                             { badHi: 'पूजा का कोई प्रमाण नहीं मिलता', badEn: 'No proof the pooja actually happened', goodHi: 'लाइव वीडियो कॉल + फोटो/वीडियो प्रमाण हर पूजा के साथ', goodEn: 'Live video call + photo/video proof with every pooja' },
                             { badHi: 'कीमत अस्पष्ट, बाद में छुपे शुल्क', badEn: 'Vague pricing, hidden charges revealed later', goodHi: 'पारदर्शी मूल्य — बुकिंग से पहले ही स्पष्ट', goodEn: 'Transparent pricing, clear before you book' },
@@ -516,7 +400,7 @@ export default function Home() {
                         <h2 className="section-title">{t('हर भक्त के लिए उपयुक्त', 'Designed for Every Devotee')}</h2>
                     </div>
                     <div className="om-divider">ॐ</div>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem' }}>
+                    <div className="h-scroll" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem' }}>
                         {[
                             { img: 'individuals-praying', title: t('व्यक्तिगत भक्त', 'Individuals'), desc: t('स्वयं की मनोकामना पूर्ति, दोष निवारण अथवा नियमित पूजा-पाठ हेतु।', 'For your own wishes, dosh remedies, or regular pooja-paath.') },
                             { img: 'families-pooja', title: t('परिवार', 'Families'), desc: t('पितृ श्राद्ध, वंश-वृद्धि, विवाह में बाधा निवारण जैसे पारिवारिक अनुष्ठान।', 'Family rituals like ancestral rites, lineage blessings, and marriage-obstacle remedies.') },
@@ -627,84 +511,9 @@ export default function Home() {
                         </div>
                         <div style={{ marginTop: '1.75rem' }}>
                             <VideoTestimonials />
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* VIDEOS */}
-            <section className="section section-dark" id="videos">
-                <div className="container">
-                    <div className="text-center fade-up">
-                        <span className="section-label" style={{ justifyContent: 'center' }}>{t('जीवंत झलकियाँ', 'Live Glimpses')}</span>
-                        <h2 className="section-title" style={{ color: 'var(--gold-300)' }}>{t('वीडियो में हमारी पूजा सेवाएं', 'Our Pooja Services, Captured on Video')}</h2>
-                        <p style={{ color: 'var(--warm-200)', marginTop: '0.5rem' }}>{t('वास्तविक अनुष्ठानों की सजीव झलक — यथावत, बिना किसी बनावट के', 'Authentic ceremonies, exactly as they unfold')}</p>
-                    </div>
-                    <div className="om-divider">ॐ</div>
-
-                    <div className="video-showcase-grid" style={{ marginBottom: '2.5rem' }}>
-                        {videoClips.map(clip => (
-                            <div className="video-showcase-card" key={clip.src}>
-                                <video controls preload="none" poster={clip.poster} playsInline>
-                                    <source src={clip.src} type="video/mp4" />
-                                </video>
-                                <p className="video-showcase-caption">{t(clip.capHi, clip.capEn)}</p>
-                            </div>
-                        ))}
-                    </div>
-
-                    <h3 style={{ textAlign: 'center', color: 'var(--gold-300)', marginBottom: '1rem', fontFamily: 'var(--font-hindi)' }}>
-                        {t('हमारे YouTube चैनल पर और देखें', 'See More on Our YouTube Channel')}
-                    </h3>
-                    <div className="youtube-embed-wrapper">
-                        <iframe
-                            src={`https://www.youtube.com/embed/videoseries?list=${youtubeUploadsPlaylistId}`}
-                            title="YouTube video playlist"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                            loading="lazy"
-                        />
-                    </div>
-                    <div className="text-center" style={{ marginTop: '1.5rem' }}>
-                        <a href={`https://www.youtube.com/channel/${youtubeChannelId}`} target="_blank" rel="noreferrer" className="btn btn-primary">
-                            <SquarePlay size={16} style={{ verticalAlign: '-3px', marginRight: '0.35rem' }} />{t('YouTube पर सब्सक्राइब करें', 'Subscribe on YouTube')}
-                        </a>
-                    </div>
-
-                    {/* Media interviews - distinct from the ceremony-footage
-                        clips above (different content-type: press/media
-                        interviews of Pt. Umang Nath Sharma, not our own
-                        ritual recordings), so kept as its own labeled
-                        sub-section rather than mixed into videoClips. */}
-                    <div style={{ marginTop: '3rem', paddingTop: '2.5rem', borderTop: '1px solid rgba(255,255,255,0.12)' }}>
-                        <div className="text-center fade-up">
-                            <span className="section-label" style={{ justifyContent: 'center' }}>
-                                <Mic size={14} style={{ marginRight: '0.4rem' }} />{t('मीडिया साक्षात्कार', 'Media Interviews')}
-                            </span>
-                            <h3 style={{ color: 'var(--gold-300)', marginTop: '0.4rem' }}>{t('डॉ. उमंग नाथ शर्मा के साक्षात्कार', 'Interviews with Dr. Umang Nath Sharma')}</h3>
-                        </div>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', marginTop: '1.75rem' }}>
-                            {[
-                                { id: 'mFPuEkcM2oU' },
-                                { id: 'Xrawsif2bNs' },
-                                { id: 'v0JYx-KoB9k' },
-                            ].map((v, i) => (
-                                <div key={v.id} style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', background: 'rgba(255,255,255,0.05)' }}>
-                                    <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0 }}>
-                                        <iframe
-                                            src={`https://www.youtube.com/embed/${v.id}`}
-                                            title={`Interview ${i + 1} with Dr. Umang Nath Sharma`}
-                                            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 0 }}
-                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                            allowFullScreen
-                                            loading="lazy"
-                                        />
-                                    </div>
-                                    <p style={{ padding: '0.85rem 1rem', margin: 0, color: 'var(--warm-200)', fontSize: '0.88rem' }}>
-                                        {t('साक्षात्कार', 'Interview')} {i + 1} — {t('डॉ. उमंग नाथ शर्मा', 'Dr. Umang Nath Sharma')}
-                                    </p>
-                                </div>
-                            ))}
+                            <p style={{ textAlign: 'center', marginTop: '1.5rem' }}>
+                                <Link to="/media" className="btn btn-outline-dark">{t('और वीडियो एवं साक्षात्कार देखें →', 'More videos & interviews →')}</Link>
+                            </p>
                         </div>
                     </div>
                 </div>
