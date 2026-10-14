@@ -39,7 +39,6 @@ const whatsappConcierge = require('../api/agents/whatsapp-concierge.js');
 const lifeDomainSynthesis = require('../api/agents/life-domain-synthesis.js');
 const generateKundliPdf = require('../api/generate-kundli-pdf.js');
 const muhuratBooking = require('../api/muhurat-booking.js');
-const b2bPartnerInquiry = require('../api/b2b-partner-inquiry.js');
 
 // Each handler already switches on req.method internally (GET/POST/PATCH/OPTIONS),
 // so `app.all` (matches every HTTP method) is the correct mount for all of them.
@@ -52,7 +51,6 @@ app.all('/api/health', health);
 app.all('/api/chat', chat);
 app.all('/api/cron-reminders', cronReminders);
 app.all('/api/whatsapp-webhook', whatsappWebhook);
-app.all('/api/b2b/partner-inquiry', b2bPartnerInquiry);
 app.all('/api/admin/analytics-summary', analyticsSummary);
 app.all('/api/admin/dispatch-sankalp', dispatchSankalp);
 app.all('/api/admin/sync-from-sheets', syncFromSheets);

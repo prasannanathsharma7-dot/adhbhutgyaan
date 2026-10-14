@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { MessageCircle, Sparkles, ScrollText, CalendarDays, Sun, Handshake } from 'lucide-react';
+import { MessageCircle, Sparkles, ScrollText, CalendarDays, Sun } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import useSEO from '../hooks/useSEO';
 import { waLink } from '../config/contact';
@@ -59,8 +59,7 @@ export default function Links() {
                     ))}
                 </div>
                 <p style={{ marginTop: '1.4rem', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                    <Link to="/b2b" style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Handshake size={14} aria-hidden="true" />{t('ट्रैवल एजेंसी? पार्टनर बनें', 'Travel agency? Become a partner')}</Link>
-                    {' · '}<Link to="/about">{t('हमारे बारे में', 'About us')}</Link>
+                    <Link to="/about">{t('हमारे बारे में', 'About us')}</Link>
                 </p>
             </div>
         </section>

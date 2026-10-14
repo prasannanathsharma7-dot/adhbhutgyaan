@@ -349,12 +349,6 @@ const routes = [
         jsonLd: combineJsonLd(breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Price List', path: '/price-list' }])),
     },
     {
-        path: '/b2b',
-        title: 'Kashi Ritual Partner Programme for Tour Operators | Adhbhut Gyaan',
-        description: 'Ground ritual partner in Varanasi for travel agencies and tour operators: Rudrabhishek, shraddh, pind daan and live sankalp poojas with video proof. Apply for partner rates.',
-        jsonLd: combineJsonLd(breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Partner Programme', path: '/b2b' }])),
-    },
-    {
         path: '/terms',
         title: 'नियम एवं शर्तें | Adhbhut Gyaan',
         description: 'अद्भुत ज्ञान वेबसाइट, पूजा बुकिंग एवं निःशुल्क ज्योतिष टूल्स के उपयोग की शर्तें।',
@@ -549,7 +543,6 @@ ${servicesData.map(s => `- [${s.nameEn}](${SITE_URL}/services/${s.id}): ${(s.sho
 - [Daily and monthly Horoscope](${SITE_URL}/horoscope): for all 12 rashis, from live planetary transits
 - [Free Vedic Kundli](${SITE_URL}/free-kundli): Lagna, Chandra and Surya Kundali with planetary positions (Lahiri ayanamsa)
 - [Price List](${SITE_URL}/price-list): published rates for paath, shraddh, jaap and yagya rituals, and the Rs 501 astrology consultation; final price for a specific requirement is confirmed on WhatsApp
-- [Partner Programme](${SITE_URL}/b2b): ritual partner in Varanasi for travel agencies and tour operators (applications are reviewed)
 - [Shubh Muhurat](${SITE_URL}/muhurat): marriage, griha pravesh, naamkaran and business launch dates
 - [Vastu Score](${SITE_URL}/vastu-score): basic Vastu analysis of a home
 

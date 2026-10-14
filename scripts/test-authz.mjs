@@ -43,7 +43,7 @@ console.log('\n\x1b[1m[3] Every privileged endpoint refuses lower roles (handler
 const H = (p) => require(`../backend/${p}`);
 const adminOnly = [
     ['bookings', 'GET'], ['bookings', 'PATCH'], ['contact', 'GET'], ['contact', 'PATCH'], ['reviews', 'PATCH'], ['newsletter', 'GET'],
-    ['muhurat-booking', 'PATCH'], ['admin/dispatch-sankalp', 'POST'], ['admin/analytics-summary', 'GET'], ['b2b-partner-inquiry', 'GET'],
+    ['muhurat-booking', 'PATCH'], ['admin/dispatch-sankalp', 'POST'], ['admin/analytics-summary', 'GET']
 ];
 for (const [file, method] of adminOnly) {
     const handler = H(file);
