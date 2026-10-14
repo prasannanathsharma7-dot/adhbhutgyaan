@@ -39,7 +39,7 @@ export default function Links() {
     const btn = (primary) => ({
         display: 'flex', alignItems: 'center', gap: '0.75rem', width: '100%', padding: '0.95rem 1.1rem', borderRadius: 'var(--radius-xl)',
         fontWeight: 600, fontSize: '1rem', textDecoration: 'none', boxSizing: 'border-box',
-        background: primary ? 'var(--whatsapp, #25D366)' : 'white', color: primary ? 'white' : 'var(--text-primary)',
+        background: primary ? 'var(--whatsapp-dark)' : 'white', color: primary ? 'white' : 'var(--text-primary)',
         border: primary ? 'none' : '1px solid var(--border-gold)', boxShadow: 'var(--shadow-md)',
     });
 

@@ -24,7 +24,7 @@ export default function ServiceCard({ entry }) {
             <a
                 href={waLink(t(`प्रणाम, मुझे ${entry.nameHi} पूजा काशी में करवानी है।`, `Pranam, I would like to book ${entry.nameEn} pooja in Kashi.`))}
                 target="_blank" rel="noreferrer"
-                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.35rem', marginTop: '0.75rem', paddingTop: '0.65rem', borderTop: '1px solid var(--border-light)', fontSize: '0.82rem', fontWeight: 600, color: 'var(--whatsapp, #25D366)' }}
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.35rem', marginTop: '0.75rem', paddingTop: '0.65rem', borderTop: '1px solid var(--border-light)', fontSize: '0.82rem', fontWeight: 600, color: 'var(--whatsapp-dark)' }}
             >
                 <MessageCircle size={13} /> {t('WhatsApp पर सीधे बुक करें', 'Book Directly on WhatsApp')}
             </a>

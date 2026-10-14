@@ -21,7 +21,7 @@ export default function PoojaDirectory() {
     const autoOpen = Boolean(query.trim()) || cat !== 'all';
     const chip = (active) => ({
         padding: '0.4rem 0.9rem', borderRadius: 'var(--radius-xl)', border: '1px solid var(--border-gold)', fontSize: '0.82rem', fontWeight: 600, cursor: 'pointer',
-        background: active ? 'var(--gold-600)' : 'white', color: active ? 'white' : 'var(--gold-700)',
+        background: active ? 'var(--gold-800)' : 'white', color: active ? 'white' : 'var(--gold-800)',
     });
 
     return (

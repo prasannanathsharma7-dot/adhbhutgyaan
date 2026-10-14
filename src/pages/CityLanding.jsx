@@ -94,7 +94,7 @@ export default function CityLanding() {
                     <h2 className="section-title" style={{ textAlign: 'center' }}>
                         {t(`${cityInfo.name} में लोकप्रिय पूजा सेवाएं`, `Popular Pooja Services for ${cityInfo.nameEn}`)}
                     </h2>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem', marginTop: '2rem' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: '1rem', marginTop: '2rem' }}>
                         {featuredServices.map(service => (
                             <Link key={service.id} to={`/services/${service.id}`} style={{ display: 'block', background: 'white', borderRadius: 'var(--radius-lg)', padding: '1.25rem', textDecoration: 'none' }}>
                                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.6rem' }}>

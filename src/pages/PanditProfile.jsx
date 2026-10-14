@@ -86,7 +86,7 @@ export default function PanditProfile() {
                         <span style={{ color: 'var(--text-muted)' }}>{t('डॉ. उमंग नाथ शर्मा', 'Dr. Umang Nath Sharma')}</span>
                     </nav>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: 'minmax(220px, 300px) 1fr', gap: 'clamp(1.75rem, 4vw, 3rem)', alignItems: 'center' }}>
+                    <div className="profile-hero" style={{ display: 'grid', gap: 'clamp(1.75rem, 4vw, 3rem)', alignItems: 'center' }}>
                         <div style={{
                             position: 'relative', borderRadius: 'var(--radius-lg)', overflow: 'hidden',
                             border: '2px solid var(--gold-500)', boxShadow: '0 0 40px rgba(196,154,44,0.25), var(--shadow-lg)',
@@ -180,7 +180,7 @@ export default function PanditProfile() {
                         <span className="section-label" style={{ justifyContent: 'center' }}>{t('परामर्श', 'Consultation')}</span>
                         <h2 className="section-title">{t('परामर्श कैसे प्राप्त करें', 'How to Get a Consultation')}</h2>
                     </div>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', marginTop: '2rem', maxWidth: '820px', margin: '2rem auto 0' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '1.5rem', marginTop: '2rem', maxWidth: '820px', margin: '2rem auto 0' }}>
                         <div style={{ background: 'white', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-lg)', padding: '1.75rem' }}>
                             <Landmark size={28} style={{ color: 'var(--gold-600)', marginBottom: '0.75rem' }} />
                             <h3 style={{ fontSize: '1.05rem', marginBottom: '0.5rem' }}>{t('काशी में प्रत्यक्ष भेंट', 'In-Person in Varanasi')}</h3>

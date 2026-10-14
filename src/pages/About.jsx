@@ -253,7 +253,7 @@ export default function About() {
                             📅 1979–1983
                         </span>
                     </div>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.75rem' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '1.75rem' }}>
                         {testimonials.map((tst, i) => (
                             <div key={i} style={{
                                 position: 'relative',
@@ -321,7 +321,7 @@ export default function About() {
                             📅 1973–1982
                         </span>
                     </div>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.75rem' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '1.75rem' }}>
                         {moreTestimonials.map((tst, i) => (
                             <div key={i} style={{
                                 position: 'relative',

@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
-import { findMuhurat, CATEGORY_RULES } from '../utils/muhuratEngine';
 import { CalendarHeart, ArrowRight } from 'lucide-react';
 
 // Shows the next 3 genuinely-computed upcoming auspicious dates (Vivah
@@ -24,31 +23,58 @@ export default function UpcomingMuhuratWidget() {
     // Starts with the next 14 days and stops as soon as 3 dates are found.
     const [matches, setMatches] = useState(null); // null = not computed yet
 
+    // The 60-day search needs the astronomy engine (a ~100 KB chunk whose set-up alone costs hundreds of ms
+    // on a mid-range phone). This widget sits far below the fold, so nothing is loaded or computed until it
+    // is about to scroll into view; on a cold load that keeps the engine off the critical path entirely
+    // (measured with Lighthouse, mobile: it was the largest single block of main-thread work on the homepage).
+    const ref = useRef(null);
     useEffect(() => {
+        const el = ref.current;
+        if (!el) return undefined;
         let cancelled = false;
-        const start = new Date();
-        const found = [];
-        let slice = 0;
-        const later = (fn) => (typeof window.requestIdleCallback === 'function' ? window.requestIdleCallback(fn, { timeout: 1500 }) : setTimeout(fn, 60));
-        const step = () => {
-            if (cancelled) return;
+        let observer = null;
+
+        const run = async () => {
+            let findMuhurat;
             try {
-                const from = new Date(start.getTime() + slice * CHUNK_DAYS * DAY_MS);
-                const to = new Date(Math.min(from.getTime() + (CHUNK_DAYS - 1) * DAY_MS, start.getTime() + WINDOW_DAYS * DAY_MS));
-                found.push(...findMuhurat('vivah', from, to, 25.3176, 82.9739, 5.5).matches);
+                ({ findMuhurat } = await import('../utils/muhuratEngine'));
             } catch {
-                /* skip this slice */
+                if (!cancelled) setMatches([]);
+                return;
             }
-            slice++;
-            if (found.length >= 3 || slice * CHUNK_DAYS > WINDOW_DAYS) setMatches(found.slice(0, 3));
-            else later(step);
+            const start = new Date();
+            const found = [];
+            let slice = 0;
+            const later = (fn) => (typeof window.requestIdleCallback === 'function' ? window.requestIdleCallback(fn, { timeout: 1500 }) : setTimeout(fn, 0));
+            const step = () => {
+                if (cancelled) return;
+                try {
+                    const from = new Date(start.getTime() + slice * CHUNK_DAYS * DAY_MS);
+                    const to = new Date(Math.min(from.getTime() + (CHUNK_DAYS - 1) * DAY_MS, start.getTime() + WINDOW_DAYS * DAY_MS));
+                    found.push(...findMuhurat('vivah', from, to, 25.3176, 82.9739, 5.5).matches);
+                } catch {
+                    /* skip this slice */
+                }
+                slice++;
+                if (found.length >= 3 || slice * CHUNK_DAYS > WINDOW_DAYS) setMatches(found.slice(0, 3));
+                else later(step);
+            };
+            later(step);
         };
-        later(step);
-        return () => { cancelled = true; };
+
+        if (typeof IntersectionObserver === 'undefined') {
+            run(); // very old browser: just compute
+        } else {
+            observer = new IntersectionObserver((entries) => {
+                if (entries.some(e => e.isIntersecting)) { observer.disconnect(); run(); }
+            }, { rootMargin: '700px 0px' });
+            observer.observe(el);
+        }
+        return () => { cancelled = true; if (observer) observer.disconnect(); };
     }, []);
 
     if (matches === null) {
-        return <section data-nosnapshot="true" className="section muhurat-reserve" style={{ paddingTop: '1rem', paddingBottom: '1rem' }} aria-hidden="true" />;
+        return <section ref={ref} data-nosnapshot="true" className="section muhurat-reserve" style={{ paddingTop: '1rem', paddingBottom: '1rem' }} aria-hidden="true" />;
     }
 
     if (matches.length === 0) return null;

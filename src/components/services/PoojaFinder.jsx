@@ -41,7 +41,7 @@ export default function PoojaFinder() {
                             style={{
                                 display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.65rem 1.2rem', borderRadius: 'var(--radius-xl)',
                                 border: c.id === selected ? 'none' : '1px solid var(--border-gold)',
-                                background: c.id === selected ? 'var(--gold-600)' : 'white',
+                                background: c.id === selected ? 'var(--gold-800)' : 'white',
                                 color: c.id === selected ? 'white' : 'var(--gold-800)', fontWeight: 600, fontSize: '0.9rem', cursor: 'pointer',
                             }}
                         >
@@ -56,7 +56,7 @@ export default function PoojaFinder() {
                         <p style={{ textAlign: 'center', color: 'var(--text-secondary)', marginBottom: '1rem', fontSize: '0.9rem' }}>
                             {t('इसके लिए ये पूजाएं सुझाई जाती हैं:', 'These poojas are recommended for this:')}
                         </p>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1rem' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))', gap: '1rem' }}>
                             {featured.map(s => (
                                 <Link key={s.key} to={s.detailPath} style={{ display: 'flex', alignItems: 'center', gap: '1rem', background: 'var(--gold-50)', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-lg)', padding: '0.85rem 1rem', textDecoration: 'none' }}>
                                     <img src={`/images/${s.image}`} alt={s.nameEn} width="64" height="64" style={{ borderRadius: 'var(--radius-md)', objectFit: 'cover', flexShrink: 0 }} />

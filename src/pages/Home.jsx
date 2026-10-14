@@ -125,8 +125,6 @@ export default function Home() {
 
             <QuickNav />
 
-            <UpcomingMuhuratWidget />
-
             {/* HOW IT WORKS — 3-Step Process Flow */}
             <section className="section" style={{ paddingTop: '2.5rem', paddingBottom: '1rem' }}>
                 <div className="container">
@@ -134,7 +132,7 @@ export default function Home() {
                         <span className="section-label" style={{ justifyContent: 'center' }}>{t('प्रक्रिया', 'How It Works')}</span>
                         <h2 className="section-title">{t('तीन सरल चरणों में पूजा', 'Your Pooja, in 3 Simple Steps')}</h2>
                     </div>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem', marginTop: '2rem', position: 'relative' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: '1.5rem', marginTop: '2rem', position: 'relative' }}>
                         {[
                             {
                                 num: '1',
@@ -199,7 +197,7 @@ export default function Home() {
                         never scroll deep enough into About Us to see. */}
                     <EvidenceGallery items={[pressHighlights[1], pressHighlights[0], pressHighlights[7]]} t={t} theme="dark" compact />
 
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', marginTop: '2.5rem' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '1.25rem', marginTop: '2.5rem' }}>
                         {testimonials.filter(tst => tst.notable).map(tst => (
                             <div key={tst.name} style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(212,168,67,0.3)', borderRadius: 'var(--radius-lg)', padding: '1.5rem' }}>
                                 <p style={{ color: 'white', fontStyle: 'italic', lineHeight: 1.7, marginBottom: '0.85rem' }}>
@@ -251,6 +249,10 @@ export default function Home() {
                     <DailyPanchangCard />
                 </div>
             </section>
+
+            {/* Upcoming auspicious dates - belongs with today's Panchang, not directly under the hero
+                (it used to sit there and showed a 434px empty box on a phone until computed). */}
+            <UpcomingMuhuratWidget />
 
             {/* ASTROLOGY CONSULTATION */}
             <section className="section section-warm" id="astrology-consultation">
@@ -312,7 +314,7 @@ export default function Home() {
                         <p className="section-subtitle">{t('काशी (बनारस) के मनीषी पंडितों द्वारा शास्त्रोक्त विधि-विधान से समस्त प्रकार की पूजा, पाठ, जप और हवन सम्पन्न करवाएं।', 'Avail every form of pooja, paath, jaap and havan, performed by erudite Pandits of Kashi (Banaras) in strict accordance with authentic Vedic methods.')}</p>
                     </div>
                     <div className="om-divider">ॐ</div>
-                    <div className="icon-service-grid h-scroll">
+                    <div className="icon-service-grid h-scroll" tabIndex={0} role="group" aria-label={t('प्रमुख सेवाएं — स्क्रॉल करें', 'Featured services - scroll sideways')}>
                         {featuredServices.map((service, i) => {
                             const images = {
                                 'vipreet-pratyangira': 'service-vipreet-pratyangira',
@@ -370,7 +372,7 @@ export default function Home() {
                         <h2 className="section-title" style={{ color: 'white' }}>{t('सामान्य पूजा-सेवाओं से हम कैसे अलग हैं', 'How We\'re Different From a Typical Pooja Service')}</h2>
                         <p style={{ color: 'var(--warm-200)', maxWidth: 640, margin: '0.75rem auto 0' }}>{t('बनारस हिंदू विश्वविद्यालय (BHU) एवं सम्पूर्णानन्द संस्कृत विश्वविद्यालय से शिक्षित पंडितगण — पूरे भारत में पूजा सामग्री डिलीवरी सहित।', 'Pandits educated at Banaras Hindu University (BHU) & Sampurnanand Sanskrit Vishwavidyalaya - with pooja samagri delivery available across India.')}</p>
                     </div>
-                    <div className="h-scroll" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', marginTop: '2rem', maxWidth: 900, marginLeft: 'auto', marginRight: 'auto' }}>
+                    <div className="h-scroll" tabIndex={0} role="group" aria-label={t('हम कैसे अलग हैं', 'How we are different')} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '1.25rem', marginTop: '2rem', maxWidth: 900, marginLeft: 'auto', marginRight: 'auto' }}>
                         {[
                             { badHi: 'पूजा का कोई प्रमाण नहीं मिलता', badEn: 'No proof the pooja actually happened', goodHi: 'लाइव वीडियो कॉल + फोटो/वीडियो प्रमाण हर पूजा के साथ', goodEn: 'Live video call + photo/video proof with every pooja' },
                             { badHi: 'कीमत अस्पष्ट, बाद में छुपे शुल्क', badEn: 'Vague pricing, hidden charges revealed later', goodHi: 'पारदर्शी मूल्य — बुकिंग से पहले ही स्पष्ट', goodEn: 'Transparent pricing, clear before you book' },
@@ -400,7 +402,7 @@ export default function Home() {
                         <h2 className="section-title">{t('हर भक्त के लिए उपयुक्त', 'Designed for Every Devotee')}</h2>
                     </div>
                     <div className="om-divider">ॐ</div>
-                    <div className="h-scroll" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem' }}>
+                    <div className="h-scroll" tabIndex={0} role="group" aria-label={t('हर भक्त के लिए', 'Who it is for')} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: '1.5rem' }}>
                         {[
                             { img: 'individuals-praying', title: t('व्यक्तिगत भक्त', 'Individuals'), desc: t('स्वयं की मनोकामना पूर्ति, दोष निवारण अथवा नियमित पूजा-पाठ हेतु।', 'For your own wishes, dosh remedies, or regular pooja-paath.') },
                             { img: 'families-pooja', title: t('परिवार', 'Families'), desc: t('पितृ श्राद्ध, वंश-वृद्धि, विवाह में बाधा निवारण जैसे पारिवारिक अनुष्ठान।', 'Family rituals like ancestral rites, lineage blessings, and marriage-obstacle remedies.') },

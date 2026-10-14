@@ -53,7 +53,7 @@ export default function Media() {
                         <span className="section-label"><Mic size={14} style={{ marginRight: '0.4rem' }} />{t('मीडिया साक्षात्कार', 'Media Interviews')}</span>
                         <h2 className="section-title">{t('डॉ. उमंग नाथ शर्मा के साक्षात्कार', 'Interviews with Dr. Umang Nath Sharma')}</h2>
                     </div>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', marginTop: '1.5rem' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '1.25rem', marginTop: '1.5rem' }}>
                         {INTERVIEWS.map((id, i) => (
                             <div key={id} style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', background: 'white', border: '1px solid var(--border-light)' }}>
                                 <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0 }}>

@@ -82,7 +82,7 @@ export default function LeaveReview() {
                         {status === 'saved' ? (
                             <div style={{ textAlign: 'center', padding: '1rem 0' }}>
                                 <div style={{ fontSize: '2.5rem', marginBottom: '0.75rem' }}>🙏</div>
-                                <h3 style={{ marginBottom: '0.5rem' }}>{t('धन्यवाद!', 'Thank You!')}</h3>
+                                <h2 style={{ marginBottom: '0.5rem', fontSize: '1.3rem' }}>{t('धन्यवाद!', 'Thank You!')}</h2>
                                 <p style={{ color: 'var(--text-secondary)' }}>
                                     {t('आपकी समीक्षा प्राप्त हो गई है। स्वीकृति के बाद यह वेबसाइट पर दिखेगी।', 'Your review has been received. It will appear on the website once approved.')}
                                 </p>
@@ -92,10 +92,10 @@ export default function LeaveReview() {
                             </div>
                         ) : (
                             <form onSubmit={handleSubmit} noValidate>
-                                <h3 style={{ marginBottom: '1.5rem', fontFamily: 'var(--font-hindi)' }}>{t('समीक्षा फ़ॉर्म', 'Review Form')}</h3>
+                                <h2 style={{ marginBottom: '1.5rem', fontFamily: 'var(--font-hindi)', fontSize: '1.3rem' }}>{t('समीक्षा फ़ॉर्म', 'Review Form')}</h2>
 
                                 {status === 'error' && (
-                                    <p style={{ fontSize: '0.85rem', color: 'var(--gold-700)', background: 'var(--gold-50)', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-md)', padding: '0.6rem 0.9rem', marginBottom: '1rem' }}>
+                                    <p style={{ fontSize: '0.85rem', color: 'var(--gold-800)', background: 'var(--gold-50)', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-md)', padding: '0.6rem 0.9rem', marginBottom: '1rem' }}>
                                         {t('समीक्षा सहेजी नहीं जा सकी। कृपया दोबारा प्रयास करें।', 'Could not save the review. Please try again.')}
                                     </p>
                                 )}
@@ -140,8 +140,8 @@ export default function LeaveReview() {
                                 </div>
 
                                 <div className="form-group">
-                                    <label className="form-label">{t('सेवा', 'Service')}</label>
-                                    <select className="form-select" value={form.serviceName} onChange={e => setForm({ ...form, serviceName: e.target.value })}>
+                                    <label className="form-label" htmlFor="review-service">{t('सेवा', 'Service')}</label>
+                                    <select id="review-service" className="form-select" value={form.serviceName} onChange={e => setForm({ ...form, serviceName: e.target.value })}>
                                         <option value="">-- {t('चुनें (वैकल्पिक)', 'Select (optional)')} --</option>
                                         {services.map(s => (
                                             <option key={s.id} value={lang === 'hi' ? s.name : s.nameEn}>{lang === 'hi' ? s.name : s.nameEn}</option>
@@ -160,7 +160,7 @@ export default function LeaveReview() {
                                                 aria-checked={form.rating === n}
                                                 aria-label={t(`${n} सितारे`, `${n} stars`)}
                                                 onClick={() => setForm({ ...form, rating: n })}
-                                                style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, color: n <= form.rating ? 'var(--gold-500)' : 'var(--border-light)' }}
+                                                style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, minWidth: '44px', minHeight: '44px', color: n <= form.rating ? 'var(--gold-500)' : 'var(--border-light)' }}
                                             >
                                                 ★
                                             </button>
