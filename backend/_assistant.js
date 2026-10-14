@@ -15,6 +15,11 @@ function formatRupees(n) {
     return '\u20B9' + n.toLocaleString('en-IN', { minimumFractionDigits: half ? 1 : 0, maximumFractionDigits: 1 });
 }
 const UNIT_EN = { paath: 'per paath', ritual: 'per ritual', day: 'per day', per1000: 'per 1,000 jaap', unclear: '' };
+// Names (only) of every listed ritual that is NOT priced above, so the assistant can truthfully say
+// "yes, we arrange that" without inventing a price or details. Source: src/data/priceList.json.
+function buildOtherRitualLines() {
+    return priceData.items.filter(it => it.status !== 'approved').map(it => `- ${it.nameEn} (${it.nameHi})`).join('\n');
+}
 function buildPriceLines() {
     const lines = [`- Astrology Consultation (personal session): ${formatRupees(priceData.consultation.price)} per session (final price)`];
     for (const it of priceData.items) {
@@ -54,6 +59,9 @@ ${serviceLines}
 
 Published price list (final website rates, INR):
 ${buildPriceLines()}
+
+Other rituals we arrange - rate confirmed by Pandit ji on WhatsApp, never guess a price for these:
+${buildOtherRitualLines()}
 ${contextLine}
 Your job:
 1. Answer questions about services, what they're for, best timing, and what packages/options exist - using ONLY the facts above.

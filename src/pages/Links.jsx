@@ -3,13 +3,12 @@ import { Link } from 'react-router-dom';
 import { MessageCircle, Sparkles, ScrollText, CalendarDays, Sun, Handshake } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import useSEO from '../hooks/useSEO';
+import { waLink } from '../config/contact';
 
 // Link-in-bio landing page for Instagram (bio link: /links?utm_source=instagram&utm_medium=bio).
 // ~98% of the account's views come from Reels watched by non-followers, so this page has one
 // job: get a mobile visitor to WhatsApp / Free Kundli / Price List in one tap.
 // It is deliberately NOT in the sitemap or the prerender list and is marked noindex.
-const WA = '919278148269';
-
 export default function Links() {
     const { t } = useLanguage();
     // The enquiry text carries where the visitor came from, so every WhatsApp lead can be
@@ -29,7 +28,7 @@ export default function Links() {
         noindex: true,
     });
 
-    const wa = (text) => `https://wa.me/${WA}?text=${encodeURIComponent(text + via)}`;
+    const wa = (text) => waLink(text + via);
     const buttons = [
         { href: wa('Namaste, I would like to book a pooja / get guidance.'), external: true, Icon: MessageCircle, label: t('WhatsApp पर बुकिंग / पूछताछ', 'Book / ask on WhatsApp'), primary: true },
         { to: '/free-kundli', Icon: Sparkles, label: t('निःशुल्क कुंडली', 'Free Kundli') },

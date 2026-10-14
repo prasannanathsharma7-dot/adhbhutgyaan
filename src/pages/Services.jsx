@@ -1,55 +1,13 @@
-import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import servicesData from '../data/services.json';
 import { useLanguage } from '../context/LanguageContext';
 import useSEO from '../hooks/useSEO';
 import { breadcrumbJsonLd, faqJsonLd, combineJsonLd } from '../utils/seo';
-import { Search, X, MessageCircle, Globe2, Landmark, CheckCircle2, Heart, Home as HomeIcon, Baby, Briefcase, CalendarHeart, ArrowRight } from 'lucide-react';
+import PoojaFinder from '../components/services/PoojaFinder';
+import PoojaDirectory from '../components/services/PoojaDirectory';
+import { MessageCircle, Globe2, Landmark, CheckCircle2, Heart, Home as HomeIcon, Baby, Briefcase, CalendarHeart, ArrowRight } from 'lucide-react';
 
 export default function Services() {
     const { t, lang } = useLanguage();
-    const [selectedConcern, setSelectedConcern] = useState(null);
-    const concernResultsRef = useRef(null);
-    const [searchQuery, setSearchQuery] = useState('');
-
-    const concerns = [
-        { id: 'health', img: 'concern-health', label: t('स्वास्थ्य संबंधी समस्या', 'Health Issues'), serviceIds: ['rudrabhishek', 'purush-suktam'] },
-        { id: 'marriage', img: 'concern-marriage', label: t('विवाह में देरी / मांगलिक दोष', 'Marriage Delay / Manglik Dosh'), serviceIds: ['kumbh-vivah', 'kalsarp-dosh'] },
-        { id: 'money', img: 'concern-money', label: t('आर्थिक तंगी', 'Financial Struggles'), serviceIds: ['kanakdhara-stotra', 'shree-suktam'] },
-        { id: 'ancestral', img: 'concern-ancestral', label: t('पितृ दोष / पूर्वजों से जुड़ी समस्या', 'Pitru Dosh / Ancestral Issues'), serviceIds: ['tripindi-shradh'] },
-        { id: 'career', img: 'concern-career', label: t('करियर / व्यापार में रुकावट', 'Career / Business Obstacles'), serviceIds: ['ganesh-atharvashirsha', 'kalsarp-dosh'] },
-        { id: 'negativity', img: 'concern-negativity', label: t('नकारात्मक शक्ति / शत्रु बाधा', 'Negative Energy / Enemies'), serviceIds: ['vipreet-pratyangira', 'mahavidya-paath'] },
-        { id: 'unsure', img: 'concern-unsure', label: t('पता नहीं, सलाह चाहिए', 'Not Sure, Need Guidance'), serviceIds: ['astrology-consultation'] },
-    ];
-
-    const recommended = selectedConcern
-        ? concerns.find(c => c.id === selectedConcern).serviceIds.map(id => servicesData.find(s => s.id === id)).filter(Boolean)
-        : [];
-
-    // Selecting a concern renders the recommended-poojas block below the
-    // fold on mobile with no visual change to draw the eye there - a real
-    // user testing this saw the button highlight but had no indication
-    // anything else had happened, since the actual result was off-screen.
-    // Scroll it into view, offset for the fixed navbar height so the
-    // "These poojas are recommended" heading isn't hidden underneath it.
-    useEffect(() => {
-        if (!selectedConcern || !concernResultsRef.current) return;
-        const navbar = document.querySelector('.navbar');
-        const offset = (navbar?.offsetHeight || 70) + 12;
-        const top = concernResultsRef.current.getBoundingClientRect().top + window.scrollY - offset;
-        window.scrollTo({ top, behavior: 'smooth' });
-    }, [selectedConcern]);
-
-    const filteredServices = searchQuery.trim()
-        ? servicesData.filter(s => {
-            const q = searchQuery.trim().toLowerCase();
-            return s.name.includes(searchQuery.trim()) ||
-                s.nameEn.toLowerCase().includes(q) ||
-                (s.shortDesc || '').includes(searchQuery.trim()) ||
-                (s.shortDescEn || '').toLowerCase().includes(q);
-        })
-        : servicesData;
-
     useSEO({
         title: t('हमारी पूजा सेवाएं | Adhbhut Gyaan', 'Pooja & Astrology Services in Kashi, Varanasi | Adhbhut Gyaan'),
         description: t('रुद्राभिषेक, कालसर्प दोष, त्रिपिंडी श्राद्ध, दस महाविद्या पाठ सहित 10+ प्रामाणिक पूजा सेवाएं — बनारस के विद्वान पंडितों द्वारा।', 'Book authentic pooja in Kashi, Varanasi - Rudrabhishek, Kalsarp Dosh Nivaran, Tripindi Shradh & 10+ more Vedic services by Dr. Umang Nath Sharma.'),
@@ -107,58 +65,11 @@ export default function Services() {
                 </div>
             </header>
 
-            {/* Smart Pooja Finder */}
-            <section className="section" style={{ paddingBottom: selectedConcern ? '1rem' : undefined }}>
-                <div className="container">
-                    <div className="text-center">
-                        <span className="section-label">{t('सही पूजा खोजें', 'Find the Right Pooja')}</span>
-                        <h2 className="section-title">{t('आपकी समस्या क्या है?', "What's Your Concern?")}</h2>
-                        <p className="section-subtitle">{t('नीचे अपनी समस्या चुनें — हम सही पूजा सुझाएंगे।', "Select your concern below and we'll suggest the right pooja.")}</p>
-                    </div>
-                    <div className="concern-filter-list" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '0.75rem', marginTop: '1.5rem' }}>
-                        {concerns.map(c => (
-                            <button
-                                key={c.id}
-                                type="button"
-                                onClick={() => setSelectedConcern(c.id === selectedConcern ? null : c.id)}
-                                style={{
-                                    display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
-                                    padding: '0.65rem 1.2rem', borderRadius: 'var(--radius-xl)',
-                                    border: c.id === selectedConcern ? 'none' : '1px solid var(--border-gold)',
-                                    background: c.id === selectedConcern ? 'var(--gold-600)' : 'white',
-                                    color: c.id === selectedConcern ? 'white' : 'var(--gold-800)',
-                                    fontWeight: 600, fontSize: '0.9rem', cursor: 'pointer',
-                                }}
-                            >
-                                <img src={`/images/icons/${c.img}.jpg`} alt="" width="22" height="22" loading="lazy" style={{ width: '22px', height: '22px', borderRadius: '50%', objectFit: 'cover' }} /> {c.label}
-                            </button>
-                        ))}
-                    </div>
+            {/* Smart Pooja Finder - draws on the whole catalog (src/catalog) */}
+            <PoojaFinder />
 
-                    {selectedConcern && (
-                        <div ref={concernResultsRef} style={{ marginTop: '2rem', maxWidth: '760px', marginLeft: 'auto', marginRight: 'auto' }}>
-                            <p style={{ textAlign: 'center', color: 'var(--text-secondary)', marginBottom: '1rem', fontSize: '0.9rem' }}>
-                                {t('इसके लिए ये पूजाएं सुझाई जाती हैं:', 'These poojas are recommended for this:')}
-                            </p>
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1rem' }}>
-                                {recommended.map(s => (
-                                    <Link
-                                        key={s.id}
-                                        to={`/services/${s.id}`}
-                                        style={{ display: 'flex', alignItems: 'center', gap: '1rem', background: 'var(--gold-50)', border: '1px solid var(--border-gold)', borderRadius: 'var(--radius-lg)', padding: '1rem', textDecoration: 'none' }}
-                                    >
-                                        <img src={`/images/${s.image}`} alt={s.nameEn} width="64" height="64" style={{ borderRadius: 'var(--radius-md)', objectFit: 'cover', flexShrink: 0 }} />
-                                        <div>
-                                            <div style={{ fontWeight: 700, color: 'var(--gold-800)' }}>{lang === 'hi' ? s.name : s.nameEn}</div>
-                                            <div style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>{t('विवरण देखें →', 'View Details →')}</div>
-                                        </div>
-                                    </Link>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-                </div>
-            </section>
+            {/* All Services, at a glance - the detail-page services as cards + every listed pooja by category */}
+            <PoojaDirectory />
 
             {/* Special Inquiry-Only Services */}
             <section className="section section-warm">
@@ -253,89 +164,6 @@ export default function Services() {
                             {t('मुहूर्त जांचें', 'Check Muhurat')} <ArrowRight size={16} style={{ marginLeft: '0.4rem', verticalAlign: '-2px' }} />
                         </Link>
                     </div>
-                </div>
-            </section>
-
-            {/* All Services — tap any card to see full details, packages & pricing */}
-            <section className="section">
-                <div className="container">
-                    <div className="text-center">
-                        <span className="section-label">{t('सभी सेवाएं', 'All Services')}</span>
-                        <h2 className="section-title">{t('एक नज़र में हमारी सभी पूजा सेवाएं', 'All Our Pooja Services, At a Glance')}</h2>
-                        <p className="section-subtitle">{t('किसी भी सेवा पर टैप करें — पूर्ण विवरण, पैकेज व मूल्य वहां मिलेंगे', 'Tap any service to see its full details, packages & pricing')}</p>
-                    </div>
-
-                    <div style={{ maxWidth: '480px', margin: '1.75rem auto 0', position: 'relative' }}>
-                        <Search size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
-                        <input
-                            type="text"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            placeholder={t('पूजा का नाम खोजें... (जैसे रुद्राभिषेक)', 'Search by pooja name... (e.g. Rudrabhishek)')}
-                            style={{
-                                width: '100%', padding: '0.85rem 1rem 0.85rem 2.75rem', borderRadius: 'var(--radius-xl)',
-                                border: '1.5px solid var(--border-gold)', fontSize: '0.95rem', background: 'white',
-                            }}
-                            aria-label={t('पूजा खोजें', 'Search services')}
-                        />
-                        {searchQuery && (
-                            <button
-                                type="button"
-                                onClick={() => setSearchQuery('')}
-                                aria-label={t('खोज साफ़ करें', 'Clear search')}
-                                style={{ position: 'absolute', right: '0.85rem', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', display: 'flex' }}
-                            >
-                                <X size={18} />
-                            </button>
-                        )}
-                    </div>
-
-                    {searchQuery && (
-                        <p style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '0.75rem' }}>
-                            {filteredServices.length > 0
-                                ? t(`${filteredServices.length} सेवा(एं) मिलीं`, `${filteredServices.length} service${filteredServices.length === 1 ? '' : 's'} found`)
-                                : t('कोई सेवा नहीं मिली — कृपया अन्य शब्द आज़माएं', 'No services found — try a different search term')}
-                        </p>
-                    )}
-
-                    <div className="service-browse-grid">
-                        {filteredServices.map(service => (
-                            <div key={service.id} className="service-browse-card" style={{ display: 'flex', flexDirection: 'column' }}>
-                                <Link to={`/services/${service.id}`} style={{ display: 'flex', alignItems: 'center', gap: '1rem', flex: 1 }}>
-                                    <picture>
-                                        <source type="image/avif" srcSet={`/images/${service.image.replace('.jpg', '.avif')}`} />
-                                        <source type="image/webp" srcSet={`/images/${service.image.replace('.jpg', '.webp')}`} />
-                                        <img src={`/images/${service.image}`} alt={service.nameEn} width="80" height="80" loading="lazy" className="service-browse-img" />
-                                    </picture>
-                                    <div className="service-browse-body">
-                                        <div className="service-browse-name">{lang === 'hi' ? service.name : service.nameEn}</div>
-                                        {lang === 'hi' && <div className="service-browse-name-en">{service.nameEn}</div>}
-                                        <p className="service-browse-desc">{lang === 'hi' ? service.shortDesc : service.descriptionEn}</p>
-                                    </div>
-                                    <span className="service-browse-arrow">→</span>
-                                </Link>
-                                <a
-                                    href={`https://wa.me/919278148269?text=${encodeURIComponent(t(`प्रणाम, मुझे ${service.name} पूजा काशी में करवानी है।`, `Pranam, I would like to book ${service.nameEn} pooja in Kashi.`))}`}
-                                    target="_blank" rel="noreferrer"
-                                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.35rem', marginTop: '0.75rem', paddingTop: '0.65rem', borderTop: '1px solid var(--border-light)', fontSize: '0.8rem', fontWeight: 700, color: 'var(--whatsapp-dark)' }}
-                                >
-                                    <MessageCircle size={13} /> {t('WhatsApp पर सीधे बुक करें', 'Book Directly on WhatsApp')}
-                                </a>
-                            </div>
-                        ))}
-                    </div>
-
-                    {filteredServices.length === 0 && (
-                        <div style={{ textAlign: 'center', marginTop: '1.5rem' }}>
-                            <a
-                                href={`https://wa.me/919278148269?text=${encodeURIComponent(t(`नमस्कार! मुझे "${searchQuery}" के बारे में पूछताछ करनी है।`, `Hello! I'd like to ask about "${searchQuery}".`))}`}
-                                target="_blank" rel="noreferrer"
-                                className="btn btn-whatsapp"
-                            >
-                                <MessageCircle size={15} style={{ verticalAlign: '-3px', marginRight: '0.35rem' }} />{t('WhatsApp पर पूछें', 'Ask on WhatsApp')}
-                            </a>
-                        </div>
-                    )}
                 </div>
             </section>
         </div>

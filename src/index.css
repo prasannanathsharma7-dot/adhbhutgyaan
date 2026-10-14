@@ -3636,3 +3636,31 @@ h3 {
 @media (min-width: 681px) { .muhurat-reserve { min-height: 310px; } }
 @media (min-width: 901px) { .muhurat-reserve { min-height: 234px; } }
 @media (min-width: 1101px) { .muhurat-reserve { min-height: 164px; } }
+
+/* ---- Pooja directory / finder rows (src/components/services) ---- */
+.pooja-list { list-style: none; margin: 0; padding: 0; border: 1px solid var(--border-light); border-radius: var(--radius-md); background: #fff; overflow: hidden; }
+.pooja-row { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 0.3rem 0.9rem; padding: 0.7rem 0.9rem; border-top: 1px solid var(--border-light); }
+.pooja-row:first-child { border-top: 0; }
+.pooja-row-names { min-width: 0; }
+.pooja-row-name { display: block; font-weight: 600; color: var(--text-primary); text-decoration: none; }
+a.pooja-row-name:hover { color: var(--gold-700); }
+.pooja-row-alt { display: block; font-size: 0.78rem; color: var(--text-muted); }
+.pooja-row-price { text-align: right; font-size: 0.82rem; color: var(--text-muted); min-width: 96px; }
+.pooja-row-price.is-priced { font-weight: 700; font-size: 1rem; color: var(--gold-700); }
+.pooja-row-price small { display: block; font-weight: 400; font-size: 0.72rem; color: var(--text-muted); }
+.pooja-row-actions { display: inline-flex; align-items: center; gap: 0.7rem; }
+.pooja-row-link { font-size: 0.82rem; font-weight: 600; }
+.pooja-row-wa { color: var(--whatsapp, #25D366); display: inline-flex; }
+.pooja-group { margin-bottom: 0.75rem; }
+.pooja-group > summary { display: flex; justify-content: space-between; align-items: center; cursor: pointer; padding: 0.75rem 1rem; border: 1px solid var(--border-gold); border-radius: var(--radius-md); background: var(--gold-50); font-weight: 700; color: var(--gold-800); list-style: none; }
+.pooja-group > summary::-webkit-details-marker { display: none; }
+.pooja-group[open] > summary { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+.pooja-group-count { font-size: 0.8rem; font-weight: 600; background: #fff; border: 1px solid var(--border-gold); border-radius: 999px; padding: 0.05rem 0.6rem; }
+.pooja-group > .pooja-list { border-top: 0; border-top-left-radius: 0; border-top-right-radius: 0; }
+@media (max-width: 520px) {
+  .pooja-row { grid-template-columns: 1fr auto; }
+  .pooja-row-names { grid-column: 1 / -1; }
+  .pooja-row-price { text-align: left; min-width: 0; }
+  .pooja-row-price small { display: inline; margin-left: 0.35rem; }
+  .pooja-row-actions { justify-self: end; }
+}
