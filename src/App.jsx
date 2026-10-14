@@ -37,6 +37,7 @@ const CityHub = lazy(() => import('./pages/CityHub'));
 const Booking = lazy(() => import('./pages/Booking'));
 const PriceList = lazy(() => import('./pages/PriceList'));
 const B2B = lazy(() => import('./pages/B2B'));
+const Links = lazy(() => import('./pages/Links'));
 const FreeKundli = lazy(() => import('./pages/FreeKundli'));
 const Panchang = lazy(() => import('./pages/Panchang'));
 const Horoscope = lazy(() => import('./pages/Horoscope'));
@@ -88,6 +89,7 @@ function App() {
                         <Route path="/booking" element={<Booking />} />
                         <Route path="/price-list" element={<PriceList />} />
                         <Route path="/b2b" element={<B2B />} />
+                        <Route path="/links" element={<Links />} />
                         <Route path="/free-kundli" element={<FreeKundli />} />
                         <Route path="/panchang" element={<Panchang />} />
                         <Route path="/horoscope" element={<Horoscope />} />

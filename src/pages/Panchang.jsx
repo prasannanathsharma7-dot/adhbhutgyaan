@@ -254,13 +254,23 @@ export default function Panchang() {
         setSelectedDate(todayIST());
     };
 
+    // "until 09:48 AM (next day) · then Balava" - when a limb changes. The Panchang prints
+    // the limb at sunrise; this is what tells you whether a later time of day is still in it.
+    const untilText = (limb) => {
+        if (!limb || !limb.endsAt) return '';
+        const d = limb.endsAt.dayOffset;
+        const hiDay = d >= 1 ? ' (अगले दिन)' : d < 0 ? ' (पिछले दिन)' : '';
+        const enDay = d >= 1 ? ' (next day)' : d < 0 ? ' (previous day)' : '';
+        return t(`${limb.endsAt.time}${hiDay} तक · फिर ${limb.next}`, `until ${limb.endsAt.time}${enDay} · then ${limb.next}`);
+    };
+
     // WhatsApp Share Payload Formatter
     const shareText = `🕉️ *ADBHUT GYAAN — DAINIK PANCHANG*
 📍 *${cityName}, ${countryName}*
 📅 *${dateFormatted}*
 ────────────────────────────
-📜 *TITHI:* ${panchangData?.tithi?.name || 'Shukla Pratipada'} (${panchangData?.tithi?.paksha || 'Shukla Paksha'})
-⭐ *NAKSHATRA:* ${panchangData?.nakshatra?.name || 'Ashwini'} (Lord: ${panchangData?.nakshatra?.lord || 'Ketu'})
+📜 *TITHI:* ${panchangData?.tithi?.name || 'Shukla Pratipada'} (${panchangData?.tithi?.paksha || 'Shukla Paksha'})${untilText(panchangData?.tithi) ? ' — ' + untilText(panchangData?.tithi) : ''}
+⭐ *NAKSHATRA:* ${panchangData?.nakshatra?.name || 'Ashwini'} (Lord: ${panchangData?.nakshatra?.lord || 'Ketu'})${untilText(panchangData?.nakshatra) ? ' — ' + untilText(panchangData?.nakshatra) : ''}
 ✨ *YOGA:* ${panchangData?.yoga?.name || 'Siddhi'} | *KARANA:* ${panchangData?.karana?.name || 'Bava'}
 ☀️ *SURYA RASHI:* ${panchangData?.transits?.suryaRashi || 'Leo (Simha)'}
 🌙 *CHANDRA RASHI:* ${panchangData?.transits?.chandraRashi || 'Aries (Mesha)'}
@@ -450,22 +460,22 @@ export default function Panchang() {
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.65rem 0.85rem', background: 'var(--warm-100)', borderRadius: 'var(--radius-md)' }}>
                                 <span style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}><b><ScrollText size={13} style={{ verticalAlign: '-2px', marginRight: '0.2rem' }} />{t('तिथि', 'Tithi')}:</b></span>
-                                <span style={{ fontWeight: 700, color: 'var(--navy-900)', fontSize: '0.9rem' }}>{panchangData?.tithi?.name || 'Shukla Pratipada'} ({panchangData?.tithi?.paksha || 'Shukla Paksha'})</span>
+                                <span style={{ textAlign: 'right' }}><span style={{ fontWeight: 700, color: 'var(--navy-900)', fontSize: '0.9rem' }}>{panchangData?.tithi?.name || 'Shukla Pratipada'} ({panchangData?.tithi?.paksha || 'Shukla Paksha'})</span>{untilText(panchangData?.tithi) && <span style={{ display: 'block', fontSize: '0.74rem', fontWeight: 500, color: 'var(--text-muted)' }}>{untilText(panchangData?.tithi)}</span>}</span>
                             </div>
 
                             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.65rem 0.85rem', background: 'var(--warm-100)', borderRadius: 'var(--radius-md)' }}>
                                 <span style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}><b><Star size={13} style={{ verticalAlign: '-2px', marginRight: '0.2rem' }} />{t('नक्षत्र', 'Nakshatra')}:</b></span>
-                                <span style={{ fontWeight: 700, color: 'var(--navy-900)', fontSize: '0.9rem' }}>{panchangData?.nakshatra?.name || 'Ashwini'} (Pada {panchangData?.nakshatra?.pada || 1}) · {panchangData?.nakshatra?.lord || 'Ketu'}</span>
+                                <span style={{ textAlign: 'right' }}><span style={{ fontWeight: 700, color: 'var(--navy-900)', fontSize: '0.9rem' }}>{panchangData?.nakshatra?.name || 'Ashwini'} (Pada {panchangData?.nakshatra?.pada || 1}) · {panchangData?.nakshatra?.lord || 'Ketu'}</span>{untilText(panchangData?.nakshatra) && <span style={{ display: 'block', fontSize: '0.74rem', fontWeight: 500, color: 'var(--text-muted)' }}>{untilText(panchangData?.nakshatra)}</span>}</span>
                             </div>
 
                             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.65rem 0.85rem', background: 'var(--warm-100)', borderRadius: 'var(--radius-md)' }}>
                                 <span style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}><b><Sparkles size={13} style={{ verticalAlign: '-2px', marginRight: '0.2rem' }} />{t('योग', 'Yoga')}:</b></span>
-                                <span style={{ fontWeight: 700, color: 'var(--navy-900)', fontSize: '0.9rem' }}>{panchangData?.yoga?.name || 'Siddhi'}</span>
+                                <span style={{ textAlign: 'right' }}><span style={{ fontWeight: 700, color: 'var(--navy-900)', fontSize: '0.9rem' }}>{panchangData?.yoga?.name || 'Siddhi'}</span>{untilText(panchangData?.yoga) && <span style={{ display: 'block', fontSize: '0.74rem', fontWeight: 500, color: 'var(--text-muted)' }}>{untilText(panchangData?.yoga)}</span>}</span>
                             </div>
 
                             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.65rem 0.85rem', background: 'var(--warm-100)', borderRadius: 'var(--radius-md)' }}>
                                 <span style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}><b><Flower2 size={13} style={{ verticalAlign: '-2px', marginRight: '0.2rem' }} />{t('करण', 'Karana')}:</b></span>
-                                <span style={{ fontWeight: 700, color: 'var(--navy-900)', fontSize: '0.9rem' }}>{panchangData?.karana?.name || 'Bava'}</span>
+                                <span style={{ textAlign: 'right' }}><span style={{ fontWeight: 700, color: 'var(--navy-900)', fontSize: '0.9rem' }}>{panchangData?.karana?.name || 'Bava'}</span>{untilText(panchangData?.karana) && <span style={{ display: 'block', fontSize: '0.74rem', fontWeight: 500, color: 'var(--text-muted)' }}>{untilText(panchangData?.karana)}</span>}</span>
                             </div>
 
                             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.65rem 0.85rem', background: 'var(--warm-100)', borderRadius: 'var(--radius-md)' }}>
