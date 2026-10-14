@@ -1,6 +1,7 @@
 {
   "redirects": [
-    { "source": "/b2b", "destination": "/", "permanent": true }
+    { "source": "/b2b", "destination": "/", "permanent": true },
+    { "source": "/links", "destination": "/", "permanent": true }
   ],
   "rewrites": [
     {

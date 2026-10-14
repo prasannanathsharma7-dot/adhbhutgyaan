@@ -202,9 +202,6 @@ async function renderPage(route) {
     html = html.replace(/<title>.*?<\/title>/s, `<title>${esc(title)}</title>`);
     html = html.replace(/(<meta name="title" content=")[^"]*(")/, `$1${esc(title)}$2`);
     html = html.replace(/(<meta name="description" content=")[^"]*(")/, `$1${esc(description)}$2`);
-    // Pages marked noindex (e.g. the Instagram link-in-bio page) say so in the static HTML too,
-    // not only after the browser runs useSEO().
-    if (route.noindex) html = html.replace(/<meta name="robots" content="[^"]*">/, '<meta name="robots" content="noindex, nofollow">');
     html = html.replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${canonical}$2`);
     html = html.replace(/(<meta property="og:title" content=")[^"]*(")/, `$1${esc(title)}$2`);
     html = html.replace(/(<meta property="og:description" content=")[^"]*(")/, `$1${esc(description)}$2`);
@@ -333,14 +330,6 @@ const routes = [
         title: 'गोपनीयता नीति | Adhbhut Gyaan',
         description: 'अद्भुत ज्ञान वेबसाइट, पूजा बुकिंग व निःशुल्क कुंडली के उपयोग पर आपकी जानकारी कैसे एकत्र, उपयोग व सुरक्षित की जाती है।',
         jsonLd: combineJsonLd(breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Privacy Policy', path: '/privacy' }])),
-    },
-    {
-        path: '/links',
-        title: 'Adhbhut Gyaan - Vedic Pooja & Astrology from Kashi',
-        description: 'Vedic pooja seva, kundli and astrology guidance from Holy Kashi.',
-        noindex: true,
-        noSitemap: true,
-        jsonLd: null,
     },
     {
         path: '/media',
@@ -518,7 +507,7 @@ const PRIORITY_OVERRIDES = { '/': '1.0', '/services': '0.9', '/booking': '0.9', 
 // static JSON-LD/meta-tags - this only touches the sitemap output.
 const HOME_LASTMOD = lastmodFor('/', 'home', 'home');
 const homeUrl = `  <url>\n    <loc>${SITE_URL}/</loc>\n    <lastmod>${HOME_LASTMOD}</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>${PRIORITY_OVERRIDES['/']}</priority>\n  </url>`;
-const sitemapUrls = routes.filter(r => !r.noSitemap).map(r => {
+const sitemapUrls = routes.map(r => {
     const priority = PRIORITY_OVERRIDES[r.path] || (r.path.startsWith('/services/') ? '0.8' : r.path.startsWith('/blog/') ? '0.6' : '0.7');
     const changefreq = r.path === '/' || r.path === '/panchang' || r.path === '/horoscope' ? 'daily' : r.path.startsWith('/blog/') ? 'monthly' : 'weekly';
     return `  <url>\n    <loc>${SITE_URL}${r.path}</loc>\n    <lastmod>${lastmodFor(r.path, r.title, r.description, postDateFor(r.path))}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
@@ -531,7 +520,7 @@ writeFileSync(join(DIST, 'sitemap.xml'), sitemapXml);
 writeFileSync(join(DIST, 'index.html'), withInlineCssAndLowPriorityJs(withFontPreloads(await withPrerender(readFileSync(join(DIST, 'index.html'), 'utf-8'), '/'))));
 console.log(`[seo-pages] server-rendered ${ssrCount} pages${ssrFailures.length ? `, ${ssrFailures.length} left client-rendered: ` + ssrFailures.slice(0, 6).join(' | ') : ''}`);
 
-console.log(`[seo-pages] sitemap.xml regenerated with ${routes.filter(r => !r.noSitemap).length + 1} URLs.`);
+console.log(`[seo-pages] sitemap.xml regenerated with ${routes.length + 1} URLs.`);
 
 
 // ---- llms.txt: a plain-language map of the site for AI assistants (llmstxt.org) ----
