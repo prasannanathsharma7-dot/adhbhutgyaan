@@ -343,6 +343,12 @@ const routes = [
         jsonLd: null,
     },
     {
+        path: '/media',
+        title: 'Videos & Interviews | Adhbhut Gyaan',
+        description: 'Glimpses of rituals performed in Kashi and media interviews with Dr. Umang Nath Sharma.',
+        jsonLd: combineJsonLd(breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Videos & Interviews', path: '/media' }])),
+    },
+    {
         path: '/price-list',
         title: 'Pooja & Paath Price List - Kashi | Adhbhut Gyaan',
         description: 'Price list for paath, shraddh, jaap, yagya and astrology consultation by the Pandits of Kashi - clear rates, confirmed on WhatsApp.',

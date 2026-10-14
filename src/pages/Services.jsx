@@ -4,6 +4,7 @@ import useSEO from '../hooks/useSEO';
 import { breadcrumbJsonLd, faqJsonLd, combineJsonLd } from '../utils/seo';
 import PoojaFinder from '../components/services/PoojaFinder';
 import PoojaDirectory from '../components/services/PoojaDirectory';
+import HighTeaExperience from '../components/services/HighTeaExperience';
 import { MessageCircle, Globe2, Landmark, CheckCircle2, Heart, Home as HomeIcon, Baby, Briefcase, CalendarHeart, ArrowRight } from 'lucide-react';
 
 export default function Services() {
@@ -128,6 +129,9 @@ export default function Services() {
                     </div>
                 </div>
             </section>
+
+            {/* An in-person experience with Dr. Umang Nath Sharma (moved here from the homepage) */}
+            <HighTeaExperience />
 
             {/* Shubh Muhurat - a distinct paid tool (₹151), not a pooja/ritual,
                 so it doesn't belong in the "Inquiry Only, No Charges" special-
