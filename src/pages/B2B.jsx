@@ -5,8 +5,8 @@ import { useLanguage } from '../context/LanguageContext';
 import useSEO from '../hooks/useSEO';
 import { breadcrumbJsonLd, combineJsonLd } from '../utils/seo';
 import { isValidPhone, PHONE_HELP_HI, PHONE_HELP_EN } from '../utils/phone';
+import { waLink } from '../config/contact';
 
-const WA = '919278148269';
 const INTERESTS = [
     { id: 'rudrabhishek', hi: 'रुद्राभिषेक', en: 'Rudrabhishek' },
     { id: 'shraddh_pind_daan', hi: 'श्राद्ध / पिंडदान', en: 'Shraddh / Pind Daan' },
@@ -194,7 +194,7 @@ export default function B2B() {
 
                                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.7rem', marginTop: '1rem' }}>
                                     <button type="submit" className="btn btn-primary" disabled={status === 'saving'}>{status === 'saving' ? t('भेजा जा रहा है…', 'Submitting…') : t('आवेदन भेजें', 'Submit application')}</button>
-                                    <a className="btn btn-whatsapp" target="_blank" rel="noreferrer" href={`https://wa.me/${WA}?text=${encodeURIComponent('Namaste, I am a travel agency / tour operator interested in the Kashi Ritual Partner Programme. Please share details.')}`}>
+                                    <a className="btn btn-whatsapp" target="_blank" rel="noreferrer" href={waLink('Namaste, I am a travel agency / tour operator interested in the Kashi Ritual Partner Programme. Please share details.')}>
                                         <MessageCircle size={16} style={{ verticalAlign: '-3px', marginRight: 6 }} />{t('WhatsApp पर पूछें', 'Ask on WhatsApp')}
                                     </a>
                                 </div>
