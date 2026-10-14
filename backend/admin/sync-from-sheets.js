@@ -6,21 +6,9 @@ const { ObjectId } = require('mongodb');
 const { getDb, withCors, capStr, escapeHtml } = require('../_db');
 const { sendMail } = require('../_email');
 
-function isAuthorized(req) {
-    const secretKey = process.env.ADMIN_SECRET_KEY || process.env.ADMIN_KEY || process.env.SHEET_SYNC_SECRET;
-    if (!secretKey) return false;
-
-    const authHeader = req.headers['x-admin-auth'] || req.headers['x-admin-key'] || req.headers['authorization'];
-    let provided = '';
-
-    if (authHeader) {
-        provided = authHeader.replace(/^Bearer\s+/i, '').trim();
-    } else if (req.body && (req.body.secret || req.body.token || req.body.auth)) {
-        provided = (req.body.secret || req.body.token || req.body.auth).toString().trim();
-    }
-
-    return provided === secretKey;
-}
+// The Sheets sync script authenticates with SHEET_SYNC_SECRET (admin also passes) - see backend/utils/auth.js.
+const { hasRole } = require('../utils/auth');
+const isAuthorized = (req) => hasRole(req, ['sheet-sync'], { allowBody: true });
 
 const VALID_STATUSES = ['new', 'pending', 'contacted', 'confirmed', 'reviewed', 'completed', 'cancelled', 'resolved'];
 

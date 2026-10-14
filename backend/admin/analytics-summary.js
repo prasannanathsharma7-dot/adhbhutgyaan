@@ -4,21 +4,9 @@
 
 const { getDb, withCors } = require('../_db');
 
-/**
- * Validates admin credentials against ADMIN_SECRET_KEY or ADMIN_KEY.
- * Supports x-admin-auth header, x-admin-key header, or Bearer Authorization.
- */
-function isAuthorized(req) {
-    const secretKey = process.env.ADMIN_SECRET_KEY || process.env.ADMIN_KEY;
-    if (!secretKey) return false;
-
-    const authHeader = req.headers['x-admin-auth'] || req.headers['x-admin-key'] || req.headers['authorization'];
-    let provided = '';
-
-    if (authHeader) provided = authHeader.replace(/^Bearer\s+/i, '').trim();
-
-    return provided === secretKey;
-}
+// Admin only (see backend/utils/auth.js).
+const { hasRole } = require('../utils/auth');
+const isAuthorized = (req) => hasRole(req, ['admin']);
 
 // Concern keyword dictionaries for semantic categorization
 const CONCERN_CATEGORIES = {
