@@ -10,6 +10,7 @@ import { calculateInstantKundli } from '../utils/kundliEngine';
 import KundaliSettingsBar from '../components/KundaliSettingsBar';
 import { DEFAULT_KUNDALI_SETTINGS, formatNumeral, formatHouseNumber } from '../utils/astrologyI18n';
 import { Droplet, Flame, Mountain, Wind, Sparkles, Zap, MapPin, Printer, RefreshCw, Orbit, Shield, Gem, Coins, Palette, Hash, TrendingUp, Heart, Wand2, MessageCircle, CalendarDays, AlertTriangle, CheckCircle2, Hourglass, Lock, Star, FileText, Sun, Moon as MoonIcon } from 'lucide-react';
+import { isValidPhone, PHONE_HELP_HI, PHONE_HELP_EN } from '../utils/phone';
 
 function getElementIcon(element = '') {
     const el = String(element).toLowerCase();
@@ -102,7 +103,7 @@ export default function FreeKundli() {
         if (!form.pob.trim()) next.pob = t('कृपया जन्म स्थान लिखें', 'Please enter your place of birth');
         const phoneDigits = form.phone.replace(/\D/g, '');
         if (!phoneDigits) next.phone = t('कृपया मोबाइल नंबर लिखें', 'Please enter your phone number');
-        else if (!/^[6-9]\d{9}$/.test(phoneDigits)) next.phone = t('कृपया सही 10-अंकों का भारतीय मोबाइल नंबर लिखें', 'Please enter a valid 10-digit Indian mobile number');
+        else if (!isValidPhone(form.phone)) next.phone = t(PHONE_HELP_HI, PHONE_HELP_EN);
         setErrors(next);
         if (Object.keys(next).length > 0) {
             const firstKey = `kundli-${Object.keys(next)[0]}`;

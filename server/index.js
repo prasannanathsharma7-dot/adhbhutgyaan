@@ -10,7 +10,13 @@
 const express = require('express');
 const app = express();
 
-app.use(express.json({ limit: '2mb' }));
+// `verify` keeps the exact raw bytes of every JSON body on req.rawBody - needed to
+// check the HMAC signature Meta puts on WhatsApp webhooks (re-serialised JSON
+// would not match byte-for-byte).
+app.use(express.json({
+    limit: '2mb',
+    verify: (req, _res, buf) => { req.rawBody = buf; },
+}));
 
 // --- Route handlers (each file maps 1:1 to its Vercel /api path) ---
 const bookings = require('../api/bookings.js');
@@ -33,6 +39,7 @@ const whatsappConcierge = require('../api/agents/whatsapp-concierge.js');
 const lifeDomainSynthesis = require('../api/agents/life-domain-synthesis.js');
 const generateKundliPdf = require('../api/generate-kundli-pdf.js');
 const muhuratBooking = require('../api/muhurat-booking.js');
+const b2bPartnerInquiry = require('../api/b2b-partner-inquiry.js');
 
 // Each handler already switches on req.method internally (GET/POST/PATCH/OPTIONS),
 // so `app.all` (matches every HTTP method) is the correct mount for all of them.
@@ -45,6 +52,7 @@ app.all('/api/health', health);
 app.all('/api/chat', chat);
 app.all('/api/cron-reminders', cronReminders);
 app.all('/api/whatsapp-webhook', whatsappWebhook);
+app.all('/api/b2b/partner-inquiry', b2bPartnerInquiry);
 app.all('/api/admin/analytics-summary', analyticsSummary);
 app.all('/api/admin/dispatch-sankalp', dispatchSankalp);
 app.all('/api/admin/sync-from-sheets', syncFromSheets);

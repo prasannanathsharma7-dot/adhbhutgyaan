@@ -2,13 +2,12 @@ import { useState } from 'react';
 import { Play, Quote } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
-// REAL + PLACEHOLDER MIX:
-// Entries 1-2 are genuine devotee testimonial clips supplied by the
-// business. Entry 3 remains a deliberate template placeholder (no video
-// src, no invented name/city/quote presented as if real) until a
-// further real, consented clip is supplied.
+// REAL CLIPS ONLY:
+// Both entries are genuine devotee testimonial clips supplied by the business. A third
+// 'Coming Soon' placeholder tile used to sit here; it was removed so visitors never see
+// placeholder text. Add a new entry only when a real, consented clip is supplied.
 //
-// NOTE on entries 1-2: neither clip's spoken content was transcribed
+// NOTE: neither clip's spoken content was transcribed
 // when added, so no quote text is asserted for either - the clips
 // speak for themselves. Add `quoteHi`/`quoteEn` (and `name`/`city`,
 // with the devotee's consent) once those details are confirmed, rather
@@ -32,7 +31,6 @@ const TESTIMONIALS = [
         quoteHi: null,
         quoteEn: null,
     },
-    { id: 3, video: null, poster: '/images/gallery/group-puja.jpg', name: null, city: null, quoteHi: null, quoteEn: null },
 ];
 
 function TestimonialCard({ item }) {

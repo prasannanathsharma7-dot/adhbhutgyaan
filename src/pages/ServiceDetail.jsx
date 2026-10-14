@@ -36,8 +36,8 @@ export default function ServiceDetail() {
             a: t('नहीं, यह पूजा ऑनलाइन (लाइव वीडियो के साथ) भी करवाई जा सकती है। आप विदेश में रहकर भी अपने नाम व गोत्र से पूजा करवा सकते हैं।', 'No, this pooja can also be performed online with a live video call. You can have it performed in your name and gotra even while living abroad.'),
         },
         {
-            q: t(`${service.name} की कीमत में क्या शामिल है?`, `What is included in the price of ${service.nameEn}?`),
-            a: t('पूजा मूल्य में सम्पूर्ण पूजन सामग्री, अनुभवी पंडितों की दक्षिणा और हवन (जहाँ लागू हो) शामिल है। कोई छुपा हुआ शुल्क नहीं है। अंतिम मूल्य पंडित जी WhatsApp/कॉल पर बताते हैं।', "The price includes all pooja materials, the experienced pandits\u2019 fees, and havan where applicable. There are no hidden charges. Pandit ji confirms the exact final price on WhatsApp/call."),
+            q: t(`${service.name} का मूल्य कैसे तय होता है?`, `How is the price of ${service.nameEn} decided?`),
+            a: t('मूल्य आपकी आवश्यकता — पंडितों की संख्या, सामग्री, स्थान, ऑनलाइन/ऑफ़लाइन — पर निर्भर करता है। अंतिम मूल्य बुकिंग से पहले पंडित जी WhatsApp/कॉल पर स्पष्ट बता देते हैं। अन्य अनुष्ठानों की दरें दर सूची पृष्ठ पर देखें।', "The price depends on your requirement - number of Pandits, materials, location, online or in person. Pandit ji confirms the exact final price clearly on WhatsApp/call before you book. See the Price List page for other rituals."),
         },
         {
             q: t('पूजा में कितना समय लगता है?', 'How long does the pooja take?'),

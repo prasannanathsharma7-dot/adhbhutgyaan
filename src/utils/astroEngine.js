@@ -126,6 +126,80 @@ export function formatMinutesToTime(mins) {
     return `${String(hours12).padStart(2, '0')}:${String(minutes).padStart(2, '0')} ${period}`;
 }
 
+// Karana for a half-tithi index 0..59. Index 0 is the fixed Karana Kimstughna; 57-59 are the
+// fixed Shakuni, Chatushpada, Naga; the 56 in between cycle through the 7 movable Karanas.
+export function karanaNameAt(halfTithi) {
+    const h = ((Math.floor(halfTithi) % 60) + 60) % 60;
+    let idx;
+    if (h === 0) idx = 10;
+    else if (h >= 57) idx = 7 + (h - 57);
+    else idx = (h - 1) % 7;
+    return KARANAS[idx] || KARANAS[0];
+}
+
+// ---------------------------------------------------------------------------------------
+// When does each of the five limbs CHANGE?  (the part a printed panchang always shows)
+//
+// calculateGlobalPanchang() reports the limb prevailing at local sunrise. That alone can
+// mislead: on 28 Aug 2026 Purnima prevails at sunrise but ends at ~09:49 AM, so a ritual
+// planned for 11 AM "on Purnima" is actually in Krishna Pratipada. This finds the exact
+// moments the Sun/Moon geometry crosses each boundary, using the same ephemeris as the
+// limb values themselves (so the two can never disagree).
+//
+//   tithi      : Moon-Sun elongation, boundary every 12 deg
+//   karana     : same elongation, boundary every 6 deg (half-tithi)
+//   nakshatra  : Moon sidereal longitude, boundary every 360/27 deg
+//   yoga       : Sun+Moon sidereal longitudes, boundary every 360/27 deg
+// Each angle only ever increases with time, so a bisection on the angle finds the crossing.
+// ---------------------------------------------------------------------------------------
+const wrap180 = (x) => ((((x + 180) % 360) + 360) % 360) - 180;
+const norm360 = (x) => ((x % 360) + 360) % 360;
+const LIMBS = {
+    tithi:     { step: 12,       angle: (s) => norm360(s.moon - s.sun) },
+    karana:    { step: 6,        angle: (s) => norm360(s.moon - s.sun) },
+    nakshatra: { step: 360 / 27, angle: (s) => norm360(s.moon) },
+    yoga:      { step: 360 / 27, angle: (s) => norm360(s.sun + s.moon) },
+};
+
+function limbCrossing(kind, t0, a0, relTarget) {
+    const { angle } = LIMBS[kind];
+    const delta = (t) => wrap180(angle(getSiderealLongitudes(new Date(t))) - a0) - relTarget;
+    let lo = t0 - 40 * 3600000, hi = t0 + 40 * 3600000; // no limb lasts anywhere near 40 hours
+    for (let i = 0; i < 26; i++) {                       // 80h / 2^26 = well under a second
+        const mid = (lo + hi) / 2;
+        if (delta(mid) < 0) lo = mid; else hi = mid;
+    }
+    return new Date((lo + hi) / 2);
+}
+
+/**
+ * @param {Date} sunriseUTC       the instant of local sunrise (the moment the day's limbs are read)
+ * @param {Date} localMidnightUTC the instant of local midnight at the start of that civil day
+ * @returns {{tithi, karana, nakshatra, yoga}} each { startsAt, endsAt, next } where startsAt/endsAt are
+ *          { date: Date, minutes: minutes after local midnight (can be <0 or >=1440) }
+ */
+export function calculateLimbBoundaries(sunriseUTC, localMidnightUTC) {
+    const t0 = sunriseUTC.getTime();
+    const s0 = getSiderealLongitudes(sunriseUTC);
+    const out = {};
+    for (const kind of Object.keys(LIMBS)) {
+        const { step, angle } = LIMBS[kind];
+        const a0 = angle(s0);
+        const idx = Math.floor(a0 / step);
+        const starts = limbCrossing(kind, t0, a0, idx * step - a0);
+        const ends = limbCrossing(kind, t0, a0, (idx + 1) * step - a0);
+        const mk = (d) => ({ date: d, minutes: (d.getTime() - localMidnightUTC.getTime()) / 60000 });
+        out[kind] = { startsAt: mk(starts), endsAt: mk(ends), index: idx };
+    }
+    return out;
+}
+
+/** "09:49 AM" plus how many civil days after the target day (0 = same day, 1 = next day, -1 = previous day). */
+export function formatBoundary(minutesAfterMidnight) {
+    const dayOffset = Math.floor(minutesAfterMidnight / 1440);
+    return { time: formatMinutesToTime(minutesAfterMidnight), dayOffset };
+}
+
 /**
  * Computes high-precision solar geometry for given coordinates and date.
  */
@@ -313,6 +387,11 @@ export function calculateGlobalPanchang({
             targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate(), 0, 0, 0
         ) - (validTz * 3600000) + (sunrise * 60000));
         const sid = getSiderealLongitudes(sunriseUTC);
+        const localMidnightUTC = new Date(Date.UTC(
+            targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate(), 0, 0, 0
+        ) - (validTz * 3600000));
+        const limbs = calculateLimbBoundaries(sunriseUTC, localMidnightUTC);
+        const endsOf = (k) => formatBoundary(limbs[k].endsAt.minutes);
 
         const tithiDiff = ((sid.moon - sid.sun) % 360 + 360) % 360;
         const tithiIndex = Math.min(29, Math.floor(tithiDiff / 12));
@@ -333,11 +412,7 @@ export function calculateGlobalPanchang({
         // Karana "Kimstughna"; the last 3 (57-59) are the fixed Shakuni,
         // Chatushpada, Naga; the 56 in between cycle through the 7 movable Karanas.
         const halfTithi = Math.min(59, Math.floor(tithiDiff / 6));
-        let karanaIdx;
-        if (halfTithi === 0) karanaIdx = 10; // Kimstughna
-        else if (halfTithi >= 57) karanaIdx = 7 + (halfTithi - 57); // Shakuni/Chatushpada/Naga
-        else karanaIdx = (halfTithi - 1) % 7; // Bava..Vishti cycle
-        const karanaName = KARANAS[karanaIdx] || KARANAS[0];
+        const karanaName = karanaNameAt(halfTithi);
 
         const rashiNames = ['Aries (Mesha)', 'Taurus (Vrishabha)', 'Gemini (Mithuna)', 'Cancer (Karka)', 'Leo (Simha)', 'Virgo (Kanya)', 'Libra (Tula)', 'Scorpio (Vrishchika)', 'Sagittarius (Dhanu)', 'Capricorn (Makara)', 'Aquarius (Kumbha)', 'Pisces (Meena)'];
         const suryaRashi = rashiNames[Math.min(11, Math.floor(sid.sun / 30))] || rashiNames[0];
@@ -363,15 +438,19 @@ export function calculateGlobalPanchang({
                 paksha,
                 isPurnima: tithiIndex === 14,
                 isAmavasya: tithiIndex === 29,
+                endsAt: endsOf('tithi'),
+                next: TITHIS[(tithiIndex + 1) % 30] || TITHIS[0],
             },
             nakshatra: {
                 name: nakshatra.name,
                 lord: nakshatra.lord,
                 deity: nakshatra.deity,
                 pada,
+                endsAt: endsOf('nakshatra'),
+                next: (NAKSHATRAS[(nakshatraIndex + 1) % 27] || NAKSHATRAS[0]).name,
             },
-            yoga: { name: yogaName },
-            karana: { name: karanaName },
+            yoga: { name: yogaName, endsAt: endsOf('yoga'), next: YOGAS[(yogaIndex + 1) % 27] || YOGAS[0] },
+            karana: { name: karanaName, endsAt: endsOf('karana'), next: karanaNameAt(halfTithi + 1) },
             vara: {
                 name: vara.name,
                 deity: vara.deity,

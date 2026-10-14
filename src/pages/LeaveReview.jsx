@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import useSEO from '../hooks/useSEO';
 import services from '../data/services.json';
+import { isValidPhone, PHONE_HELP_HI, PHONE_HELP_EN } from '../utils/phone';
 
 export default function LeaveReview() {
     const { t, lang } = useLanguage();
@@ -24,8 +25,8 @@ export default function LeaveReview() {
         } else if (nameTrimmed.length < 3 || !/^[A-Za-z\u0900-\u097F\s.]+$/.test(nameTrimmed)) {
             next.name = t('कृपया सही नाम लिखें (कम से कम 3 अक्षर, केवल अक्षर)', 'Please enter a valid name (at least 3 letters, alphabetic only)');
         }
-        if (form.phone.trim() && !/^[6-9]\d{9}$/.test(form.phone.replace(/\D/g, ''))) {
-            next.phone = t('कृपया सही 10-अंकों का मोबाइल नंबर लिखें', 'Please enter a valid 10-digit mobile number');
+        if (form.phone.trim() && !isValidPhone(form.phone)) {
+            next.phone = t(PHONE_HELP_HI, PHONE_HELP_EN);
         }
         if (!form.text.trim() || form.text.trim().length < 10) {
             next.text = t('कृपया कम से कम 10 अक्षरों की समीक्षा लिखें', 'Please write a review of at least 10 characters');

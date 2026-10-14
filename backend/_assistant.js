@@ -6,6 +6,24 @@ const { capStr, escapeHtml } = require('./_db');
 const { sendMail } = require('./_email');
 const { notifyAdmin } = require('./_notify');
 const servicesData = require('../src/data/services.json');
+const priceData = require('../src/data/priceList.json');
+
+// Published website rates, as text for the AI prompt. Only items the owner approved
+// carry numbers in priceList.json, so nothing unreviewed can ever be quoted.
+function formatRupees(n) {
+    const half = Math.abs(n - Math.round(n)) > 1e-9;
+    return '\u20B9' + n.toLocaleString('en-IN', { minimumFractionDigits: half ? 1 : 0, maximumFractionDigits: 1 });
+}
+const UNIT_EN = { paath: 'per paath', ritual: 'per ritual', day: 'per day', per1000: 'per 1,000 jaap', unclear: '' };
+function buildPriceLines() {
+    const lines = [`- Astrology Consultation (personal session): ${formatRupees(priceData.consultation.price)} per session (final price)`];
+    for (const it of priceData.items) {
+        if (it.status !== 'approved') continue;
+        const amount = it.min === it.max ? formatRupees(it.min) : `${formatRupees(it.min)} to ${formatRupees(it.max)}`;
+        lines.push(`- ${it.nameEn} (${it.nameHi}): ${amount} ${UNIT_EN[it.unit] || ''}`.trim());
+    }
+    return lines.join('\n');
+}
 
 const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
 const MODEL = 'claude-haiku-4-5-20251001';
@@ -22,7 +40,7 @@ function buildSystemPrompt(pageContext) {
 
     return `You are the helpful assistant for Adhbhut Gyaan, a Vedic pooja and astrology consultation service run by Pt./Dr. Umang Nath Sharma and family in Kashi (Varanasi), India, continuing a 400+ year family tradition.
 
-Your role is limited to: answering general questions about services/timing/process, and helping book appointments. You are NOT the source for pricing - Pandit ji personally confirms exact prices with each devotee.
+Your role is limited to: answering general questions about services/timing/process, and helping book appointments. Pricing: you may quote only the published website rates listed below; Pandit ji personally confirms the final price for each devotee's exact requirement.
 
 Business facts (use only these - never invent prices, dates, or details not given here):
 - Phone/WhatsApp: +91 92781 48269
@@ -33,16 +51,19 @@ Business facts (use only these - never invent prices, dates, or details not give
 
 Available poojas/services:
 ${serviceLines}
+
+Published price list (final website rates, INR):
+${buildPriceLines()}
 ${contextLine}
 Your job:
 1. Answer questions about services, what they're for, best timing, and what packages/options exist - using ONLY the facts above.
-2. Do not state exact rupee prices (not provided here) - pricing is confirmed personally by Pandit ji on WhatsApp or call, so tell the person Pandit ji will share the exact price once they connect. Offer to help book an appointment or connect them on WhatsApp for that.
+2. Prices: quote ONLY the rates under "Published price list" below, exactly as written, and say they are per the unit shown and that Pandit ji confirms the final price for the person's exact requirement (number of Pandits, materials, location, online/offline) on WhatsApp before booking. You may multiply a per-paath or per-1,000-jaap rate by a count the person gives you - show the arithmetic and call it an estimate until Pandit ji confirms. For any service that is not in the published list, or any total you cannot derive from it, do NOT guess: say Pandit ji will share the price and offer the WhatsApp number.
 3. If the person wants to book, collect: their name, a phone number, which service/pooja, which package (if relevant), and preferred mode (online/offline/at their location/at a temple) and preferred date. Ask for whatever is still missing, one or two questions at a time - don't interrogate them all at once.
 4. Once you have at least name + phone + service, call the create_booking tool. You do not need every field - a preferred date of "flexible" or a mode of "to be discussed" is fine if the person doesn't specify.
 5. After booking is created, tell them the team will confirm within 24 hours on WhatsApp/call, and mention they can also reach +91 92781 48269 directly for anything urgent.
 6. Keep replies short and warm (2-4 sentences) - this matters even more on WhatsApp, where long messages are awkward to read.
 7. Reply in the same language the person writes in (Hindi, Hinglish, or English).
-8. For anything you're unsure about or that isn't in the facts above (exact pricing, availability on a specific date, custom requests), say the team will confirm this directly and offer the WhatsApp number - never guess.`;
+8. For anything you're unsure about or that isn't in the facts above (pricing not in the published list, availability on a specific date, custom requests), say the team will confirm this directly and offer the WhatsApp number - never guess.`;
 }
 
 const CREATE_BOOKING_TOOL = {
