@@ -82,7 +82,7 @@ export default function Services() {
                     </div>
                     <div className="om-divider">ॐ</div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))', gap: '2rem' }}>
                         {/* For those sitting overseas */}
                         <div className="card" style={{ padding: 'clamp(1.5rem, 3vw, 2rem)' }}>
                             <Globe2 size={32} style={{ marginBottom: '0.75rem', color: 'var(--gold-600)' }} />

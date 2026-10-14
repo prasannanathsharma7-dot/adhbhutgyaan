@@ -59,11 +59,11 @@ export const KARANAS = [
 ];
 
 export const VARAS = [
-    { name: 'Ravivara (Sunday)', deity: 'Surya Dev', chant: 'Om Suryaya Namaha', color: '#ea580c' },
-    { name: 'Somavara (Monday)', deity: 'Lord Shiva', chant: 'Om Namah Shivaya', color: '#0284c7' },
+    { name: 'Ravivara (Sunday)', deity: 'Surya Dev', chant: 'Om Suryaya Namaha', color: '#c2410c' },
+    { name: 'Somavara (Monday)', deity: 'Lord Shiva', chant: 'Om Namah Shivaya', color: '#0369a1' },
     { name: 'Mangalavara (Tuesday)', deity: 'Hanuman Ji / Mars', chant: 'Om Hanumate Namaha', color: '#dc2626' },
-    { name: 'Budhavara (Wednesday)', deity: 'Lord Ganesha', chant: 'Om Gam Ganapataye Namaha', color: '#16a34a' },
-    { name: 'Guruvara (Thursday)', deity: 'Lord Vishnu / Brihaspati', chant: 'Om Namo Bhagavate Vasudevaya', color: '#ca8a04' },
+    { name: 'Budhavara (Wednesday)', deity: 'Lord Ganesha', chant: 'Om Gam Ganapataye Namaha', color: '#15803d' },
+    { name: 'Guruvara (Thursday)', deity: 'Lord Vishnu / Brihaspati', chant: 'Om Namo Bhagavate Vasudevaya', color: '#a16207' },
     { name: 'Shukravara (Friday)', deity: 'Maa Mahalakshmi', chant: 'Om Shreem Mahalakshmyai Namaha', color: '#db2777' },
     { name: 'Shanivara (Saturday)', deity: 'Shani Dev / Kaal Bhairav', chant: 'Om Sham Shanaishcharaya Namaha', color: '#475569' },
 ];

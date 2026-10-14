@@ -529,7 +529,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                             {chartView === 'chandra' && t('चंद्र राशि को प्रथम भाव मानकर बनी कुंडली — मन, भावनाओं व मानसिक प्रवृत्तियों के विश्लेषण हेतु।', 'Chart with the Moon sign as the 1st house - used for analyzing the mind, emotions, and mental tendencies.')}
                             {chartView === 'surya' && t('सूर्य राशि को प्रथम भाव मानकर बनी कुंडली — आत्मबल, पिता व करियर के विश्लेषण हेतु।', 'Chart with the Sun sign as the 1st house - used for analyzing willpower, father, and career.')}
                         </p>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '1.5rem', marginBottom: '2rem', alignItems: 'start' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 340px), 1fr))', gap: '1.5rem', marginBottom: '2rem', alignItems: 'start' }}>
                             {/* North Indian SVG Chart */}
                             <NorthIndianChart
                                 houseData={chartView === 'chandra' ? kundliResult.chandraHouseData : chartView === 'surya' ? kundliResult.suryaHouseData : kundliResult.houseData}
@@ -716,7 +716,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                 </span>
                             </div>
 
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(290px, 1fr))', gap: '1rem' }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 290px), 1fr))', gap: '1rem' }}>
                                 {/* Locked Card 1: 5-8 Year Career & Wealth Timeline */}
                                 <div style={{ background: 'white', borderRadius: 'var(--radius-lg)', padding: '1.25rem', border: '1px solid var(--border-gold)', position: 'relative', overflow: 'hidden', boxShadow: 'var(--shadow-sm)' }}>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
