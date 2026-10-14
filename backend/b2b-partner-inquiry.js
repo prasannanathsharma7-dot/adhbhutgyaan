@@ -9,7 +9,7 @@
 
 const { getDb, withCors, capStr, escapeHtml, checkRateLimit, isValidPhone, isValidName } = require('./_db');
 const { notifyAdmin } = require('./_notify');
-const { validateAgentAuth } = require('./utils/agent-auth');
+const { requireRole } = require('./utils/auth');
 
 const INTERESTS = ['rudrabhishek', 'shraddh_pind_daan', 'online_sankalp', 'kundli_astrology', 'group_pooja', 'other'];
 
@@ -26,11 +26,8 @@ module.exports = async (req, res) => {
     }
 
     if (req.method === 'GET') {
-        const auth = validateAgentAuth(req);
-        if (!auth.authorized) {
-            res.status(401).json({ ok: false, error: 'Unauthorized' });
-            return;
-        }
+        // Applicant contact details: admin only (an agent/cron/sheet-sync token must not read them).
+        if (!requireRole(req, res, ['admin'])) return;
         try {
             const db = await getDb();
             const limit = Math.min(parseInt(req.query && req.query.limit, 10) || 200, 1000);

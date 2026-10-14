@@ -6,17 +6,9 @@
 const { getDb, withCors, capStr, escapeHtml, checkRateLimit } = require('./_db');
 const { notifyAdmin } = require('./_notify');
 
-function isAdmin(req) {
-    const providedKey = req.headers['x-admin-key'];
-    const envKey = (process.env.ADMIN_KEY || '').trim();
-    // Trim both sides defensively - a trailing/leading space or newline
-    // accidentally included when pasting the value into Vercel's env-var
-    // field (or auto-inserted by some mobile keyboards on the login
-    // input, though type="password" already suppresses most autocorrect)
-    // would otherwise cause an exact-match comparison to silently fail
-    // with "Invalid admin key" even when the visible characters match.
-    return Boolean(envKey) && (providedKey || '').trim() === envKey;
-}
+// Admin-only check shared by all endpoints (see backend/utils/auth.js for roles).
+const { hasRole } = require('./utils/auth');
+const isAdmin = (req) => hasRole(req, ['admin']);
 
 function isValidEmail(email) {
     // Simple, deliberately permissive check - just enough to catch obvious typos.
