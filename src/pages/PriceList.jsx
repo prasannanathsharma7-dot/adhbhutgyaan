@@ -6,8 +6,8 @@ import useSEO from '../hooks/useSEO';
 import { breadcrumbJsonLd, combineJsonLd } from '../utils/seo';
 import { formatPrice, UNIT_LABELS } from '../utils/pricing';
 import priceList from '../data/priceList.json';
+import { waLink, WHATSAPP_DISPLAY } from '../config/contact';
 
-const WA = '919278148269';
 const UPDATED = { hi: 'अक्टूबर 2026', en: 'October 2026' };
 
 const norm = (s) => (s || '').toString().toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').trim();
@@ -34,7 +34,6 @@ export default function PriceList() {
         return norm(it.nameEn).includes(q) || norm(it.nameHi).includes(q) || String(it.no) === q;
     }), [q, cat]);
 
-    const waLink = (text) => `https://wa.me/${WA}?text=${encodeURIComponent(text)}`;
     const unitText = (u) => (UNIT_LABELS[u] ? UNIT_LABELS[u][lang === 'hi' ? 'hi' : 'en'] : '');
 
     const priceCell = (it) => {
@@ -104,7 +103,7 @@ export default function PriceList() {
                     {visible.length === 0 && (
                         <p style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '2rem 0' }}>
                             {t('कोई सेवा नहीं मिली। कृपया WhatsApp पर पूछें —', 'No matching service. Please ask us on WhatsApp -')}{' '}
-                            <a href={waLink('Namaste, I am looking for a pooja that I could not find on the price list.')} target="_blank" rel="noreferrer">+91 92781 48269</a>
+                            <a href={waLink('Namaste, I am looking for a pooja that I could not find on the price list.')} target="_blank" rel="noreferrer">{WHATSAPP_DISPLAY}</a>
                         </p>
                     )}
 

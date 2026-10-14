@@ -4,7 +4,7 @@
 
 const { getDb, withCors, escapeHtml } = require('../_db');
 const { sendMail } = require('../_email');
-const { requireAgentAuth } = require('../utils/agent-auth');
+const { requireRole } = require('../utils/auth');
 const { calculateGlobalPanchang, todayIST } = require('../utils/panchang-engine');
 
 // Varanasi Astronomical Coordinates
@@ -163,7 +163,7 @@ module.exports = async (req, res) => {
     // read-only, no secrets involved, the same data the public /panchang page
     // already computes client-side. Only gate the sensitive path: actually
     // emailing the full subscriber list (broadcast=true), or a POST trigger.
-    if ((req.method === 'POST' || shouldBroadcast) && !requireAgentAuth(req, res)) {
+    if ((req.method === 'POST' || shouldBroadcast) && !requireRole(req, res, ['agent', 'cron'], { allowBody: true })) {
         return;
     }
 
