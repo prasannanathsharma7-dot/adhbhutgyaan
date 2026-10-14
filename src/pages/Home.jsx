@@ -38,11 +38,11 @@ export default function Home() {
         fetch('/api/reviews?limit=6')
             .then((r) => r.json())
             .then((data) => {
-                if (data.ok && Array.isArray(data.items) && data.items.length >= 3) {
+                if (data.ok && Array.isArray(data.items) && data.items.length >= 1) {
                     setLiveReviews(data.items);
                 }
             })
-            .catch(() => { /* fall back to static testimonials below */ });
+            .catch(() => { /* no live reviews: the section shows the Google-review prompt and the real video clips */ });
     }, []);
 
     useSEO({
@@ -561,23 +561,15 @@ export default function Home() {
                         <span className="section-label">{t('भक्तों के अनुभव', 'Devotee Experiences')}</span>
                         <h2 className="section-title">{t('हमारे भक्तगण क्या कहते हैं', 'In Our Devotees\' Own Words')}</h2>
                     </div>
+                    {/* Only REAL reviews are shown: the ones customers submitted on /leave-a-review and the
+                        owner approved in the admin panel (served by /api/reviews). This used to fall back
+                        to three hard-coded sample testimonials (Delhi / Mumbai / New Jersey) that nobody
+                        could trace to a real customer - removed. With no approved reviews yet, the section
+                        shows the Google-review prompt and the real video clips below. */}
+                    {liveReviews && liveReviews.length > 0 && (
                     <div className="testimonials-grid">
-                        {(liveReviews || [
-                            {
-                                text: t('बनारस से दूर रहकर भी काशी के पंडित जी द्वारा इतनी शुद्ध विधि से पूजा करवा पाना बहुत अच्छा अनुभव रहा। पूरे परिवार को शांति मिली।', 'Even while living far from Banaras, having the pooja performed so authentically by a Kashi Pandit was a wonderful experience. Our whole family found peace.'),
-                                name: 'राजेश शर्मा', loc: t('दिल्ली, भारत', 'Delhi, India'), av: 'र', rating: 5,
-                            },
-                            {
-                                text: t('महामृत्युंजय जप के बाद पत्नी की तबियत में चमत्कारिक सुधार हुआ। पंडित जी का ज्ञान और विधि दोनों अद्भुत हैं। बहुत आभारी हूँ।', "After the Mahamrityunjay Jaap, my wife's health improved remarkably. The Pandit's knowledge and method were both wonderful. Very grateful."),
-                                name: 'Suresh Patel', loc: t('मुंबई, भारत', 'Mumbai, India'), av: 'S', rating: 5,
-                            },
-                            {
-                                text: t('अमेरिका में रहते हुए हमारे गृह प्रवेश के लिए प्रामाणिक काशी पंडित मिलना मुश्किल था। इनकी ऑनलाइन सेवा अद्भुत रही — बिल्कुल बनारस में होने जैसा अनुभव!', 'Being in the US, I missed having authentic Kashi pandits for our Griha Pravesh. Their online service was incredible — felt like being right in Banaras!'),
-                                name: 'Priya Gupta', loc: t('न्यू जर्सी, अमेरिका', 'New Jersey, USA'), av: 'P', rating: 5,
-                            },
-                        ]).map((tst, i) => {
-                            // Live reviews from the API use {name, text, rating, location, serviceName};
-                            // static fallback uses {name, text, loc, av, rating}.
+                        {liveReviews.map((tst, i) => {
+                            // Live reviews from the API use {name, text, rating, location, serviceName}.
                             const displayLoc = tst.loc || tst.location || tst.serviceName || '';
                             const displayAv = tst.av || (tst.name || '?').trim().charAt(0).toUpperCase();
                             const stars = '★'.repeat(tst.rating || 5) + '☆'.repeat(5 - (tst.rating || 5));
@@ -597,6 +589,7 @@ export default function Home() {
                             );
                         })}
                     </div>
+                    )}
 
                     <div className="text-center" style={{ marginTop: '2rem', background: 'var(--cream)', borderRadius: 'var(--radius-lg)', padding: '1.5rem', maxWidth: 560, marginLeft: 'auto', marginRight: 'auto' }}>
                         <p style={{ marginBottom: '0.9rem', fontSize: '0.9rem' }}>
