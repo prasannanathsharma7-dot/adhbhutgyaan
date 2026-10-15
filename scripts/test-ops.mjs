@@ -6,45 +6,7 @@ const require = createRequire(import.meta.url);
 let passed = 0, failed = 0;
 const check = (c, n) => { if (c) { passed++; console.log(`  \x1b[32m✓\x1b[0m ${n}`); } else { failed++; console.log(`  \x1b[31m✗ ${n}\x1b[0m`); } };
 
-// ---------- in-memory MongoDB stand-in (the subset our code uses) ----------
-function matches(doc, filter) {
-    return Object.entries(filter).every(([k, v]) => {
-        if (k === '$or') return v.some(f => matches(doc, f));
-        const val = doc[k];
-        if (v && typeof v === 'object' && !(v instanceof Date) && !Array.isArray(v)) {
-            return Object.entries(v).every(([op, x]) => {
-                if (op === '$ne') return val !== x;
-                if (op === '$lt') return val !== undefined && val < x;
-                if (op === '$lte') return val !== undefined && val <= x;
-                if (op === '$in') return x.includes(val);
-                throw new Error('unsupported operator ' + op);
-            });
-        }
-        return val === v;
-    });
-}
-function makeCol() {
-    const docs = []; let seq = 0;
-    const col = {
-        docs,
-        async insertOne(d) {
-            if (d.messageId !== undefined && docs.some(x => x.messageId === d.messageId)) { const e = new Error('E11000 duplicate key'); e.code = 11000; throw e; }
-            const doc = { _id: d._id ?? `id${++seq}`, ...d }; docs.push(doc); return { insertedId: doc._id };
-        },
-        async findOne(f) { return docs.find(d => matches(d, f)) || null; },
-        find(f) { return { toArray: async () => docs.filter(d => matches(d, f)).map(d => d) }; },
-        async updateOne(f, u) {
-            const d = docs.find(x => matches(x, f)); if (!d) return { matchedCount: 0, modifiedCount: 0 };
-            for (const [k, v] of Object.entries(u.$set || {})) d[k] = v;
-            for (const [k, v] of Object.entries(u.$inc || {})) d[k] = (d[k] || 0) + v;
-            for (const k of Object.keys(u.$unset || {})) delete d[k];
-            return { matchedCount: 1, modifiedCount: 1 };
-        },
-        async createIndex() {},
-    };
-    return col;
-}
-const makeDb = () => { const m = new Map(); return { collection: n => { if (!m.has(n)) m.set(n, makeCol()); return m.get(n); } }; };
+import { makeCol, makeDb } from './lib/fake-db.mjs';
 
 const { istTomorrow, runReminders } = require('../backend/cron-reminders.js');
 const { createNotifier, MAX_ATTEMPTS } = require('../backend/_notify.js');

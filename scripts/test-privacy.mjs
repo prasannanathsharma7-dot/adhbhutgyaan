@@ -35,7 +35,7 @@ for (const [name, re, hay] of providers) {
 
 console.log('\n\x1b[1m[2] Every data category is described, and a NEW collection forces a privacy review\x1b[0m');
 const collections = new Set([...backendText.matchAll(/collection\('([a-z_]+)'\)/g)].map(m => m[1]));
-const reviewed = new Set(['bookings', 'contacts', 'reviews', 'subscribers', 'muhurat_orders', 'whatsapp_conversations', 'whatsapp_processed', 'messages', 'kundli_requests', 'horoscopes', 'daily_panchang', 'draft_articles', 'rate_limits', 'notification_jobs']);
+const reviewed = new Set(['bookings', 'contacts', 'reviews', 'subscribers', 'muhurat_orders', 'whatsapp_conversations', 'whatsapp_processed', 'messages', 'kundli_requests', 'horoscopes', 'daily_panchang', 'draft_articles', 'rate_limits', 'notification_jobs', 'erasure_log']);
 const unreviewed = [...collections].filter(c => !reviewed.has(c));
 check(unreviewed.length === 0, `no collection without a privacy review (${unreviewed.length ? 'NEW: ' + unreviewed.join(', ') : collections.size + ' known'})`);
 for (const w of ['Booking / enquiry form', 'Contact form', 'Free Kundli', 'Reviews', 'Shubh Muhurat', 'Newsletter', 'WhatsApp assistant', 'IP address', 'How long we keep it', 'Your choices']) check(policy.includes(w), `notice has a section / item for "${w}"`);

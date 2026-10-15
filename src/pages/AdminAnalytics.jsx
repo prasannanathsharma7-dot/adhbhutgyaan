@@ -317,6 +317,11 @@ export default function AdminAnalytics() {
                                 Updated: {new Date(data.generatedAt).toLocaleTimeString('en-IN')}
                             </span>
                         )}
+                        {data?.window && (
+                            <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+                                Breakdowns cover the last {data.window.days} days{data.window.truncated ? ` (newest ${data.window.maxDocsPerCollection} per list)` : ''}; lifetime totals are exact.
+                            </span>
+                        )}
                     </div>
 
                     <div style={{ display: 'flex', gap: '0.6rem', alignItems: 'center', flexWrap: 'wrap' }}>

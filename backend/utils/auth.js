@@ -10,7 +10,7 @@
 //
 // ROUTE -> ALLOWED ROLES (admin is implicitly allowed everywhere):
 //   bookings (admin methods), contact (admin methods), reviews (admin view/moderation), newsletter (admin list),
-//   muhurat-booking (admin view), admin/dispatch-sankalp, admin/analytics-summary -> admin only
+//   muhurat-booking (admin view), admin/dispatch-sankalp, admin/analytics-summary, admin/erase-person -> admin only
 //   admin/sync-from-sheets                                                                                     -> sheet-sync
 //   agents/daily-panchang-cron                                                                                 -> agent, cron
 //   agents/{kundli-preanalyzer, whatsapp-concierge, life-domain-synthesis, seo-content-drafter, system-health} -> agent
