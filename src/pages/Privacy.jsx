@@ -52,8 +52,8 @@ const SECTIONS = [
     {
         h: ['हम कितने समय तक रखते हैं', 'How long we keep it'],
         p: [[
-            'पूछताछ और बुकिंग रिकॉर्ड तब तक रखे जाते हैं जब तक वे आपकी सेवा और हमारे व्यावसायिक रिकॉर्ड के लिए आवश्यक हैं; आपके कहने पर हम उन्हें हटा देते हैं (जब तक कानूनन रखना आवश्यक न हो)। हमारी टीम को भेजी गई जो सूचना पहुँच न सके, वह पुनः प्रयास हेतु कतार में तब तक रहती है जब तक पहुँच न जाए या बार-बार विफल न हो जाए। IP की दुरुपयोग-रोक गिनती अल्प अवधि बाद अपने-आप मिट जाती है।',
-            'Enquiry and booking records are kept for as long as they are needed to serve you and for our business records, and we delete them when you ask (unless the law requires us to keep them). A notification to our team that could not be delivered stays in a retry queue until it is delivered or has failed repeatedly. The IP counters used to stop abuse expire automatically after a short window.',
+            'पूछताछ और बुकिंग रिकॉर्ड तब तक रखे जाते हैं जब तक वे आपकी सेवा और हमारे व्यावसायिक रिकॉर्ड के लिए आवश्यक हैं; आपके कहने पर हम उन्हें हटा देते हैं (जब तक कानूनन रखना आवश्यक न हो); हटाने के बाद हम केवल इतना रिकॉर्ड रखते हैं कि अनुरोध पूरा हुआ, बिना आपका कोई विवरण। बैकअप डेटाबेस सेवा की अपनी अवधि में समाप्त हो जाते हैं। हमारी टीम को भेजी गई जो सूचना पहुँच न सके, वह पुनः प्रयास हेतु कतार में तब तक रहती है जब तक पहुँच न जाए या बार-बार विफल न हो जाए। IP की दुरुपयोग-रोक गिनती अल्प अवधि बाद अपने-आप मिट जाती है।',
+            'Enquiry and booking records are kept for as long as they are needed to serve you and for our business records, and we delete them when you ask (unless the law requires us to keep them); afterwards we keep only a record that the request was completed, without your details. Database backups expire on the provider\u2019s own schedule. A notification to our team that could not be delivered stays in a retry queue until it is delivered or has failed repeatedly. The IP counters used to stop abuse expire automatically after a short window.',
         ]],
     },
     {
