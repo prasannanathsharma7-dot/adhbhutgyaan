@@ -88,7 +88,7 @@ export default function UpcomingMuhuratWidget() {
                             <CalendarHeart size={15} /> {t('आगामी शुभ मुहूर्त', 'Upcoming Auspicious Dates')}
                         </div>
                         <p style={{ color: 'white', fontSize: '0.95rem', margin: 0 }}>
-                            {t('अगले 60 दिनों में विवाह हेतु शुभ मुहूर्त — पंचांग-आधारित सटीक गणना।', "Upcoming Vivah Muhurats in the next 60 days - real Panchang-based calculation.")}
+                            {t('चातुर्मास के बाद की अनुकूल विवाह-तिथियाँ (पंचांग से छाँटी हुई) — अंतिम मुहूर्त पंडित जी से पुष्ट कराएँ।', "Favourable marriage days after Chaturmas, screened from the Panchang - have Pandit ji confirm the final muhurat.")}
                         </p>
                     </div>
                     <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', flex: '2 1 320px' }}>

@@ -6,6 +6,7 @@
 // implementation.
 
 const { calculateGlobalPanchang } = require('./panchang-engine');
+const { exclusionReasons, coverage } = require('./muhurat-exclusions');
 
 const TITHI_NUM = {
     Pratipada: 1, Dwitiya: 2, Tritiya: 3, Chaturthi: 4, Panchami: 5, Shashthi: 6, Saptami: 7,
@@ -64,9 +65,18 @@ function findMuhurat(category, startDate, endDate, lat, lng, tzOffset) {
     if (!rules) throw new Error(`Unknown Muhurat category: ${category}`);
 
     const matches = [];
+    const skipped = []; // periods (Chaturmas / Kharmas) skipped because classical rules allow no muhurat in them
     const dayMs = 86400000;
     for (let t = startDate.getTime(); t <= endDate.getTime(); t += dayMs) {
         const d = new Date(t);
+        const excluded = exclusionReasons(category, d);
+        if (excluded.length) {
+            for (const r of excluded) {
+                const last = skipped[skipped.length - 1];
+                if (last && last.code === r.code && last.to && (d - last.to) <= dayMs * 1.5) { last.to = d; } else skipped.push({ code: r.code, labelEn: r.labelEn, labelHi: r.labelHi, from: d, to: d });
+            }
+            continue;
+        }
         const panchang = calculateGlobalPanchang({ date: d, latitude: lat, longitude: lng, timezoneOffsetHours: tzOffset });
 
         const tithiNum = tithiNumberOf(panchang.tithi.name);
@@ -87,7 +97,7 @@ function findMuhurat(category, startDate, endDate, lat, lng, tzOffset) {
         }
     }
 
-    return { category, rules, matches };
+    return { category, rules, matches, skipped, coverage: coverage(category, endDate) };
 }
 
 module.exports = { findMuhurat, CATEGORY_RULES, tithiNumberOf, varaNumberOf };

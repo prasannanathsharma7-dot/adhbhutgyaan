@@ -1,0 +1,19 @@
+{
+  "_comment": "Classical exclusions applied by BOTH copies of the muhurat engine (src/utils/muhuratExclusions.js and backend/utils/muhurat-exclusions.js). Chaturmas dates were cross-checked across several published panchangs (2026: Devshayani Ekadashi 25 Jul, Dev Uthani 20 Nov Smarta / 21 Nov Vaishnava; 2027: Devshayani 14 Jul, Dev Uthani 10 Nov). The end date includes the day after Dev Uthani so both observances are covered. Add a new year here ONLY after checking it against published panchangs; beyond verifiedThrough the engine says so instead of guessing.",
+  "verifiedThrough": "2027-12-31",
+  "chaturmas": [
+    { "from": "2026-07-25", "to": "2026-11-21", "labelEn": "Chaturmas (Devshayani to Dev Uthani Ekadashi)", "labelHi": "चातुर्मास (देवशयनी से देवउठनी एकादशी)" },
+    { "from": "2027-07-14", "to": "2027-11-11", "labelEn": "Chaturmas (Devshayani to Dev Uthani Ekadashi)", "labelHi": "चातुर्मास (देवशयनी से देवउठनी एकादशी)" }
+  ],
+  "kharmas": {
+    "sunSiderealSigns": [8, 11],
+    "labelEn": "Kharmas (Sun in Dhanu or Meena)",
+    "labelHi": "खरमास (सूर्य धनु या मीन राशि में)"
+  },
+  "appliesTo": {
+    "vivah": ["chaturmas", "kharmas"],
+    "grihapravesh": ["chaturmas", "kharmas"],
+    "naamkaran": [],
+    "business": []
+  }
+}

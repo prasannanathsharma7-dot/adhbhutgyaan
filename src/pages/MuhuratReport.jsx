@@ -1,3 +1,4 @@
+import MuhuratNotice from '../components/MuhuratNotice';
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
@@ -70,6 +71,8 @@ export default function MuhuratReport() {
                 <p style={{ color: 'var(--text-secondary)' }}>{t('के लिए', 'for')} {order.name}</p>
                 <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Order ID: {orderId}</p>
             </div>
+
+            <div style={{ marginBottom: '1.5rem' }}><MuhuratNotice category={order.category} skipped={order.skipped || []} coverage={order.coverage} /></div>
 
             {order.matches.length === 0 ? (
                 <p className="text-center">{t('इस अवधि में कोई शुभ तिथि नहीं मिली — कृपया अवधि बढ़ाएं।', 'No auspicious dates found in this period - please try a longer range.')}</p>
