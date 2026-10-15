@@ -158,13 +158,19 @@ function vargaHouseData(vargaPlanets, vargaLagnaSign) {
 
 module.exports = async (req, res) => {
     withCors(req, res);
+    // Birth details are personal data: never cacheable, never leaked via Referer.
+    res.setHeader('Cache-Control', 'no-store');
+    res.setHeader('Referrer-Policy', 'no-referrer');
     if (req.method === 'OPTIONS') { res.status(200).end(); return; }
-    if (req.method !== 'POST' && req.method !== 'GET') {
-        return res.status(405).json({ ok: false, error: 'Method not allowed' });
+    // POST only. The old GET form put name / date / time / place of birth in the URL (browser history, server and
+    // proxy logs, Referer headers, shared links). The Free Kundli page now POSTs the details and saves the blob.
+    if (req.method !== 'POST') {
+        res.setHeader('Allow', 'POST');
+        return res.status(405).json({ ok: false, error: 'Birth details are no longer accepted in the URL. Please use the Download button on the Free Kundli page.' });
     }
 
     try {
-        const params = req.method === 'POST' ? req.body : req.query;
+        const params = req.body;
         const { name = 'Devotee', fatherName = '', dob, tob, pob, lat = 25.3176, lng = 82.9739, tzOffset = 5.5, lang = 'hi' } = params || {};
         if (!dob) return res.status(400).json({ ok: false, error: 'dob is required (YYYY-MM-DD)' });
 

@@ -28,6 +28,7 @@ const { getDb, capStr } = require('./_db');
 const { runAssistantTurn } = require('./_assistant');
 const { sendWhatsAppText } = require('./_whatsapp');
 const crypto = require('crypto');
+const { claimInbound, markSending, markReplied, releaseInbound } = require('./utils/inbound-claims');
 
 const MAX_HISTORY = 20; // messages of context kept per phone number
 
@@ -39,7 +40,7 @@ const MAX_HISTORY = 20; // messages of context kept per phone number
 // Fails closed: no secret configured => nothing is accepted.
 function verifyMetaSignature(req) {
     const secret = (process.env.WHATSAPP_APP_SECRET || '').trim();
-    if (!secret) return { ok: false, reason: 'WHATSAPP_APP_SECRET is not configured' };
+    if (!secret) return { ok: false, misconfigured: true, reason: 'WHATSAPP_APP_SECRET is not configured' };
     const header = (req.headers && req.headers['x-hub-signature-256']) || '';
     if (!header.startsWith('sha256=')) return { ok: false, reason: 'missing or malformed signature header' };
     const raw = req.rawBody;
@@ -82,6 +83,12 @@ module.exports = async (req, res) => {
 
     const sig = verifyMetaSignature(req);
     if (!sig.ok) {
+        if (sig.misconfigured) {
+            // Our fault, not the sender's: 503 (Meta retries) and a loud log - never a silent drop.
+            console.error('WhatsApp webhook cannot verify signatures:', sig.reason);
+            res.status(503).send('Webhook not configured');
+            return;
+        }
         console.warn('WhatsApp webhook rejected:', sig.reason);
         res.status(401).send('Invalid signature');
         return;
@@ -118,31 +125,23 @@ module.exports = async (req, res) => {
         }
 
         if (!process.env.ANTHROPIC_API_KEY || !process.env.WHATSAPP_ACCESS_TOKEN || !process.env.WHATSAPP_PHONE_NUMBER_ID) {
-            console.error('WhatsApp bot: missing required env vars');
-            res.status(200).send('EVENT_RECEIVED');
+            // 503, not 200: acknowledging would make Meta consider the message handled and it would be lost.
+            console.error('WhatsApp bot misconfigured: missing ANTHROPIC_API_KEY / WHATSAPP_ACCESS_TOKEN / WHATSAPP_PHONE_NUMBER_ID');
+            res.status(503).send('Bot not configured');
             return;
         }
 
         const db = await getDb();
 
-        // De-duplicate + make retries safe. A unique index on messageId means two
-        // simultaneous deliveries can't both pass. The record is created as
-        // 'processing' and only becomes 'replied' after the reply was really sent;
-        // if anything fails BEFORE the reply goes out we delete the record and return
-        // 500 so Meta retries (previously the message was marked processed up-front
-        // and a failure silently lost it for good).
+        // Idempotent, crash-safe claim (see utils/inbound-claims.js): duplicates are ignored, a live lease makes Meta
+        // retry later (503), and a message whose worker crashed is taken over once its lease expires.
         const messageId = message.id;
+        const processed = db.collection('whatsapp_processed');
         if (messageId) {
             await ensureDedupeIndex(db);
-            try {
-                await db.collection('whatsapp_processed').insertOne({ messageId, status: 'processing', at: new Date() });
-            } catch (e) {
-                if (e && e.code === 11000) {
-                    res.status(200).send('EVENT_RECEIVED'); // duplicate delivery - already handled / in progress
-                    return;
-                }
-                throw e;
-            }
+            const claim = await claimInbound(processed, messageId);
+            if (claim === 'done') { res.status(200).send('EVENT_RECEIVED'); return; }
+            if (claim === 'in-progress') { res.status(503).send('Message is being processed - retry later'); return; }
         }
 
         // Load this conversation's recent history (stored server-side, since
@@ -159,11 +158,10 @@ module.exports = async (req, res) => {
             { upsert: true }
         );
 
+        if (messageId) await markSending(processed, messageId); // point of no return: a retry must not reply twice
         await sendWhatsAppText(from, replyText);
         replySent = true;
-        if (messageId) {
-            await db.collection('whatsapp_processed').updateOne({ messageId }, { $set: { status: 'replied', repliedAt: new Date() } }).catch(() => {});
-        }
+        if (messageId) await markReplied(processed, messageId).catch(() => {});
 
         res.status(200).send('EVENT_RECEIVED');
     } catch (err) {
@@ -173,13 +171,13 @@ module.exports = async (req, res) => {
             res.status(200).send('EVENT_RECEIVED');
             return;
         }
-        // Not replied yet: free the dedupe slot and ask Meta to retry later.
+        // Not replied yet: release the claim so the next delivery can take it over, and ask Meta to retry.
         try {
             if (message && message.id) {
                 const db2 = await getDb();
-                await db2.collection('whatsapp_processed').deleteOne({ messageId: message.id });
+                await releaseInbound(db2.collection('whatsapp_processed'), message.id);
             }
-        } catch { /* best effort */ }
+        } catch { /* best effort - an expired lease is taken over anyway */ }
         res.status(500).send('Temporary error - please retry');
     }
 };

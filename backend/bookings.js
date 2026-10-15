@@ -72,6 +72,11 @@ module.exports = async (req, res) => {
                     landingPath: capStr(attribution.landingPath, 500),
                     referrerHost: capStr(attribution.referrerHost, 200),
                 },
+                // Consent to be contacted (the Free Kundli form asks for it explicitly; the booking form is itself a request to be
+                // contacted). Kept with the lead so we know what the person agreed to and under which privacy-policy version.
+                consent: (body.consent && body.consent.contact === true)
+                    ? { contact: true, policyVersion: capStr(body.consent.policyVersion, 20), at: new Date() }
+                    : null,
                 createdAt: new Date(),
             };
             const result = await db.collection('bookings').insertOne(doc);
