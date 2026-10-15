@@ -56,7 +56,7 @@ export default function NorthIndianChart({ houseData, devoteeName, lagnaName, nu
                 </span>
             </div>
 
-            <svg viewBox="0 0 400 400" width="100%" height="auto" style={{ display: 'block', margin: '0 auto' }}>
+            <svg viewBox="0 0 400 400" width="100%" style={{ display: 'block', margin: '0 auto', height: 'auto' }}>
                 {/* Background Box */}
                 <rect x="0" y="0" width="400" height="400" fill="#fffdfa" stroke="#c49a2c" strokeWidth="2.5" />
 

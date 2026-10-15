@@ -11,6 +11,7 @@ import KundaliSettingsBar from '../components/KundaliSettingsBar';
 import { DEFAULT_KUNDALI_SETTINGS, formatNumeral, formatHouseNumber } from '../utils/astrologyI18n';
 import { Droplet, Flame, Mountain, Wind, Sparkles, Zap, MapPin, Printer, RefreshCw, Orbit, Shield, Gem, Coins, Palette, Hash, TrendingUp, Heart, Wand2, MessageCircle, CalendarDays, AlertTriangle, CheckCircle2, Hourglass, Lock, Star, FileText, Sun, Moon as MoonIcon } from 'lucide-react';
 import { isValidPhone, PHONE_HELP_HI, PHONE_HELP_EN } from '../utils/phone';
+import { PRIVACY_POLICY_VERSION } from '../config/privacy';
 
 function getElementIcon(element = '') {
     const el = String(element).toLowerCase();
@@ -54,11 +55,15 @@ async function geocodeBirthPlace(placeName) {
 
 export default function FreeKundli() {
     const { t, lang } = useLanguage();
-    const [form, setForm] = useState({ name: '', dob: '', tob: '06:30 (06:30 AM)', pob: 'Varanasi, Uttar Pradesh', gender: '', phone: '', email: '', question: '' });
+    const [form, setForm] = useState({ name: '', dob: '', tob: '06:30 (06:30 AM)', pob: 'Varanasi, Uttar Pradesh', gender: '', phone: '', email: '', question: '', contactConsent: false });
     const [errors, setErrors] = useState({});
     const [status, setStatus] = useState('idle'); // idle | calculating | ready
     const [kundliResult, setKundliResult] = useState(null);
     const [kundliSettings, setKundliSettings] = useState(DEFAULT_KUNDALI_SETTINGS);
+    // Coordinates actually used for the chart: the PDF must be built from the SAME place as the on-screen chart
+    // (it used to be hard-coded to Varanasi, so anyone born elsewhere got a PDF cast for the wrong place).
+    const [birthGeo, setBirthGeo] = useState({ latitude: 25.3176, longitude: 82.9739 });
+    const [pdfState, setPdfState] = useState('idle'); // idle | loading | error
     const [chartView, setChartView] = useState('lagna'); // lagna | chandra | surya
 
     useSEO({
@@ -101,9 +106,11 @@ export default function FreeKundli() {
             }
         }
         if (!form.pob.trim()) next.pob = t('कृपया जन्म स्थान लिखें', 'Please enter your place of birth');
-        const phoneDigits = form.phone.replace(/\D/g, '');
-        if (!phoneDigits) next.phone = t('कृपया मोबाइल नंबर लिखें', 'Please enter your phone number');
-        else if (!isValidPhone(form.phone)) next.phone = t(PHONE_HELP_HI, PHONE_HELP_EN);
+        // The phone number is needed only if the person asks us to contact them (explicit consent below).
+        if (form.contactConsent) {
+            if (!form.phone.replace(/\D/g, '')) next.phone = t('संपर्क हेतु कृपया मोबाइल नंबर लिखें', 'Please enter a phone number so we can contact you');
+            else if (!isValidPhone(form.phone)) next.phone = t(PHONE_HELP_HI, PHONE_HELP_EN);
+        }
         setErrors(next);
         if (Object.keys(next).length > 0) {
             const firstKey = `kundli-${Object.keys(next)[0]}`;
@@ -135,6 +142,7 @@ export default function FreeKundli() {
                 : await geocodeBirthPlace(form.pob);
             const latitude = geo?.latitude ?? 25.3176;
             const longitude = geo?.longitude ?? 82.9739;
+            setBirthGeo({ latitude, longitude });
             if (!geo) {
                 setGeoNote(t('स्थान सटीक रूप से नहीं मिल सका — काशी के निर्देशांक अस्थायी रूप से उपयोग किए गए हैं। कृपया अधिक स्पष्ट शहर/राज्य लिखें।', "We couldn't precisely locate this place - Varanasi's coordinates were used as a fallback. Please try a more specific city/state name for full accuracy."));
             } else if (!geo.isIndia) {
@@ -156,7 +164,9 @@ export default function FreeKundli() {
             setStatus('ready');
             window.scrollTo({ top: 120, behavior: 'smooth' });
 
-            // 2. Non-blocking background database sync (never halts UI)
+            // 2. Only if the person ticked "contact me": save a lead (non-blocking). Otherwise NOTHING leaves the browser
+            //    except the place-name search, so the free calculation has no hidden side effect.
+            if (!form.contactConsent) return;
             const notesLines = [
                 `जन्म तिथि / DOB: ${form.dob}`,
                 `जन्म समय / TOB: ${form.tob || '06:30 AM'}`,
@@ -184,12 +194,49 @@ export default function FreeKundli() {
                     notes: notesLines,
                     language: lang,
                     source: 'kundli-request',
+                    consent: { contact: true, policyVersion: PRIVACY_POLICY_VERSION },
                 }),
             }).catch(err => { console.warn('Background sync note:', err); });
         } catch (err) {
             console.error('Kundli submission error:', err);
             // Even if an unexpected error occurs, unblock UI immediately with fallback
             setStatus('ready');
+        }
+    };
+
+    // Builds the PDF on the server from a POST (details are NOT put in the URL) and saves it as a file.
+    const downloadPdf = async () => {
+        if (!kundliResult || pdfState === 'loading') return;
+        setPdfState('loading');
+        try {
+            const res = await fetch('/api/generate-kundli-pdf', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: kundliResult.devoteeName,
+                    dob: form.dob,
+                    tob: (form.tob || '06:30').split(' ')[0],
+                    pob: kundliResult.birthPlace,
+                    lat: birthGeo.latitude,
+                    lng: birthGeo.longitude,
+                    tzOffset: 5.5,
+                    lang: kundliSettings.lang,
+                }),
+            });
+            if (!res.ok) throw new Error(`PDF request failed (${res.status})`);
+            const blob = await res.blob();
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Kundli-${String(kundliResult.devoteeName || 'Devotee').replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 10000);
+            setPdfState('idle');
+        } catch (err) {
+            console.error('Kundli PDF error:', err);
+            setPdfState('error');
         }
     };
 
@@ -350,17 +397,17 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                 </div>
 
                                 <div className="form-group" style={{ marginBottom: '1.25rem' }}>
-                                    <label className="form-label" htmlFor="kundli-phone">{t('मोबाइल नंबर (WhatsApp Number)', 'Mobile / WhatsApp Number')} *</label>
+                                    <label className="form-label" htmlFor="kundli-phone">{t('मोबाइल नंबर (WhatsApp) — केवल संपर्क हेतु', 'Mobile / WhatsApp Number - only if you want us to contact you')}</label>
                                     <input
                                         id="kundli-phone"
                                         type="tel"
                                         inputMode="tel"
                                         autoComplete="tel"
                                         className={`form-input ${errors.phone ? 'has-error' : ''}`}
-                                        placeholder="9876543210"
+                                        placeholder="9876543210  /  +44 7911 123456"
                                         value={form.phone}
-                                        maxLength={10}
-                                        onChange={e => { const digitsOnly = e.target.value.replace(/\D/g, '').slice(0, 10); setForm({ ...form, phone: digitsOnly }); setErrors({ ...errors, phone: undefined }); }}
+                                        maxLength={20}
+                                        onChange={e => { const cleaned = e.target.value.replace(/[^\d+\s-]/g, '').slice(0, 20); setForm({ ...form, phone: cleaned }); setErrors({ ...errors, phone: undefined }); }}
                                     />
                                     {errors.phone && <p className="form-error" style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}><AlertTriangle size={13} />{errors.phone}</p>}
                                 </div>
@@ -390,6 +437,15 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                         onChange={e => setForm({ ...form, question: e.target.value })}
                                     />
                                 </div>
+
+                                <label style={{ display: 'flex', gap: '0.6rem', alignItems: 'flex-start', fontSize: '0.88rem', lineHeight: 1.6, marginBottom: '0.75rem', color: 'var(--text-secondary)' }}>
+                                    <input type="checkbox" checked={form.contactConsent} onChange={e => setForm({ ...form, contactConsent: e.target.checked })} style={{ marginTop: '0.3rem', width: 18, height: 18, flexShrink: 0 }} />
+                                    <span>{t('हाँ, पंडित जी की टीम मुझसे मेरी कुंडली के बारे में संपर्क करे। मैं सहमत हूँ कि इसके लिए मेरा नाम, फ़ोन, ईमेल, जन्म विवरण व प्रश्न सहेजे जाएँ।', 'Yes, please have Pandit ji\u2019s team contact me about my kundli. I agree that my name, phone, email, birth details and question may be saved for this.')}</span>
+                                </label>
+                                <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: 1.6, margin: '0 0 1rem' }}>
+                                    {t('बिना टिक किए आपकी कुंडली केवल आपके ब्राउज़र में बनती है और कुछ भी सहेजा नहीं जाता (स्थान खोजने हेतु लिखा नाम OpenStreetMap को जाता है)। ', 'Without the tick, your kundli is calculated only in your browser and nothing is saved (the place name you type is sent to OpenStreetMap to find coordinates). ')}
+                                    <Link to="/privacy">{t('गोपनीयता नीति', 'Privacy Policy')}</Link>
+                                </p>
 
                                 <button type="submit" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', padding: '0.85rem', fontSize: '1rem' }} disabled={status === 'calculating'}>
                                     {status === 'calculating' ? <><RefreshCw size={16} className="spin" style={{ verticalAlign: '-3px', marginRight: '0.4rem' }} />{t('स्थान खोजा जा रहा है एवं वैदिक गणना की जा रही है...', 'Locating city & calculating Vedic chart...')}</> : <><Zap size={16} style={{ verticalAlign: '-3px', marginRight: '0.3rem' }} />{t('निःशुल्क कुंडली रिपोर्ट तुरंत देखें', 'Generate Free Kundli Analysis')}</>}
@@ -529,7 +585,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                             {chartView === 'chandra' && t('चंद्र राशि को प्रथम भाव मानकर बनी कुंडली — मन, भावनाओं व मानसिक प्रवृत्तियों के विश्लेषण हेतु।', 'Chart with the Moon sign as the 1st house - used for analyzing the mind, emotions, and mental tendencies.')}
                             {chartView === 'surya' && t('सूर्य राशि को प्रथम भाव मानकर बनी कुंडली — आत्मबल, पिता व करियर के विश्लेषण हेतु।', 'Chart with the Sun sign as the 1st house - used for analyzing willpower, father, and career.')}
                         </p>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '1.5rem', marginBottom: '2rem', alignItems: 'start' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 340px), 1fr))', gap: '1.5rem', marginBottom: '2rem', alignItems: 'start' }}>
                             {/* North Indian SVG Chart */}
                             <NorthIndianChart
                                 houseData={chartView === 'chandra' ? kundliResult.chandraHouseData : chartView === 'surya' ? kundliResult.suryaHouseData : kundliResult.houseData}
@@ -716,7 +772,7 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                                 </span>
                             </div>
 
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(290px, 1fr))', gap: '1rem' }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 290px), 1fr))', gap: '1rem' }}>
                                 {/* Locked Card 1: 5-8 Year Career & Wealth Timeline */}
                                 <div style={{ background: 'white', borderRadius: 'var(--radius-lg)', padding: '1.25rem', border: '1px solid var(--border-gold)', position: 'relative', overflow: 'hidden', boxShadow: 'var(--shadow-sm)' }}>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
@@ -807,23 +863,20 @@ Mujhe aane wale 5-8 saal ke career/business, vivah aur grah shanti ke sateek nid
                             <div style={{ fontSize: '1.3rem', fontWeight: 800, color: '#16a34a', marginBottom: '1rem' }}>
                                 {t('निःशुल्क', 'FREE')}
                             </div>
-                            <a
-                                href={`/api/generate-kundli-pdf?${new URLSearchParams({
-                                    name: kundliResult.devoteeName,
-                                    dob: form.dob,
-                                    tob: (form.tob || '06:30').split(' ')[0],
-                                    pob: kundliResult.birthPlace,
-                                    lat: 25.3176,
-                                    lng: 82.9739,
-                                    tzOffset: 5.5,
-                                    lang: kundliSettings.lang,
-                                }).toString()}`}
-                                target="_blank" rel="noreferrer"
+                            <button
+                                type="button"
+                                onClick={downloadPdf}
+                                disabled={pdfState === 'loading'}
                                 className="btn btn-primary btn-lg"
                             >
                                 <FileText size={17} style={{ verticalAlign: '-3px', marginRight: '0.4rem' }} />
-                                {t('अभी डाउनलोड करें', 'Download Now')}
-                            </a>
+                                {pdfState === 'loading' ? t('PDF बन रही है…', 'Preparing your PDF…') : t('अभी डाउनलोड करें', 'Download Now')}
+                            </button>
+                            {pdfState === 'error' && (
+                                <p role="alert" style={{ color: '#b3261e', fontSize: '0.85rem', marginTop: '0.75rem' }}>
+                                    {t('PDF नहीं बन सकी। कृपया कुछ देर बाद पुनः प्रयास करें।', 'Could not prepare the PDF. Please try again in a moment.')}
+                                </p>
+                            )}
                         </div>
 
                         {/* SECTION 5: LUXURY HIGH-CONVERSION CONSULTATION ACTION CENTER */}

@@ -1,11 +1,11 @@
 {
  "/": {
-  "hash": "561e7977625d",
-  "date": "2026-10-06"
+  "hash": "82a4c0e6d718",
+  "date": "2026-10-14"
  },
  "/services": {
-  "hash": "e13e02fecc42",
-  "date": "2026-10-06"
+  "hash": "eef617c8c27b",
+  "date": "2026-10-14"
  },
  "/booking": {
   "hash": "a8760fa96e9f",
@@ -688,11 +688,11 @@
   "date": "2026-10-06"
  },
  "/price-list": {
-  "hash": "f0be50b0dcd3",
-  "date": "2026-10-13"
+  "hash": "19a2b7c46cd9",
+  "date": "2026-10-14"
  },
- "/b2b": {
-  "hash": "87e9deb0d5b7",
-  "date": "2026-10-13"
+ "/media": {
+  "hash": "c5e8914ad4ba",
+  "date": "2026-10-14"
  }
 }

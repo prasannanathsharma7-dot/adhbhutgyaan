@@ -6,8 +6,8 @@ import useSEO from '../hooks/useSEO';
 import { breadcrumbJsonLd, combineJsonLd } from '../utils/seo';
 import { formatPrice, UNIT_LABELS } from '../utils/pricing';
 import priceList from '../data/priceList.json';
+import { waLink, WHATSAPP_DISPLAY } from '../config/contact';
 
-const WA = '919278148269';
 const UPDATED = { hi: 'अक्टूबर 2026', en: 'October 2026' };
 
 const norm = (s) => (s || '').toString().toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').trim();
@@ -34,13 +34,12 @@ export default function PriceList() {
         return norm(it.nameEn).includes(q) || norm(it.nameHi).includes(q) || String(it.no) === q;
     }), [q, cat]);
 
-    const waLink = (text) => `https://wa.me/${WA}?text=${encodeURIComponent(text)}`;
     const unitText = (u) => (UNIT_LABELS[u] ? UNIT_LABELS[u][lang === 'hi' ? 'hi' : 'en'] : '');
 
     const priceCell = (it) => {
         if (it.status === 'approved') {
             const amount = it.min === it.max ? formatPrice(it.min) : `${formatPrice(it.min)} – ${formatPrice(it.max)}`;
-            return (<><strong style={{ color: 'var(--gold-700)', fontSize: '1.02rem' }}>{amount}</strong>{unitText(it.unit) && <span style={{ display: 'block', fontSize: '0.74rem', color: 'var(--text-muted)' }}>{unitText(it.unit)}</span>}</>);
+            return (<><strong style={{ color: 'var(--gold-800)', fontSize: '1.02rem' }}>{amount}</strong>{unitText(it.unit) && <span style={{ display: 'block', fontSize: '0.74rem', color: 'var(--text-muted)' }}>{unitText(it.unit)}</span>}</>);
         }
         return <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>{it.status === 'ask' ? t('दर पूछें', 'Price on request') : t('मूल्य हेतु WhatsApp करें', 'Price on WhatsApp')}</span>;
     };
@@ -64,7 +63,7 @@ export default function PriceList() {
                             <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>{t('डॉ. उमंग नाथ शर्मा के साथ — ऑनलाइन या वाराणसी में', 'With Dr. Umang Nath Sharma - online or in Varanasi')}</div>
                         </div>
                         <div style={{ textAlign: 'right' }}>
-                            <div style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--gold-700)', lineHeight: 1.1 }}>{formatPrice(priceList.consultation.price)}</div>
+                            <div style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--gold-800)', lineHeight: 1.1 }}>{formatPrice(priceList.consultation.price)}</div>
                             <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>{t('प्रति सत्र', 'per session')}</div>
                             <Link to="/booking?service=astrology-consultation" className="btn btn-primary" style={{ padding: '0.45rem 1.1rem', fontSize: '0.85rem' }}>{t('परामर्श बुक करें', 'Book Consultation')}</Link>
                         </div>
@@ -96,7 +95,7 @@ export default function PriceList() {
                             <button
                                 key={c.id} type="button" role="tab" aria-selected={cat === c.id}
                                 onClick={() => setCat(c.id)}
-                                style={{ padding: '0.4rem 0.9rem', borderRadius: 'var(--radius-xl)', border: '1px solid var(--border-gold)', fontSize: '0.82rem', fontWeight: 600, cursor: 'pointer', background: cat === c.id ? 'var(--gold-600)' : 'white', color: cat === c.id ? 'white' : 'var(--gold-700)' }}
+                                style={{ padding: '0.4rem 0.9rem', borderRadius: 'var(--radius-xl)', border: '1px solid var(--border-gold)', fontSize: '0.82rem', fontWeight: 600, cursor: 'pointer', background: cat === c.id ? 'var(--gold-800)' : 'white', color: cat === c.id ? 'white' : 'var(--gold-800)' }}
                             >{t(c.nameHi, c.nameEn)}</button>
                         ))}
                     </div>
@@ -104,7 +103,7 @@ export default function PriceList() {
                     {visible.length === 0 && (
                         <p style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '2rem 0' }}>
                             {t('कोई सेवा नहीं मिली। कृपया WhatsApp पर पूछें —', 'No matching service. Please ask us on WhatsApp -')}{' '}
-                            <a href={waLink('Namaste, I am looking for a pooja that I could not find on the price list.')} target="_blank" rel="noreferrer">+91 92781 48269</a>
+                            <a href={waLink('Namaste, I am looking for a pooja that I could not find on the price list.')} target="_blank" rel="noreferrer">{WHATSAPP_DISPLAY}</a>
                         </p>
                     )}
 
@@ -124,7 +123,7 @@ export default function PriceList() {
                                             href={waLink(`Namaste, I would like to enquire about "${it.nameEn} / ${it.nameHi}" (price list #${it.no}). Please share the details and availability.`)}
                                             target="_blank" rel="noreferrer"
                                             aria-label={`${t('WhatsApp पर पूछें', 'Enquire on WhatsApp')}: ${it.nameEn}`}
-                                            style={{ color: 'var(--whatsapp, #25D366)', display: 'inline-flex' }}
+                                            style={{ color: '#128C7E', display: 'inline-flex' }}
                                         ><MessageCircle size={20} /></a>
                                     </div>
                                 ))}

@@ -155,7 +155,7 @@ export default function Navbar() {
                         type="button"
                         onClick={toggleLang}
                         className="lang-toggle"
-                        aria-label="Switch language"
+                        aria-label={lang === 'hi' ? 'हिं/EN - Switch to English' : 'हिं/EN - हिंदी में बदलें'}
                         title={lang === 'hi' ? 'Switch to English' : 'हिंदी में बदलें'}
                     >
                         <span className={lang === 'hi' ? 'active' : ''}>हिं</span>

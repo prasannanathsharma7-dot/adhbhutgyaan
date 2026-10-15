@@ -37,7 +37,6 @@ export default function EvidenceGallery({ items, t, theme = 'light', compact = f
                         className="evidence-card"
                         key={item.src}
                         onClick={() => setActiveIndex(index)}
-                        aria-label={t(`प्रमाण खोलें: ${item.capHi}`, `View proof: ${item.capEn}`)}
                     >
                         <span className="evidence-image-shell">
                             <img src={item.src} alt={t(item.capHi, item.capEn)} loading="lazy" />

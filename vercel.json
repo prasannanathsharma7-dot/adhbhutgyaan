@@ -1,4 +1,8 @@
 {
+  "redirects": [
+    { "source": "/b2b", "destination": "/", "permanent": true },
+    { "source": "/links", "destination": "/", "permanent": true }
+  ],
   "rewrites": [
     {
       "source": "/api/:path*",

@@ -1,19 +1,12 @@
 const { ObjectId } = require('mongodb');
-const { getDb, withCors, capStr, escapeHtml, checkRateLimit, isValidPhone, isValidName } = require('./_db');
+const { getDb, withCors, capStr, escapeHtml, checkRateLimit } = require('./_db');
 const { sendMail } = require('./_email');
 const { notifyAdmin } = require('./_notify');
 
-function isAdmin(req) {
-    const providedKey = req.headers['x-admin-key'];
-    const envKey = (process.env.ADMIN_KEY || '').trim();
-    // Trim both sides defensively - a trailing/leading space or newline
-    // accidentally included when pasting the value into Vercel's env-var
-    // field (or auto-inserted by some mobile keyboards on the login
-    // input, though type="password" already suppresses most autocorrect)
-    // would otherwise cause an exact-match comparison to silently fail
-    // with "Invalid admin key" even when the visible characters match.
-    return Boolean(envKey) && (providedKey || '').trim() === envKey;
-}
+// Admin-only check shared by all endpoints (see backend/utils/auth.js for roles).
+const { hasRole } = require('./utils/auth');
+const { createBookingEnquiry } = require('./utils/booking-service');
+const isAdmin = (req) => hasRole(req, ['admin']);
 
 const VALID_STATUSES = ['new', 'contacted', 'confirmed', 'completed', 'cancelled'];
 
@@ -36,99 +29,15 @@ module.exports = async (req, res) => {
             }
 
             const body = req.body || {};
-            const name = capStr(body.name, 100);
-            const phone = capStr(body.phone, 30);
-
-            if (!name || !phone) {
-                res.status(400).json({ ok: false, error: 'name and phone are required' });
-                return;
-            }
-            if (!isValidPhone(phone)) {
-                res.status(400).json({ ok: false, error: 'phone must be a valid 10-digit Indian mobile number' });
-                return;
-            }
-            if (!isValidName(name)) {
-                res.status(400).json({ ok: false, error: 'name must be at least 3 alphabetic characters' });
-                return;
-            }
-
-            const bookingId = new ObjectId();
-            const reference = `AG-${new Date().getUTCFullYear()}-${bookingId.toString().slice(-6).toUpperCase()}`;
+            // Validation, storage, notification and the customer's confirmation all live in utils/booking-service.js,
+            // shared with the website chat and the WhatsApp bot so the three paths can never drift apart.
             const attribution = body.attribution && typeof body.attribution === 'object' ? body.attribution : {};
-            const doc = {
-                _id: bookingId,
-                reference,
-                name,
-                phone,
-                email: capStr(body.email, 200),
-                serviceId: capStr(body.serviceId, 100),
-                serviceName: capStr(body.serviceName, 200),
-                packageName: capStr(body.packageName, 200),
-                mode: capStr(body.mode, 50), // online / offline / location / temple
-                birthDate: capStr(body.birthDate, 50),
-                preferredDate: capStr(body.preferredDate, 50),
-                preferredSlot: capStr(body.preferredSlot, 50),
-                address: capStr(body.address, 500),
-                notes: capStr(body.notes, 2000),
-                language: capStr(body.language, 10),
-                status: 'new', // new -> contacted -> confirmed -> completed -> cancelled
-                source: capStr(body.source, 100) || 'website',
-                attribution: {
-                    utmSource: capStr(attribution.utmSource, 100),
-                    utmMedium: capStr(attribution.utmMedium, 100),
-                    utmCampaign: capStr(attribution.utmCampaign, 150),
-                    landingPath: capStr(attribution.landingPath, 500),
-                    referrerHost: capStr(attribution.referrerHost, 200),
-                },
-                createdAt: new Date(),
-            };
-            const result = await db.collection('bookings').insertOne(doc);
-
-            // Awaited (not fire-and-forget): in a serverless environment, an
-            // unawaited promise can get killed once this function's own
-            // async handler resolves - meaning the notification email/
-            // WhatsApp message might never actually finish sending. A
-            // couple seconds of extra latency here is worth guaranteed
-            // delivery of a real customer enquiry.
-            await notifyAdmin({
-                emailSubject: `🙏 New Booking Enquiry - ${doc.name}`,
-                emailHtml: `
-                    <h2>New Pooja Booking Enquiry</h2>
-                    <p><b>Name:</b> ${escapeHtml(doc.name)}</p>
-                    <p><b>Phone:</b> ${escapeHtml(doc.phone)}</p>
-                    ${doc.email ? `<p><b>Email:</b> ${escapeHtml(doc.email)}</p>` : ''}
-                    <p><b>Service:</b> ${escapeHtml(doc.serviceName) || '-'}</p>
-                    <p><b>Package:</b> ${escapeHtml(doc.packageName) || '-'}</p>
-                    <p><b>Mode:</b> ${escapeHtml(doc.mode) || '-'}</p>
-                    <p><b>Preferred Date:</b> ${escapeHtml(doc.preferredDate) || 'To be decided'}</p>
-                    ${doc.preferredSlot ? `<p><b>Preferred Slot:</b> ${escapeHtml(doc.preferredSlot)}</p>` : ''}
-                    ${doc.birthDate ? `<p><b>Birth Date:</b> ${escapeHtml(doc.birthDate)}</p>` : ''}
-                    <p><b>Lead Source:</b> ${escapeHtml(doc.source)}</p>
-                    ${doc.address ? `<p><b>Address:</b> ${escapeHtml(doc.address)}</p>` : ''}
-                    ${doc.notes ? `<p><b>Notes:</b> ${escapeHtml(doc.notes)}</p>` : ''}
-                    <p style="color:#888;font-size:12px;">Reference: ${reference} · Booking ID: ${result.insertedId}</p>
-                `,
-                whatsappText: `🙏 New Booking Enquiry\n\nReference: ${reference}\nName: ${doc.name}\nPhone: ${doc.phone}\nService: ${doc.serviceName || '-'}\nPackage: ${doc.packageName || '-'}\nMode: ${doc.mode || '-'}\nPreferred Date: ${doc.preferredDate || 'To be decided'}${doc.preferredSlot ? `\nPreferred Slot: ${doc.preferredSlot}` : ''}${doc.birthDate ? `\nBirth Date: ${doc.birthDate}` : ''}\nSource: ${doc.source}${doc.address ? `\nAddress: ${doc.address}` : ''}${doc.notes ? `\nNotes: ${doc.notes}` : ''}`,
-            });
-
-            if (doc.email) {
-                await sendMail({
-                    to: doc.email,
-                    subject: 'We received your booking enquiry - Adhbhut Gyaan',
-                    html: `
-                        <h2>Namaste ${escapeHtml(doc.name)} 🙏</h2>
-                        <p>We have received your booking enquiry for <b>${escapeHtml(doc.serviceName) || 'a pooja'}</b>.</p>
-                        <p>Our team will contact you on WhatsApp or phone at <b>${escapeHtml(doc.phone)}</b> within 24 hours to confirm the date, pricing, and further details.</p>
-                        <p><b>Reference:</b> ${reference}</p>
-                        <p><b>Preferred Date:</b> ${escapeHtml(doc.preferredDate) || 'To be decided with the Pandit'}</p>
-                        <p>If you need to reach us urgently, WhatsApp us at <a href="https://wa.me/919278148269">+91 92781 48269</a>.</p>
-                        <br/>
-                        <p>🙏 Adhbhut Gyaan<br/>Varanasi, Kashi</p>
-                    `,
-                });
+            const created = await createBookingEnquiry(db, body, { source: capStr(body.source, 100) || 'website', attribution, consent: body.consent });
+            if (!created.ok) {
+                res.status(created.status).json({ ok: false, error: created.error, fields: created.fields });
+                return;
             }
-
-            res.status(201).json({ ok: true, id: result.insertedId, reference });
+            res.status(created.duplicate ? 200 : 201).json({ ok: true, id: created.id, reference: created.reference, duplicate: created.duplicate || undefined });
         } catch (err) {
             console.error('bookings API error:', err);
             res.status(500).json({ ok: false, error: 'Server error. Please try again or contact us directly.' });

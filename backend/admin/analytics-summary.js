@@ -4,21 +4,9 @@
 
 const { getDb, withCors } = require('../_db');
 
-/**
- * Validates admin credentials against ADMIN_SECRET_KEY or ADMIN_KEY.
- * Supports x-admin-auth header, x-admin-key header, or Bearer Authorization.
- */
-function isAuthorized(req) {
-    const secretKey = process.env.ADMIN_SECRET_KEY || process.env.ADMIN_KEY;
-    if (!secretKey) return false;
-
-    const authHeader = req.headers['x-admin-auth'] || req.headers['x-admin-key'] || req.headers['authorization'];
-    let provided = '';
-
-    if (authHeader) provided = authHeader.replace(/^Bearer\s+/i, '').trim();
-
-    return provided === secretKey;
-}
+// Admin only (see backend/utils/auth.js).
+const { hasRole } = require('../utils/auth');
+const isAuthorized = (req) => hasRole(req, ['admin']);
 
 // Concern keyword dictionaries for semantic categorization
 const CONCERN_CATEGORIES = {
@@ -54,6 +42,42 @@ const CONCERN_CATEGORIES = {
     },
 };
 
+
+// ---- bounded data loading (audit F-15) ----
+const DEFAULT_DAYS = 90, MIN_DAYS = 7, MAX_DAYS = 730;
+const MAX_DOCS = 5000; // per collection; if reached, the response says window.truncated = true
+const BOOKING_FIELDS = { _id: 1, name: 1, phone: 1, serviceId: 1, serviceName: 1, packageName: 1, mode: 1, status: 1, source: 1, notes: 1, createdAt: 1, sankalpMediaUrl: 1 };
+const KUNDLI_FIELDS = { _id: 1, name: 1, phone: 1, status: 1, question: 1, notes: 1, createdAt: 1 };
+
+function parseDays(raw) {
+    const n = parseInt(raw, 10);
+    if (!Number.isFinite(n)) return DEFAULT_DAYS;
+    return Math.min(MAX_DAYS, Math.max(MIN_DAYS, n));
+}
+
+async function loadAnalyticsWindow(db, { days = DEFAULT_DAYS, now = new Date(), maxDocs = MAX_DOCS } = {}) {
+    const since = new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
+    const inWindow = { createdAt: { $gte: since } };
+    const bookingsCol = db.collection('bookings');
+    const kundliCol = db.collection('kundli_requests');
+    const [bookings, kundliDocs, bookingsTotal, kundliTotal, kundliBookingsTotal, contactCount, reviewCount, subscriberCount] = await Promise.all([
+        bookingsCol.find(inWindow, { projection: BOOKING_FIELDS }).sort({ createdAt: -1 }).limit(maxDocs).toArray().catch(() => []),
+        kundliCol.find(inWindow, { projection: KUNDLI_FIELDS }).sort({ createdAt: -1 }).limit(maxDocs).toArray().catch(() => []),
+        bookingsCol.countDocuments({}).catch(() => 0),
+        kundliCol.countDocuments({}).catch(() => 0),
+        bookingsCol.countDocuments({ $or: [{ source: 'kundli-request' }, { serviceId: 'astrology-consultation' }] }).catch(() => 0),
+        // contact.js (the website Contact page) writes into 'messages', not 'contacts'
+        db.collection('messages').countDocuments({}).catch(() => 0),
+        db.collection('reviews').countDocuments({}).catch(() => 0),
+        db.collection('subscribers').countDocuments({}).catch(() => 0),
+    ]);
+    return {
+        bookings, kundliDocs,
+        counts: { bookingsTotal, kundliTotal, kundliBookingsTotal, contactCount, reviewCount, subscriberCount },
+        window: { days, since: since.toISOString(), maxDocsPerCollection: maxDocs, truncated: bookings.length >= maxDocs || kundliDocs.length >= maxDocs },
+    };
+}
+
 module.exports = async (req, res) => {
     withCors(req, res);
 
@@ -78,18 +102,12 @@ module.exports = async (req, res) => {
         const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
         const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
 
-        // Fetch bookings and collections in parallel
-        const bookingsCol = db.collection('bookings');
-        const [bookings, kundliDocs, contactCount, reviewCount, subscriberCount] = await Promise.all([
-            bookingsCol.find({}).sort({ createdAt: -1 }).toArray().catch(() => []),
-            db.collection('kundli_requests').find({}).sort({ createdAt: -1 }).toArray().catch(() => []),
-            // contact.js (the website Contact page) writes into 'messages', not
-            // 'contacts' - this was counting the wrong collection and always
-            // showed near-zero for the 'Contact Form' touchpoint below.
-            db.collection('messages').countDocuments().catch(() => 0),
-            db.collection('reviews').countDocuments().catch(() => 0),
-            db.collection('subscribers').countDocuments().catch(() => 0),
-        ]);
+        // BOUNDED reads (audit F-15). This used to load EVERY booking and EVERY Kundli request into memory on each
+        // call. Now only the requested window (default 90 days, 7-730) is read, newest first, with a hard cap and only
+        // the fields the analysis uses; lifetime totals come from exact counts instead of array lengths.
+        const days = parseDays(req.query && req.query.days);
+        const { bookings, kundliDocs, counts, window: win } = await loadAnalyticsWindow(db, { days, now });
+        const { contactCount, reviewCount, subscriberCount } = counts;
 
         // Merge records for comprehensive touchpoint analysis
         const allKundliRequests = [
@@ -109,9 +127,10 @@ module.exports = async (req, res) => {
         const deduplicatedKundlis = Array.from(uniqueKundliMap.values());
 
         // 1. Lead Velocity (Lifetime vs 30-Day vs 7-Day)
-        const totalLifetimeBookings = bookings.length;
-        const totalLifetimeKundlis = deduplicatedKundlis.length;
-        const totalLifetimeLeads = totalLifetimeBookings + (kundliDocs.length > 0 ? kundliDocs.length : 0);
+        const totalLifetimeBookings = counts.bookingsTotal;
+        // exact lifetime counts (the arrays above only hold the requested window)
+        const totalLifetimeKundlis = counts.kundliTotal + counts.kundliBookingsTotal;
+        const totalLifetimeLeads = totalLifetimeBookings + counts.kundliTotal;
 
         const bookings30d = bookings.filter(b => b.createdAt && new Date(b.createdAt) >= thirtyDaysAgo);
         // Use the raw kundli_requests collection (not the deduplicated set) here, the
@@ -277,6 +296,7 @@ module.exports = async (req, res) => {
         res.status(200).json({
             ok: true,
             generatedAt: now.toISOString(),
+            window: win,
             kpis: {
                 activeLeads30d,
                 activeLeads7d,
@@ -304,7 +324,9 @@ module.exports = async (req, res) => {
         res.status(500).json({
             ok: false,
             error: 'Failed to aggregate analytics data.',
-            details: err.message || String(err),
         });
     }
 };
+module.exports.loadAnalyticsWindow = loadAnalyticsWindow;
+module.exports.parseDays = parseDays;
+module.exports.MAX_DOCS = MAX_DOCS;

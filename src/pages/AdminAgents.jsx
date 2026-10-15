@@ -383,7 +383,7 @@ export default function AdminAgents() {
                     {/* AGENT 1: KUNDLI PRE-ANALYZER & ASTROLOGICAL DRAFTER */}
                     {/* ========================================================================= */}
                     {activeTab === 'agent1' && (
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: '1.75rem' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 360px), 1fr))', gap: '1.75rem' }}>
                             {/* Input Form */}
                             <div style={{ background: 'white', borderRadius: 'var(--radius-lg)', padding: '1.75rem', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-md)' }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', paddingBottom: '0.75rem', borderBottom: '1px solid var(--border-light)' }}>
@@ -558,7 +558,7 @@ export default function AdminAgents() {
                     {/* AGENT 2: WHATSAPP DEVOTEE CONCIERGE */}
                     {/* ========================================================================= */}
                     {activeTab === 'agent2' && (
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: '1.75rem' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 360px), 1fr))', gap: '1.75rem' }}>
                             {/* Input Form */}
                             <div style={{ background: 'white', borderRadius: 'var(--radius-lg)', padding: '1.75rem', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-md)' }}>
                                 <div style={{ marginBottom: '1.25rem', paddingBottom: '0.75rem', borderBottom: '1px solid var(--border-light)' }}>
@@ -679,7 +679,7 @@ export default function AdminAgents() {
                     {/* AGENT 3: DAILY PANCHANG & TRANSIT ALERT CRON */}
                     {/* ========================================================================= */}
                     {activeTab === 'agent3' && (
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: '1.75rem' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 360px), 1fr))', gap: '1.75rem' }}>
                             {/* Control Panel */}
                             <div style={{ background: 'white', borderRadius: 'var(--radius-lg)', padding: '1.75rem', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-md)' }}>
                                 <div style={{ marginBottom: '1.25rem', paddingBottom: '0.75rem', borderBottom: '1px solid var(--border-light)' }}>
@@ -801,7 +801,7 @@ export default function AdminAgents() {
                     {/* AGENT 5: VEDIC SEO & CONTENT GENERATOR */}
                     {/* ========================================================================= */}
                     {activeTab === 'agent5' && (
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: '1.75rem' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 360px), 1fr))', gap: '1.75rem' }}>
                             {/* Input Form */}
                             <div style={{ background: 'white', borderRadius: 'var(--radius-lg)', padding: '1.75rem', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-md)' }}>
                                 <div style={{ marginBottom: '1.25rem', paddingBottom: '0.75rem', borderBottom: '1px solid var(--border-light)' }}>
@@ -1060,7 +1060,7 @@ export default function AdminAgents() {
                                             🔬 Real-Time Diagnostic Probes Matrix
                                         </h4>
 
-                                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1rem' }}>
+                                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))', gap: '1rem' }}>
                                             {(a6Result.probes || []).map((probe, idx) => (
                                                 <div
                                                     key={idx}

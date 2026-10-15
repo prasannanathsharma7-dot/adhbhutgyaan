@@ -84,7 +84,7 @@ button:focus-visible,
 
 .skeleton-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
     gap: 1.5rem;
     margin-top: 2.5rem;
 }
@@ -801,7 +801,8 @@ h3 {
 }
 
 .btn-whatsapp {
-    background: linear-gradient(135deg, var(--whatsapp), var(--whatsapp-dark));
+    /* both ends dark enough for white text (the old bright-green start measured 1.98:1; WCAG AA needs 4.5:1) */
+    background: linear-gradient(135deg, #0F7A6D, var(--whatsapp-dark));
     color: white;
     box-shadow: 0 4px 15px rgba(37, 211, 102, 0.35);
 }
@@ -912,7 +913,7 @@ h3 {
     display: inline-block;
     font-size: 0.85rem;
     font-weight: 600;
-    color: var(--gold-700);
+    color: var(--gold-800);
     transition: all var(--dur-normal) var(--ease-out);
 }
 
@@ -2390,7 +2391,7 @@ h3 {
 }
 
 .wizard-step.active .wizard-step-label {
-    color: var(--gold-700);
+    color: var(--gold-800);
     font-weight: 600;
 }
 
@@ -2872,7 +2873,7 @@ h3 {
 /* --- Blog Listing Grid --- */
 .blog-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
     gap: 2rem;
     padding: 2rem 0;
 }
@@ -3105,7 +3106,7 @@ h3 {
 
 .blog-related-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
     gap: 1.5rem;
 }
 
@@ -3429,12 +3430,12 @@ h3 {
 /* ===== Evidence Gallery (photo-lightbox for press/credential proof) ===== */
 .evidence-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
     gap: 1.25rem;
 }
 
 .evidence-grid-compact {
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
 }
 
 .evidence-card {
@@ -3636,3 +3637,50 @@ h3 {
 @media (min-width: 681px) { .muhurat-reserve { min-height: 310px; } }
 @media (min-width: 901px) { .muhurat-reserve { min-height: 234px; } }
 @media (min-width: 1101px) { .muhurat-reserve { min-height: 164px; } }
+
+/* ---- Pooja directory / finder rows (src/components/services) ---- */
+.pooja-list { list-style: none; margin: 0; padding: 0; border: 1px solid var(--border-light); border-radius: var(--radius-md); background: #fff; overflow: hidden; }
+.pooja-row { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 0.3rem 0.9rem; padding: 0.7rem 0.9rem; border-top: 1px solid var(--border-light); }
+.pooja-row:first-child { border-top: 0; }
+.pooja-row-names { min-width: 0; }
+.pooja-row-name { display: block; font-weight: 600; color: var(--text-primary); text-decoration: none; }
+a.pooja-row-name:hover { color: var(--gold-700); }
+.pooja-row-alt { display: block; font-size: 0.78rem; color: var(--text-muted); }
+.pooja-row-price { text-align: right; font-size: 0.82rem; color: var(--text-muted); min-width: 96px; }
+.pooja-row-price.is-priced { font-weight: 700; font-size: 1rem; color: var(--gold-800); }
+.pooja-row-price small { display: block; font-weight: 400; font-size: 0.72rem; color: var(--text-muted); }
+.pooja-row-actions { display: inline-flex; align-items: center; gap: 0.7rem; }
+.pooja-row-link { font-size: 0.82rem; font-weight: 600; }
+.pooja-row-wa { color: #128C7E; display: inline-flex; }
+.pooja-group { margin-bottom: 0.75rem; }
+.pooja-group > summary { display: flex; justify-content: space-between; align-items: center; cursor: pointer; padding: 0.75rem 1rem; border: 1px solid var(--border-gold); border-radius: var(--radius-md); background: var(--gold-50); font-weight: 700; color: var(--gold-800); list-style: none; }
+.pooja-group > summary::-webkit-details-marker { display: none; }
+.pooja-group[open] > summary { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+.pooja-group-count { font-size: 0.8rem; font-weight: 600; background: #fff; border: 1px solid var(--border-gold); border-radius: 999px; padding: 0.05rem 0.6rem; }
+.pooja-group > .pooja-list { border-top: 0; border-top-left-radius: 0; border-top-right-radius: 0; }
+@media (max-width: 520px) {
+  .pooja-row { grid-template-columns: 1fr auto; }
+  .pooja-row-names { grid-column: 1 / -1; }
+  .pooja-row-price { text-align: left; min-width: 0; }
+  .pooja-row-price small { display: inline; margin-left: 0.35rem; }
+  .pooja-row-actions { justify-self: end; }
+}
+
+/* ---- Swipe rows: card grids become a horizontal scroller on phones (keeps long pages short) ---- */
+@media (max-width: 700px) {
+  .h-scroll { display: flex !important; overflow-x: auto; scroll-snap-type: x mandatory; gap: 0.9rem !important; padding-bottom: 0.6rem; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .h-scroll::-webkit-scrollbar { display: none; }
+  .h-scroll > * { flex: 0 0 78%; max-width: 320px; scroll-snap-align: start; }
+}
+
+/* ---- Very small phones (320-380px): nothing may force a sideways scroll (WCAG 1.4.10 Reflow) ---- */
+@media (max-width: 380px) {
+  .btn { max-width: 100%; white-space: normal; text-align: center; justify-content: center; }
+  .stats-grid { gap: 0.75rem; }
+  .stat-card { padding: 1rem 0.5rem; min-width: 0; }
+  .stat-number, .stat-label { overflow-wrap: anywhere; }
+}
+
+/* Founder profile: photo + text side by side on wide screens, stacked on phones (was a fixed 2-column grid that pushed the text off-screen). */
+.profile-hero { grid-template-columns: minmax(220px, 300px) 1fr; }
+@media (max-width: 700px) { .profile-hero { grid-template-columns: 1fr; } .profile-hero > * { min-width: 0; } }

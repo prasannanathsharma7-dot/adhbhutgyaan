@@ -36,8 +36,7 @@ const CityLanding = lazy(() => import('./pages/CityLanding'));
 const CityHub = lazy(() => import('./pages/CityHub'));
 const Booking = lazy(() => import('./pages/Booking'));
 const PriceList = lazy(() => import('./pages/PriceList'));
-const B2B = lazy(() => import('./pages/B2B'));
-const Links = lazy(() => import('./pages/Links'));
+const Media = lazy(() => import('./pages/Media'));
 const FreeKundli = lazy(() => import('./pages/FreeKundli'));
 const Panchang = lazy(() => import('./pages/Panchang'));
 const Horoscope = lazy(() => import('./pages/Horoscope'));
@@ -88,8 +87,7 @@ function App() {
                         <Route path="/pandit-for-pooja/:city" element={<CityLanding />} />
                         <Route path="/booking" element={<Booking />} />
                         <Route path="/price-list" element={<PriceList />} />
-                        <Route path="/b2b" element={<B2B />} />
-                        <Route path="/links" element={<Links />} />
+                        <Route path="/media" element={<Media />} />
                         <Route path="/free-kundli" element={<FreeKundli />} />
                         <Route path="/panchang" element={<Panchang />} />
                         <Route path="/horoscope" element={<Horoscope />} />

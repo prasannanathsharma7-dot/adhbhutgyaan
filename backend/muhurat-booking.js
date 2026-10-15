@@ -14,23 +14,20 @@ const { ObjectId } = require('mongodb');
 const { getDb, withCors, capStr, checkRateLimit, isValidPhone, isValidName } = require('./_db');
 const { findMuhurat, CATEGORY_RULES } = require('./utils/muhuratEngine');
 
-function isAdmin(req) {
-    const providedKey = req.headers['x-admin-key'];
-    const envKey = (process.env.ADMIN_KEY || '').trim();
-    // Trim both sides defensively - a trailing/leading space or newline
-    // accidentally included when pasting the value into Vercel's env-var
-    // field (or auto-inserted by some mobile keyboards on the login
-    // input, though type="password" already suppresses most autocorrect)
-    // would otherwise cause an exact-match comparison to silently fail
-    // with "Invalid admin key" even when the visible characters match.
-    return Boolean(envKey) && (providedKey || '').trim() === envKey;
-}
+// Admin-only check shared by all endpoints (see backend/utils/auth.js for roles).
+const { hasRole } = require('./utils/auth');
+const isAdmin = (req) => hasRole(req, ['admin']);
 
 module.exports = async (req, res) => {
     withCors(req, res);
     if (req.method === 'OPTIONS') { res.status(200).end(); return; }
 
     try {
+        // Moderation is admin-only: refuse BEFORE touching the database (no unauthenticated request should cost a DB round-trip).
+        if (req.method === 'PATCH' && !isAdmin(req)) {
+            return res.status(401).json({ ok: false, error: 'Unauthorized' });
+        }
+
         const db = await getDb();
         const col = db.collection('muhurat_orders');
 
@@ -46,7 +43,7 @@ module.exports = async (req, res) => {
                 return res.status(400).json({ ok: false, error: 'name and phone are required' });
             }
             if (!isValidPhone(phone)) {
-                return res.status(400).json({ ok: false, error: 'phone must be a valid 10-digit Indian mobile number' });
+                return res.status(400).json({ ok: false, error: 'phone must be a valid mobile number (10-digit Indian, or international with +country code)' });
             }
             if (!isValidName(name)) {
                 return res.status(400).json({ ok: false, error: 'name must be at least 3 alphabetic characters' });

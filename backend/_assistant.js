@@ -3,8 +3,8 @@
 // knowledge and booking logic only exist in one place.
 
 const { capStr, escapeHtml } = require('./_db');
-const { sendMail } = require('./_email');
 const { notifyAdmin } = require('./_notify');
+const { createBookingEnquiry } = require('./utils/booking-service');
 const servicesData = require('../src/data/services.json');
 const priceData = require('../src/data/priceList.json');
 
@@ -15,6 +15,11 @@ function formatRupees(n) {
     return '\u20B9' + n.toLocaleString('en-IN', { minimumFractionDigits: half ? 1 : 0, maximumFractionDigits: 1 });
 }
 const UNIT_EN = { paath: 'per paath', ritual: 'per ritual', day: 'per day', per1000: 'per 1,000 jaap', unclear: '' };
+// Names (only) of every listed ritual that is NOT priced above, so the assistant can truthfully say
+// "yes, we arrange that" without inventing a price or details. Source: src/data/priceList.json.
+function buildOtherRitualLines() {
+    return priceData.items.filter(it => it.status !== 'approved').map(it => `- ${it.nameEn} (${it.nameHi})`).join('\n');
+}
 function buildPriceLines() {
     const lines = [`- Astrology Consultation (personal session): ${formatRupees(priceData.consultation.price)} per session (final price)`];
     for (const it of priceData.items) {
@@ -54,6 +59,9 @@ ${serviceLines}
 
 Published price list (final website rates, INR):
 ${buildPriceLines()}
+
+Other rituals we arrange - rate confirmed by Pandit ji on WhatsApp, never guess a price for these:
+${buildOtherRitualLines()}
 ${contextLine}
 Your job:
 1. Answer questions about services, what they're for, best timing, and what packages/options exist - using ONLY the facts above.
@@ -109,67 +117,16 @@ async function callAnthropic(messages, apiKey, pageContext) {
     return res.json();
 }
 
-// `source` distinguishes where the booking came from ('chatbot' = website
-// widget, 'whatsapp' = the WhatsApp bot) so the admin panel/emails can tell
-// them apart.
+// `source` distinguishes where the booking came from ('chatbot' = website widget, 'whatsapp' = the WhatsApp bot).
+// Creation goes through the SAME service as the booking form (utils/booking-service.js): same validation, reference
+// number, duplicate protection and notifications. A validation error is returned to the model as the tool result,
+// so it asks the visitor to correct the detail instead of silently storing junk.
 async function createBookingFromTool(db, input, source) {
-    const doc = {
-        name: capStr(input.name, 100),
-        phone: capStr(input.phone, 30),
-        email: capStr(input.email, 200),
-        serviceId: capStr(input.serviceId, 100),
-        serviceName: capStr(input.serviceName, 200),
-        packageName: capStr(input.packageName, 200),
-        mode: capStr(input.mode, 50),
-        preferredDate: capStr(input.preferredDate, 50),
-        address: '',
-        notes: capStr(input.notes, 2000),
-        language: '',
-        status: 'new',
-        source,
-        createdAt: new Date(),
-    };
-    if (!doc.name || !doc.phone) {
-        return { ok: false, error: 'name and phone are required' };
+    const r = await createBookingEnquiry(db, input, { source });
+    if (!r.ok) {
+        return { ok: false, error: `${r.error}. Ask the visitor to re-check that detail (a phone number is 10 digits for India, or starts with + and the country code).` };
     }
-    const result = await db.collection('bookings').insertOne(doc);
-
-    const sourceLabel = source === 'whatsapp' ? 'WhatsApp Bot' : 'Website Chatbot';
-    const sourceEmoji = source === 'whatsapp' ? '💬' : '🤖';
-
-    await notifyAdmin({
-        emailSubject: `${sourceEmoji} New ${sourceLabel} Booking - ${doc.name}`,
-        emailHtml: `
-            <h2>New Booking via ${sourceLabel}</h2>
-            <p><b>Name:</b> ${escapeHtml(doc.name)}</p>
-            <p><b>Phone:</b> ${escapeHtml(doc.phone)}</p>
-            ${doc.email ? `<p><b>Email:</b> ${escapeHtml(doc.email)}</p>` : ''}
-            <p><b>Service:</b> ${escapeHtml(doc.serviceName) || '-'}</p>
-            <p><b>Package:</b> ${escapeHtml(doc.packageName) || '-'}</p>
-            <p><b>Mode:</b> ${escapeHtml(doc.mode) || '-'}</p>
-            <p><b>Preferred Date:</b> ${escapeHtml(doc.preferredDate) || 'To be decided'}</p>
-            ${doc.notes ? `<p><b>Notes:</b> ${escapeHtml(doc.notes)}</p>` : ''}
-            <p style="color:#888;font-size:12px;">Booking ID: ${result.insertedId} (via ${source})</p>
-        `,
-        whatsappText: `${sourceEmoji} New ${sourceLabel} Booking\n\nName: ${doc.name}\nPhone: ${doc.phone}\nService: ${doc.serviceName || '-'}\nMode: ${doc.mode || '-'}\nDate: ${doc.preferredDate || 'To be decided'}`,
-    });
-
-    if (doc.email) {
-        await sendMail({
-            to: doc.email,
-            subject: 'We received your booking enquiry - Adhbhut Gyaan',
-            html: `
-                <h2>Namaste ${escapeHtml(doc.name)} 🙏</h2>
-                <p>We have received your booking enquiry for <b>${escapeHtml(doc.serviceName) || 'a pooja'}</b>.</p>
-                <p>Our team will contact you on WhatsApp or phone at <b>${escapeHtml(doc.phone)}</b> within 24 hours to confirm the date, pricing, and further details.</p>
-                <p>If you need to reach us urgently, WhatsApp us at <a href="https://wa.me/919278148269">+91 92781 48269</a>.</p>
-                <br/>
-                <p>🙏 Adhbhut Gyaan<br/>Varanasi, Kashi</p>
-            `,
-        });
-    }
-
-    return { ok: true, id: result.insertedId.toString() };
+    return { ok: true, id: r.id, reference: r.reference, duplicate: r.duplicate };
 }
 
 // Runs one full turn: sends `messages` to Claude, and if it wants to call

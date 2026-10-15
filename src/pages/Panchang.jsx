@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import useSEO from '../hooks/useSEO';
@@ -24,7 +24,7 @@ export default function Panchang() {
 
     // Location State
     const [location, setLocation] = useState(VARANASI_DEFAULT);
-    const [gpsStatus, setGpsStatus] = useState('prompting'); // prompting | granted | denied | error
+    const [gpsStatus, setGpsStatus] = useState('idle'); // idle | prompting | granted | denied | error
     const [gpsNotice, setGpsNotice] = useState('');
     const [isLocating, setIsLocating] = useState(false);
 
@@ -39,8 +39,11 @@ export default function Panchang() {
     const [choghadiyaTab, setChoghadiyaTab] = useState('day');
     const [copied, setCopied] = useState(false);
 
-    // 1. AUTOMATIC BROWSER GEOLOCATION ON PAGE LOAD (RESILIENT ERROR HANDLING)
-    useEffect(() => {
+    // 1. BROWSER GEOLOCATION - only when the visitor taps "Use my location". It used to fire on page load, which
+    //    shows an unexpected permission pop-up before the person has seen anything (and is flagged as a
+    //    best-practice failure). Until they ask, the page simply shows Varanasi (Kashi).
+    const detectLocation = useCallback(() => {
+        setGpsStatus('prompting');
         if (typeof window === 'undefined' || !navigator?.geolocation) {
             setGpsStatus('denied');
             setGpsNotice(t('डिफ़ॉल्ट रूप से वाराणसी (काशी) पंचांग प्रदर्शित हो रहा है। अपना नगर ऊपर खोजें।', 'Defaulting to Varanasi (Kashi). Search your city above.'));
@@ -123,7 +126,6 @@ export default function Panchang() {
             setGpsStatus('denied');
         }
 
-        return () => clearTimeout(geoTimeout);
     }, [t]);
 
     // 2. GLOBAL CITY SEARCH (NOMINATIM DEBOUNCE WITH TRY-CATCH)
@@ -335,7 +337,7 @@ export default function Panchang() {
             <div className="container" style={{ marginTop: '-1.5rem', position: 'relative', zIndex: 10 }}>
                 {/* Geolocation & Universal City Search Bar */}
                 <div style={{ background: 'white', borderRadius: 'var(--radius-xl)', padding: '1.25rem 1.5rem', boxShadow: 'var(--shadow-lg)', border: '1px solid var(--border-gold)', marginBottom: '1.5rem' }}>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem', alignItems: 'center' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '1rem', alignItems: 'center' }}>
                         {/* Search Input */}
                         <div ref={searchRef} style={{ position: 'relative' }}>
                             <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: 'var(--navy-900)', marginBottom: '0.35rem' }}>
@@ -357,6 +359,9 @@ export default function Panchang() {
                                     </span>
                                 )}
                             </div>
+                            <button type="button" onClick={detectLocation} disabled={isLocating} className="btn-link-gps" style={{ marginTop: '0.45rem', background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontSize: '0.82rem', fontWeight: 600, color: 'var(--gold-800)', textDecoration: 'underline' }}>
+                                <MapPin size={13} style={{ verticalAlign: '-2px', marginRight: '0.25rem' }} />{isLocating ? t('स्थान खोजा जा रहा है…', 'Finding your location…') : t('मेरा स्थान उपयोग करें', 'Use my location')}
+                            </button>
 
                             {/* Dropdown Suggestions */}
                             {isDropdownOpen && suggestions.length > 0 && (
@@ -445,7 +450,7 @@ export default function Panchang() {
                 </div>
 
                 {/* Main Content Grid: 5 Limbs & Muhurats */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem', marginBottom: '1.5rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))', gap: '1.5rem', marginBottom: '1.5rem' }}>
                     {/* Left Column: 5 Limbs of Panchang */}
                     <div style={{ background: 'white', borderRadius: 'var(--radius-lg)', padding: '1.5rem', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-md)' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', paddingBottom: '0.6rem', borderBottom: '1px solid var(--border-light)' }}>
@@ -498,7 +503,7 @@ export default function Panchang() {
                         {/* Shubh Muhurats (Green Card) */}
                         <div style={{ background: '#f0fdf4', border: '1px solid #86efac', borderRadius: 'var(--radius-lg)', padding: '1.25rem', boxShadow: 'var(--shadow-sm)' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#166534', fontWeight: 700, fontSize: '1rem', marginBottom: '0.75rem' }}>
-                                <CheckCircle2 size={17} style={{ color: '#16a34a' }} /> {t('शुभ मुहूर्त (Auspicious Muhurat Windows)', 'Auspicious Muhurat Windows')}
+                                <CheckCircle2 size={17} style={{ color: '#15803d' }} /> {t('शुभ मुहूर्त (Auspicious Muhurat Windows)', 'Auspicious Muhurat Windows')}
                             </div>
                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.6rem', fontSize: '0.85rem' }}>
                                 <div style={{ background: 'white', padding: '0.6rem', borderRadius: 'var(--radius-md)', border: '1px solid #bbf7d0' }}>
@@ -614,7 +619,7 @@ export default function Panchang() {
                             >
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                     <strong style={{ fontSize: '0.95rem', color: 'var(--navy-900)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                                        <span style={{ width: '9px', height: '9px', borderRadius: '50%', display: 'inline-block', background: slot?.isAuspicious ? '#16a34a' : (slot?.type === 'Inauspicious' ? '#dc2626' : '#2563eb') }} />
+                                        <span style={{ width: '9px', height: '9px', borderRadius: '50%', display: 'inline-block', background: slot?.isAuspicious ? '#15803d' : (slot?.type === 'Inauspicious' ? '#dc2626' : '#2563eb') }} />
                                         {slot?.name || 'Slot'}
                                     </strong>
                                     <span style={{ fontSize: '0.72rem', fontWeight: 700, color: slot?.isAuspicious ? '#15803d' : (slot?.type === 'Inauspicious' ? '#b91c1c' : '#1e40af') }}>

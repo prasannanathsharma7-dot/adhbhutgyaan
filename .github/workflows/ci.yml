@@ -1,12 +1,17 @@
-# Continuous integration: runs on every push / pull request to main.
-# (Replaces the Deno starter template, which could never pass on this Node/React project.)
+# Continuous integration.
+#  - Runs on every push to main AND on every pull request, whatever its base branch (the old trigger only covered PRs
+#    that targeted main, so stacked PRs were never tested).
+#  - A newer push to the same branch cancels the run still in progress.
 name: CI
 
 on:
   push:
     branches: [main]
   pull_request:
-    branches: [main]
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
@@ -21,7 +26,35 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
-      - name: Tests (system health + security + pricing)
+      - name: Dependency vulnerabilities (production deps; fails on high / critical)
+        run: npm audit --omit=dev --audit-level=high
+      - name: Tests (system, security, authz, pricing, panchang, catalog, privacy, ops)
         run: npm test
       - name: Production build (client + SSR + prerender + sitemap)
         run: npm run build
+
+  browser-checks:
+    # Real Chromium against the built site: customer-journey smoke test + WCAG 2.2 AA / reflow audit.
+    needs: test-and-build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Install the browser tooling (not a project dependency)
+        run: |
+          npm i --no-save playwright@1.56.0 axe-core@4.14.0
+          npx playwright install --with-deps chromium
+      - name: Serve the built site
+        run: |
+          npx vite preview --port 4173 --strictPort > preview.log 2>&1 &
+          for i in $(seq 1 30); do curl -fs http://localhost:4173/ > /dev/null && break; sleep 1; done
+      - name: Customer-journey smoke test
+        run: BASE_URL=http://localhost:4173 node scripts/e2e-smoke.mjs
+      - name: Accessibility + reflow audit (core pages, 320 / 390 / 1280 px)
+        run: QUICK=1 WIDTHS=320,390,1280 BASE_URL=http://localhost:4173 node scripts/audit-a11y.mjs
