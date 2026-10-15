@@ -27,7 +27,7 @@ Website and backend for **Adhbhut Gyaan** - Vedic pooja, paath, jaap, shraddh an
 | `src/data/` | Content as data: `services.json` (14 detail pages), `priceList.json` (published rates), media, heritage. |
 | `src/config/` | Small switches: `contact.js` (WhatsApp number), `home.js` (featured services), `pricing.js` (price display gate). |
 | `src/utils/` | Pure logic: Panchang/Kundli/Muhurat engines (astronomy-engine, Lahiri ayanamsa), pricing, phone validation, SEO helpers. |
-| `backend/` | API handlers (one file each) + `backend/utils/auth.js` (**all authorization**) + `backend/utils/inbound-claims.js` (crash-safe webhook claims) + `agents/` and `admin/`. |
+| `backend/` | API handlers (one file each) + `backend/utils/auth.js` (**all authorization**) + `backend/utils/inbound-claims.js` (crash-safe webhook claims) + `backend/utils/booking-service.js` (the one place bookings are created) + `agents/` and `admin/`. |
 | `server/` | Express app that mounts `backend/` as `/api/*` (runs on Cloud Run). |
 | `scripts/` | Build helpers (prerender, sitemap, price-list generator, crawler-text snapshots), test suites, audits. |
 | `prerender/` | Hand-refreshable crawler-text snapshots (`npm`-independent; regenerate with `scripts/snapshot-content.mjs`). |
@@ -45,7 +45,7 @@ npm run audit:a11y          # axe-core WCAG 2.2 AA + reflow audit of the built s
 npm run build:price-list    # regenerate src/data/priceList.json from private/price-source.csv
 ```
 
-Test suites run by `npm test`: `test-system-health` (414 checks: engines, forms, SEO, content), `test-security` (webhook signature, cron auth, CORS, phone), `test-authz` (role matrix across every privileged endpoint), `test-pricing`, `test-panchang-boundaries` (tithi/nakshatra/yoga/karana end times vs published panchangs), `test-catalog`, `test-privacy` (the privacy notice must name every third-party service the code calls, describe every data category, and the Free Kundli flow must stay opt-in with no birth data in URLs), `test-ops` (IST reminder dates, no duplicate reminders, notification retry queue, crash-safe WhatsApp message claims), `test-erasure` (delete-a-person's-data tool and the `/api/health` probe).
+Test suites run by `npm test`: `test-system-health` (414 checks: engines, forms, SEO, content), `test-security` (webhook signature, cron auth, CORS, phone), `test-authz` (role matrix across every privileged endpoint), `test-pricing`, `test-panchang-boundaries` (tithi/nakshatra/yoga/karana end times vs published panchangs), `test-catalog`, `test-privacy` (the privacy notice must name every third-party service the code calls, describe every data category, and the Free Kundli flow must stay opt-in with no birth data in URLs), `test-ops` (IST reminder dates, no duplicate reminders, notification retry queue, crash-safe WhatsApp message claims), `test-erasure` (delete-a-person's-data tool and the `/api/health` probe), `test-analytics` (bounded reads with a 12,000-booking fixture), `test-booking` (the shared booking service used by the form, the website chat and the WhatsApp bot).
 CI (`.github/workflows/ci.yml`) runs on **every** pull request (whatever its base) and every push to `main`: `npm audit` (fails on high/critical production vulnerabilities), `npm test`, `npm run build`, then in real Chromium the customer-journey smoke test (`scripts/e2e-smoke.mjs`, API mocked) and the accessibility + reflow audit (`scripts/audit-a11y.mjs`). A newer push cancels the run in progress.
 
 ## Single sources of truth (change it in one place)
