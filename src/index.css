@@ -3631,12 +3631,19 @@ h3 {
 
 /* Space held for UpcomingMuhuratWidget until its dates are computed after first paint
    (heights measured on the rendered widget; see the component for why). */
-.muhurat-reserve { min-height: 434px; }
-@media (min-width: 401px) { .muhurat-reserve { min-height: 409px; } }
-@media (min-width: 481px) { .muhurat-reserve { min-height: 330px; } }
-@media (min-width: 681px) { .muhurat-reserve { min-height: 310px; } }
-@media (min-width: 901px) { .muhurat-reserve { min-height: 234px; } }
-@media (min-width: 1101px) { .muhurat-reserve { min-height: 164px; } }
+/* Reserved height of the upcoming-festivals widget before it mounts (measured at 16 widths; avoids layout shift) */
+.festival-reserve { min-height: 528px; }
+@media (min-width: 390px) { .festival-reserve { min-height: 482px; } }
+@media (min-width: 400px) { .festival-reserve { min-height: 397px; } }
+@media (min-width: 560px) { .festival-reserve { min-height: 375px; } }
+@media (min-width: 640px) { .festival-reserve { min-height: 336px; } }
+@media (min-width: 700px) { .festival-reserve { min-height: 327px; } }
+@media (min-width: 900px) { .festival-reserve { min-height: 305px; } }
+@media (min-width: 1024px) { .festival-reserve { min-height: 255px; } }
+@media (min-width: 1280px) { .festival-reserve { min-height: 234px; } }
+@media (min-width: 681px) { .festival-reserve { min-height: 310px; } }
+@media (min-width: 901px) { .festival-reserve { min-height: 234px; } }
+@media (min-width: 1101px) { .festival-reserve { min-height: 164px; } }
 
 /* ---- Pooja directory / finder rows (src/components/services) ---- */
 .pooja-list { list-style: none; margin: 0; padding: 0; border: 1px solid var(--border-light); border-radius: var(--radius-md); background: #fff; overflow: hidden; }

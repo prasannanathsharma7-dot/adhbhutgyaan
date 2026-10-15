@@ -38,6 +38,7 @@ const Booking = lazy(() => import('./pages/Booking'));
 const PriceList = lazy(() => import('./pages/PriceList'));
 const Media = lazy(() => import('./pages/Media'));
 const TrackBooking = lazy(() => import('./pages/TrackBooking'));
+const Festivals = lazy(() => import('./pages/Festivals'));
 const FreeKundli = lazy(() => import('./pages/FreeKundli'));
 const Panchang = lazy(() => import('./pages/Panchang'));
 const Horoscope = lazy(() => import('./pages/Horoscope'));
@@ -90,6 +91,7 @@ function App() {
                         <Route path="/price-list" element={<PriceList />} />
                         <Route path="/media" element={<Media />} />
                         <Route path="/track" element={<TrackBooking />} />
+                        <Route path="/festivals" element={<Festivals />} />
                         <Route path="/free-kundli" element={<FreeKundli />} />
                         <Route path="/panchang" element={<Panchang />} />
                         <Route path="/horoscope" element={<Horoscope />} />

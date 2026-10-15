@@ -6,7 +6,7 @@ import { pressHighlights } from '../data/media';
 import useSEO from '../hooks/useSEO';
 import { localBusinessJsonLd, combineJsonLd } from '../utils/seo';
 import DailyPanchangCard from '../components/DailyPanchangCard';
-import UpcomingMuhuratWidget from '../components/UpcomingMuhuratWidget';
+import UpcomingFestivalsWidget from '../components/home/UpcomingFestivalsWidget';
 import VideoTestimonials from '../components/VideoTestimonials';
 import QuickNav from '../components/QuickNav';
 import EvidenceGallery from '../components/EvidenceGallery';
@@ -250,9 +250,9 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* Upcoming auspicious dates - belongs with today's Panchang, not directly under the hero
+            {/* Upcoming festivals - belongs with today's Panchang, not directly under the hero
                 (it used to sit there and showed a 434px empty box on a phone until computed). */}
-            <UpcomingMuhuratWidget />
+            <UpcomingFestivalsWidget />
 
             {/* ASTROLOGY CONSULTATION */}
             <section className="section section-warm" id="astrology-consultation">

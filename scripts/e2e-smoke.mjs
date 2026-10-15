@@ -140,6 +140,22 @@ console.log('\n\x1b[1m[7] Track my booking\x1b[0m');
     await ctx.close();
 }
 
+console.log('\n\x1b[1m[8] Festivals\x1b[0m');
+{
+    const { ctx, page, errors } = await newPage(browser); await open(page, '/festivals/');
+    const txt = await page.innerText('body');
+    check(/Diwali/.test(txt) && /Dhanteras/.test(txt) && /Dev Deepawali/.test(txt), 'the festival list shows Diwali, Dhanteras and Dev Deepawali');
+    check(/8 Nov, 11:28 AM/.test(txt) && /9 Nov, 12:32 PM/.test(txt), 'Diwali shows its Amavasya window (8 Nov 11:28 AM to 9 Nov 12:32 PM, IST)');
+    await page.evaluate("document.querySelector('#tithi-cal-h').scrollIntoView()"); await page.waitForTimeout(4000);
+    const cal = await page.innerText('#tithi-cal-h >> xpath=ancestor::section');
+    check(/Amavasya/.test(cal) && /Purnima/.test(cal) && /Ekadashi/.test(cal) && /Pradosh/.test(cal), 'the 60-day tithi calendar appears when scrolled to (Amavasya, Purnima, Ekadashi, Pradosh)');
+    check(errors.length === 0, `no errors${errors[0] ? ': ' + errors[0] : ''}`);
+    await open(page, '/');
+    const home = await page.innerText('body');
+    check(/Upcoming festivals/i.test(home) && !/Upcoming Auspicious Dates/i.test(home), 'the homepage widget now lists festivals (no marriage-muhurat claim)');
+    await ctx.close();
+}
+
 await browser.close();
 console.log(`\n\x1b[1mE2E SMOKE: ${passed + failed} run | ${passed} passed | ${failed} failed\x1b[0m`);
 process.exit(failed ? 1 : 0);
