@@ -24,7 +24,7 @@ export default function Muhurat() {
 
     useSEO({
         title: t('शुभ मुहूर्त — विवाह, गृह प्रवेश, नामकरण, व्यापार | Adhbhut Gyaan', 'Shubh Muhurat — Marriage, Housewarming, Naming, Business | Adhbhut Gyaan'),
-        description: t('अपने जीवन के महत्वपूर्ण अवसर हेतु शास्त्रोक्त शुभ मुहूर्त प्राप्त करें — पंचांग-आधारित सटीक गणना।', 'Get a scripturally-grounded auspicious Muhurat for your important life events - accurate Panchang-based calculation.'),
+        description: t('विवाह, गृह प्रवेश, नामकरण व व्यापार-आरंभ हेतु पंचांग (तिथि, नक्षत्र, वार, चातुर्मास व खरमास) से छाँटी गई अनुकूल तिथियाँ; अंतिम मुहूर्त पंडित जी तय करते हैं।', 'Favourable dates for marriage, housewarming, naming and business launch, screened from the Panchang (tithi, nakshatra, weekday, Chaturmas and Kharmas); the final muhurat is fixed by Pandit ji.'),
         path: '/muhurat',
         jsonLd: combineJsonLd(breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Muhurat', path: '/muhurat' }])),
     });
@@ -84,7 +84,7 @@ export default function Muhurat() {
                         {t('अपने महत्वपूर्ण अवसर हेतु सही तिथि चुनें', 'Choose the Right Date for Your Important Occasion')}
                     </h1>
                     <p style={{ color: 'var(--warm-200)', maxWidth: '600px', margin: '0 auto' }}>
-                        {t('पंचांग-आधारित शास्त्रोक्त गणना — विवाह, गृह प्रवेश, नामकरण एवं व्यापार आरंभ हेतु।', 'Scripturally-grounded, Panchang-based calculation for marriage, housewarming, naming ceremony, and business launch.')}
+                        {t('विवाह, गृह प्रवेश, नामकरण व व्यापार-आरंभ के लिए पंचांग से छाँटी गई अनुकूल तिथियाँ — अंतिम मुहूर्त पंडित जी कुंडली देखकर तय करते हैं।', 'Favourable days screened from the Panchang for marriage, housewarming, naming ceremony and business launch - the final muhurat is fixed by Pandit ji.')}
                     </p>
                 </div>
             </section>

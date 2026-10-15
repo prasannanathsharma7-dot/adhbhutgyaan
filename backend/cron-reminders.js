@@ -8,6 +8,7 @@ const { getDb, escapeHtml } = require('./_db');
 const { requireRole } = require('./utils/auth');
 const { sendMail } = require('./_email');
 const { notifyAdmin, retryPendingNotifications } = require('./_notify');
+const { sendCustomerMessage } = require('./utils/customer-messages');
 
 // "Tomorrow" is a calendar day in INDIA. The server clock is UTC, so computing it from UTC would be wrong for the 5.5
 // hours around midnight IST (and silently break if the cron time were ever moved). Shift to IST first.
@@ -50,16 +51,20 @@ async function runReminders(db, { now = new Date(), deps = {} } = {}) {
                     `,
                 }) === true;
             }
-            const forwardNote = !doc.email ? 'No email on file' : (emailOk ? 'A reminder email was sent to them automatically' : 'The reminder EMAIL FAILED to send');
+            // WhatsApp reminder to the customer too (template; off unless WHATSAPP_TEMPLATES_ENABLED=1)
+            const waFn = deps.sendCustomerMessage || sendCustomerMessage;
+            const waResult = await waFn({ ...doc, scheduledDate: targetDate }, 'reminder', { reference: doc.reference }).catch(() => ({ ok: false }));
+            const reached = emailOk || (waResult && waResult.ok);
+            const forwardNote = reached ? `A reminder was sent to them automatically (${[emailOk ? 'email' : null, waResult && waResult.ok ? 'WhatsApp' : null].filter(Boolean).join(' + ')})` : (!doc.email ? 'No email on file' : 'The reminder EMAIL FAILED to send');
             await notifyFn({
                 emailSubject: `⏰ Reminder due tomorrow - ${escapeHtml(doc.name)}`,
                 emailHtml: `
                     <p>Booking for <b>${escapeHtml(doc.name)}</b> (${escapeHtml(doc.phone)}) is scheduled for tomorrow (${targetDate}).</p>
                     <p><b>Service:</b> ${escapeHtml(doc.serviceName) || '-'} ${doc.mode ? `· <b>Mode:</b> ${escapeHtml(doc.mode)}` : ''}</p>
-                    <p>${forwardNote}${emailOk ? '.' : ' - please forward this on WhatsApp yourself:'}</p>
-                    ${emailOk ? '' : `<p style="background:#f5f5f5;padding:10px;border-radius:6px;">Namaste ${escapeHtml(doc.name)} 🙏 Yaad dilana chahte hain ki kal (${targetDate}) aapki ${escapeHtml(doc.serviceName) || 'pooja'} nirdharit hai. Koi prashn ho to is number par WhatsApp karein.</p>`}
+                    <p>${forwardNote}${reached ? '.' : ' - please forward this on WhatsApp yourself:'}</p>
+                    ${reached ? '' : `<p style="background:#f5f5f5;padding:10px;border-radius:6px;">Namaste ${escapeHtml(doc.name)} 🙏 Yaad dilana chahte hain ki kal (${targetDate}) aapki ${escapeHtml(doc.serviceName) || 'pooja'} nirdharit hai. Koi prashn ho to is number par WhatsApp karein.</p>`}
                 `,
-                whatsappText: `⏰ Reminder due tomorrow - ${doc.name}. ${forwardNote}${emailOk ? '.' : ' - please forward a reminder on WhatsApp.'}`,
+                whatsappText: `⏰ Reminder due tomorrow - ${doc.name}. ${forwardNote}${reached ? '.' : ' - please forward a reminder on WhatsApp.'}`,
             });
             await col.updateOne({ _id: doc._id }, { $set: { reminderSentAt: new Date(), reminderEmailOk: emailOk } });
             sent++;

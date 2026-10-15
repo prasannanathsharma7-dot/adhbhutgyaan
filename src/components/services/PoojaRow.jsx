@@ -28,6 +28,8 @@ export default function PoojaRow({ entry }) {
             </span>
             <span className="pooja-row-actions">
                 {entry.detailPath && <Link to={entry.detailPath} className="pooja-row-link">{t('विवरण', 'Details')}</Link>}
+                {/* "Book" opens the booking wizard with this service preselected (only the services that have a wizard entry) */}
+                {entry.serviceId && <Link to={`/booking?service=${entry.serviceId}`} className="pooja-row-link">{t('बुक करें', 'Book')}</Link>}
                 <a href={enquiry} target="_blank" rel="noreferrer" className="pooja-row-wa" aria-label={`${t('WhatsApp पर पूछें', 'Enquire on WhatsApp')}: ${entry.nameEn}`}>
                     <MessageCircle size={18} aria-hidden="true" />
                 </a>

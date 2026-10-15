@@ -57,6 +57,11 @@ console.log('\n\x1b[1m[2] Services: Pooja Finder and directory\x1b[0m');
     await page.locator('#pooja-directory input[type=search]').fill('');
     const total = await page.locator('#pooja-directory [role=group] button').first().innerText();
     check(/\(\d{3}\)/.test(total), `the directory counts every pooja (${total.trim()})`);
+    await page.locator('#pooja-directory input[type=search]').fill('rudrabhishek'); await page.waitForTimeout(300);
+    const book = page.locator('#pooja-directory .pooja-row a', { hasText: /^Book$/ }).first();
+    check((await book.getAttribute('href')) === '/booking?service=rudrabhishek', 'a service in the directory has a Book link that opens the booking wizard with it preselected');
+    await book.click(); await page.waitForTimeout(1200);
+    check(/Select Your Package|Rudrabhishek/.test(await page.innerText('body')) && page.url().includes('service=rudrabhishek'), 'the booking page opens with Rudrabhishek already chosen');
     check(errors.length === 0, 'no errors');
     await ctx.close();
 }
@@ -115,6 +120,44 @@ console.log('\n\x1b[1m[6] Privacy and About\x1b[0m');
     await open(page, '/about/');
     await page.locator('a[href="/media"]').first().click(); await page.waitForTimeout(800);
     check(page.url().endsWith('/media') || page.url().endsWith('/media/'), 'About links to the Videos & Interviews page');
+    await ctx.close();
+}
+
+console.log('\n\x1b[1m[7] Track my booking\x1b[0m');
+{
+    const { ctx, page, calls } = await newPage(browser, { extra: async (pg) => {
+        await pg.route('**/api/booking-status', (r) => {
+            const body = JSON.parse(r.request().postData() || '{}');
+            if (body.phoneLast4 !== '3210') return r.fulfill({ status: 404, contentType: 'application/json', body: JSON.stringify({ ok: false, error: 'We could not find a booking with these details.' }) });
+            return r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ ok: true, booking: { reference: 'AG-2026-1A2B3C', firstName: 'Ravi', serviceName: 'Rudrabhishek', mode: 'online', preferredDate: '2 Nov', scheduledDate: '', cancelled: false, currentStage: 'contacted',
+                stages: [{ key: 'received', labelEn: 'Enquiry received', labelHi: 'x', done: true, at: '2026-10-15T10:00:00Z' }, { key: 'contacted', labelEn: "Pandit ji's team has contacted you", labelHi: 'x', done: true, at: '2026-10-15T12:00:00Z' }, { key: 'confirmed', labelEn: 'Date and details confirmed', labelHi: 'x', done: false, at: null }, { key: 'completed', labelEn: 'Ritual performed', labelHi: 'x', done: false, at: null }, { key: 'proof', labelEn: 'Photo / video proof shared', labelHi: 'x', done: false, at: null }] } }) });
+        });
+    } });
+    await open(page, '/track/?ref=ag-2026-1a2b3c');
+    check((await page.inputValue('#track-ref')) === 'AG-2026-1A2B3C', 'the reference from the e-mail link is pre-filled (upper-cased)');
+    await page.fill('#track-last4', '9999'); await page.click('button[type=submit]'); await page.waitForTimeout(500);
+    check(/could not find/.test(await page.innerText('body')), 'wrong digits show a clear message');
+    await page.fill('#track-last4', '3210'); await page.click('button[type=submit]'); await page.waitForTimeout(500);
+    const txt = await page.innerText('body');
+    check(/Namaste Ravi/.test(txt) && /Enquiry received/.test(txt) && /contacted you/.test(txt), 'the right details show a greeting and the timeline');
+    check((await page.locator('ol li svg').count()) === 5, 'five stages are drawn');
+    check(calls.filter(c => c.path === '/api/booking-status').every(c => c.method === 'POST' && !c.path.includes('?')), 'the lookup is a POST (nothing personal in a URL)');
+    await ctx.close();
+}
+
+console.log('\n\x1b[1m[8] Festivals\x1b[0m');
+{
+    const { ctx, page, errors } = await newPage(browser); await open(page, '/festivals/');
+    const txt = await page.innerText('body');
+    check(/Diwali/.test(txt) && /Dhanteras/.test(txt) && /Dev Deepawali/.test(txt), 'the festival list shows Diwali, Dhanteras and Dev Deepawali');
+    check(/8 Nov, 11:28 AM/.test(txt) && /9 Nov, 12:32 PM/.test(txt), 'Diwali shows its Amavasya window (8 Nov 11:28 AM to 9 Nov 12:32 PM, IST)');
+    await page.evaluate("document.querySelector('#tithi-cal-h').scrollIntoView()"); await page.waitForTimeout(4000);
+    const cal = await page.innerText('#tithi-cal-h >> xpath=ancestor::section');
+    check(/Amavasya/.test(cal) && /Purnima/.test(cal) && /Ekadashi/.test(cal) && /Pradosh/.test(cal), 'the 60-day tithi calendar appears when scrolled to (Amavasya, Purnima, Ekadashi, Pradosh)');
+    check(errors.length === 0, `no errors${errors[0] ? ': ' + errors[0] : ''}`);
+    await open(page, '/');
+    const home = await page.innerText('body');
+    check(/Upcoming festivals/i.test(home) && !/Upcoming Auspicious Dates/i.test(home), 'the homepage widget now lists festivals (no marriage-muhurat claim)');
     await ctx.close();
 }
 

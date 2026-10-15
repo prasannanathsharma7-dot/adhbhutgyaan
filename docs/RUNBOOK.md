@@ -62,3 +62,14 @@ It matches the number however it was typed (+91, 0, spaces) or the e-mail in any
 
 ## 7. Before every release
 `npm test` (all suites), `npm run build`, and for anything visible `npm run e2e:smoke` and `npm run audit:a11y` (CI runs them on every pull request). Look at the Vercel preview **on a phone**. Merge with *Create a merge commit* so pieces can be reverted separately.
+
+## 8. Smart features and how to switch them on
+| Feature | Where | Switch | Needs |
+|---|---|---|---|
+| Booking tracker | `/track`, e-mail link | on | nothing |
+| Festivals + tithi calendar | `/festivals` | on | after Dec 2026 ask for the next season to be added (`scripts/build-festivals.mjs`) |
+| Weekly digest to the owner | Monday 09:00 IST (Vercel cron `/api/cron-weekly-digest`) | on | `CRON_SECRET` (same value on Vercel and Cloud Run) |
+| AI-drafted first reply for the team | in the new-booking e-mail / WhatsApp | `ENABLE_REPLY_DRAFTS=1` | `ANTHROPIC_API_KEY`; privacy notice already mentions it |
+| WhatsApp updates to the customer | automatic | `WHATSAPP_TEMPLATES_ENABLED=1` | approved Meta templates (`docs/WHATSAPP_TEMPLATES.md`) |
+
+Roll each one out alone, test with your own number, then leave it on. To turn one off, remove the variable (a new Cloud Run revision); nothing else changes.

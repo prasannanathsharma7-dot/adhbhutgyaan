@@ -338,6 +338,12 @@ const routes = [
         jsonLd: combineJsonLd(breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Videos & Interviews', path: '/media' }])),
     },
     {
+        path: '/festivals',
+        title: 'Hindu Festivals Oct-Nov 2026 - Dates & Tithi Times for Kashi (Varanasi) | Adhbhut Gyaan',
+        description: 'Dussehra, Sharad Purnima, Karwa Chauth, Dhanteras, Diwali, Bhai Dooj, Dev Uthani Ekadashi and Dev Deepawali 2026: dates and tithi start/end times for Kashi (Varanasi).',
+        jsonLd: combineJsonLd(breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Festivals', path: '/festivals' }])),
+    },
+    {
         path: '/price-list',
         title: 'Pooja & Paath Price List - Kashi | Adhbhut Gyaan',
         description: 'Price list for paath, shraddh, jaap, yagya and astrology consultation by the Pandits of Kashi - clear rates, confirmed on WhatsApp.',

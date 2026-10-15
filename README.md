@@ -32,7 +32,7 @@ Website and backend for **Adhbhut Gyaan** - Vedic pooja, paath, jaap, shraddh an
 | `scripts/` | Build helpers (prerender, sitemap, price-list generator, crawler-text snapshots), test suites, audits. |
 | `prerender/` | Hand-refreshable crawler-text snapshots (`npm`-independent; regenerate with `scripts/snapshot-content.mjs`). |
 | `private/` | **Git-ignored.** The owner's own rate sheet (`price-source.csv`). Never commit. |
-| `docs/` | `RUNBOOK.md` (operating it: uptime monitor, deploy/rollback, secret rotation, backup-restore drill, incident table, erasing a person's data), `QUALITY.md` (measured quality baseline + how to re-run the audits) and the owner's original pooja-description source document (content reference only; contains no rates). |
+| `docs/` | `MUHURAT.md` (what the muhurat engine does and does not do), `WHATSAPP_TEMPLATES.md` (the four customer WhatsApp templates to create in Meta), `RUNBOOK.md` (operating it: uptime monitor, deploy/rollback, secret rotation, backup-restore drill, incident table, erasing a person's data), `QUALITY.md` (measured quality baseline + how to re-run the audits) and the owner's original pooja-description source document (content reference only; contains no rates). |
 
 ## Commands
 
@@ -45,7 +45,7 @@ npm run audit:a11y          # axe-core WCAG 2.2 AA + reflow audit of the built s
 npm run build:price-list    # regenerate src/data/priceList.json from private/price-source.csv
 ```
 
-Test suites run by `npm test`: `test-system-health` (414 checks: engines, forms, SEO, content), `test-security` (webhook signature, cron auth, CORS, phone), `test-authz` (role matrix across every privileged endpoint), `test-pricing`, `test-panchang-boundaries` (tithi/nakshatra/yoga/karana end times vs published panchangs), `test-catalog`, `test-privacy` (the privacy notice must name every third-party service the code calls, describe every data category, and the Free Kundli flow must stay opt-in with no birth data in URLs), `test-ops` (IST reminder dates, no duplicate reminders, notification retry queue, crash-safe WhatsApp message claims), `test-erasure` (delete-a-person's-data tool and the `/api/health` probe), `test-analytics` (bounded reads with a 12,000-booking fixture), `test-booking` (the shared booking service used by the form, the website chat and the WhatsApp bot).
+Test suites run by `npm test`: `test-system-health` (414 checks: engines, forms, SEO, content), `test-security` (webhook signature, cron auth, CORS, phone), `test-authz` (role matrix across every privileged endpoint), `test-pricing`, `test-panchang-boundaries` (tithi/nakshatra/yoga/karana end times vs published panchangs), `test-catalog`, `test-privacy` (the privacy notice must name every third-party service the code calls, describe every data category, and the Free Kundli flow must stay opt-in with no birth data in URLs), `test-ops` (IST reminder dates, no duplicate reminders, notification retry queue, crash-safe WhatsApp message claims), `test-erasure` (delete-a-person's-data tool and the `/api/health` probe), `test-analytics` (bounded reads with a 12,000-booking fixture), `test-booking` (the shared booking service used by the form, the website chat and the WhatsApp bot), `test-muhurat` (no marriage / griha pravesh dates in Chaturmas or Kharmas; both engine copies agree), `test-tracking` (the customer's booking tracker never exposes contact details), `test-festivals` (festival dates vs published calendars, tithi windows vs the engine, no data drift), `test-digest` (the weekly owner digest), `test-reply-draft` (what the AI may see and say), `test-customer-messages` (WhatsApp template updates).
 CI (`.github/workflows/ci.yml`) runs on **every** pull request (whatever its base) and every push to `main`: `npm audit` (fails on high/critical production vulnerabilities), `npm test`, `npm run build`, then in real Chromium the customer-journey smoke test (`scripts/e2e-smoke.mjs`, API mocked) and the accessibility + reflow audit (`scripts/audit-a11y.mjs`). A newer push cancels the run in progress.
 
 ## Single sources of truth (change it in one place)
@@ -70,6 +70,8 @@ CI (`.github/workflows/ci.yml`) runs on **every** pull request (whatever its bas
 | `CALLMEBOT_APIKEY`, `CALLMEBOT_PHONE` | Cloud Run | Optional WhatsApp admin ping |
 | `GOOGLE_SHEETS_WEBHOOK_URL` | Cloud Run | Optional sheet sync |
 | `EXTRA_ALLOWED_ORIGINS` | Cloud Run | Optional comma-separated extra CORS origins (e.g. one preview URL) |
+| `WHATSAPP_TEMPLATES_ENABLED` | Cloud Run | Optional `1` = send the customer WhatsApp updates (templates must be approved first: `docs/WHATSAPP_TEMPLATES.md`) |
+| `ENABLE_REPLY_DRAFTS`, `REPLY_DRAFT_MODEL` | Cloud Run | Optional `1` = add an AI-drafted first reply (for the team to edit) to each new-booking notification; needs `ANTHROPIC_API_KEY` |
 
 ## Security model in one paragraph
 

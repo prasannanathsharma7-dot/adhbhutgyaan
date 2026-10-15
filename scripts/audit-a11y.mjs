@@ -17,7 +17,7 @@ const axeSource = readFileSync(process.env.AXE_PATH || require.resolve('axe-core
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const BASE = process.env.BASE_URL || 'http://localhost:4173';
 const WIDTHS = (process.env.WIDTHS || '320,390,768,1280').split(',').map(Number);
-const CORE = ['/', '/services/', '/price-list/', '/booking/', '/free-kundli/', '/panchang/', '/about/', '/contact/', '/blog/', '/media/', '/privacy/', '/terms/', '/horoscope/', '/muhurat/', '/vastu-score/', '/pandit-for-pooja/', '/pt-umang-nath-sharma/', '/leave-a-review/'];
+const CORE = ['/', '/services/', '/price-list/', '/booking/', '/free-kundli/', '/panchang/', '/about/', '/contact/', '/blog/', '/media/', '/privacy/', '/terms/', '/horoscope/', '/muhurat/', '/vastu-score/', '/pandit-for-pooja/', '/pt-umang-nath-sharma/', '/leave-a-review/', '/track/', '/festivals/'];
 let pages = CORE;
 if (!process.env.QUICK) {
     const sm = readFileSync(join(ROOT, 'dist', 'sitemap.xml'), 'utf8');

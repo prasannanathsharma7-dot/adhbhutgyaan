@@ -617,9 +617,12 @@ ${t('कृपया मूल्य व उपलब्धता की जा�
                                         <CheckCircle2 size={14} style={{ verticalAlign: '-2px', marginRight: '0.3rem' }} />{t('आपकी पूछताछ सुरक्षित रूप से दर्ज हो गई है', 'Your enquiry has been securely recorded')}
                                     </p>
                                     {bookingReference && (
+                                        <>
                                         <p style={{ display: 'inline-block', background: '#f0fdf4', border: '1px solid #86efac', borderRadius: 'var(--radius-md)', padding: '0.45rem 0.8rem', fontSize: '0.82rem', fontWeight: 700, margin: 0 }}>
                                             {t('संदर्भ संख्या', 'Reference')}: {bookingReference}
                                         </p>
+                                        <p style={{ margin: '0.5rem 0 0', fontSize: '0.85rem' }}><Link to={`/track?ref=${bookingReference}`}>{t('अपनी बुकिंग की स्थिति देखें →', 'Track your booking →')}</Link></p>
+                                    </>
                                     )}
                                 </div>
                             )}

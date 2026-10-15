@@ -73,6 +73,9 @@ module.exports = async (req, res) => {
                 monthsAhead: safeMonthsAhead,
                 lat: safeLat, lng: safeLng, tzOffset: safeTz,
                 matches: result.matches,
+                // periods skipped by the classical rules (Chaturmas / Kharmas) and whether the exclusion data covers the range
+                skipped: (result.skipped || []).map(p => ({ code: p.code, labelEn: p.labelEn, labelHi: p.labelHi, from: p.from, to: p.to })),
+                coverage: result.coverage || null,
                 paymentStatus: 'pending', // set to 'paid' manually by the team after WhatsApp/UPI confirmation
                 createdAt: new Date(),
             };
@@ -132,6 +135,8 @@ module.exports = async (req, res) => {
                     categoryLabel: CATEGORY_RULES[doc.category],
                     name: doc.name,
                     matches: doc.matches,
+                    skipped: doc.skipped || [],
+                    coverage: doc.coverage || null,
                     paymentStatus: doc.paymentStatus,
                     createdAt: doc.createdAt,
                 },
