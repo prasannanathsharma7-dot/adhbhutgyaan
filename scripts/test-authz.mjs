@@ -66,6 +66,10 @@ for (const file of agentRoutes) {
         const r = mockRes(); await H('cron-reminders')({ ...req(role ? KEYS[role] : null), method: 'GET', url: '/api/cron-reminders' }, r);
         check([401, 403].includes(r.statusCode), `GET /cron-reminders: ${role || 'no credential'} -> ${r.statusCode}`);
     }
+    for (const role of ['agent', 'sheet-sync', null]) {
+        const r = mockRes(); await H('cron-weekly-digest')({ ...req(role ? KEYS[role] : null), method: 'GET', url: '/api/cron-weekly-digest' }, r);
+        check([401, 403].includes(r.statusCode), `GET /cron-weekly-digest: ${role || 'no credential'} -> ${r.statusCode}`);
+    }
     for (const role of ['agent', 'cron', null]) {
         const r = mockRes(); await H('admin/sync-from-sheets')({ ...req(role ? KEYS[role] : null), method: 'GET', url: '/api/admin/sync-from-sheets' }, r);
         check(r.statusCode === 401, `GET /admin/sync-from-sheets: ${role || 'no credential'} -> 401`);

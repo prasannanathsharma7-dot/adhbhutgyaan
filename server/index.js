@@ -37,6 +37,7 @@ const seoContentDrafter = require('../api/agents/seo-content-drafter.js');
 const systemHealthAgent = require('../api/agents/system-health-agent.js');
 const erasePerson = require('../api/admin/erase-person.js');
 const bookingStatus = require('../api/booking-status.js');
+const cronWeeklyDigest = require('../api/cron-weekly-digest.js');
 const whatsappConcierge = require('../api/agents/whatsapp-concierge.js');
 const lifeDomainSynthesis = require('../api/agents/life-domain-synthesis.js');
 const generateKundliPdf = require('../api/generate-kundli-pdf.js');
@@ -46,6 +47,7 @@ const muhuratBooking = require('../api/muhurat-booking.js');
 // so `app.all` (matches every HTTP method) is the correct mount for all of them.
 app.all('/api/bookings', bookings);
 app.all('/api/booking-status', bookingStatus);
+app.all('/api/cron-weekly-digest', cronWeeklyDigest);
 app.all('/api/contact', contact);
 app.all('/api/reviews', reviews);
 app.all('/api/newsletter', newsletter);

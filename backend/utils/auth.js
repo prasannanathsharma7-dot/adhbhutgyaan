@@ -14,7 +14,7 @@
 //   admin/sync-from-sheets                                                                                     -> sheet-sync
 //   agents/daily-panchang-cron                                                                                 -> agent, cron
 //   agents/{kundli-preanalyzer, whatsapp-concierge, life-domain-synthesis, seo-content-drafter, system-health} -> agent
-//   cron-reminders                                                                                             -> cron
+//   cron-reminders, cron-weekly-digest                                                                         -> cron
 //
 // HTTP semantics: no/invalid credentials -> 401; valid credentials of a role that is not allowed here -> 403.
 // Webhook signatures (Meta) are verified separately and never use these secrets.
