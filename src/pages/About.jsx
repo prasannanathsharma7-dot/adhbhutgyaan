@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
-import { gallery, pressHighlights, triptych, videoClips, youtubeUploadsPlaylistId, youtubeChannelId } from '../data/media';
-import { SquarePlay } from 'lucide-react';
+import { gallery, pressHighlights, triptych } from '../data/media';
 import useSEO from '../hooks/useSEO';
 import { breadcrumbJsonLd, combineJsonLd } from '../utils/seo';
 import EvidenceGallery from '../components/EvidenceGallery';
@@ -130,7 +129,7 @@ export default function About() {
                     <p style={{ textAlign: 'center', color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '1.5rem' }}>
                         {t('किसी भी प्रमाण को पूर्ण आकार में देखने के लिए उस पर क्लिक करें।', 'Open any item to inspect the original document or photograph at full size, without cropping.')}
                     </p>
-                    <EvidenceGallery items={pressHighlights} t={t} />
+                    <EvidenceGallery items={pressHighlights} t={t} mobileRail />
                 </div>
             </section>
 
@@ -253,7 +252,7 @@ export default function About() {
                             📅 1979–1983
                         </span>
                     </div>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '1.75rem' }}>
+                    <div className="h-scroll" tabIndex={0} role="group" aria-label={t('अभिलेखागार के पत्र', 'Archive letters')} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '1.75rem' }}>
                         {testimonials.map((tst, i) => (
                             <div key={i} style={{
                                 position: 'relative',
@@ -321,7 +320,7 @@ export default function About() {
                             📅 1973–1982
                         </span>
                     </div>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '1.75rem' }}>
+                    <div className="h-scroll" tabIndex={0} role="group" aria-label={t('अभिलेखागार से और पत्र', 'More archive letters')} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '1.75rem' }}>
                         {moreTestimonials.map((tst, i) => (
                             <div key={i} style={{
                                 position: 'relative',
@@ -369,48 +368,17 @@ export default function About() {
                         <h2 className="section-title">{t('हमारी यात्रा के क्षण', 'Moments from Our Journey')}</h2>
                     </div>
                     <div className="om-divider">ॐ</div>
-                    <EvidenceGallery items={gallery} t={t} compact />
+                    <EvidenceGallery items={gallery} t={t} compact mobileRail />
                 </div>
             </section>
 
-            {/* Videos */}
+            {/* Videos & interviews live on their own page (/media) - they used to be repeated here (2,600px on a phone) */}
             <section className="section section-dark">
-                <div className="container">
-                    <div className="text-center">
-                        <span className="section-label" style={{ justifyContent: 'center' }}>{t('जीवंत झलकियाँ', 'Live Glimpses')}</span>
-                        <h2 className="section-title" style={{ color: 'var(--gold-300)' }}>{t('वीडियो में हमारी पूजा सेवाएं', 'Our Pooja Services, Captured on Video')}</h2>
-                        <p style={{ color: 'var(--warm-200)', marginTop: '0.5rem' }}>{t('वास्तविक अनुष्ठानों की सजीव झलक — यथावत, बिना किसी बनावट के', 'Authentic ceremonies, exactly as they unfold')}</p>
-                    </div>
-                    <div className="om-divider">ॐ</div>
-
-                    <div className="video-showcase-grid" style={{ marginBottom: '2.5rem' }}>
-                        {videoClips.map(clip => (
-                            <div className="video-showcase-card" key={clip.src}>
-                                <video controls preload="none" poster={clip.poster} playsInline>
-                                    <source src={clip.src} type="video/mp4" />
-                                </video>
-                                <p className="video-showcase-caption">{t(clip.capHi, clip.capEn)}</p>
-                            </div>
-                        ))}
-                    </div>
-
-                    <h3 style={{ textAlign: 'center', color: 'var(--gold-300)', marginBottom: '1rem', fontFamily: 'var(--font-hindi)' }}>
-                        {t('हमारे YouTube चैनल पर अधिक देखें', 'Explore Further on Our YouTube Channel')}
-                    </h3>
-                    <div className="youtube-embed-wrapper">
-                        <iframe
-                            src={`https://www.youtube.com/embed/videoseries?list=${youtubeUploadsPlaylistId}`}
-                            title="YouTube video playlist"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                            loading="lazy"
-                        />
-                    </div>
-                    <div className="text-center" style={{ marginTop: '1.5rem' }}>
-                        <a href={`https://www.youtube.com/channel/${youtubeChannelId}`} target="_blank" rel="noreferrer" className="btn btn-primary">
-                            <SquarePlay size={16} style={{ verticalAlign: '-3px', marginRight: '0.35rem' }} />{t('YouTube पर सब्सक्राइब करें', 'Subscribe on YouTube')}
-                        </a>
-                    </div>
+                <div className="container text-center">
+                    <span className="section-label" style={{ justifyContent: 'center' }}>{t('जीवंत झलकियाँ', 'Live Glimpses')}</span>
+                    <h2 className="section-title" style={{ color: 'var(--gold-300)' }}>{t('वीडियो एवं साक्षात्कार', 'Videos & Interviews')}</h2>
+                    <p style={{ color: 'var(--warm-200)', margin: '0.5rem auto 1.25rem', maxWidth: 520 }}>{t('वास्तविक अनुष्ठानों की सजीव झलक एवं मीडिया साक्षात्कार', 'Real rituals as they unfold, and media interviews')}</p>
+                    <Link to="/media" className="btn btn-gold">{t('वीडियो देखें →', 'Watch videos →')}</Link>
                 </div>
             </section>
 
