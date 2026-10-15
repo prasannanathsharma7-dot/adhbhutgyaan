@@ -47,7 +47,7 @@ function validateBookingInput(input = {}) {
     return first ? { ok: false, error: first, fields } : { ok: true, clean };
 }
 
-function adminNotification(doc, reference) {
+function adminNotification(doc, reference, draft = null) {
     const label = SOURCE_LABELS[doc.source] || doc.source;
     return {
         emailSubject: `🕉️ New Booking Enquiry (${label}) - ${doc.name}`,
@@ -65,8 +65,9 @@ function adminNotification(doc, reference) {
             <p><b>Lead Source:</b> ${escapeHtml(label)}</p>
             ${doc.address ? `<p><b>Address:</b> ${escapeHtml(doc.address)}</p>` : ''}
             ${doc.notes ? `<p><b>Notes:</b> ${escapeHtml(doc.notes)}</p>` : ''}
+            ${draft ? `<p style="background:#f5f5f5;padding:10px;border-radius:6px;white-space:pre-wrap"><b>Suggested reply (AI draft - read and edit before sending):</b><br>${escapeHtml(draft)}</p>` : ''}
             <p style="color:#888;font-size:12px;">Reference: ${reference} · Booking ID: ${doc._id}</p>`,
-        whatsappText: `🕉️ New Booking Enquiry (${label})\n\nReference: ${reference}\nName: ${doc.name}\nPhone: ${doc.phone}\nService: ${doc.serviceName || '-'}\nMode: ${doc.mode || '-'}\nDate: ${doc.preferredDate || 'TBD'}${doc.notes ? `\nNotes: ${doc.notes}` : ''}`,
+        whatsappText: `🕉️ New Booking Enquiry (${label})\n\nReference: ${reference}\nName: ${doc.name}\nPhone: ${doc.phone}\nService: ${doc.serviceName || '-'}\nMode: ${doc.mode || '-'}\nDate: ${doc.preferredDate || 'TBD'}${doc.notes ? `\nNotes: ${doc.notes}` : ''}${draft ? `\n\nSuggested reply (AI draft - edit before sending):\n${draft}` : ''}`,
     };
 }
 
@@ -132,8 +133,17 @@ async function createBookingEnquiry(db, input, opts = {}) {
     await col.insertOne(doc);
 
     // Awaited, not fire-and-forget: on serverless an unawaited promise can be killed once the handler returns.
-    await notify(adminNotification(doc, reference));
-    if (doc.email) await mail(customerConfirmation(doc, reference));
+    // Optional: an AI-drafted first reply for the team (off by default; see utils/reply-draft.js). It runs alongside the
+    // customer's confirmation e-mail with a hard timeout, and any failure simply means no draft.
+    const draftFn = (opts.deps && opts.deps.generateReplyDraft) || require('./reply-draft').generateReplyDraft;
+    const [draftResult] = await Promise.all([
+        draftFn(doc).catch(() => ({ ok: false })),
+        doc.email ? mail(customerConfirmation(doc, reference)) : null,
+    ]);
+    await notify(adminNotification(doc, reference, draftResult && draftResult.ok ? draftResult.text : null));
+    // WhatsApp "we received your enquiry" (a Meta-approved template; off unless WHATSAPP_TEMPLATES_ENABLED=1; never throws)
+    const customerMsg = (opts.deps && opts.deps.sendCustomerMessage) || require('./customer-messages').sendCustomerMessage;
+    await customerMsg(doc, 'received', { reference }).catch(() => {});
     return { ok: true, id: String(id), reference, duplicate: false };
 }
 

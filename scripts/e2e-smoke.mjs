@@ -57,6 +57,11 @@ console.log('\n\x1b[1m[2] Services: Pooja Finder and directory\x1b[0m');
     await page.locator('#pooja-directory input[type=search]').fill('');
     const total = await page.locator('#pooja-directory [role=group] button').first().innerText();
     check(/\(\d{3}\)/.test(total), `the directory counts every pooja (${total.trim()})`);
+    await page.locator('#pooja-directory input[type=search]').fill('rudrabhishek'); await page.waitForTimeout(300);
+    const book = page.locator('#pooja-directory .pooja-row a', { hasText: /^Book$/ }).first();
+    check((await book.getAttribute('href')) === '/booking?service=rudrabhishek', 'a service in the directory has a Book link that opens the booking wizard with it preselected');
+    await book.click(); await page.waitForTimeout(1200);
+    check(/Select Your Package|Rudrabhishek/.test(await page.innerText('body')) && page.url().includes('service=rudrabhishek'), 'the booking page opens with Rudrabhishek already chosen');
     check(errors.length === 0, 'no errors');
     await ctx.close();
 }

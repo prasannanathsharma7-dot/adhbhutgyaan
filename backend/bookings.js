@@ -6,6 +6,7 @@ const { notifyAdmin } = require('./_notify');
 // Admin-only check shared by all endpoints (see backend/utils/auth.js for roles).
 const { hasRole } = require('./utils/auth');
 const { createBookingEnquiry } = require('./utils/booking-service');
+const { sendCustomerMessage } = require('./utils/customer-messages');
 const isAdmin = (req) => hasRole(req, ['admin']);
 
 const VALID_STATUSES = ['new', 'contacted', 'confirmed', 'completed', 'cancelled'];
@@ -113,6 +114,12 @@ module.exports = async (req, res) => {
             if (!updatedDoc) {
                 res.status(404).json({ ok: false, error: 'Booking not found' });
                 return;
+            }
+
+            // Tell the customer on WhatsApp when the booking is confirmed or the ritual is done (template message; off unless
+            // WHATSAPP_TEMPLATES_ENABLED=1; failures are swallowed so a status change always succeeds).
+            if (status === 'confirmed' || status === 'completed') {
+                await sendCustomerMessage(updatedDoc, status, { reference: updatedDoc.reference }).catch(() => {});
             }
 
             // Automatically ask for a review once a pooja is marked completed.

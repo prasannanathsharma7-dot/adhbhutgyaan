@@ -65,4 +65,31 @@ async function sendWhatsAppMedia(to, mediaUrl, mediaType, caption) {
     return data;
 }
 
-module.exports = { sendWhatsAppText, sendWhatsAppMedia };
+// Sends a pre-approved TEMPLATE message. Templates are what Meta allows a business to send to a customer outside the
+// 24-hour customer-service window (booking updates, reminders). The template must exist and be approved in Meta Business
+// Manager under exactly this name and language - see docs/WHATSAPP_TEMPLATES.md.
+async function sendWhatsAppTemplate(to, name, languageCode, bodyParams = []) {
+    if (!configured()) throw new Error('WhatsApp is not configured (missing env vars)');
+    const res = await fetch(`${GRAPH_API_URL}/${process.env.WHATSAPP_PHONE_NUMBER_ID}/messages`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${process.env.WHATSAPP_ACCESS_TOKEN}` },
+        body: JSON.stringify({
+            messaging_product: 'whatsapp',
+            to,
+            type: 'template',
+            template: {
+                name,
+                language: { code: languageCode },
+                components: bodyParams.length ? [{ type: 'body', parameters: bodyParams.map(text => ({ type: 'text', text })) }] : [],
+            },
+        }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+        console.error('WhatsApp template send error:', res.status, JSON.stringify(data).slice(0, 400));
+        throw new Error(`WhatsApp template send failed: ${data?.error?.message || res.status}`);
+    }
+    return data;
+}
+
+module.exports = { sendWhatsAppText, sendWhatsAppMedia, sendWhatsAppTemplate };
