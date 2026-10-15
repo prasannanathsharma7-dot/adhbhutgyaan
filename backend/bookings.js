@@ -105,7 +105,8 @@ module.exports = async (req, res) => {
             const db = await getDb();
             const result = await db.collection('bookings').findOneAndUpdate(
                 { _id: new ObjectId(id) },
-                { $set: update },
+                // the history lets the customer's tracker (/track) show when each stage was reached
+                { $set: update, $push: { statusHistory: { status, at: update.statusUpdatedAt } } },
                 { returnDocument: 'after' }
             );
             const updatedDoc = result && result.value ? result.value : result;

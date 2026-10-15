@@ -80,6 +80,7 @@ function customerConfirmation(doc, reference) {
             <p>Our team will contact you on WhatsApp or phone at <b>${escapeHtml(doc.phone)}</b> within 24 hours to confirm the date, pricing, and further details.</p>
             <p><b>Reference:</b> ${reference}</p>
             <p><b>Preferred Date:</b> ${escapeHtml(doc.preferredDate) || 'To be decided with the Pandit'}</p>
+            <p>Follow your booking any time: <a href="https://www.adhbhutgyaan.com/track?ref=${reference}">www.adhbhutgyaan.com/track</a> (keep your reference and the last 4 digits of your phone number handy).</p>
             <p>If you need to reach us urgently, WhatsApp us at <a href="https://wa.me/919278148269">+91 92781 48269</a>.</p>
             <br/>
             <p>🙏 Adhbhut Gyaan<br/>Varanasi, Kashi</p>`,
@@ -114,6 +115,7 @@ async function createBookingEnquiry(db, input, opts = {}) {
     const doc = {
         _id: id, reference, ...clean,
         status: 'new', // new -> contacted -> confirmed -> completed -> cancelled
+        statusHistory: [{ status: 'new', at: now }], // powers the customer's booking tracker (/track)
         source: capStr(source, 100) || 'website',
         attribution: {
             utmSource: capStr(attribution.utmSource, 100),

@@ -118,6 +118,28 @@ console.log('\n\x1b[1m[6] Privacy and About\x1b[0m');
     await ctx.close();
 }
 
+console.log('\n\x1b[1m[7] Track my booking\x1b[0m');
+{
+    const { ctx, page, calls } = await newPage(browser, { extra: async (pg) => {
+        await pg.route('**/api/booking-status', (r) => {
+            const body = JSON.parse(r.request().postData() || '{}');
+            if (body.phoneLast4 !== '3210') return r.fulfill({ status: 404, contentType: 'application/json', body: JSON.stringify({ ok: false, error: 'We could not find a booking with these details.' }) });
+            return r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ ok: true, booking: { reference: 'AG-2026-1A2B3C', firstName: 'Ravi', serviceName: 'Rudrabhishek', mode: 'online', preferredDate: '2 Nov', scheduledDate: '', cancelled: false, currentStage: 'contacted',
+                stages: [{ key: 'received', labelEn: 'Enquiry received', labelHi: 'x', done: true, at: '2026-10-15T10:00:00Z' }, { key: 'contacted', labelEn: "Pandit ji's team has contacted you", labelHi: 'x', done: true, at: '2026-10-15T12:00:00Z' }, { key: 'confirmed', labelEn: 'Date and details confirmed', labelHi: 'x', done: false, at: null }, { key: 'completed', labelEn: 'Ritual performed', labelHi: 'x', done: false, at: null }, { key: 'proof', labelEn: 'Photo / video proof shared', labelHi: 'x', done: false, at: null }] } }) });
+        });
+    } });
+    await open(page, '/track/?ref=ag-2026-1a2b3c');
+    check((await page.inputValue('#track-ref')) === 'AG-2026-1A2B3C', 'the reference from the e-mail link is pre-filled (upper-cased)');
+    await page.fill('#track-last4', '9999'); await page.click('button[type=submit]'); await page.waitForTimeout(500);
+    check(/could not find/.test(await page.innerText('body')), 'wrong digits show a clear message');
+    await page.fill('#track-last4', '3210'); await page.click('button[type=submit]'); await page.waitForTimeout(500);
+    const txt = await page.innerText('body');
+    check(/Namaste Ravi/.test(txt) && /Enquiry received/.test(txt) && /contacted you/.test(txt), 'the right details show a greeting and the timeline');
+    check((await page.locator('ol li svg').count()) === 5, 'five stages are drawn');
+    check(calls.filter(c => c.path === '/api/booking-status').every(c => c.method === 'POST' && !c.path.includes('?')), 'the lookup is a POST (nothing personal in a URL)');
+    await ctx.close();
+}
+
 await browser.close();
 console.log(`\n\x1b[1mE2E SMOKE: ${passed + failed} run | ${passed} passed | ${failed} failed\x1b[0m`);
 process.exit(failed ? 1 : 0);
