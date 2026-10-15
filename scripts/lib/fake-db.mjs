@@ -8,6 +8,8 @@ export function matches(doc, filter) {
         if (v && typeof v === 'object' && !(v instanceof Date) && !Array.isArray(v)) {
             return Object.entries(v).every(([op, x]) => {
                 if (op === '$ne') return val !== x;
+                if (op === '$gte') return val !== undefined && val >= x;
+                if (op === '$gt') return val !== undefined && val > x;
                 if (op === '$lt') return val !== undefined && val < x;
                 if (op === '$lte') return val !== undefined && val <= x;
                 if (op === '$in') return x.includes(val);
@@ -26,7 +28,16 @@ export function makeCol() {
             const doc = { _id: d._id ?? `id${++seq}`, ...d }; docs.push(doc); return { insertedId: doc._id };
         },
         async findOne(f) { return docs.find(d => matches(d, f)) || null; },
-        find(f = {}) { return { toArray: async () => docs.filter(d => matches(d, f)) }; },
+        find(f = {}) {
+            let rows = docs.filter(d => matches(d, f));
+            const chain = {
+                sort(spec) { const [k, dir] = Object.entries(spec)[0]; rows = [...rows].sort((a, b) => (a[k] < b[k] ? -1 : a[k] > b[k] ? 1 : 0) * dir); return chain; },
+                limit(n) { rows = rows.slice(0, n); return chain; },
+                toArray: async () => rows,
+            };
+            return chain;
+        },
+        async countDocuments(f = {}) { return docs.filter(d => matches(d, f)).length; },
         async updateOne(f, u) {
             const d = docs.find(x => matches(x, f)); if (!d) return { matchedCount: 0, modifiedCount: 0 };
             for (const [k, v] of Object.entries(u.$set || {})) d[k] = v;
